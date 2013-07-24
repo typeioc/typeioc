@@ -1,0 +1,34 @@
+{
+  "name": "typeioc",
+  "version": "1.0.0",
+  "description": "Dependency injection container for node typescript",
+  "main": "./lib/typeioc",
+  "directories": {
+      "lib": "./lib/typeioc",
+      "test": "test"
+  },
+  "dependencies": {
+    "hashes": "~0.1.2",
+    "weak": "~0.2.2"
+  },
+  "devDependencies": {
+      "nodeunit": "~0.8.0"
+  },
+  "scripts": {
+    "test": "./test/runner"
+  },
+  "keywords": [
+    "typescript",
+    "dependency",
+    "injection",
+    "ioc",
+    "container",
+    "inversion",
+    "control"
+  ],
+  "author": {
+      "name" : "Max Gherman",
+      "email" : "german.maxim@gmail.com"
+  },
+  "license": "BSD"
+}
