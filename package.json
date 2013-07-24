@@ -30,5 +30,18 @@
       "name" : "Max Gherman",
       "email" : "german.maxim@gmail.com"
   },
-  "license": "BSD"
+  "repository": {
+     "type": "git",
+     "url": "git://github.com/maxgherman/TypeIOC.git"
+  },
+
+  "bugs": {
+    "email": "german.maxim@gmail.com",
+    "url": "https://github.com/maxgherman/TypeIOC/issues"
+  },
+
+  "license": {
+     "type": "BSD",
+     "url": "https://github.com/maxgherman/TypeIOC/blob/master/LICENSE"
+  }
 }
