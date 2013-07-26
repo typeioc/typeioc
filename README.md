@@ -19,7 +19,7 @@ var typeioc = require('typeioc');
 
 Assuming TestBase class and Test class exist somewhere 
 
-1.  Basic resolution:
+Basic resolution:
 ```
 var containerBuilder = new typeioc.ContainerBuilder();
 containerBuilder.register(TestBase).as(() => new Test());
@@ -27,7 +27,7 @@ var container = containerBuilder.build();
 var actual = container.resolve(TestBase);
 ```
 
-2. With type checking:
+With type checking:
 ```
 var containerBuilder = new typeioc.ContainerBuilder();
 containerBuilder.register<TestBase>(TestBase).as(() => new Test());
@@ -35,7 +35,7 @@ var container = containerBuilder.build();
 var actual = container.resolve<TestBase>(TestBase);
 ```
 
-3. Registering with dependancies:
+Registering with dependancies:
 ```
 containerBuilder.register<Test2Base>(Test2Base).as(() => new Test2());
 containerBuilder.register<Test1Base>(Test1Base).as((c) => {
@@ -44,7 +44,7 @@ containerBuilder.register<Test1Base>(Test1Base).as((c) => {
 });
 ```
 
-4. Fluent API:
+Fluent API:
 ```
 containerBuilder.register<Test1Base>(Test1Base).
   as(() => new Test5()).
