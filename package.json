@@ -1,6 +1,6 @@
 {
   "name": "typeioc",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Dependency injection container for node typescript",
   "main": "./lib/typeioc",
   "directories": {
@@ -43,5 +43,6 @@
   "license": {
      "type": "BSD",
      "url": "https://github.com/maxgherman/TypeIOC/blob/master/LICENSE"
-  }
+  },
+  "readmeFilename": "README.md"
 }
