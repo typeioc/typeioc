@@ -1,6 +1,6 @@
-/// <reference path="../t.d.ts/node/node.d.ts" />
-
 "use strict";
+
+declare function require(path : string) : any;
 
 import DefinitionsModule = require('../definitions');
 import RegoDefinitionsModule = require('../registration/definitions');

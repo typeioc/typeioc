@@ -29,6 +29,9 @@ var actual = container.resolve(TestBase);
 
 With type checking:
 ```
+
+import typeioc = require('node_modules/typeioc/lib/typeioc');
+
 var containerBuilder = new typeioc.ContainerBuilder();
 containerBuilder.register<TestBase>(TestBase).as(() => new Test());
 var container = containerBuilder.build();
