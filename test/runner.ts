@@ -1,7 +1,9 @@
-/// <reference path="../lib/t.d.ts/node/node.d.ts" />
+
+declare function require(path : string) : any;
+declare var process : any;
+declare var __dirname : string;
 
 var reporter = null;
-
 
 try {
     reporter = require('nodeunit').reporters.default;
