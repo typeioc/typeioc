@@ -133,7 +133,7 @@ export class Container implements ContainerDefinitionsModule.IContainer {
         }
     }
 
-    private resolveBase(registration : RegoDefinitionsModule.IRegistrationBase, throwIfNotFound : bool) : any {
+    private resolveBase(registration : RegoDefinitionsModule.IRegistrationBase, throwIfNotFound : boolean) : any {
 
         var entry = this.resolveImpl(registration, throwIfNotFound);
 
@@ -143,7 +143,7 @@ export class Container implements ContainerDefinitionsModule.IContainer {
         return this.resolveScope(entry, throwIfNotFound);
     }
 
-    private resolveImpl(registration : RegoDefinitionsModule.IRegistrationBase, throwIfNotFound : bool) : RegoDefinitionsModule.IRegistrationBase {
+    private resolveImpl(registration : RegoDefinitionsModule.IRegistrationBase, throwIfNotFound : boolean) : RegoDefinitionsModule.IRegistrationBase {
 
         var serviceEntry = this.getEntry(registration);
 
@@ -157,7 +157,7 @@ export class Container implements ContainerDefinitionsModule.IContainer {
     }
 
     private resolveScope(registration : RegoDefinitionsModule.IRegistrationBase,
-                         throwIfNotFound : bool) : any {
+                         throwIfNotFound : boolean) : any {
 
         switch(registration.scope) {
             case RegoDefinitionsModule.Scope.None:
@@ -193,7 +193,7 @@ export class Container implements ContainerDefinitionsModule.IContainer {
         return entry.instance;
     }
 
-    private resolveHierarchyScope(registration : RegoDefinitionsModule.IRegistrationBase, throwIfNotFound : bool) {
+    private resolveHierarchyScope(registration : RegoDefinitionsModule.IRegistrationBase, throwIfNotFound : boolean) {
         if(registration.container &&
             registration.container !== this) {
 

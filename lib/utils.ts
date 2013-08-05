@@ -14,7 +14,7 @@ export function paramsCount(func : Function) {
     return paramNames ? paramNames.length : 0;
 }
 
-export function hasParams(func : Function) : bool {
+export function hasParams(func : Function) : boolean {
     return paramsCount(func) > 0;
 }
 
@@ -25,7 +25,7 @@ export function getFactoryArgsCount(factory: DefinitionModule.IFactory<any>) {
     return paramNames ? paramNames.length - 1 : 0;
 }
 
-export function isDisposable(value) : bool {
+export function isDisposable(value) : boolean {
 
     return typeof value.dispose === 'function' ||
                   typeof value.Dispose === 'function';
@@ -38,7 +38,7 @@ export function getDisposeMethod(value) : Function {
 }
 
 
-export function isCompatible(obj1 : Object, obj2 : Object) : bool {
+export function isCompatible(obj1 : Object, obj2 : Object) : boolean {
 
     for(var key in obj2) {
 
@@ -62,4 +62,3 @@ export function construct(constructor, args) {
 
     return new k();
 }
-

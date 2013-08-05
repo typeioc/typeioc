@@ -2,7 +2,7 @@
 export class Test1Base {
     public get Name() { return null; }
 
-    public get Disposed() : bool {
+    public get Disposed() : boolean {
         return false;
     }
 }
@@ -70,13 +70,13 @@ export class Test4 extends Test1Base{
 
 export class Test5 extends  Test1Base {
     private name : string;
-    private _disposed : bool = false;
+    private _disposed : boolean = false;
 
     public get Name() : string {
         return "test 5";
     }
 
-    public get Disposed() : bool {
+    public get Disposed() : boolean {
         return this._disposed;
     }
 

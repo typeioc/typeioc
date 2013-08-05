@@ -10,7 +10,7 @@ export interface IInstanceLocation {
 }
 
 export interface IInstantiationItem {
-    isDependency : bool;
+    isDependency : boolean;
     location? : IInstanceLocation;
     instance? : any;
 }
@@ -33,7 +33,7 @@ export interface IForInstance {
 }
 
 export interface IModule {
-    forModule? : bool;
+    forModule? : boolean;
     serviceModule? : Object;
     resolverModule? : Object;
     within? : RegoDefinitionsModule.Scope;

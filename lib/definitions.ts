@@ -11,9 +11,8 @@ export interface IFactory<T> {
     (c: ContainerDefinitionsModule.IContainer, ...args: any[]) : T;
 };
 
-
 export interface IResolveOptions {
-    throwIfNotFound : bool;
+    throwIfNotFound : boolean;
     registration : RegoDefinitionsModule.IRegistrationBase;
 };
 
