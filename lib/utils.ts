@@ -1,7 +1,7 @@
 
 "use strict";
 
-import DefinitionModule = module('definitions');
+import RegoDefinitionModule = module('registration/definitions');
 
 export function getParamNames(func : Function) : string[] {
     var funStr = func.toString();
@@ -18,7 +18,7 @@ export function hasParams(func : Function) : boolean {
     return paramsCount(func) > 0;
 }
 
-export function getFactoryArgsCount(factory: DefinitionModule.IFactory<any>) {
+export function getFactoryArgsCount(factory: RegoDefinitionModule.IFactory<any>) {
 
     var paramNames = getParamNames(factory);
 

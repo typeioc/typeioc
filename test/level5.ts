@@ -3,6 +3,7 @@ import RegistrationBaseModule = require('../lib/registration/registrationBase');
 import RegoDefinitionsModule = require('../lib/registration/definitions');
 import testData = require('test-data');;
 
+
 export module Level5 {
 
     export function containerOwnedInstancesAreDisposed(test) {

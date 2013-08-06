@@ -1,6 +1,5 @@
 "use strict";
 
-import DefinitionModule = require('../definitions');;
 import RegoDefinitionsModule = require('definitions');
 import ExceptionsModule = require('../exceptions');
 
@@ -12,7 +11,7 @@ export class Registration<T> implements RegoDefinitionsModule.IRegistration<T> {
         this._base = baseRegistgration;
     }
 
-    public as(factory: DefinitionModule.IFactory<T>) : RegoDefinitionsModule.IInitializedNamedReusedOwned {
+    public as(factory: RegoDefinitionsModule.IFactory<T>) : RegoDefinitionsModule.IInitializedNamedReusedOwned {
 
         var self = this;
         self._base.factory = factory;

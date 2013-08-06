@@ -5,7 +5,6 @@ declare function require(path : string) : any;
 
 import RegistrationModule = require('registrationBase');
 import RegoDefinitionsModule = require('definitions');
-import DefinitionsModule = require('../definitions');
 import Utils = require('../utils');
 
 var hashes = require('hashes');
@@ -85,7 +84,7 @@ export class ModuleRegistration implements RegoDefinitionsModule.IModuleRegistra
     }
 
 
-    private for<R>(service: any, factory : DefinitionsModule.IFactory<R>) : RegoDefinitionsModule.IModuleReusedOwned {
+    private for<R>(service: any, factory : RegoDefinitionsModule.IFactory<R>) : RegoDefinitionsModule.IModuleReusedOwned {
 
         var options = this.getRegoOptionsEntry(service);
         options.factory = factory;

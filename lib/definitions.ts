@@ -7,10 +7,6 @@ export interface ICollection {
     [name: string]: any;
 };
 
-export interface IFactory<T> {
-    (c: ContainerDefinitionsModule.IContainer, ...args: any[]) : T;
-};
-
 export interface IResolveOptions {
     throwIfNotFound : boolean;
     registration : RegoDefinitionsModule.IRegistrationBase;

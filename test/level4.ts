@@ -3,7 +3,6 @@ import testData = require('test-data');;
 import exceptions = require('../lib/exceptions');;
 
 
-
 export module Level4 {
 
     export function serviceRegisteredOnParentResolveOnChildContainer(test) {

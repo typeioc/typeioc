@@ -1,6 +1,5 @@
 "use strict";
 
-import DefinitionsModule = require('../definitions');
 import ContainerDefinitionsModule = require('../container/definitions');
 
 export enum Scope {
@@ -17,6 +16,10 @@ export enum Owner {
 export interface IInvoker {
     () : any;
 }
+
+export interface IFactory<T> {
+    (c: ContainerDefinitionsModule.IContainer, ...args: any[]) : T;
+};
 
 export interface IInitializer<T> {
     (c: ContainerDefinitionsModule.IContainer, item : T) : void;
@@ -45,12 +48,12 @@ export interface IInitialized<T> {
 export interface IInitializedNamedReusedOwned extends IInitialized, INamedReusedOwned {}
 
 export interface IAs<T> {
-    as : (factory: DefinitionsModule.IFactory<T>) => IInitializedNamedReusedOwned<T>;
+    as : (factory: IFactory<T>) => IInitializedNamedReusedOwned<T>;
 }
 
 export interface IRegistrationBase {
     service : any;
-    factory : DefinitionsModule.IFactory<any>;
+    factory : IFactory<any>;
     name : string;
     scope : Scope;
     owner : Owner;
@@ -66,7 +69,7 @@ export interface IRegistrationBase {
 export interface IRegistration<T> extends IAs<T> { }
 
 export interface IModuleReusedOwned extends IReusedOwned {
-    for<R>(service: any, factory : DefinitionsModule.IFactory<R>) : IModuleReusedOwned;
+    for<R>(service: any, factory : IFactory<R>) : IModuleReusedOwned;
     forArgs(service: any, ...args:any[]) : IModuleReusedOwned;
     named(service: any, name : string) : IModuleReusedOwned;
 }
@@ -81,6 +84,6 @@ export interface IModuleRegistration {
 }
 
 export interface IModuleItemRegistrationOptions {
-    factory : DefinitionsModule.IFactory<any>;
+    factory : IFactory<any>;
     name : string;
 }

@@ -3,7 +3,6 @@
 import ConfigDefinitionsModule = require('../configuration/definitions');
 import RegoDefinitionsModule = require('definitions');
 import ContainerDefinitionsModule = require('../container/definitions');
-import DefinitionsModule = require('../definitions');
 import BaseRegistrationModule = require('registrationBase');
 import MultiRegistrationsModule = require('../registration/moduleRegistration');
 import DefaultsModule = require('../configuration/defaults');
@@ -181,7 +180,7 @@ export class ConfigRegistration {
     private getInstantiation(resolver : any,
                              parameters : ConfigDefinitionsModule.IInstantiationItem[],
                              moduleInstance? : Object) :
-                             DefinitionsModule.IFactory<any> {
+                             RegoDefinitionsModule.IFactory<any> {
 
         return (c : ContainerDefinitionsModule.IContainer) => {
             var instances = parameters.map((item) => {

@@ -1,6 +1,6 @@
 {
   "name": "typeioc",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Dependency injection container for node typescript",
   "main": "./lib/typeioc",
   "directories": {

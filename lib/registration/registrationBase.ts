@@ -1,13 +1,12 @@
 "use strict";
 
 import ContainerDefiitionsModule = require('container/definitions');
-import DefinitionModule = require('../definitions');;
 import RegoDefinitionsModule = require('definitions');
 import Utils = require('../utils');;
 
 export class RegistrationBase implements  RegoDefinitionsModule.IRegistrationBase {
     private _service : any = null;
-    private _factory : DefinitionModule.IFactory<any> = null;
+    private _factory : RegoDefinitionsModule.IFactory<any> = null;
     private _name : string = null;
     private _scope : RegoDefinitionsModule.Scope;
     private _owner : RegoDefinitionsModule.Owner;
@@ -107,11 +106,11 @@ export class RegistrationBase implements  RegoDefinitionsModule.IRegistrationBas
         return result;
     }
 
-    public get factory() : DefinitionModule.IFactory<any> {
+    public get factory() : RegoDefinitionsModule.IFactory<any> {
         return this._factory;
     }
 
-    public set factory(value : DefinitionModule.IFactory<any>){
+    public set factory(value : RegoDefinitionsModule.IFactory<any>){
         this._factory = value;
     }
 }

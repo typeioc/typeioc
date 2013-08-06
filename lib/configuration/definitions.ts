@@ -1,8 +1,6 @@
 "use strict";
 
 import RegoDefinitionsModule = require('../registration/definitions');
-import DefinitionsModule = require('../definitions');
-
 
 export interface IInstanceLocation {
     instanceModule? : Object;
@@ -19,7 +17,7 @@ export interface IComponent {
     service : IInstanceLocation;
     resolver? : IInstanceLocation;
     parameters? : IInstantiationItem[];
-    factory? : DefinitionsModule.IFactory<any>;
+    factory? : RegoDefinitionsModule.IFactory<any>;
     named? : string;
     within? : RegoDefinitionsModule.Scope;
     ownedBy? : RegoDefinitionsModule.Owner;
@@ -29,7 +27,7 @@ export interface IComponent {
 export interface IForInstance {
     resolver : IInstanceLocation;
     parameters? : IInstantiationItem[];
-    factory? : DefinitionsModule.IFactory<any>;
+    factory? : RegoDefinitionsModule.IFactory<any>;
 }
 
 export interface IModule {
