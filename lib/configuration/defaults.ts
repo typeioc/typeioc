@@ -1,4 +1,3 @@
-/// <reference path="../t.d.ts/enums.d.ts" />
 
 "use strict";
 

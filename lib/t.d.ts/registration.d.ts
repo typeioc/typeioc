@@ -1,6 +1,4 @@
 /// <reference path="container.d.ts" />
-/// <reference path="enums.d.ts" />
-
 
 declare module Typeioc {
 

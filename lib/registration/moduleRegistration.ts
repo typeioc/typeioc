@@ -1,4 +1,3 @@
-/// <reference path="../t.d.ts/enums.d.ts" />
 /// <reference path="../t.d.ts/misc.d.ts" />
 /// <reference path="../t.d.ts/registration.d.ts" />
 
