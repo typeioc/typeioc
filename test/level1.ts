@@ -2,7 +2,6 @@ import typeioc = require('../lib/typeioc');;
 import testData = require('test-data');;
 import exceptions = require('../lib/exceptions');;
 
-
 export module Level1 {
 
     export function containerConstruction(test) {

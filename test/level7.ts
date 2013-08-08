@@ -1,4 +1,3 @@
-
 import exceptions = require('../lib/exceptions');;
 import typeioc = require('../lib/typeioc');;
 import MRegistrationModule = require('../lib/registration/moduleRegistration');

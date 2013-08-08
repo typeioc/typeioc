@@ -95,6 +95,6 @@ export class Constants {
     }
 }
 
-export interface IConfiguration extends Typeioc.IConfig {}
+export interface IConfig extends Typeioc.IConfig {}
 
 export interface IContainer extends Typeioc.IContainer {}
