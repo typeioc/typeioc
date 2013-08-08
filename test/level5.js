@@ -1,7 +1,6 @@
 var typeioc = require('../lib/typeioc');
 ;
 var RegistrationBaseModule = require('../lib/registration/registrationBase');
-var RegoDefinitionsModule = require('../lib/registration/definitions');
 var testData = require("./test-data");
 ;
 
@@ -141,7 +140,7 @@ var testData = require("./test-data");
             return new testData.Test5();
         });
         serviceEntry.initializer = initializer;
-        serviceEntry.scope = RegoDefinitionsModule.Scope.Hierarchy;
+        serviceEntry.scope = typeioc.Constants.Scope.Hierarchy;
 
         var containerBuilder = new typeioc.ContainerBuilder();
         var container = containerBuilder.build();
@@ -150,7 +149,7 @@ var testData = require("./test-data");
 
         test.strictEqual(actual.factory, serviceEntry.factory);
         test.strictEqual(actual.scope, serviceEntry.scope);
-        test.strictEqual(actual.scope, RegoDefinitionsModule.Scope.Hierarchy);
+        test.strictEqual(actual.scope, typeioc.Constants.Scope.Hierarchy);
         test.strictEqual(actual.container, container);
         test.strictEqual(actual.initializer, initializer);
 
@@ -211,4 +210,4 @@ var testData = require("./test-data");
 })(exports.Level5 || (exports.Level5 = {}));
 var Level5 = exports.Level5;
 
-//@ sourceMappingURL=level5.js.map
+//# sourceMappingURL=level5.js.map

@@ -1,7 +1,6 @@
+/// <reference path="t.d.ts/registration.d.ts" />
 
 "use strict";
-
-import RegoDefinitionModule = module('registration/definitions');
 
 export function getParamNames(func : Function) : string[] {
     var funStr = func.toString();
@@ -18,7 +17,7 @@ export function hasParams(func : Function) : boolean {
     return paramsCount(func) > 0;
 }
 
-export function getFactoryArgsCount(factory: RegoDefinitionModule.IFactory<any>) {
+export function getFactoryArgsCount(factory: Typeioc.IFactory<any>) {
 
     var paramNames = getParamNames(factory);
 

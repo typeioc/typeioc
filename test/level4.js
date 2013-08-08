@@ -135,4 +135,4 @@ var exceptions = require('../lib/exceptions');
 })(exports.Level4 || (exports.Level4 = {}));
 var Level4 = exports.Level4;
 
-//@ sourceMappingURL=level4.js.map
+//# sourceMappingURL=level4.js.map

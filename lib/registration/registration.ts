@@ -1,17 +1,20 @@
+/// <reference path="../t.d.ts/enums.d.ts" />
+/// <reference path="../t.d.ts/registration.d.ts" />
+
 "use strict";
 
-import RegoDefinitionsModule = require('definitions');
 import ExceptionsModule = require('../exceptions');
+import Defaults = require('../configuration/defaults');
 
-export class Registration<T> implements RegoDefinitionsModule.IRegistration<T> {
+export class Registration<T> implements Typeioc.IRegistration<T> {
 
-    private _base : RegoDefinitionsModule.IRegistrationBase;
+    private _base : Typeioc.IRegistrationBase;
 
-    constructor(baseRegistgration : RegoDefinitionsModule.IRegistrationBase) {
+    constructor(baseRegistgration : Typeioc.IRegistrationBase) {
         this._base = baseRegistgration;
     }
 
-    public as(factory: RegoDefinitionsModule.IFactory<T>) : RegoDefinitionsModule.IInitializedNamedReusedOwned {
+    public as(factory: Typeioc.IFactory<T>) : Typeioc.IInitializedNamedReusedOwned {
 
         var self = this;
         self._base.factory = factory;
@@ -24,7 +27,7 @@ export class Registration<T> implements RegoDefinitionsModule.IRegistration<T> {
         };
     }
 
-    private named(value : string) : RegoDefinitionsModule.IReusedOwned {
+    private named(value : string) : Typeioc.IReusedOwned {
 
         var self = this;
         self._base.name = value;
@@ -35,7 +38,7 @@ export class Registration<T> implements RegoDefinitionsModule.IRegistration<T> {
         };
     }
 
-    private within(scope: RegoDefinitionsModule.Scope) : RegoDefinitionsModule.IOwned {
+    private within(scope: Defaults.Scope) : Typeioc.IOwned {
 
         var self = this;
         self._base.scope = scope;
@@ -45,11 +48,11 @@ export class Registration<T> implements RegoDefinitionsModule.IRegistration<T> {
         };
     }
 
-    private ownedBy(owner : RegoDefinitionsModule.Owner) : void {
+    private ownedBy(owner : Defaults.Owner) : void {
         this._base.owner = owner;
     }
 
-    private initializeBy(action : RegoDefinitionsModule.IInitializer<T>) : RegoDefinitionsModule.INamedReusedOwned {
+    private initializeBy(action : Typeioc.IInitializer<T>) : Typeioc.INamedReusedOwned {
 
         var self = this;
         self._base.initializer = action;
@@ -60,5 +63,4 @@ export class Registration<T> implements RegoDefinitionsModule.IRegistration<T> {
             ownedBy : self.ownedBy.bind(self)
         };
     }
-
 }

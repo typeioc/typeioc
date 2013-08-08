@@ -1,18 +1,22 @@
+/// <reference path="../t.d.ts/enums.d.ts" />
+/// <reference path="../t.d.ts/container.d.ts" />
+/// <reference path="../t.d.ts/registration.d.ts" />
+
 "use strict";
 
-import ContainerDefiitionsModule = require('container/definitions');
-import RegoDefinitionsModule = require('definitions');
-import Utils = require('../utils');;
 
-export class RegistrationBase implements  RegoDefinitionsModule.IRegistrationBase {
+import Utils = require('../utils');
+import Defaults = require('../configuration/defaults');
+
+export class RegistrationBase implements  Typeioc.IRegistrationBase {
     private _service : any = null;
-    private _factory : RegoDefinitionsModule.IFactory<any> = null;
+    private _factory : Typeioc.IFactory<any> = null;
     private _name : string = null;
-    private _scope : RegoDefinitionsModule.Scope;
-    private _owner : RegoDefinitionsModule.Owner;
-    private _initializer : RegoDefinitionsModule.IInitializer<any> = null;
+    private _scope : Defaults.Scope;
+    private _owner : Defaults.Owner;
+    private _initializer : Typeioc.IInitializer<any> = null;
     private _args : any[];
-    private _container : ContainerDefiitionsModule.IContainer;
+    private _container : Typeioc.IContainer;
     private _instance: any = null;
 
     public get name() : string {
@@ -27,27 +31,27 @@ export class RegistrationBase implements  RegoDefinitionsModule.IRegistrationBas
         return this._service;
     }
 
-    public get scope() : RegoDefinitionsModule.Scope {
+    public get scope() : Defaults.Scope {
         return this._scope;
     }
 
-    public set scope(value : RegoDefinitionsModule.Scope) {
+    public set scope(value : Defaults.Scope) {
         this._scope = value;
     }
 
-    public get owner() : RegoDefinitionsModule.Owner {
+    public get owner() : Defaults.Owner {
         return this._owner;
     }
 
-    public set owner(value : RegoDefinitionsModule.Owner) {
+    public set owner(value : Defaults.Owner) {
         this._owner = value;
     }
 
-    public get initializer() : RegoDefinitionsModule.IInitializer<any> {
+    public get initializer() : Typeioc.IInitializer<any> {
         return this._initializer;
     }
 
-    public set initializer(value : RegoDefinitionsModule.IInitializer<any> ) {
+    public set initializer(value : Typeioc.IInitializer<any> ) {
         this._initializer = value;
     }
 
@@ -59,11 +63,11 @@ export class RegistrationBase implements  RegoDefinitionsModule.IRegistrationBas
         this._args = value;
     }
 
-    public get container() : ContainerDefiitionsModule.IContainer {
+    public get container() : Typeioc.IContainer {
         return this._container;
     }
 
-    public set container(value : ContainerDefiitionsModule.IContainer) {
+    public set container(value : Typeioc.IContainer) {
         this._container = value;
     }
 
@@ -75,7 +79,7 @@ export class RegistrationBase implements  RegoDefinitionsModule.IRegistrationBas
         this._instance = value;
     }
 
-    public get invoker() : RegoDefinitionsModule.IInvoker {
+    public get invoker() : Typeioc.IInvoker {
         var self = this;
         return () => {
             self.args.splice(0, 0, self.container);
@@ -95,7 +99,7 @@ export class RegistrationBase implements  RegoDefinitionsModule.IRegistrationBas
         return [this._name || "_", ":", argsCount .toString()].join(" ");
     }
 
-    public cloneFor(container: ContainerDefiitionsModule.IContainer) : RegoDefinitionsModule.IRegistrationBase {
+    public cloneFor(container: Typeioc.IContainer) : Typeioc.IRegistrationBase {
         var result = new RegistrationBase(this._service);
         result.factory = this._factory;
         result.container = container;
@@ -106,11 +110,11 @@ export class RegistrationBase implements  RegoDefinitionsModule.IRegistrationBas
         return result;
     }
 
-    public get factory() : RegoDefinitionsModule.IFactory<any> {
+    public get factory() : Typeioc.IFactory<any> {
         return this._factory;
     }
 
-    public set factory(value : RegoDefinitionsModule.IFactory<any>){
+    public set factory(value : Typeioc.IFactory<any>){
         this._factory = value;
     }
 }

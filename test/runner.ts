@@ -2,6 +2,7 @@ declare function require(path : string) : any;
 declare var process : any;
 declare var __dirname : string;
 
+
 var reporter = null;
 
 try {

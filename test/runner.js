@@ -18,4 +18,4 @@ reporter.run([
     'level7.js',
     'level8.js'
 ]);
-//@ sourceMappingURL=runner.js.map
+//# sourceMappingURL=runner.js.map

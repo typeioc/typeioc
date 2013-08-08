@@ -1,8 +1,6 @@
 import typeioc = require('../lib/typeioc');;
 import RegistrationBaseModule = require('../lib/registration/registrationBase');
-import RegoDefinitionsModule = require('../lib/registration/definitions');
 import testData = require('test-data');;
-
 
 export module Level5 {
 
@@ -139,7 +137,7 @@ export module Level5 {
 
         var serviceEntry = new RegistrationBaseModule.RegistrationBase(() => new testData.Test5());
         serviceEntry.initializer = initializer;
-        serviceEntry.scope = RegoDefinitionsModule.Scope.Hierarchy;
+        serviceEntry.scope = typeioc.Constants.Scope.Hierarchy;
 
 
         var containerBuilder = new typeioc.ContainerBuilder();
@@ -149,7 +147,7 @@ export module Level5 {
 
         test.strictEqual(actual.factory, serviceEntry.factory);
         test.strictEqual(actual.scope, serviceEntry.scope);
-        test.strictEqual(actual.scope, RegoDefinitionsModule.Scope.Hierarchy);
+        test.strictEqual(actual.scope, typeioc.Constants.Scope.Hierarchy);
         test.strictEqual(actual.container, container);
         test.strictEqual(actual.initializer, initializer);
 

@@ -1,24 +1,26 @@
+/// <reference path="../t.d.ts/enums.d.ts" />
+/// <reference path="../t.d.ts/misc.d.ts" />
+/// <reference path="../t.d.ts/registration.d.ts" />
 
 "use strict";
 
-declare function require(path : string) : any;
 
 import RegistrationModule = require('registrationBase');
-import RegoDefinitionsModule = require('definitions');
 import Utils = require('../utils');
+import Defaults = require('../configuration/defaults');
 
 var hashes = require('hashes');
 
-export class ModuleRegistration implements RegoDefinitionsModule.IModuleRegistration{
+export class ModuleRegistration implements Typeioc.IModuleRegistration{
 
     private _asModule : Object;
-    private _base : RegoDefinitionsModule.IRegistrationBase;
+    private _base : Typeioc.IRegistrationBase;
     private _regoOptionsCollection : any;
 
-    public get registrations() : RegoDefinitionsModule.IRegistrationBase[] {
+    public get registrations() : Typeioc.IRegistrationBase[] {
 
         var self = this;
-        var result : RegoDefinitionsModule.IRegistrationBase[] = [];
+        var result : Typeioc.IRegistrationBase[] = [];
 
         var serviceModule = this._base.service;
         var asModule = this._asModule;
@@ -48,13 +50,13 @@ export class ModuleRegistration implements RegoDefinitionsModule.IModuleRegistra
         return result;
     }
 
-    constructor(baseRegistgration : RegoDefinitionsModule.IRegistrationBase ) {
+    constructor(baseRegistgration : Typeioc.IRegistrationBase ) {
 
         this._base = baseRegistgration;
         this._regoOptionsCollection = new hashes.HashTable();
     }
 
-    public getAsModuleRegistration() : RegoDefinitionsModule.IAsModuleRegistration {
+    public getAsModuleRegistration() : Typeioc.IAsModuleRegistration {
         var self = this;
 
         return {
@@ -63,13 +65,13 @@ export class ModuleRegistration implements RegoDefinitionsModule.IModuleRegistra
     }
 
 
-    private as(asModule : Object) : RegoDefinitionsModule.IModuleReusedOwned {
+    private as(asModule : Object) : Typeioc.IModuleReusedOwned {
         this._asModule = asModule;
 
         return this.asModuleInitializedReusedOwned();
     }
 
-    private within(scope: RegoDefinitionsModule.Scope) : RegoDefinitionsModule.IOwned {
+    private within(scope: Defaults.Scope) : Typeioc.IOwned {
 
         var self = this;
         self._base.scope = scope;
@@ -79,12 +81,12 @@ export class ModuleRegistration implements RegoDefinitionsModule.IModuleRegistra
         };
     }
 
-    private ownedBy(owner : RegoDefinitionsModule.Owner) : void {
+    private ownedBy(owner : Defaults.Owner) : void {
         this._base.owner = owner;
     }
 
 
-    private for<R>(service: any, factory : RegoDefinitionsModule.IFactory<R>) : RegoDefinitionsModule.IModuleReusedOwned {
+    private for<R>(service: any, factory : Typeioc.IFactory<R>) : Typeioc.IModuleReusedOwned {
 
         var options = this.getRegoOptionsEntry(service);
         options.factory = factory;
@@ -94,7 +96,7 @@ export class ModuleRegistration implements RegoDefinitionsModule.IModuleRegistra
         return this.asModuleInitializedReusedOwned();
     }
 
-    private forArgs(service: any, ...args:any[]) : RegoDefinitionsModule.IModuleReusedOwned {
+    private forArgs(service: any, ...args:any[]) : Typeioc.IModuleReusedOwned {
 
         var options = this.getRegoOptionsEntry(service);
 
@@ -109,7 +111,7 @@ export class ModuleRegistration implements RegoDefinitionsModule.IModuleRegistra
         return this.asModuleInitializedReusedOwned();
     }
 
-    private named(service: any, name : string) : RegoDefinitionsModule.IModuleReusedOwned {
+    private named(service: any, name : string) : Typeioc.IModuleReusedOwned {
         var options = this.getRegoOptionsEntry(service);
         options.name = name;
 
@@ -120,7 +122,7 @@ export class ModuleRegistration implements RegoDefinitionsModule.IModuleRegistra
 
     private createRegistration(data : {
         service : Function;
-        substitute : Function}) : RegoDefinitionsModule.IRegistrationBase {
+        substitute : Function}) : Typeioc.IRegistrationBase {
 
         var rego = new RegistrationModule.RegistrationBase(data.service);
 
@@ -138,7 +140,7 @@ export class ModuleRegistration implements RegoDefinitionsModule.IModuleRegistra
         return rego;
     }
 
-    private asModuleInitializedReusedOwned() : RegoDefinitionsModule.IModuleReusedOwned {
+    private asModuleInitializedReusedOwned() : Typeioc.IModuleReusedOwned {
         var self = this;
 
         return {
@@ -150,14 +152,13 @@ export class ModuleRegistration implements RegoDefinitionsModule.IModuleRegistra
         };
     }
 
-
-    private getRegoOptionsEntry(service : any) : RegoDefinitionsModule.IModuleItemRegistrationOptions {
+    private getRegoOptionsEntry(service : any) : Typeioc.IModuleItemRegistrationOptions {
         return this._regoOptionsCollection.contains(service) ?
                 this._regoOptionsCollection.get(service).value :
                 { factory : null, name : null };
     }
 
-    private addRegoOptionsEntry(service : any, options : RegoDefinitionsModule.IModuleItemRegistrationOptions) {
+    private addRegoOptionsEntry(service : any, options : Typeioc.IModuleItemRegistrationOptions) {
         this._regoOptionsCollection.add(service, options, true);
     }
 }

@@ -2,7 +2,6 @@ import exceptions = require('../lib/exceptions');;
 import typeioc = require('../lib/typeioc');;
 import testData = require('test-data');;
 
-
 export module Level6 {
 
     export function fluentApiInitializeByNamedWithinOwnedBy(test) {

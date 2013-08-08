@@ -1,38 +1,40 @@
+/// <reference path="../t.d.ts/enums.d.ts" />
+/// <reference path="../t.d.ts/container.d.ts" />
+/// <reference path="../t.d.ts/registration.d.ts" />
+/// <reference path="../t.d.ts/configuration.d.ts" />
+
 "use strict";
 
-import ConfigDefinitionsModule = require('../configuration/definitions');
-import RegoDefinitionsModule = require('definitions');
-import ContainerDefinitionsModule = require('../container/definitions');
 import BaseRegistrationModule = require('registrationBase');
-import MultiRegistrationsModule = require('../registration/moduleRegistration');
-import DefaultsModule = require('../configuration/defaults');
+import MultiRegistrationsModule = require('moduleRegistration');
 import ExceptionsModule = require('../exceptions');
 import Utils = require('../utils');
+import Defaults = require('../configuration/defaults');
 
 export class ConfigRegistration {
 
-    private _scope : RegoDefinitionsModule.Scope;
-    private _owner : RegoDefinitionsModule.Owner;
-    private _config : ConfigDefinitionsModule.IConfig;
+    private _scope : Defaults.Scope;
+    private _owner : Defaults.Owner;
+    private _config : Typeioc.IConfig;
 
-    public get scope() : RegoDefinitionsModule.Scope {
+    public get scope() : Defaults.Scope {
         return this._scope;
     }
 
-    public set scope(value : RegoDefinitionsModule.Scope) {
+    public set scope(value : Defaults.Scope) {
         this._scope = value;
     }
 
-    public get owner() : RegoDefinitionsModule.Owner {
+    public get owner() : Defaults.Owner {
         return this._owner;
     }
 
-    public set owner(value : RegoDefinitionsModule.Owner) {
+    public set owner(value : Defaults.Owner) {
         this._owner = value;
     }
 
 
-    public get registrations() : RegoDefinitionsModule.IRegistrationBase[] {
+    public get registrations() : Typeioc.IRegistrationBase[] {
 
         var result = this.createComponentRegistrations(this._config.components);
         var moduleRegoes = this.createModuleRegistrations(this._config);
@@ -41,12 +43,12 @@ export class ConfigRegistration {
    }
 
 
-    constructor(config : ConfigDefinitionsModule.IConfig) {
+    constructor(config : Typeioc.IConfig) {
         this._config = config;
     }
 
-    private createComponentRegistrations(components? : ConfigDefinitionsModule.IComponent[],
-        serviceModule? : Object, resolverModule? : Object) : RegoDefinitionsModule.IRegistrationBase[] {
+    private createComponentRegistrations(components? : Typeioc.IComponent[],
+        serviceModule? : Object, resolverModule? : Object) : Typeioc.IRegistrationBase[] {
 
         if(!components) return [];
 
@@ -58,9 +60,9 @@ export class ConfigRegistration {
         });
     }
 
-    private createModuleRegistrations(config : ConfigDefinitionsModule.IConfig) : RegoDefinitionsModule.IRegistrationBase[] {
+    private createModuleRegistrations(config : Typeioc.IConfig) : Typeioc.IRegistrationBase[] {
 
-        var result : RegoDefinitionsModule.IRegistrationBase[] = [];
+        var result : Typeioc.IRegistrationBase[] = [];
 
         if(!config.modules) return result;
 
@@ -76,8 +78,8 @@ export class ConfigRegistration {
         return result;
     }
 
-    private createModule(configModule : ConfigDefinitionsModule.IModule) : RegoDefinitionsModule.IRegistrationBase[] {
-        var result : RegoDefinitionsModule.IRegistrationBase[] = [];
+    private createModule(configModule : Typeioc.IModule) : Typeioc.IRegistrationBase[] {
+        var result : Typeioc.IRegistrationBase[] = [];
 
         if(configModule.components) {
             var componentRegos = this.createComponentRegistrations(configModule.components,
@@ -131,8 +133,8 @@ export class ConfigRegistration {
         return result;
     }
 
-    private registerComponent(component : ConfigDefinitionsModule.IComponent,
-                              serviceModule? : Object, resolverModule? : Object) : RegoDefinitionsModule.IRegistrationBase
+    private registerComponent(component : Typeioc.IComponent,
+                              serviceModule? : Object, resolverModule? : Object) : Typeioc.IRegistrationBase
     {
         var service = this.getComponent(component.service, serviceModule);
 
@@ -161,7 +163,7 @@ export class ConfigRegistration {
         return result;
     }
 
-    private getComponent(instanceLocation : ConfigDefinitionsModule.IInstanceLocation,
+    private getComponent(instanceLocation : Typeioc.IInstanceLocation,
                          moduleInstance? : Object) {
 
         if(!instanceLocation.name) throw new ExceptionsModule.ArgumentNullError('Missing component name');
@@ -178,11 +180,11 @@ export class ConfigRegistration {
     }
 
     private getInstantiation(resolver : any,
-                             parameters : ConfigDefinitionsModule.IInstantiationItem[],
+                             parameters : Typeioc.IInstantiationItem[],
                              moduleInstance? : Object) :
-                             RegoDefinitionsModule.IFactory<any> {
+                             Typeioc.IFactory<any> {
 
-        return (c : ContainerDefinitionsModule.IContainer) => {
+        return (c : Typeioc.IContainer) => {
             var instances = parameters.map((item) => {
 
                 if(item.instance) return item.instance;

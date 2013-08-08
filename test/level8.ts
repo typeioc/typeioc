@@ -2,7 +2,6 @@ import typeioc = require('../lib/typeioc');;
 import testData = require('test-data');;
 import testDataSecond = require('test-data2');
 
-
 export module Level8 {
     export function configParameterlessResolution(test) {
 

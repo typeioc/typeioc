@@ -1,9 +1,9 @@
+/// <reference path="t.d.ts/container.d.ts" />
+/// <reference path="t.d.ts/registration.d.ts" />
+/// <reference path="t.d.ts/configuration.d.ts" />
 "use strict";
 
-import DefinitionsModule = require('definitions');
-import RegoDefinitionsModule = require('registration/definitions');
-import ConfigDefinitions = require('configuration/definitions');
-import ContainerDefinitionsModule = require('container/definitions');
+
 import RegistrationModule = require('registration/registration');
 import RegistrationBaseModule = require('registration/registrationBase');
 import MultiRegistrationsModule = require('registration/moduleRegistration');
@@ -13,11 +13,11 @@ import DefaultsModule = require('configuration/defaults');
 
 
  export class ContainerBuilder {
-     private registrations : RegoDefinitionsModule.IRegistrationBase[];
-     private moduleRegistrations : RegoDefinitionsModule.IModuleRegistration[];
+     private registrations : Typeioc.IRegistrationBase[];
+     private moduleRegistrations : Typeioc.IModuleRegistration[];
 
-     public DefaultScope : RegoDefinitionsModule.Scope = DefaultsModule.Defaults.Scope;
-     public DefaultOwner : RegoDefinitionsModule.Owner = DefaultsModule.Defaults.Owner;
+     public DefaultScope : DefaultsModule.Scope = DefaultsModule.Defaults.Scope;
+     public DefaultOwner : DefaultsModule.Owner = DefaultsModule.Defaults.Owner;
 
     constructor() {
         this.registrations = [];
@@ -25,7 +25,7 @@ import DefaultsModule = require('configuration/defaults');
     }
 
 
-    public register<R>(service : any) : RegoDefinitionsModule.IRegistration<R> {
+    public register<R>(service : any) : Typeioc.IRegistration<R> {
 
         var regoBase = new RegistrationBaseModule.RegistrationBase(service);
 
@@ -38,7 +38,7 @@ import DefaultsModule = require('configuration/defaults');
         return registration;
     }
 
-    public registerModule(serviceModule : Object) : RegoDefinitionsModule.IAsModuleRegistration {
+    public registerModule(serviceModule : Object) : Typeioc.IAsModuleRegistration {
 
         var regoBase = new RegistrationBaseModule.RegistrationBase(serviceModule);
         var moduleRegistration = new MultiRegistrationsModule.ModuleRegistration(regoBase);
@@ -51,7 +51,7 @@ import DefaultsModule = require('configuration/defaults');
         return moduleRegistration.getAsModuleRegistration();
    }
 
-    public registerConfig(config : ConfigDefinitions.IConfig) : void {
+    public registerConfig(config : Typeioc.IConfig) : void {
         var configRego = new ConfigRegistrationModule.ConfigRegistration(config);
         configRego.scope = this.DefaultScope;
         configRego.owner = this.DefaultOwner;
@@ -61,7 +61,7 @@ import DefaultsModule = require('configuration/defaults');
         this.registrations.push.apply(this.registrations, regoes);
     }
 
-    public build() : ContainerDefinitionsModule.IContainer {
+    public build() : Typeioc.IContainer {
 
         var regoes = this.registrations;
         this.registrations = [];
@@ -86,10 +86,15 @@ import DefaultsModule = require('configuration/defaults');
 
 
 export class Constants {
-    public static Scope = RegoDefinitionsModule.Scope;
-    public static Owner = RegoDefinitionsModule.Owner;
+    public static get Scope() : DefaultsModule.Scope {
+        return DefaultsModule.Scope;
+    }
+
+    public static get Owner() : DefaultsModule.Owner {
+        return DefaultsModule.Owner;
+    }
 }
 
-export interface IConfig extends ConfigDefinitions.IConfig {}
+export interface IConfiguration extends Typeioc.IConfig {}
 
-export interface IContainer extends ContainerDefinitionsModule.IContainer {}
+export interface IContainer extends Typeioc.IContainer {}

@@ -6,7 +6,6 @@ import testData = require('test-data');;
 import testData2 = require('test-data');;
 import testDataSecond = require('test-data2');
 
-
 export module Level7 {
 
     export function resolveDifferentInstancesFormDifferentModules(test) {

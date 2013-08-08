@@ -1,10 +1,10 @@
+/// <reference path="../t.d.ts/misc.d.ts" />
+/// <reference path="../t.d.ts/container.d.ts" />
+/// <reference path="../t.d.ts/registration.d.ts" />
+
 "use strict";
 
-declare function require(path : string) : any;
-
-import DefinitionsModule = require('../definitions');
-import RegoDefinitionsModule = require('../registration/definitions');
-import ContainerDefinitionsModule = require('definitions');
+import Defaults = require('../configuration/defaults');
 import Utils = require('../utils');
 import Exceptions = require('../exceptions');
 import RegistrationBaseModule = require('../registration/registrationBase');
@@ -12,7 +12,7 @@ import RegistrationBaseModule = require('../registration/registrationBase');
 var hashes = require('hashes');
 var weak = require('weak');
 
-export class Container implements ContainerDefinitionsModule.IContainer {
+export class Container implements Typeioc.IContainer {
 
     private weakRef = weak;
     private collection : any;
@@ -21,7 +21,7 @@ export class Container implements ContainerDefinitionsModule.IContainer {
     private parent : Container;
     private children : Container[] = [];
 
-    constructor(registrations? : RegoDefinitionsModule.IRegistrationBase[]) {
+    constructor(registrations? : Typeioc.IRegistrationBase[]) {
         this.collection =  new hashes.HashTable();
 
         if(registrations) {
@@ -29,7 +29,7 @@ export class Container implements ContainerDefinitionsModule.IContainer {
         }
     }
 
-    public createChild() : ContainerDefinitionsModule.IContainer {
+    public createChild() : Typeioc.IContainer {
 
         var child = new Container();
         child.parent = this;
@@ -42,11 +42,11 @@ export class Container implements ContainerDefinitionsModule.IContainer {
         var self = this;
 
         while(this.disposables.length > 0) {
-            var item = this.disposables.pop();
+            var disposable = this.disposables.pop();
 
-            if(!self.weakRef.isDead(item)) {
-                var obj = self.weakRef.get(item);
-                Utils.getDisposeMethod(item).apply(item);
+            if(!self.weakRef.isDead(disposable)) {
+                var obj = self.weakRef.get(disposable);
+                Utils.getDisposeMethod(disposable).apply(disposable);
             }
         }
 
@@ -84,16 +84,16 @@ export class Container implements ContainerDefinitionsModule.IContainer {
         return this.resolveBase(rego, false);
     }
 
-    private import(registrations : RegoDefinitionsModule.IRegistrationBase[]) {
+    private import(registrations : Typeioc.IRegistrationBase[]) {
         var self = this;
 
-        registrations.forEach(function(item : RegoDefinitionsModule.IRegistrationBase) {
+        registrations.forEach(function(item : Typeioc.IRegistrationBase) {
 
             self.registerImpl(item);
         });
     }
 
-    private registerImpl(registration : RegoDefinitionsModule.IRegistrationBase) : void {
+    private registerImpl(registration : Typeioc.IRegistrationBase) : void {
 
         if(!registration.factory)
             throw new Exceptions.ArgumentNullError("Factory is not defined for: " + registration.service.name);
@@ -103,17 +103,17 @@ export class Container implements ContainerDefinitionsModule.IContainer {
         this.addEntry(registration);
     }
 
-    private addEntry(registration : RegoDefinitionsModule.IRegistrationBase) : void {
+    private addEntry(registration : Typeioc.IRegistrationBase) : void {
 
         var entry = this.collection.contains(registration.service) ?
-            this.collection.get(registration.service).value : <DefinitionsModule.ICollection>{};
+            this.collection.get(registration.service).value : <Typeioc.ICollection>{};
 
         entry[registration.toNamedKey()] = registration;
 
         this.collection.add(registration.service, entry, true);
     }
 
-    private getEntry(registration : RegoDefinitionsModule.IRegistrationBase) : RegoDefinitionsModule.IRegistrationBase {
+    private getEntry(registration : Typeioc.IRegistrationBase) : Typeioc.IRegistrationBase {
 
         try {
 
@@ -121,7 +121,7 @@ export class Container implements ContainerDefinitionsModule.IContainer {
 
             if(!entry) return null;
 
-            var storage = <DefinitionsModule.ICollection>entry.value;
+            var storage = <Typeioc.ICollection>entry.value;
             return storage[registration.toNamedKey()];
 
         } catch(error) {
@@ -133,7 +133,7 @@ export class Container implements ContainerDefinitionsModule.IContainer {
         }
     }
 
-    private resolveBase(registration : RegoDefinitionsModule.IRegistrationBase, throwIfNotFound : boolean) : any {
+    private resolveBase(registration : Typeioc.IRegistrationBase, throwIfNotFound : boolean) : any {
 
         var entry = this.resolveImpl(registration, throwIfNotFound);
 
@@ -143,7 +143,7 @@ export class Container implements ContainerDefinitionsModule.IContainer {
         return this.resolveScope(entry, throwIfNotFound);
     }
 
-    private resolveImpl(registration : RegoDefinitionsModule.IRegistrationBase, throwIfNotFound : boolean) : RegoDefinitionsModule.IRegistrationBase {
+    private resolveImpl(registration : Typeioc.IRegistrationBase, throwIfNotFound : boolean) : Typeioc.IRegistrationBase {
 
         var serviceEntry = this.getEntry(registration);
 
@@ -156,18 +156,19 @@ export class Container implements ContainerDefinitionsModule.IContainer {
         return serviceEntry;
     }
 
-    private resolveScope(registration : RegoDefinitionsModule.IRegistrationBase,
+
+    private resolveScope(registration : Typeioc.IRegistrationBase,
                          throwIfNotFound : boolean) : any {
 
         switch(registration.scope) {
-            case RegoDefinitionsModule.Scope.None:
+            case Defaults.Scope.None:
                 return this.createTrackable(registration);
 
-            case RegoDefinitionsModule.Scope.Container:
+            case Defaults.Scope.Container:
 
                 return this.resolveContainerScope(registration);
 
-            case RegoDefinitionsModule.Scope.Hierarchy :
+            case Defaults.Scope.Hierarchy :
 
                 return this.resolveHierarchyScope(registration, throwIfNotFound);
 
@@ -176,8 +177,8 @@ export class Container implements ContainerDefinitionsModule.IContainer {
         }
     }
 
-    private resolveContainerScope(registration : RegoDefinitionsModule.IRegistrationBase) {
-        var entry : RegoDefinitionsModule.IRegistrationBase;
+    private resolveContainerScope(registration : Typeioc.IRegistrationBase) {
+        var entry : Typeioc.IRegistrationBase;
 
         if(registration.container !== this) {
             entry = registration.cloneFor(this);
@@ -193,7 +194,7 @@ export class Container implements ContainerDefinitionsModule.IContainer {
         return entry.instance;
     }
 
-    private resolveHierarchyScope(registration : RegoDefinitionsModule.IRegistrationBase, throwIfNotFound : boolean) {
+    private resolveHierarchyScope(registration : Typeioc.IRegistrationBase, throwIfNotFound : boolean) {
         if(registration.container &&
             registration.container !== this) {
 
@@ -210,11 +211,11 @@ export class Container implements ContainerDefinitionsModule.IContainer {
         return registration.instance;
     }
 
-    private createTrackable(registration : RegoDefinitionsModule.IRegistrationBase) : any {
+    private createTrackable(registration : Typeioc.IRegistrationBase) : any {
 
         var instance = registration.invoker();
 
-        if(registration.owner === RegoDefinitionsModule.Owner.Container &&
+        if(registration.owner === Defaults.Owner.Container &&
             Utils.isDisposable(instance)) {
 
             this.disposables.push(this.weakRef(instance));
@@ -227,7 +228,7 @@ export class Container implements ContainerDefinitionsModule.IContainer {
         return instance;
     }
 
-    private createRegistration(service: any) : RegoDefinitionsModule.IRegistrationBase {
+    private createRegistration(service: any) : Typeioc.IRegistrationBase {
         return new RegistrationBaseModule.RegistrationBase(service);
     }
 }
