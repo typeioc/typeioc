@@ -72,7 +72,7 @@ containerBuilder.register<Test1Base>(Test1Base).
 
 ###Running the tests
 
-Make sure you have nodeunit installed or pull it with dev depandancies.
+Make sure you have nodeunit installed or pull it with dev dependencies.
 
 ```
 node test/runner

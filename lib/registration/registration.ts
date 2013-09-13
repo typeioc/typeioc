@@ -13,7 +13,7 @@ export class Registration<T> implements Typeioc.IRegistration<T> {
         this._base = baseRegistgration;
     }
 
-    public as(factory: Typeioc.IFactory<T>) : Typeioc.IInitializedNamedReusedOwned {
+    public as(factory: Typeioc.IFactory<T>) : Typeioc.IInitializedNamedReusedOwned<T> {
 
         var self = this;
         self._base.factory = factory;

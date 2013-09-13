@@ -3,7 +3,6 @@
 /// <reference path="t.d.ts/configuration.d.ts" />
 "use strict";
 
-
 import RegistrationModule = require('registration/registration');
 import RegistrationBaseModule = require('registration/registrationBase');
 import MultiRegistrationsModule = require('registration/moduleRegistration');
