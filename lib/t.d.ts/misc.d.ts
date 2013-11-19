@@ -1,8 +1,6 @@
 /// <reference path="registration.d.ts" />
 
 
-declare function require(path : string) : any;
-
 declare module Typeioc {
 
     interface ICollection {

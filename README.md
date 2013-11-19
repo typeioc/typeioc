@@ -1,7 +1,7 @@
 TypeIOC
 =======
 
-Dependancy injection container for node typescript.
+Dependency injection container for node typescript.
 
 ###Install
 
@@ -38,7 +38,7 @@ var container = containerBuilder.build();
 var actual = container.resolve<TestBase>(TestBase);
 ```
 
-Registering with dependancies:
+Registering with dependencies:
 ```
 containerBuilder.register<Test2Base>(Test2Base).as(() => new Test2());
 containerBuilder.register<Test1Base>(Test1Base).as((c) => {
@@ -59,9 +59,9 @@ containerBuilder.register<Test1Base>(Test1Base).
 
 ###Features
 
-- [x] - Type complience checking.
+- [x] - Type compliance checking.
 - [x] - Late instances creation through lambda expressions.
-- [x] - Dependancies resolution.
+- [x] - Dependencies resolution.
 - [x] - Named instances resolution.
 - [x] - Custom instance initialization.
 - [x] - Instance scoping.
