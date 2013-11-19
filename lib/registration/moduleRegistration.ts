@@ -1,8 +1,7 @@
-/// <reference path="../t.d.ts/misc.d.ts" />
+/// <reference path="../t.d.ts/node.d.ts" />
 /// <reference path="../t.d.ts/registration.d.ts" />
 
 "use strict";
-
 
 import RegistrationModule = require('registrationBase');
 import Utils = require('../utils');

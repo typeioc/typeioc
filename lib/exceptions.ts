@@ -1,5 +1,6 @@
 "use strict";
 
+
 export class ErrorClass implements Error {
     public name: string;
     public message: string;

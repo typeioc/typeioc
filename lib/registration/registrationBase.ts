@@ -3,7 +3,6 @@
 
 "use strict";
 
-
 import Utils = require('../utils');
 import Defaults = require('../configuration/defaults');
 
