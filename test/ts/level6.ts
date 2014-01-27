@@ -6,12 +6,13 @@ import scaffold = require('./../scaffold');
 
 export module Level6 {
 
-    export function fluentApiInitializeByNamedWithinOwnedBy(test) {
+    export function fluentApiInitializeByDisposedNamedWithinOwnedBy(test) {
 
         var containerBuilder = scaffold.createBuilder();
         containerBuilder.register<testData.Test1Base>(testData.Test1Base).
             as(() => new testData.Test5()).
             initializeBy((c, item) => {}).
+            dispose((item : testData.Test5) => item.Dispose()).
             named("Some Name").
             within(Typeioc.Types.Scope.Hierarchy).
             ownedBy(Typeioc.Types.Owner.Container);
@@ -28,6 +29,8 @@ export module Level6 {
         test.equal(registration['as'], undefined);
         test.notEqual(registration['initializeBy'], undefined);
         test.notEqual(registration['initializeBy'], null);
+        test.notEqual(registration['dispose'], undefined);
+        test.notEqual(registration['dispose'], null);
         test.notEqual(registration['named'], undefined);
         test.notEqual(registration['named'], null);
         test.notEqual(registration['ownedBy'], undefined);
@@ -47,6 +50,28 @@ export module Level6 {
 
         test.equal(registration['as'], undefined);
         test.equal(registration['initializeBy'], undefined);
+        test.notEqual(registration['dispose'], undefined);
+        test.notEqual(registration['dispose'], null);
+        test.notEqual(registration['named'], undefined);
+        test.notEqual(registration['named'], null);
+        test.notEqual(registration['ownedBy'], undefined);
+        test.notEqual(registration['ownedBy'], null);
+        test.notEqual(registration['within'], undefined);
+        test.notEqual(registration['within'], null);
+
+        test.done();
+    };
+
+    export function fluentApiDispose(test) {
+
+        var containerBuilder = scaffold.createBuilder();
+        var registration = containerBuilder.register<testData.Test1Base>(testData.Test1Base).
+            as(() => new testData.Test5()).
+            dispose((item : testData.Test5) => item.Dispose());
+
+        test.equal(registration['as'], undefined);
+        test.equal(registration['initializeBy'], undefined);
+        test.equal(registration['dispose'], undefined);
         test.notEqual(registration['named'], undefined);
         test.notEqual(registration['named'], null);
         test.notEqual(registration['ownedBy'], undefined);
@@ -66,6 +91,7 @@ export module Level6 {
 
         test.equal(registration['as'], undefined);
         test.equal(registration['initializeBy'], undefined);
+        test.equal(registration['dispose'], undefined);
         test.equal(registration['named'], undefined);
         test.notEqual(registration['ownedBy'], undefined);
         test.notEqual(registration['ownedBy'], null);
@@ -74,7 +100,6 @@ export module Level6 {
 
         test.done();
     };
-
 
     export function fluentApiWithin(test) {
 
@@ -85,6 +110,7 @@ export module Level6 {
 
         test.equal(registration['as'], undefined);
         test.equal(registration['initializeBy'], undefined);
+        test.equal(registration['dispose'], undefined);
         test.equal(registration['named'], undefined);
         test.equal(registration['within'], undefined);
         test.notEqual(registration['ownedBy'], undefined);

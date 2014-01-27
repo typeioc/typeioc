@@ -3,16 +3,16 @@ var testData = require('./../test-data');
 var scaffold = require('./../scaffold');
 
 (function (Level6) {
-    function fluentApiInitializeByNamedWithinOwnedBy(test) {
+    function fluentApiInitializeByDisposedNamedWithinOwnedBy(test) {
         var containerBuilder = scaffold.createBuilder();
-        containerBuilder.register(testData.Test1Base).as(function () {
-            return new testData.Test5();
-        }).initializeBy(function (c, item) {
+        containerBuilder.register(testData.Test1Base)
+            .as(function () { return new testData.Test5(); })
+            .initializeBy(function (c, item) { }).dispose(function (item) { return item.Dispose();
         }).named("Some Name").within(3 /* Hierarchy */).ownedBy(1 /* Container */);
 
         test.done();
     }
-    Level6.fluentApiInitializeByNamedWithinOwnedBy = fluentApiInitializeByNamedWithinOwnedBy;
+    Level6.fluentApiInitializeByDisposedNamedWithinOwnedBy = fluentApiInitializeByDisposedNamedWithinOwnedBy;
     ;
 
     function fluentApiAs(test) {
@@ -24,6 +24,8 @@ var scaffold = require('./../scaffold');
         test.equal(registration['as'], undefined);
         test.notEqual(registration['initializeBy'], undefined);
         test.notEqual(registration['initializeBy'], null);
+        test.notEqual(registration['dispose'], undefined);
+        test.notEqual(registration['dispose'], null);
         test.notEqual(registration['named'], undefined);
         test.notEqual(registration['named'], null);
         test.notEqual(registration['ownedBy'], undefined);
@@ -45,6 +47,8 @@ var scaffold = require('./../scaffold');
 
         test.equal(registration['as'], undefined);
         test.equal(registration['initializeBy'], undefined);
+        test.notEqual(registration['dispose'], undefined);
+        test.notEqual(registration['dispose'], null);
         test.notEqual(registration['named'], undefined);
         test.notEqual(registration['named'], null);
         test.notEqual(registration['ownedBy'], undefined);
@@ -57,6 +61,29 @@ var scaffold = require('./../scaffold');
     Level6.fluentApiInitializeBy = fluentApiInitializeBy;
     ;
 
+    function fluentApiDispose(test) {
+        var containerBuilder = scaffold.createBuilder();
+        var registration = containerBuilder.register(testData.Test1Base).as(function () {
+            return new testData.Test5();
+        }).dispose(function (item) {
+            return item.Dispose();
+        });
+
+        test.equal(registration['as'], undefined);
+        test.equal(registration['initializeBy'], undefined);
+        test.equal(registration['dispose'], undefined);
+        test.notEqual(registration['named'], undefined);
+        test.notEqual(registration['named'], null);
+        test.notEqual(registration['ownedBy'], undefined);
+        test.notEqual(registration['ownedBy'], null);
+        test.notEqual(registration['within'], undefined);
+        test.notEqual(registration['within'], null);
+
+        test.done();
+    }
+    Level6.fluentApiDispose = fluentApiDispose;
+    ;
+
     function fluentApiNamed(test) {
         var containerBuilder = scaffold.createBuilder();
         var registration = containerBuilder.register(testData.Test1Base).as(function () {
@@ -65,6 +92,7 @@ var scaffold = require('./../scaffold');
 
         test.equal(registration['as'], undefined);
         test.equal(registration['initializeBy'], undefined);
+        test.equal(registration['dispose'], undefined);
         test.equal(registration['named'], undefined);
         test.notEqual(registration['ownedBy'], undefined);
         test.notEqual(registration['ownedBy'], null);
@@ -84,6 +112,7 @@ var scaffold = require('./../scaffold');
 
         test.equal(registration['as'], undefined);
         test.equal(registration['initializeBy'], undefined);
+        test.equal(registration['dispose'], undefined);
         test.equal(registration['named'], undefined);
         test.equal(registration['within'], undefined);
         test.notEqual(registration['ownedBy'], undefined);

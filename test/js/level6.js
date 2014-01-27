@@ -11,27 +11,29 @@ exports.Level6 = {
         callback();
     },
 
-    fluentApiInitializeByNamedWithinOwnedBy : function (test) {
+    fluentApiInitializeByDisposedNamedWithinOwnedBy : function (test) {
 
-        containerBuilder.register(testData.Test1Base).as(function () {
-            return new testData.Test5();
-        }).initializeBy(function (c, item) {
-        }).named("Some Name")
-          .within(scaffold.Types.Scope.Hierarchy)
-          .ownedBy(scaffold.Types.Owner.Container);
+        containerBuilder.register(testData.Test1Base)
+            .as(function () { return new testData.Test5(); })
+            .initializeBy(function (c, item) { })
+            .dispose(function (item) { return item.Dispose(); })
+            .named("Some Name")
+            .within(scaffold.Types.Scope.Hierarchy)
+            .ownedBy(scaffold.Types.Owner.Container);
 
         test.done();
     },
 
     fluentApiAs : function (test) {
 
-        var registration = containerBuilder.register(testData.Test1Base).as(function () {
-            return new testData.Test5();
-        });
+        var registration = containerBuilder.register(testData.Test1Base)
+            .as(function () { return new testData.Test5(); });
 
         test.equal(registration['as'], undefined);
         test.notEqual(registration['initializeBy'], undefined);
         test.notEqual(registration['initializeBy'], null);
+        test.notEqual(registration['dispose'], undefined);
+        test.notEqual(registration['dispose'], null);
         test.notEqual(registration['named'], undefined);
         test.notEqual(registration['named'], null);
         test.notEqual(registration['ownedBy'], undefined);
@@ -44,13 +46,34 @@ exports.Level6 = {
 
     fluentApiInitializeBy : function (test) {
 
-        var registration = containerBuilder.register(testData.Test1Base).as(function () {
-            return new testData.Test5();
-        }).initializeBy(function (c, item) {
-        });
+        var registration = containerBuilder.register(testData.Test1Base)
+            .as(function () { return new testData.Test5(); })
+            .initializeBy(function (c, item) { });
 
         test.equal(registration['as'], undefined);
         test.equal(registration['initializeBy'], undefined);
+        test.notEqual(registration['dispose'], undefined);
+        test.notEqual(registration['dispose'], null);
+        test.notEqual(registration['named'], undefined);
+        test.notEqual(registration['named'], null);
+        test.notEqual(registration['ownedBy'], undefined);
+        test.notEqual(registration['ownedBy'], null);
+        test.notEqual(registration['within'], undefined);
+        test.notEqual(registration['within'], null);
+
+        test.done();
+    },
+
+
+    fluentApiDispose : function(test) {
+
+        var registration = containerBuilder.register(testData.Test1Base)
+            .as(function () { return new testData.Test5(); })
+            .dispose(function (item) { return item.Dispose(); });
+
+        test.equal(registration['as'], undefined);
+        test.equal(registration['initializeBy'], undefined);
+        test.equal(registration['dispose'], undefined);
         test.notEqual(registration['named'], undefined);
         test.notEqual(registration['named'], null);
         test.notEqual(registration['ownedBy'], undefined);
@@ -63,12 +86,13 @@ exports.Level6 = {
 
     fluentApiNamed : function (test) {
 
-        var registration = containerBuilder.register(testData.Test1Base).as(function () {
-            return new testData.Test5();
-        }).named("Some Name");
+        var registration = containerBuilder.register(testData.Test1Base)
+            .as(function () { return new testData.Test5(); })
+            .named("Some Name");
 
         test.equal(registration['as'], undefined);
         test.equal(registration['initializeBy'], undefined);
+        test.equal(registration['dispose'], undefined);
         test.equal(registration['named'], undefined);
         test.notEqual(registration['ownedBy'], undefined);
         test.notEqual(registration['ownedBy'], null);
@@ -80,12 +104,14 @@ exports.Level6 = {
 
     fluentApiWithin : function (test) {
 
-        var registration = containerBuilder.register(testData.Test1Base).as(function () {
-            return new testData.Test5();
-        }).within(scaffold.Types.Scope.Hierarchy);
+        var containerBuilder = scaffold.createBuilder();
+        var registration = containerBuilder.register(testData.Test1Base)
+            .as(function () { return new testData.Test5(); })
+            .within(scaffold.Types.Scope.Hierarchy);
 
         test.equal(registration['as'], undefined);
         test.equal(registration['initializeBy'], undefined);
+        test.equal(registration['dispose'], undefined);
         test.equal(registration['named'], undefined);
         test.equal(registration['within'], undefined);
         test.notEqual(registration['ownedBy'], undefined);
