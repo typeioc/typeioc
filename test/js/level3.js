@@ -1,0 +1,67 @@
+'use strict';
+var testData = require('./../test-data');
+var scaffold = require('./../scaffold');
+
+var containerBuilder = null;
+
+exports.Level3 = {
+
+    setUp: function (callback) {
+        containerBuilder = scaffold.createBuilder();
+        callback();
+    },
+
+    defaultScopingHierarchy : function (test) {
+        containerBuilder.register(testData.Test1Base).as(function () {
+            return new testData.Test4("test 4");
+        });
+
+        var container = containerBuilder.build();
+        var test1 = container.resolve(testData.Test1Base);
+        test1.Name = "test 1";
+        var test2 = container.resolve(testData.Test1Base);
+
+        test.notEqual(test1, null);
+        test.strictEqual(test1.Name, "test 1");
+        test.notEqual(test2, null);
+        test.strictEqual(test2.Name, "test 4");
+
+        test.done();
+    },
+
+    noScopingReuse : function (test) {
+        containerBuilder.register(testData.Test1Base).as(function () {
+            return new testData.Test4("test 4");
+        }).within(scaffold.Types.Scope.None);
+
+        var container = containerBuilder.build();
+        var test1 = container.resolve(testData.Test1Base);
+        test1.Name = "test 1";
+        var test2 = container.resolve(testData.Test1Base);
+
+        test.notEqual(test1, null);
+        test.strictEqual(test1.Name, "test 1");
+        test.notEqual(test2, null);
+        test.strictEqual(test2.Name, "test 4");
+
+        test.done();
+    },
+
+    containerScoping : function (test) {
+        containerBuilder.register(testData.Test1Base).as(function () {
+            return new testData.Test4("test 4");
+        }).within(scaffold.Types.Scope.Container);
+
+        var container = containerBuilder.build();
+        var test1 = container.resolve(testData.Test1Base);
+        test1.Name = "test 1";
+        var test2 = container.resolve(testData.Test1Base);
+
+        test.notEqual(test1, null);
+        test.strictEqual(test1.Name, "test 1");
+        test.notEqual(test2, null);
+        test.strictEqual(test2.Name, "test 1");
+
+        test.done();
+    }
+}

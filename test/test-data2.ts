@@ -1,3 +1,5 @@
+
+
 export module ServiceModule1 {
     export class TestBaseClass {
         public name() {

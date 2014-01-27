@@ -169,5 +169,4 @@ var SubstituteModule5 = exports.SubstituteModule5;
     SubstituteModule6.ConcreteClass1 = ConcreteClass1;
 })(exports.SubstituteModule6 || (exports.SubstituteModule6 = {}));
 var SubstituteModule6 = exports.SubstituteModule6;
-
 //# sourceMappingURL=test-data2.js.map

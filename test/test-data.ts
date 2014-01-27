@@ -1,3 +1,5 @@
+
+
 export class Test1Base {
     public get Name() { return null; }
 

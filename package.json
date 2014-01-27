@@ -4,16 +4,23 @@
   "description": "Dependency injection container for node typescript",
   "main": "./lib/typeioc",
   "directories": {
-      "lib": "./lib/typeioc",
-      "test": "test"
+    "lib": "./lib/typeioc",
+    "test": "test"
   },
   "dependencies": {
     "hashes": "~0.1.2",
     "weak": "~0.2.2"
   },
   "devDependencies": {
-      "nodeunit": "~0.8.0",
-      "typescript" : "~0.9.1"
+    "nodeunit": "~0.8.0",
+    "typescript": "0.9.5",
+    "gulp": "~3.3.4",
+    "gulp-exec": "~1.0.3",
+    "map-stream": "~0.1.0",
+    "gulp-util": "~2.2.10",
+    "q": "~1.0.0",
+    "event-stream": "~3.1.0",
+    "gulp-clean": "~0.2.3"
   },
   "scripts": {
     "test": "./test/runner"
@@ -28,22 +35,20 @@
     "control"
   ],
   "author": {
-      "name" : "Max Gherman",
-      "email" : "german.maxim@gmail.com"
+    "name": "Max Gherman",
+    "email": "german.maxim@gmail.com"
   },
   "repository": {
-     "type": "git",
-     "url": "git://github.com/maxgherman/TypeIOC.git"
+    "type": "git",
+    "url": "git://github.com/maxgherman/TypeIOC.git"
   },
-
   "bugs": {
     "email": "german.maxim@gmail.com",
     "url": "https://github.com/maxgherman/TypeIOC/issues"
   },
-
   "license": {
-     "type": "BSD",
-     "url": "https://github.com/maxgherman/TypeIOC/blob/master/LICENSE"
+    "type": "BSD",
+    "url": "https://github.com/maxgherman/TypeIOC/blob/master/LICENSE"
   },
   "readmeFilename": "README.md"
 }
