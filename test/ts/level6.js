@@ -3,20 +3,27 @@ var testData = require('./../test-data');
 var scaffold = require('./../scaffold');
 
 (function (Level6) {
+    var containerBuilder;
+
+    function setUp(callback) {
+        containerBuilder = scaffold.createBuilder();
+        callback();
+    }
+    Level6.setUp = setUp;
+
     function fluentApiInitializeByDisposedNamedWithinOwnedBy(test) {
-        var containerBuilder = scaffold.createBuilder();
-        containerBuilder.register(testData.Test1Base)
-            .as(function () { return new testData.Test5(); })
-            .initializeBy(function (c, item) { }).dispose(function (item) { return item.Dispose();
+        containerBuilder.register(testData.Test1Base).as(function () {
+            return new testData.Test5();
+        }).initializeBy(function (c, item) {
+        }).dispose(function (item) {
+            return item.Dispose();
         }).named("Some Name").within(3 /* Hierarchy */).ownedBy(1 /* Container */);
 
         test.done();
     }
     Level6.fluentApiInitializeByDisposedNamedWithinOwnedBy = fluentApiInitializeByDisposedNamedWithinOwnedBy;
-    ;
 
     function fluentApiAs(test) {
-        var containerBuilder = scaffold.createBuilder();
         var registration = containerBuilder.register(testData.Test1Base).as(function () {
             return new testData.Test5();
         });
@@ -36,10 +43,8 @@ var scaffold = require('./../scaffold');
         test.done();
     }
     Level6.fluentApiAs = fluentApiAs;
-    ;
 
     function fluentApiInitializeBy(test) {
-        var containerBuilder = scaffold.createBuilder();
         var registration = containerBuilder.register(testData.Test1Base).as(function () {
             return new testData.Test5();
         }).initializeBy(function (c, item) {
@@ -59,10 +64,8 @@ var scaffold = require('./../scaffold');
         test.done();
     }
     Level6.fluentApiInitializeBy = fluentApiInitializeBy;
-    ;
 
     function fluentApiDispose(test) {
-        var containerBuilder = scaffold.createBuilder();
         var registration = containerBuilder.register(testData.Test1Base).as(function () {
             return new testData.Test5();
         }).dispose(function (item) {
@@ -82,10 +85,8 @@ var scaffold = require('./../scaffold');
         test.done();
     }
     Level6.fluentApiDispose = fluentApiDispose;
-    ;
 
     function fluentApiNamed(test) {
-        var containerBuilder = scaffold.createBuilder();
         var registration = containerBuilder.register(testData.Test1Base).as(function () {
             return new testData.Test5();
         }).named("Some Name");
@@ -102,10 +103,8 @@ var scaffold = require('./../scaffold');
         test.done();
     }
     Level6.fluentApiNamed = fluentApiNamed;
-    ;
 
     function fluentApiWithin(test) {
-        var containerBuilder = scaffold.createBuilder();
         var registration = containerBuilder.register(testData.Test1Base).as(function () {
             return new testData.Test5();
         }).within(3 /* Hierarchy */);
@@ -121,10 +120,8 @@ var scaffold = require('./../scaffold');
         test.done();
     }
     Level6.fluentApiWithin = fluentApiWithin;
-    ;
 
     function factoryNotDefinedError(test) {
-        var containerBuilder = scaffold.createBuilder();
         var registration = containerBuilder.register(testData.Test1Base);
 
         var delegate = function () {
@@ -138,7 +135,6 @@ var scaffold = require('./../scaffold');
         test.done();
     }
     Level6.factoryNotDefinedError = factoryNotDefinedError;
-    ;
 })(exports.Level6 || (exports.Level6 = {}));
 var Level6 = exports.Level6;
 //# sourceMappingURL=level6.js.map

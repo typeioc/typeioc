@@ -5,9 +5,15 @@ var testDataSecond = require('./../test-data2');
 var scaffold = require('./../scaffold');
 
 (function (Level7) {
-    function resolveDifferentInstancesFormDifferentModules(test) {
-        var containerBuilder = scaffold.createBuilder();
+    var containerBuilder;
 
+    function setUp(callback) {
+        containerBuilder = scaffold.createBuilder();
+        callback();
+    }
+    Level7.setUp = setUp;
+
+    function resolveDifferentInstancesFormDifferentModules(test) {
         containerBuilder.register(testData.TestModule1.Test1).as(function (c) {
             return new testData.TestModule1.Test1("test 1");
         });
@@ -28,8 +34,6 @@ var scaffold = require('./../scaffold');
     Level7.resolveDifferentInstancesFormDifferentModules = resolveDifferentInstancesFormDifferentModules;
 
     function resolveDifferentInstancesFormSameModule(test) {
-        var containerBuilder = scaffold.createBuilder();
-
         containerBuilder.register(testData.TestModule1.Test1).as(function (c) {
             return new testData.TestModule1.Test1("test 1");
         }).within(2 /* Container */);
@@ -52,7 +56,6 @@ var scaffold = require('./../scaffold');
     Level7.resolveDifferentInstancesFormSameModule = resolveDifferentInstancesFormSameModule;
 
     function registerModuleBasicInheritance(test) {
-        var containerBuilder = scaffold.createBuilder();
         containerBuilder.registerModule(testDataSecond.ServiceModule1).as(testDataSecond.SubstituteModule1);
 
         var container = containerBuilder.build();
@@ -66,7 +69,6 @@ var scaffold = require('./../scaffold');
     Level7.registerModuleBasicInheritance = registerModuleBasicInheritance;
 
     function registerModuleBasicNonInheritance(test) {
-        var containerBuilder = scaffold.createBuilder();
         containerBuilder.registerModule(testDataSecond.ServiceModule1).as(testDataSecond.SubstituteModule2);
 
         var container = containerBuilder.build();
@@ -80,7 +82,6 @@ var scaffold = require('./../scaffold');
     Level7.registerModuleBasicNonInheritance = registerModuleBasicNonInheritance;
 
     function registerModuleBasicFunctionSubstitute(test) {
-        var containerBuilder = scaffold.createBuilder();
         containerBuilder.registerModule(testDataSecond.ServiceModule2).as(testDataSecond.SubstituteModule2);
 
         var container = containerBuilder.build();
@@ -94,7 +95,6 @@ var scaffold = require('./../scaffold');
     Level7.registerModuleBasicFunctionSubstitute = registerModuleBasicFunctionSubstitute;
 
     function registerModuleBasicFunctionSubstituteOverridesMatches(test) {
-        var containerBuilder = scaffold.createBuilder();
         containerBuilder.registerModule(testDataSecond.ServiceModule2).as(testDataSecond.SubstituteModule4);
 
         var container = containerBuilder.build();
@@ -108,7 +108,6 @@ var scaffold = require('./../scaffold');
     Level7.registerModuleBasicFunctionSubstituteOverridesMatches = registerModuleBasicFunctionSubstituteOverridesMatches;
 
     function registerModuleConstructorWithParamsError(test) {
-        var containerBuilder = scaffold.createBuilder();
         containerBuilder.registerModule(testDataSecond.ServiceModule1).as(testDataSecond.SubstituteModule3);
 
         var container = containerBuilder.build();
@@ -126,7 +125,6 @@ var scaffold = require('./../scaffold');
     Level7.registerModuleConstructorWithParamsError = registerModuleConstructorWithParamsError;
 
     function registerModuleConstructorWithParams(test) {
-        var containerBuilder = scaffold.createBuilder();
         containerBuilder.registerModule(testDataSecond.ServiceModule1).as(testDataSecond.SubstituteModule3).forArgs(testDataSecond.SubstituteModule3.ConcreteTestClass, 77, "Test");
 
         var container = containerBuilder.build();
@@ -140,7 +138,6 @@ var scaffold = require('./../scaffold');
     Level7.registerModuleConstructorWithParams = registerModuleConstructorWithParams;
 
     function registerModuleConstructorWithDependencies(test) {
-        var containerBuilder = scaffold.createBuilder();
         containerBuilder.registerModule(testDataSecond.ServiceModule1).as(testDataSecond.SubstituteModule3).forArgs(testDataSecond.SubstituteModule3.ConcreteTestClass, 77, "Test");
 
         containerBuilder.registerModule(testDataSecond.ServiceModule3).as(testDataSecond.SubstituteModule6).for(testDataSecond.SubstituteModule6.ConcreteClass1, function (c) {
@@ -159,7 +156,6 @@ var scaffold = require('./../scaffold');
     Level7.registerModuleConstructorWithDependencies = registerModuleConstructorWithDependencies;
 
     function registerModuleMultipleSubstitutions(test) {
-        var containerBuilder = scaffold.createBuilder();
         containerBuilder.registerModule(testDataSecond.ServiceModule3).as(testDataSecond.SubstituteModule5);
 
         var container = containerBuilder.build();
@@ -180,7 +176,6 @@ var scaffold = require('./../scaffold');
     Level7.registerModuleMultipleSubstitutions = registerModuleMultipleSubstitutions;
 
     function registerModuleMultipleSubstitutionsWithParams(test) {
-        var containerBuilder = scaffold.createBuilder();
         containerBuilder.registerModule(testDataSecond.ServiceModule3).as(testDataSecond.SubstituteModule5).forArgs(testDataSecond.SubstituteModule5.ConcreteClass1).forArgs(testDataSecond.SubstituteModule5.ConcreteClass2).forArgs(testDataSecond.SubstituteModule5.ConcreteClass3);
 
         var container = containerBuilder.build();
@@ -201,7 +196,6 @@ var scaffold = require('./../scaffold');
     Level7.registerModuleMultipleSubstitutionsWithParams = registerModuleMultipleSubstitutionsWithParams;
 
     function registerModuleMultipleSubstitutionsNamedResolution(test) {
-        var containerBuilder = scaffold.createBuilder();
         containerBuilder.registerModule(testDataSecond.ServiceModule2).as(testDataSecond.SubstituteModule4).named(testDataSecond.SubstituteModule4.ConcreteTestClass1, "name1").named(testDataSecond.SubstituteModule4.ConcreteTestClass2, "name2");
 
         var container = containerBuilder.build();
@@ -217,7 +211,6 @@ var scaffold = require('./../scaffold');
     Level7.registerModuleMultipleSubstitutionsNamedResolution = registerModuleMultipleSubstitutionsNamedResolution;
 
     function registerModuleConstructorWithDependenciesNamedResolution(test) {
-        var containerBuilder = scaffold.createBuilder();
         containerBuilder.registerModule(testDataSecond.ServiceModule1).as(testDataSecond.SubstituteModule3).forArgs(testDataSecond.SubstituteModule3.ConcreteTestClass, 77, "Test");
 
         containerBuilder.registerModule(testDataSecond.ServiceModule3).as(testDataSecond.SubstituteModule6).named(testDataSecond.SubstituteModule6.ConcreteClass1, "name1").for(testDataSecond.SubstituteModule6.ConcreteClass1, function (c) {

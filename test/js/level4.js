@@ -27,6 +27,24 @@ exports.Level4 = {
         test.done();
     },
 
+    serviceRegisteredNamedOnParentResolveNamedOnChildContainer : function (test) {
+        var registrationName = 'name reg';
+
+        containerBuilder.register(testData.Test1Base).as(function () {
+            return new testData.Test1();
+        }).named(registrationName).within(3 /* Hierarchy */);
+
+        var container = containerBuilder.build();
+        var child = container.createChild();
+
+        var test1 = child.resolveNamed(testData.Test1Base, registrationName);
+
+        test.notEqual(test1, null);
+        test.strictEqual(test1.Name, "test 1");
+
+        test.done();
+    },
+
     serviceRegisteredOnParentResolveOnChildContainerNoHierarchy : function (test) {
         containerBuilder.register(testData.Test1Base).as(function () {
             return new testData.Test1();

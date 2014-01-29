@@ -6,9 +6,15 @@ import scaffold = require('./../scaffold');
 
 export module Level2 {
 
+    var containerBuilder : Typeioc.IContainerBuilder;
+
+    export function setUp(callback) {
+        containerBuilder = scaffold.createBuilder();
+        callback();
+    }
+
     export function customParametersResolution(test) {
 
-        var containerBuilder = scaffold.createBuilder();
         containerBuilder.register<testData.Test1Base>(testData.Test1Base)
             .as((c, name) => new testData.Test4(name));
 
@@ -19,11 +25,9 @@ export module Level2 {
         test.strictEqual(test1.Name, "test 4");
 
         test.done();
-    };
+    }
 
     export function namedServicesResolution(test) {
-
-        var containerBuilder = scaffold.createBuilder();
 
         containerBuilder.register<testData.Test1Base>(testData.Test1Base)
             .as(() => new testData.Test4("null"));
@@ -45,12 +49,10 @@ export module Level2 {
         test.strictEqual(actual3.Name, "null");
 
         test.done();
-    };
-
+    }
 
     export function namedServicesResolutionWithParams(test) {
 
-        var containerBuilder = scaffold.createBuilder();
         containerBuilder.register<testData.Test1Base>(testData.Test1Base)
             .as((c, name) => new testData.Test4(name)).named("A");
         containerBuilder.register<testData.Test1Base>(testData.Test1Base)
@@ -66,11 +68,10 @@ export module Level2 {
         test.strictEqual(actual2.Name, "b");
 
         test.done();
-    };
+    }
 
     export function namedServicesResolutionWithParamsError(test) {
 
-        var containerBuilder = scaffold.createBuilder();
         containerBuilder.register<testData.Test1Base>(testData.Test1Base)
             .as((c, name) => new testData.Test4(name)).named("A");
 
@@ -83,12 +84,10 @@ export module Level2 {
         });
 
         test.done();
-    };
-
+    }
 
     export function namedServicesParametersResolution(test) {
 
-        var containerBuilder = scaffold.createBuilder();
         containerBuilder.register<testData.Test1Base>(testData.Test1Base)
             .as((c, name) => new testData.Test4(name)).named("A");
 
@@ -101,11 +100,10 @@ export module Level2 {
         });
 
         test.done();
-    };
+    }
 
     export function attemptNamedServicesParametersResolution(test) {
 
-        var containerBuilder = scaffold.createBuilder();
         containerBuilder.register<testData.Test1Base>(testData.Test1Base)
             .as((c, name) => new testData.Test4(name)).named("A");
 
@@ -114,11 +112,10 @@ export module Level2 {
         test.equal(null, actual);
 
         test.done();
-    };
+    }
 
     export function collidingResolution(test) {
 
-        var containerBuilder = scaffold.createBuilder();
         containerBuilder.register<testData.Test1Base>(testData.Test1Base)
             .as(() => new testData.Test4("a"));
         containerBuilder.register<testData.Test1Base>(testData.Test1Base)
@@ -134,6 +131,6 @@ export module Level2 {
         test.strictEqual(actual2.Name, "b");
 
         test.done();
-    };
+    }
 
 }

@@ -3,8 +3,15 @@ var testData = require('./../test-data');
 var scaffold = require('./../scaffold');
 
 (function (Level3) {
+    var containerBuilder;
+
+    function setUp(callback) {
+        containerBuilder = scaffold.createBuilder();
+        callback();
+    }
+    Level3.setUp = setUp;
+
     function defaultScopingHierarchy(test) {
-        var containerBuilder = scaffold.createBuilder();
         containerBuilder.register(testData.Test1Base).as(function () {
             return new testData.Test4("test 4");
         });
@@ -22,10 +29,8 @@ var scaffold = require('./../scaffold');
         test.done();
     }
     Level3.defaultScopingHierarchy = defaultScopingHierarchy;
-    ;
 
     function noScopingReuse(test) {
-        var containerBuilder = scaffold.createBuilder();
         containerBuilder.register(testData.Test1Base).as(function () {
             return new testData.Test4("test 4");
         }).within(1 /* None */);
@@ -43,10 +48,8 @@ var scaffold = require('./../scaffold');
         test.done();
     }
     Level3.noScopingReuse = noScopingReuse;
-    ;
 
     function containerScoping(test) {
-        var containerBuilder = scaffold.createBuilder();
         containerBuilder.register(testData.Test1Base).as(function () {
             return new testData.Test4("test 4");
         }).within(2 /* Container */);
@@ -64,7 +67,6 @@ var scaffold = require('./../scaffold');
         test.done();
     }
     Level3.containerScoping = containerScoping;
-    ;
 })(exports.Level3 || (exports.Level3 = {}));
 var Level3 = exports.Level3;
 //# sourceMappingURL=level3.js.map

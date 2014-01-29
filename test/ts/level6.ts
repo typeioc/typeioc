@@ -6,9 +6,15 @@ import scaffold = require('./../scaffold');
 
 export module Level6 {
 
+    var containerBuilder : Typeioc.IContainerBuilder;
+
+    export function setUp(callback) {
+        containerBuilder = scaffold.createBuilder();
+        callback();
+    }
+
     export function fluentApiInitializeByDisposedNamedWithinOwnedBy(test) {
 
-        var containerBuilder = scaffold.createBuilder();
         containerBuilder.register<testData.Test1Base>(testData.Test1Base).
             as(() => new testData.Test5()).
             initializeBy((c, item) => {}).
@@ -18,13 +24,12 @@ export module Level6 {
             ownedBy(Typeioc.Types.Owner.Container);
 
         test.done();
-    };
+    }
 
     export function fluentApiAs(test) {
 
-        var containerBuilder = scaffold.createBuilder();
-        var registration = containerBuilder.register<testData.Test1Base>(testData.Test1Base).
-            as(() => new testData.Test5());
+        var registration = containerBuilder.register<testData.Test1Base>(testData.Test1Base)
+            .as(() => new testData.Test5());
 
         test.equal(registration['as'], undefined);
         test.notEqual(registration['initializeBy'], undefined);
@@ -39,14 +44,13 @@ export module Level6 {
         test.notEqual(registration['within'], null);
 
         test.done();
-    };
+    }
 
     export function fluentApiInitializeBy(test) {
 
-        var containerBuilder = scaffold.createBuilder();
-        var registration = containerBuilder.register<testData.Test1Base>(testData.Test1Base).
-            as(() => new testData.Test5()).
-            initializeBy((c, item) => {});
+        var registration = containerBuilder.register<testData.Test1Base>(testData.Test1Base)
+            .as(() => new testData.Test5())
+            .initializeBy((c, item) => {});
 
         test.equal(registration['as'], undefined);
         test.equal(registration['initializeBy'], undefined);
@@ -60,14 +64,13 @@ export module Level6 {
         test.notEqual(registration['within'], null);
 
         test.done();
-    };
+    }
 
     export function fluentApiDispose(test) {
 
-        var containerBuilder = scaffold.createBuilder();
-        var registration = containerBuilder.register<testData.Test1Base>(testData.Test1Base).
-            as(() => new testData.Test5()).
-            dispose((item : testData.Test5) => item.Dispose());
+        var registration = containerBuilder.register<testData.Test1Base>(testData.Test1Base)
+            .as(() => new testData.Test5())
+            .dispose((item : testData.Test5) => item.Dispose());
 
         test.equal(registration['as'], undefined);
         test.equal(registration['initializeBy'], undefined);
@@ -80,14 +83,13 @@ export module Level6 {
         test.notEqual(registration['within'], null);
 
         test.done();
-    };
+    }
 
     export function fluentApiNamed(test) {
 
-        var containerBuilder = scaffold.createBuilder();
-        var registration = containerBuilder.register<testData.Test1Base>(testData.Test1Base).
-            as(() => new testData.Test5()).
-            named("Some Name");
+        var registration = containerBuilder.register<testData.Test1Base>(testData.Test1Base)
+            .as(() => new testData.Test5())
+            .named("Some Name");
 
         test.equal(registration['as'], undefined);
         test.equal(registration['initializeBy'], undefined);
@@ -99,14 +101,13 @@ export module Level6 {
         test.notEqual(registration['within'], null);
 
         test.done();
-    };
+    }
 
     export function fluentApiWithin(test) {
 
-        var containerBuilder = scaffold.createBuilder();
-        var registration = containerBuilder.register<testData.Test1Base>(testData.Test1Base).
-            as(() => new testData.Test5()).
-            within(Typeioc.Types.Scope.Hierarchy);
+        var registration = containerBuilder.register<testData.Test1Base>(testData.Test1Base)
+            .as(() => new testData.Test5())
+            .within(Typeioc.Types.Scope.Hierarchy);
 
         test.equal(registration['as'], undefined);
         test.equal(registration['initializeBy'], undefined);
@@ -117,11 +118,10 @@ export module Level6 {
         test.notEqual(registration['ownedBy'], null);
 
         test.done();
-    };
+    }
 
     export function factoryNotDefinedError(test) {
 
-        var containerBuilder = scaffold.createBuilder();
         var registration = containerBuilder.register<testData.Test1Base>(testData.Test1Base);
 
         var delegate = () => containerBuilder.build();
@@ -132,5 +132,5 @@ export module Level6 {
         });
 
         test.done();
-    };
+    }
 }

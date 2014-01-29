@@ -4,8 +4,15 @@ var testDataSecond = require('./../test-data2');
 var scaffold = require('./../scaffold');
 
 (function (Level8) {
+    var containerBuilder;
+
+    function setUp(callback) {
+        containerBuilder = scaffold.createBuilder();
+        callback();
+    }
+    Level8.setUp = setUp;
+
     function configParameterlessResolution(test) {
-        var containerBuilder = scaffold.createBuilder();
         var config = {
             components: [
                 {
@@ -34,7 +41,6 @@ var scaffold = require('./../scaffold');
     Level8.configParameterlessResolution = configParameterlessResolution;
 
     function configFactoryResolution(test) {
-        var containerBuilder = scaffold.createBuilder();
         var config = {
             components: [
                 {
@@ -62,8 +68,6 @@ var scaffold = require('./../scaffold');
     Level8.configFactoryResolution = configFactoryResolution;
 
     function dependenciesResolution(test) {
-        var containerBuilder = scaffold.createBuilder();
-
         var config = {
             components: [
                 {
@@ -108,11 +112,8 @@ var scaffold = require('./../scaffold');
         test.done();
     }
     Level8.dependenciesResolution = dependenciesResolution;
-    ;
 
     function customParametersResolution(test) {
-        var containerBuilder = scaffold.createBuilder();
-
         var config = {
             components: [
                 {
@@ -138,11 +139,8 @@ var scaffold = require('./../scaffold');
         test.done();
     }
     Level8.customParametersResolution = customParametersResolution;
-    ;
 
     function namedServicesResolution(test) {
-        var containerBuilder = scaffold.createBuilder();
-
         var config = {
             components: [
                 {
@@ -193,11 +191,8 @@ var scaffold = require('./../scaffold');
         test.done();
     }
     Level8.namedServicesResolution = namedServicesResolution;
-    ;
 
     function noScopingReuse(test) {
-        var containerBuilder = scaffold.createBuilder();
-
         var config = {
             components: [
                 {
@@ -227,11 +222,8 @@ var scaffold = require('./../scaffold');
         test.done();
     }
     Level8.noScopingReuse = noScopingReuse;
-    ;
 
     function containerOwnedInstancesAreDisposed(test) {
-        var containerBuilder = scaffold.createBuilder();
-
         var config = {
             components: [
                 {
@@ -264,12 +256,9 @@ var scaffold = require('./../scaffold');
         test.done();
     }
     Level8.containerOwnedInstancesAreDisposed = containerOwnedInstancesAreDisposed;
-    ;
 
     function initializeIsCalledWhenInstanceIsCreated(test) {
         var className = "item";
-
-        var containerBuilder = scaffold.createBuilder();
 
         var config = {
             components: [
@@ -303,8 +292,6 @@ var scaffold = require('./../scaffold');
     Level8.initializeIsCalledWhenInstanceIsCreated = initializeIsCalledWhenInstanceIsCreated;
 
     function registerModuleBasicInheritance(test) {
-        var containerBuilder = scaffold.createBuilder();
-
         var config = {
             modules: [
                 {
@@ -326,8 +313,6 @@ var scaffold = require('./../scaffold');
     Level8.registerModuleBasicInheritance = registerModuleBasicInheritance;
 
     function registerModuleConstructorWithParams(test) {
-        var containerBuilder = scaffold.createBuilder();
-
         var config = {
             modules: [
                 {
@@ -367,8 +352,6 @@ var scaffold = require('./../scaffold');
     Level8.registerModuleConstructorWithParams = registerModuleConstructorWithParams;
 
     function registerModuleConstructorWithDependencies(test) {
-        var containerBuilder = scaffold.createBuilder();
-
         var config = {
             modules: [
                 {
@@ -427,7 +410,6 @@ var scaffold = require('./../scaffold');
     Level8.registerModuleConstructorWithDependencies = registerModuleConstructorWithDependencies;
 
     function registerComponentsWithinModel(test) {
-        var containerBuilder = scaffold.createBuilder();
         var config = {
             modules: [
                 {

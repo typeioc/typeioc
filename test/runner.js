@@ -1,13 +1,16 @@
-var reporter = null;
+
+var path = require('path');
 
 try  {
-    reporter = require('nodeunit').reporters.default;
+    var reporter = require('nodeunit').reporters.default;
 } catch (e) {
     console.log("Cannot find nodeunit module.");
     process.exit();
 }
 
-process.chdir(__dirname);
+var testPath = path.join(__dirname, 'js');
+
+process.chdir(testPath);
 reporter.run([
     'level1.js',
     'level2.js',

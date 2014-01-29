@@ -7,9 +7,16 @@ import scaffold = require('./../scaffold');
 
 
 export module Level8 {
+
+    var containerBuilder : Typeioc.IContainerBuilder;
+
+    export function setUp(callback) {
+        containerBuilder = scaffold.createBuilder();
+        callback();
+    }
+
     export function configParameterlessResolution(test) {
 
-        var containerBuilder = scaffold.createBuilder();
         var config : Typeioc.IConfig = {
             components : [
                 {
@@ -38,7 +45,6 @@ export module Level8 {
 
     export function configFactoryResolution(test) {
 
-        var containerBuilder = scaffold.createBuilder();
         var config : Typeioc.IConfig = {
             components : [
                 {
@@ -63,8 +69,6 @@ export module Level8 {
     }
 
     export function dependenciesResolution(test) {
-
-        var containerBuilder = scaffold.createBuilder();
 
         var config : Typeioc.IConfig = {
             components : [
@@ -106,11 +110,9 @@ export module Level8 {
         test.strictEqual(actual.Name, "Test 3 test 2");
 
         test.done();
-    };
+    }
 
     export function customParametersResolution(test) {
-
-        var containerBuilder = scaffold.createBuilder();
 
         var config : Typeioc.IConfig = {
             components : [
@@ -133,11 +135,9 @@ export module Level8 {
         test.strictEqual(test1.Name, "test 4");
 
         test.done();
-    };
+    }
 
     export function namedServicesResolution(test) {
-
-        var containerBuilder = scaffold.createBuilder();
 
         var config : Typeioc.IConfig = {
             components : [
@@ -181,11 +181,9 @@ export module Level8 {
         test.strictEqual(actual3.Name, "null");
 
         test.done();
-    };
+    }
 
     export function noScopingReuse(test) {
-
-        var containerBuilder = scaffold.createBuilder();
 
         var config : Typeioc.IConfig = {
             components : [
@@ -212,11 +210,9 @@ export module Level8 {
         test.strictEqual(test2.Name, "test 4");
 
         test.done();
-    };
+    }
 
     export function containerOwnedInstancesAreDisposed(test) {
-
-        var containerBuilder = scaffold.createBuilder();
 
         var config : Typeioc.IConfig = {
             components : [
@@ -244,13 +240,11 @@ export module Level8 {
         test.strictEqual(test1.Disposed, true);
 
         test.done();
-    };
+    }
 
     export function initializeIsCalledWhenInstanceIsCreated(test) {
 
         var className = "item";
-
-        var containerBuilder = scaffold.createBuilder();
 
         var config : Typeioc.IConfig = {
             components : [
@@ -280,8 +274,6 @@ export module Level8 {
 
     export function registerModuleBasicInheritance(test) {
 
-        var containerBuilder = scaffold.createBuilder();
-
         var config : Typeioc.IConfig = {
             modules : [
                 {
@@ -302,8 +294,6 @@ export module Level8 {
     }
 
     export function registerModuleConstructorWithParams(test) {
-
-        var containerBuilder = scaffold.createBuilder();
 
         var config : Typeioc.IConfig = {
             modules : [
@@ -344,8 +334,6 @@ export module Level8 {
     }
 
     export function registerModuleConstructorWithDependencies(test) {
-
-        var containerBuilder = scaffold.createBuilder();
 
         var config : Typeioc.IConfig = {
             modules : [
@@ -405,7 +393,6 @@ export module Level8 {
 
     export function registerComponentsWithinModel(test) {
 
-        var containerBuilder = scaffold.createBuilder();
         var config : Typeioc.IConfig = {
 
             modules : [

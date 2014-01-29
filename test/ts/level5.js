@@ -3,9 +3,15 @@ var testData = require('./../test-data');
 var scaffold = require('./../scaffold');
 
 (function (Level5) {
-    function containerOwnedInstancesAreDisposed(test) {
-        var containerBuilder = scaffold.createBuilder();
+    var containerBuilder;
 
+    function setUp(callback) {
+        containerBuilder = scaffold.createBuilder();
+        callback();
+    }
+    Level5.setUp = setUp;
+
+    function containerOwnedInstancesAreDisposed(test) {
         containerBuilder.register(testData.Test1Base).as(function () {
             return new testData.Test5();
         }).dispose(function (item) {
@@ -24,11 +30,8 @@ var scaffold = require('./../scaffold');
         test.done();
     }
     Level5.containerOwnedInstancesAreDisposed = containerOwnedInstancesAreDisposed;
-    ;
 
     function containerOwnedAndContainerReusedInstancesAreDisposed(test) {
-        var containerBuilder = scaffold.createBuilder();
-
         containerBuilder.register(testData.Test1Base).as(function () {
             return new testData.Test5();
         }).dispose(function (item) {
@@ -47,11 +50,8 @@ var scaffold = require('./../scaffold');
         test.done();
     }
     Level5.containerOwnedAndContainerReusedInstancesAreDisposed = containerOwnedAndContainerReusedInstancesAreDisposed;
-    ;
 
     function containerOwnedAndHierarchyReusedInstancesAreDisposed(test) {
-        var containerBuilder = scaffold.createBuilder();
-
         containerBuilder.register(testData.Test1Base).as(function () {
             return new testData.Test5();
         }).dispose(function (item) {
@@ -70,11 +70,8 @@ var scaffold = require('./../scaffold');
         test.done();
     }
     Level5.containerOwnedAndHierarchyReusedInstancesAreDisposed = containerOwnedAndHierarchyReusedInstancesAreDisposed;
-    ;
 
     function childContainerInstanceWithParentRegistrationIsNotDisposed(test) {
-        var containerBuilder = scaffold.createBuilder();
-
         containerBuilder.register(testData.Test1Base).as(function () {
             return new testData.Test5();
         }).within(3 /* Hierarchy */).ownedBy(1 /* Container */);
@@ -92,11 +89,8 @@ var scaffold = require('./../scaffold');
         test.done();
     }
     Level5.childContainerInstanceWithParentRegistrationIsNotDisposed = childContainerInstanceWithParentRegistrationIsNotDisposed;
-    ;
 
     function disposingParentContainerDisposesChildContainerInstances(test) {
-        var containerBuilder = scaffold.createBuilder();
-
         containerBuilder.register(testData.Test1Base).as(function () {
             return new testData.Test5();
         }).dispose(function (item) {
@@ -118,8 +112,6 @@ var scaffold = require('./../scaffold');
     Level5.disposingParentContainerDisposesChildContainerInstances = disposingParentContainerDisposesChildContainerInstances;
 
     function disposingContainerDoesNotDisposeExternalOwnedInstances(test) {
-        var containerBuilder = scaffold.createBuilder();
-
         containerBuilder.register(testData.Test1Base).as(function () {
             return new testData.Test5();
         }).within(3 /* Hierarchy */).ownedBy(2 /* Externals */);
@@ -148,7 +140,6 @@ var scaffold = require('./../scaffold');
         serviceEntry.initializer = initializer;
         serviceEntry.scope = 3 /* Hierarchy */;
 
-        var containerBuilder = scaffold.createBuilder();
         var container = containerBuilder.build();
 
         var actual = serviceEntry.cloneFor(container);
@@ -162,7 +153,6 @@ var scaffold = require('./../scaffold');
         test.done();
     }
     Level5.serviceEntryProperlyCloned = serviceEntryProperlyCloned;
-    ;
 
     function initializeIsCalledWhenInstanceIsCreated(test) {
         var className = "item";
@@ -171,7 +161,6 @@ var scaffold = require('./../scaffold');
             item.initialize(className);
         };
 
-        var containerBuilder = scaffold.createBuilder();
         containerBuilder.register(testData.Initializable).as(function () {
             return new testData.Initializable2();
         }).initializeBy(initializer);
@@ -197,7 +186,6 @@ var scaffold = require('./../scaffold');
             item.test6 = c.resolve(testData.Test6);
         };
 
-        var containerBuilder = scaffold.createBuilder();
         containerBuilder.register(testData.Test6).as(function (c) {
             return new testData.Test6();
         });
@@ -217,6 +205,44 @@ var scaffold = require('./../scaffold');
         test.done();
     }
     Level5.initializeAndResolveDependencies = initializeAndResolveDependencies;
+
+    function instancesFromDifferentContainersDisposedIndependently(test) {
+        var secondContainerBuilder = scaffold.createBuilder();
+
+        containerBuilder.register(testData.Test1Base).as(function () {
+            return new testData.Test5();
+        }).dispose(function (item) {
+            item.Dispose();
+        }).within(1 /* None */).ownedBy(1 /* Container */);
+
+        secondContainerBuilder.register(testData.Test1Base).as(function () {
+            return new testData.Test5();
+        }).dispose(function (item) {
+            item.Dispose();
+        }).within(1 /* None */).ownedBy(1 /* Container */);
+
+        var container = containerBuilder.build();
+        var secondContainer = secondContainerBuilder.build();
+
+        var test1 = container.resolve(testData.Test1Base);
+        var test2 = secondContainer.resolve(testData.Test1Base);
+
+        test.strictEqual(test1.Disposed, false);
+        test.strictEqual(test2.Disposed, false);
+
+        container.dispose();
+
+        test.strictEqual(test1.Disposed, true);
+        test.strictEqual(test2.Disposed, false);
+
+        secondContainer.dispose();
+
+        test.strictEqual(test1.Disposed, true);
+        test.strictEqual(test2.Disposed, true);
+
+        test.done();
+    }
+    Level5.instancesFromDifferentContainersDisposedIndependently = instancesFromDifferentContainersDisposedIndependently;
 })(exports.Level5 || (exports.Level5 = {}));
 var Level5 = exports.Level5;
 //# sourceMappingURL=level5.js.map

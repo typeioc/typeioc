@@ -201,5 +201,42 @@ exports.Level5 = {
         test.notEqual(i1.test6, null);
 
         test.done();
+    },
+
+    instancesFromDifferentContainersDisposedDifferently : function (test) {
+        var secondContainerBuilder = scaffold.createBuilder();
+
+        containerBuilder.register(testData.Test1Base)
+            .as(function () {  return new testData.Test5();  })
+            .dispose(function (item) { item.Dispose(); })
+            .within(scaffold.Types.Scope.None)
+            .ownedBy(scaffold.Types.Owner.Container);
+
+        secondContainerBuilder.register(testData.Test1Base)
+            .as(function () { return new testData.Test5(); })
+            .dispose(function (item) { item.Dispose(); })
+            .within(scaffold.Types.Scope.None)
+            .ownedBy(scaffold.Types.Owner.Container);
+
+        var container = containerBuilder.build();
+        var secondContainer = secondContainerBuilder.build();
+
+        var test1 = container.resolve(testData.Test1Base);
+        var test2 = secondContainer.resolve(testData.Test1Base);
+
+        test.strictEqual(test1.Disposed, false);
+        test.strictEqual(test2.Disposed, false);
+
+        container.dispose();
+
+        test.strictEqual(test1.Disposed, true);
+        test.strictEqual(test2.Disposed, false);
+
+        secondContainer.dispose();
+
+        test.strictEqual(test1.Disposed, true);
+        test.strictEqual(test2.Disposed, true);
+
+        test.done();
     }
 }

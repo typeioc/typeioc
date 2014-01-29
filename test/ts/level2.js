@@ -3,8 +3,15 @@ var testData = require('./../test-data');
 var scaffold = require('./../scaffold');
 
 (function (Level2) {
+    var containerBuilder;
+
+    function setUp(callback) {
+        containerBuilder = scaffold.createBuilder();
+        callback();
+    }
+    Level2.setUp = setUp;
+
     function customParametersResolution(test) {
-        var containerBuilder = scaffold.createBuilder();
         containerBuilder.register(testData.Test1Base).as(function (c, name) {
             return new testData.Test4(name);
         });
@@ -18,11 +25,8 @@ var scaffold = require('./../scaffold');
         test.done();
     }
     Level2.customParametersResolution = customParametersResolution;
-    ;
 
     function namedServicesResolution(test) {
-        var containerBuilder = scaffold.createBuilder();
-
         containerBuilder.register(testData.Test1Base).as(function () {
             return new testData.Test4("null");
         });
@@ -48,10 +52,8 @@ var scaffold = require('./../scaffold');
         test.done();
     }
     Level2.namedServicesResolution = namedServicesResolution;
-    ;
 
     function namedServicesResolutionWithParams(test) {
-        var containerBuilder = scaffold.createBuilder();
         containerBuilder.register(testData.Test1Base).as(function (c, name) {
             return new testData.Test4(name);
         }).named("A");
@@ -71,10 +73,8 @@ var scaffold = require('./../scaffold');
         test.done();
     }
     Level2.namedServicesResolutionWithParams = namedServicesResolutionWithParams;
-    ;
 
     function namedServicesResolutionWithParamsError(test) {
-        var containerBuilder = scaffold.createBuilder();
         containerBuilder.register(testData.Test1Base).as(function (c, name) {
             return new testData.Test4(name);
         }).named("A");
@@ -91,10 +91,8 @@ var scaffold = require('./../scaffold');
         test.done();
     }
     Level2.namedServicesResolutionWithParamsError = namedServicesResolutionWithParamsError;
-    ;
 
     function namedServicesParametersResolution(test) {
-        var containerBuilder = scaffold.createBuilder();
         containerBuilder.register(testData.Test1Base).as(function (c, name) {
             return new testData.Test4(name);
         }).named("A");
@@ -111,10 +109,8 @@ var scaffold = require('./../scaffold');
         test.done();
     }
     Level2.namedServicesParametersResolution = namedServicesParametersResolution;
-    ;
 
     function attemptNamedServicesParametersResolution(test) {
-        var containerBuilder = scaffold.createBuilder();
         containerBuilder.register(testData.Test1Base).as(function (c, name) {
             return new testData.Test4(name);
         }).named("A");
@@ -126,10 +122,8 @@ var scaffold = require('./../scaffold');
         test.done();
     }
     Level2.attemptNamedServicesParametersResolution = attemptNamedServicesParametersResolution;
-    ;
 
     function collidingResolution(test) {
-        var containerBuilder = scaffold.createBuilder();
         containerBuilder.register(testData.Test1Base).as(function () {
             return new testData.Test4("a");
         });
@@ -149,7 +143,6 @@ var scaffold = require('./../scaffold');
         test.done();
     }
     Level2.collidingResolution = collidingResolution;
-    ;
 })(exports.Level2 || (exports.Level2 = {}));
 var Level2 = exports.Level2;
 //# sourceMappingURL=level2.js.map

@@ -1,19 +1,18 @@
+///<reference path='../d.ts/node.d.ts' />
+var path = require('path');
 
-declare function require(path : string) : any;
-declare var process : any;
-declare var __dirname : string;
-
-var reporter = null;
 
 try {
-    reporter = require('nodeunit').reporters.default;
+    var reporter = require('nodeunit').reporters.default;
 }
 catch(e) {
     console.log("Cannot find nodeunit module.");
     process.exit();
 }
 
-process.chdir(__dirname);
+var testPath = path.join(__dirname, 'js');
+
+process.chdir(testPath);
 reporter.run(['level1.js',
     'level2.js',
     'level3.js',

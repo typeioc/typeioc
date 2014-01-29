@@ -6,9 +6,14 @@ import scaffold = require('./../scaffold');
 
 export module Level5 {
 
-    export function containerOwnedInstancesAreDisposed(test) {
+    var containerBuilder : Typeioc.IContainerBuilder;
 
-        var containerBuilder = scaffold.createBuilder();
+    export function setUp(callback) {
+        containerBuilder = scaffold.createBuilder();
+        callback();
+    }
+
+    export function containerOwnedInstancesAreDisposed(test) {
 
         containerBuilder.register<testData.Test1Base>(testData.Test1Base)
             .as(() => new testData.Test5())
@@ -26,11 +31,9 @@ export module Level5 {
         test.strictEqual(test1.Disposed, true);
 
         test.done();
-    };
+    }
 
     export function containerOwnedAndContainerReusedInstancesAreDisposed(test) {
-
-        var containerBuilder = scaffold.createBuilder();
 
         containerBuilder.register<testData.Test1Base>(testData.Test1Base)
             .as(() => new testData.Test5())
@@ -48,12 +51,9 @@ export module Level5 {
         test.strictEqual(test1.Disposed, true);
 
         test.done();
-    };
-
+    }
 
     export function containerOwnedAndHierarchyReusedInstancesAreDisposed(test) {
-
-        var containerBuilder = scaffold.createBuilder();
 
         containerBuilder.register<testData.Test1Base>(testData.Test1Base)
             .as(() => new testData.Test5())
@@ -71,12 +71,9 @@ export module Level5 {
         test.strictEqual(test1.Disposed, true);
 
         test.done();
-    };
-
+    }
 
     export function childContainerInstanceWithParentRegistrationIsNotDisposed(test) {
-
-        var containerBuilder = scaffold.createBuilder();
 
         containerBuilder.register<testData.Test1Base>(testData.Test1Base)
             .as(() => new testData.Test5())
@@ -94,11 +91,9 @@ export module Level5 {
         test.strictEqual(test1.Disposed, false);
 
         test.done();
-    };
+    }
 
     export function disposingParentContainerDisposesChildContainerInstances(test) {
-
-        var containerBuilder = scaffold.createBuilder();
 
         containerBuilder.register<testData.Test1Base>(testData.Test1Base)
             .as(() => new testData.Test5())
@@ -121,8 +116,6 @@ export module Level5 {
 
     export function disposingContainerDoesNotDisposeExternalOwnedInstances(test) {
 
-        var containerBuilder = scaffold.createBuilder();
-
         containerBuilder.register<testData.Test1Base>(testData.Test1Base).as(() => new testData.Test5()).
             within(Typeioc.Types.Scope.Hierarchy).
             ownedBy(Typeioc.Types.Owner.Externals);
@@ -140,7 +133,6 @@ export module Level5 {
         test.done();
     }
 
-
     export function serviceEntryProperlyCloned(test) {
 
         var initializer = (c, item) => {};
@@ -149,8 +141,6 @@ export module Level5 {
         serviceEntry.initializer = initializer;
         serviceEntry.scope = Typeioc.Types.Scope.Hierarchy;
 
-
-        var containerBuilder = scaffold.createBuilder();
         var container = containerBuilder.build();
 
         var actual = serviceEntry.cloneFor(container);
@@ -162,7 +152,7 @@ export module Level5 {
         test.strictEqual(actual.initializer, initializer);
 
         test.done();
-    };
+    }
 
     export function initializeIsCalledWhenInstanceIsCreated(test) {
 
@@ -172,11 +162,9 @@ export module Level5 {
             item.initialize(className);
         };
 
-        var containerBuilder = scaffold.createBuilder();
         containerBuilder.register<testData.Initializable>(testData.Initializable)
             .as(() => new testData.Initializable2()).
             initializeBy(initializer);
-
 
         var container = containerBuilder.build();
 
@@ -199,7 +187,6 @@ export module Level5 {
             item.test6 = c.resolve<testData.Test6>(testData.Test6);
         };
 
-        var containerBuilder = scaffold.createBuilder();
         containerBuilder.register(testData.Test6).as((c) => new testData.Test6());
         containerBuilder.register(testData.Initializable).as((c) => new testData.Initializable()).
             initializeBy(initializer);
@@ -216,4 +203,44 @@ export module Level5 {
         test.done();
     }
 
+    export function instancesFromDifferentContainersDisposedIndependently(test) {
+
+        var secondContainerBuilder = scaffold.createBuilder();
+
+        containerBuilder.register<testData.Test1Base>(testData.Test1Base)
+            .as(() => new testData.Test5())
+            .dispose((item : testData.Test5)  => { item.Dispose() })
+            .within(Typeioc.Types.Scope.None)
+            .ownedBy(Typeioc.Types.Owner.Container);
+
+
+        secondContainerBuilder.register<testData.Test1Base>(testData.Test1Base)
+            .as(() => new testData.Test5())
+            .dispose((item : testData.Test5)  => { item.Dispose() })
+            .within(Typeioc.Types.Scope.None)
+            .ownedBy(Typeioc.Types.Owner.Container);
+
+        var container = containerBuilder.build();
+        var secondContainer = secondContainerBuilder.build();
+
+
+        var test1 = container.resolve<testData.Test1Base>(testData.Test1Base);
+        var test2 = secondContainer.resolve<testData.Test1Base>(testData.Test1Base);
+
+        test.strictEqual(test1.Disposed, false);
+        test.strictEqual(test2.Disposed, false);
+
+        container.dispose();
+
+        test.strictEqual(test1.Disposed, true);
+        test.strictEqual(test2.Disposed, false);
+
+        secondContainer.dispose();
+
+        test.strictEqual(test1.Disposed, true);
+        test.strictEqual(test2.Disposed, true);
+
+
+        test.done();
+    }
 }
