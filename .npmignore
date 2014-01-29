@@ -1,2 +1,8 @@
 .idea/
 npm-debug.log
+samples
+test/ts
+test/*.ts
+test/*.js.map
+src/*.js
+src/*.js.map
