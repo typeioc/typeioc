@@ -2,10 +2,9 @@
   "name": "typeioc",
   "version": "1.1.5",
   "description": "Dependency injection container for node typescript",
-  "main": "./lib/typeioc",
+  "main": "./index",
   "directories": {
-    "lib": "./lib/typeioc",
-    "test": "test"
+    "lib": "./lib"
   },
   "dependencies": {
     "hashes": "~0.1.2",
@@ -23,7 +22,7 @@
     "gulp-clean": "~0.2.3"
   },
   "scripts": {
-    "test": "./test/runner"
+    "test": "node test/runner.js"
   },
   "keywords": [
     "typescript",
@@ -47,7 +46,7 @@
     "url": "https://github.com/maxgherman/TypeIOC/issues"
   },
   "license": {
-    "type": "BSD",
+    "type": "MIT",
     "url": "https://github.com/maxgherman/TypeIOC/blob/master/LICENSE"
   },
   "readmeFilename": "README.md"

@@ -19,42 +19,52 @@ var typeioc = require('typeioc');
 
 Assuming TestBase class and Test class exist somewhere 
 
-Basic resolution:
+Basic resolution (JS):
 ```
-var containerBuilder = new typeioc.ContainerBuilder();
-containerBuilder.register(TestBase).as(() => new Test());
+var containerBuilder = typeioc.createBuilder();
+containerBuilder.register(TestBase).as(function() {return  new Test() });
 var container = containerBuilder.build();
 var actual = container.resolve(TestBase);
 ```
 
-With type checking:
+With type checking (TS):
+Copy typeioc.d.ts definition file from d.ts folder to your project and reference it in ts files.
+
 ```
+/// <reference path="typeioc.d.ts" />
+import typeioc = require("typeioc");
 
-import typeioc = require('node_modules/typeioc/lib/typeioc');
-
-var containerBuilder = new typeioc.ContainerBuilder();
-containerBuilder.register<TestBase>(TestBase).as(() => new Test());
+var containerBuilder = typeioc.createBuilder();
+containerBuilder.register<TestBase>(TestBase)
+    .as(() => new Test());
 var container = containerBuilder.build();
 var actual = container.resolve<TestBase>(TestBase);
 ```
 
 Registering with dependencies:
 ```
-containerBuilder.register<Test2Base>(Test2Base).as(() => new Test2());
-containerBuilder.register<Test1Base>(Test1Base).as((c) => {
-    var test2 = c.resolve(Test2Base);
-    return new Test3(test2);
-});
+containerBuilder.register<Test2Base>(Test2Base)
+    .as(() => new Test2());
+containerBuilder.register<Test1Base>(Test1Base)
+    .as((c) => {
+        var test2 = c.resolve(Test2Base);
+        return new Test3(test2);
+    });
 ```
 
 Fluent API:
 ```
-containerBuilder.register<Test1Base>(Test1Base).
-  as(() => new Test5()).
-  initializeBy((c, item) => { item.doSomethingCoolHere(); }).
-  named("Some Name").
-  within(typeioc.Constants.Scope.Hierarchy).
-  ownedBy(typeioc.Constants.Owner.Container);
+containerBuilder.register<Test1Base>(Test1Base)                          // register component Test1Base
+    .as(() => new Test5())                                               // as instance of Test5
+    .initializeBy((c, item) => { item.doSomethingCoolHere(); })          // invoke initialization on resolved instances
+    .dispose((item : testData.Test5)  => { item.Dispose(); })            // invoke disposal when disposing container
+    .named("Some Name")                                                  // resolve with specific name
+    .within(typeioc.Types.Scope.Hierarchy)                               // specifies instance reusability
+    .ownedBy(typeioc.Types.Owner.Container);                             // specifies instance ownership
+
+
+
+
 ```
 
 ###Features
@@ -64,16 +74,19 @@ containerBuilder.register<Test1Base>(Test1Base).
 - [x] - Dependencies resolution.
 - [x] - Named instances resolution.
 - [x] - Custom instance initialization.
+- [x] - Custom instance disposal.
 - [x] - Instance scoping.
 - [x] - Instance ownership.
 - [x] - Fluent API.
-- [x] - Configuration.
-
+- [x] - Configuration (JS).
+- [ ] - Configuration (JSON).
+- [ ] - Instance lifetime scoping.
+- [ ] - Full API documentation.
 
 ###Running the tests
 
 Make sure you have nodeunit installed or pull it with dev dependencies.
 
 ```
-node test/runner
+npm test
 ```

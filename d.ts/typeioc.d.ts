@@ -22,6 +22,24 @@ declare module Typeioc {
         }
     }
 
+    module Exceptions {
+        class ErrorClass implements Error {
+            public name: string;
+            public message: string;
+            public data : any;
+            public innerError : ErrorClass;
+        }
+
+        class ApplicationError extends ErrorClass { }
+
+        class ArgumentNullError extends ApplicationError { }
+
+        class ResolutionError extends ApplicationError { }
+
+        class ConfigError extends ApplicationError { }
+    }
+
+
     interface IContainerBuilder {
         register<R>(service : any) : IRegistration<R>;
         registerModule(serviceModule : Object) : Typeioc.IAsModuleRegistration;
