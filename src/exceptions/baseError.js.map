@@ -1,0 +1,1 @@
+{"version":3,"file":"baseError.js","sourceRoot":"","sources":["baseError.ts"],"names":["BaseError","BaseError.constructor"],"mappings":"AAAA,YAAY;AAAZ;IAQIA,mBAAYA,OAAgBA;QAF5BC,KAAOA,UAAUA,GAAeA,IAAIA,CAACA;QAGjCA,IAAIA,CAACA,OAAOA,GAAGA,OAAOA;IAC1BA,CAACA;IACLD,iBAACA;AAADA,CAACA,IAAA;AATD,8BASC;AAID"}

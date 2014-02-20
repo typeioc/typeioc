@@ -1,6 +1,6 @@
 'use strict';
-var testData = require('./../test-data');
 var scaffold = require('./../scaffold');
+var testData = scaffold.TestModule;
 
 (function (Level6) {
     var containerBuilder;

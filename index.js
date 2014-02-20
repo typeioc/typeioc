@@ -1,7 +1,7 @@
 
-var builder = require('./lib/builder');
-var types = require('./lib/types');
-var exceptions = require('./lib/exceptions');
+var builder = require('./lib/scaffold');
+var types = require('./lib/types/index');
+var exceptions = require('./lib/exceptions/index');
 
 
 module.exports = {
@@ -9,7 +9,7 @@ module.exports = {
     Exceptions : exceptions,
 
     createBuilder: function() {
-        return new builder.ContainerBuilder();
+        return new builder.Scaffold().createBuilder();
     }
 };
 

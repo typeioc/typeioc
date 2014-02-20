@@ -1,9 +1,10 @@
 
 'use strict';
 
-import testData = require('./../test-data');
-import testDataSecond = require('./../test-data2');
 import scaffold = require('./../scaffold');
+import testData = scaffold.TestModule;
+import testDataSecond = scaffold.TestModule2;
+var Config = scaffold.Config;
 
 
 export module Level8 {
@@ -17,21 +18,7 @@ export module Level8 {
 
     export function configParameterlessResolution(test) {
 
-        var config : Typeioc.IConfig = {
-            components : [
-                {
-                    service : {
-                        instanceModule : testData,
-                        name : 'Test1Base'
-                    },
-                    resolver : {
-                        instanceModule : testData,
-                        name : 'Test1'
-                    }
-                }
-            ]
-        };
-
+        var config = Config.parameterlessResolution();
         containerBuilder.registerConfig(config);
 
         var container = containerBuilder.build();
@@ -45,18 +32,7 @@ export module Level8 {
 
     export function configFactoryResolution(test) {
 
-        var config : Typeioc.IConfig = {
-            components : [
-                {
-                    service : {
-                        instanceModule : testData,
-                        name : 'Test1Base'
-                    },
-                    factory : () => new testData.Test1()
-                }
-            ]
-        };
-
+        var config = Config.factoryResolution();
         containerBuilder.registerConfig(config);
 
         var container = containerBuilder.build();
@@ -70,37 +46,7 @@ export module Level8 {
 
     export function dependenciesResolution(test) {
 
-        var config : Typeioc.IConfig = {
-            components : [
-                {
-                    service : {
-                        instanceModule : testData,
-                        name : 'Test2Base'
-                    },
-                    factory : () => new testData.Test2()
-                },
-                {
-                    service : {
-                        instanceModule : testData,
-                        name : 'Test1Base'
-                    },
-                    resolver : {
-                        instanceModule : testData,
-                        name : 'Test3'
-                    },
-                    parameters : [
-                        {
-                            isDependency : true,
-                            location : {
-                                instanceModule : testData,
-                                name : 'Test2Base'
-                            }
-                        }
-                    ]
-                }
-            ]
-        };
-
+        var config = Config.dependenciesResolution();
         containerBuilder.registerConfig(config);
 
         var container = containerBuilder.build();
@@ -114,18 +60,7 @@ export module Level8 {
 
     export function customParametersResolution(test) {
 
-        var config : Typeioc.IConfig = {
-            components : [
-                {
-                    service : {
-                        instanceModule : testData,
-                        name : 'Test1Base'
-                    },
-                    factory : (c, name) => new testData.Test4(name)
-                }
-            ]
-        };
-
+        var config = Config.customParametersResolution();
         containerBuilder.registerConfig(config);
 
         var container = containerBuilder.build();
@@ -139,35 +74,9 @@ export module Level8 {
 
     export function namedServicesResolution(test) {
 
-        var config : Typeioc.IConfig = {
-            components : [
-                {
-                    service : {
-                        instanceModule : testData,
-                        name : 'Test1Base'
-                    },
-                    factory : () => new testData.Test4("null")
-                },
-                {
-                    service : {
-                        instanceModule : testData,
-                        name : 'Test1Base'
-                    },
-                    factory : () => new testData.Test4("a"),
-                    named : "A"
-                },
-                {
-                    service : {
-                        instanceModule : testData,
-                        name : 'Test1Base'
-                    },
-                    factory : () => new testData.Test4("b"),
-                    named : "B"
-                }
-            ]
-        };
-
+        var config = Config.namedServicesResolution();
         containerBuilder.registerConfig(config);
+
         var container = containerBuilder.build();
         var actual1 = container.resolveNamed<testData.Test1Base>(testData.Test1Base, "A");
         var actual2 = container.resolveNamed<testData.Test1Base>(testData.Test1Base, "B");
@@ -185,20 +94,9 @@ export module Level8 {
 
     export function noScopingReuse(test) {
 
-        var config : Typeioc.IConfig = {
-            components : [
-                {
-                    service : {
-                        instanceModule : testData,
-                        name : 'Test1Base'
-                    },
-                    factory : () => new testData.Test4("test 4"),
-                    within : Typeioc.Types.Scope.None
-                }
-            ]
-        };
-
+        var config = Config.noScopingReuse();
         containerBuilder.registerConfig(config);
+
         var container = containerBuilder.build();
         var test1 = container.resolve(testData.Test1Base);
         test1.Name = "test 1";
@@ -214,22 +112,9 @@ export module Level8 {
 
     export function containerOwnedInstancesAreDisposed(test) {
 
-        var config : Typeioc.IConfig = {
-            components : [
-                {
-                    service : {
-                        instanceModule : testData,
-                        name : 'Test1Base'
-                    },
-                    factory : () => new testData.Test5(),
-                    disposer : (item : testData.Test5) => { item.Dispose() },
-                    within : Typeioc.Types.Scope.None,
-                    ownedBy : Typeioc.Types.Owner.Container
-                }
-            ]
-        };
-
+        var config = Config.containerOwnedInstancesAreDisposed();
         containerBuilder.registerConfig(config);
+
         var container = containerBuilder.build();
 
         var test1 = container.resolve<testData.Test1Base>(testData.Test1Base);
@@ -246,20 +131,9 @@ export module Level8 {
 
         var className = "item";
 
-        var config : Typeioc.IConfig = {
-            components : [
-                {
-                    service : {
-                        instanceModule : testData,
-                        name : 'Initializable'
-                    },
-                    factory : () => new testData.Initializable(),
-                    initializeBy : (c, item : testData.Initializable) => { item.initialize(className); }
-                }
-            ]
-        };
-
+        var config = Config.initializeIsCalledWhenInstanceIsCreated(className);
         containerBuilder.registerConfig(config);
+
         var container = containerBuilder.build();
 
         var i1 = container.resolve<testData.Initializable>(testData.Initializable);
@@ -274,16 +148,9 @@ export module Level8 {
 
     export function registerModuleBasicInheritance(test) {
 
-        var config : Typeioc.IConfig = {
-            modules : [
-                {
-                    serviceModule : testDataSecond.ServiceModule1,
-                    resolverModule : testDataSecond.SubstituteModule1
-                }
-            ]
-        };
-
+        var config = Config.registerModuleBasicInheritance();
         containerBuilder.registerConfig(config);
+
         var container = containerBuilder.build();
 
         var t1 = container.resolve<testDataSecond.ServiceModule1.TestBaseClass>(testDataSecond.ServiceModule1.TestBaseClass);
@@ -295,35 +162,10 @@ export module Level8 {
 
     export function registerModuleConstructorWithParams(test) {
 
-        var config : Typeioc.IConfig = {
-            modules : [
-                {
-                    serviceModule : testDataSecond.ServiceModule1,
-                    resolverModule : testDataSecond.SubstituteModule3,
-                    forInstances : [
-                        {
-                            resolver : {
-                                instanceModule : testDataSecond.SubstituteModule3,
-                                name : "ConcreteTestClass"
-                            },
-                            parameters : [
-                                {
-                                    isDependency:false,
-                                    instance : 77
-                                },
-                                {
-                                    isDependency:false,
-                                    instance : "Test"
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        };
-
+        var config = Config.registerModuleConstructorWithParams();
 
         containerBuilder.registerConfig(config);
+
         var container = containerBuilder.build();
 
         var t1 = container.resolve<testDataSecond.ServiceModule1.TestBaseClass>(testDataSecond.ServiceModule1.TestBaseClass);
@@ -335,53 +177,9 @@ export module Level8 {
 
     export function registerModuleConstructorWithDependencies(test) {
 
-        var config : Typeioc.IConfig = {
-            modules : [
-                {
-                    serviceModule : testDataSecond.ServiceModule1,
-                    resolverModule : testDataSecond.SubstituteModule3,
-                    forInstances : [
-                        {
-                            resolver : {
-                                name : "ConcreteTestClass"
-                            },
-                            parameters : [
-                                {
-                                    isDependency:false,
-                                    instance : 77
-                                },
-                                {
-                                    isDependency:false,
-                                    instance : "Test"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    serviceModule : testDataSecond.ServiceModule3,
-                    resolverModule : testDataSecond.SubstituteModule6,
-                    forInstances : [
-                        {
-                            resolver : {
-                                name : "ConcreteClass1"
-                            },
-                            parameters : [
-                                {
-                                    isDependency:true,
-                                    location :  {
-                                        instanceModule : testDataSecond.ServiceModule1,
-                                        name : 'TestBaseClass'
-                                    }
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        };
-
+        var config = Config.registerModuleConstructorWithDependencies();
         containerBuilder.registerConfig(config);
+
         var container = containerBuilder.build();
 
         var t1 = container.resolve(testDataSecond.ServiceModule3.TestBaseClass1);
@@ -393,29 +191,7 @@ export module Level8 {
 
     export function registerComponentsWithinModel(test) {
 
-        var config : Typeioc.IConfig = {
-
-            modules : [
-                {
-                    forModule : false,
-                    serviceModule : testData,
-                    resolverModule : testData,
-
-                    components : [
-                        {
-                            service : {
-                                name : 'Test1Base'
-                            },
-                            resolver : {
-                                name : 'Test1'
-                            }
-                        }
-                    ]
-                }
-
-            ]
-        };
-
+        var config = Config.registerComponentsWithinModel();
         containerBuilder.registerConfig(config);
 
         var container = containerBuilder.build();

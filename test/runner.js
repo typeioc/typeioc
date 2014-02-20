@@ -1,4 +1,4 @@
-
+///<reference path='../d.ts/node.d.ts' />
 var path = require('path');
 
 try  {

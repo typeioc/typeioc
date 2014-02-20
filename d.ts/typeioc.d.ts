@@ -16,29 +16,28 @@ declare module Typeioc {
             Externals = 2
         }
 
-        class Defaults {
+        export class Defaults {
             static Scope  : Scope;
             static Owner : Owner;
         }
     }
 
     module Exceptions {
-        class ErrorClass implements Error {
+        class BaseError implements Error {
             public name: string;
             public message: string;
             public data : any;
-            public innerError : ErrorClass;
+            public innerError : BaseError;
         }
 
-        class ApplicationError extends ErrorClass { }
+        class ApplicationError extends BaseError { }
 
         class ArgumentNullError extends ApplicationError { }
 
         class ResolutionError extends ApplicationError { }
 
-        class ConfigError extends ApplicationError { }
+        class ConfigRegistrationError extends ApplicationError { }
     }
-
 
     interface IContainerBuilder {
         register<R>(service : any) : IRegistration<R>;
@@ -57,20 +56,9 @@ declare module Typeioc {
         dispose: () =>  void;
     }
 
-    interface IInternalStorage {
-        addEntry(registration : IRegistrationBase) : void;
-        getEntry(registration : IRegistrationBase) : IRegistrationBase;
-    }
-
-    interface IDisposableStorage {
-        add(obj : any, disposer : Typeioc.IDisposer<any>);
-        disposeItems();
-    }
-
     interface IInitializer<T> {
         (IContainer, item : T) : void;
     }
-
 
     interface IDisposer<T> {
         (item : T) : void;
@@ -91,7 +79,6 @@ declare module Typeioc {
     }
 
     interface INamedReusedOwned extends INamed, IReusedOwned {}
-
 
     interface IDisposable<T> {
         dispose : (action : IDisposer<T>) =>  INamedReusedOwned;
@@ -117,21 +104,6 @@ declare module Typeioc {
         as(factory: IFactory<T>) : IInitializedDisposedNamedReusedOwned<T>;
     }
 
-    interface IRegistrationBase {
-        service : any;
-        factory : IFactory<any>;
-        name : string;
-        scope : Types.Scope;
-        owner : Types.Owner;
-        initializer : IInitializer<any>;
-        disposer : IDisposer<any>;
-        args : any[];
-        container : IContainer;
-        instance : any;
-        invoker : IInvoker;
-        cloneFor : (container: IContainer) => IRegistrationBase;
-    }
-
     interface IRegistration<T> extends IAs<T> { }
 
     interface IModuleReusedOwned extends IReusedOwned {
@@ -142,16 +114,6 @@ declare module Typeioc {
 
     interface IAsModuleRegistration {
         as : (asModule : Object) => IModuleReusedOwned;
-    }
-
-    interface IModuleRegistration {
-        getAsModuleRegistration : () => IAsModuleRegistration;
-        registrations : IRegistrationBase[];
-    }
-
-    interface IModuleItemRegistrationOptions {
-        factory : IFactory<any>;
-        name : string;
     }
 
     interface IInstanceLocation {
@@ -196,11 +158,6 @@ declare module Typeioc {
     interface IConfig {
         components? : IComponent[];
         modules? : IModule[];
-    }
-
-    interface IResolveOptions {
-        throwIfNotFound : boolean;
-        registration : IRegistrationBase;
     }
 }
 

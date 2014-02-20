@@ -1,9 +1,8 @@
 
 'use strict';
 
-import testData = require('./../test-data');
 import scaffold = require('../scaffold');
-
+import testData = scaffold.TestModule;
 
 export module Level1 {
 
@@ -13,7 +12,6 @@ export module Level1 {
         containerBuilder = scaffold.createBuilder();
         callback();
     }
-
 
     export function containerConstruction(test) {
 

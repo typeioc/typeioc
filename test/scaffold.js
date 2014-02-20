@@ -2,10 +2,19 @@
 /// <reference path='../d.ts/typeioc.d.ts' />
 'use strict';
 var typeioc = require('../');
+var ConfigModule = require('./data/config');
+var ConfigProvider = ConfigModule.Config;
 
 exports.Exceptions = typeioc.Exceptions;
 exports.Types = typeioc.Types;
-exports.RegistrationBase = require('../lib/registrationBase');
+exports.RegistrationBase = require('../lib/registration/base/registrationBase');
+exports.TestModule = require('./data/test-data');
+exports.TestModule2 = require('./data/test-data2');
+
+ConfigProvider.TestModule = exports.TestModule;
+ConfigProvider.TestModule2 = exports.TestModule2;
+
+exports.Config = ConfigProvider;
 
 function createBuilder() {
     return typeioc.createBuilder();

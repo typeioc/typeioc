@@ -1,11 +1,10 @@
 
 'use strict';
 
-import testData = require('./../test-data');
-import testData2 = require('./../test-data');
-import testDataSecond = require('./../test-data2');
 import scaffold = require('./../scaffold');
-
+import testData = scaffold.TestModule;
+import testData2 = scaffold.TestModule;
+import testDataSecond = scaffold.TestModule2;
 
 export module Level7 {
 

@@ -9,7 +9,7 @@ var clean = require('gulp-clean');
 
 
 var typescriptSources = '../src/**/*.ts';
-var definitionSources = '../d.ts/typeioc.d.ts';
+var definitionSources = '../d.ts/typeioc*.d.ts';
 var testSources = '../test/**/*.ts';
 var libDestination = '../lib';
 var libFiles = '../lib/*';
