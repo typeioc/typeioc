@@ -16,6 +16,8 @@ ConfigProvider.TestModule2 = exports.TestModule2;
 
 exports.Config = ConfigProvider;
 
+exports.Utils = require('../lib/utils/index');
+
 function createBuilder() {
     return typeioc.createBuilder();
 }

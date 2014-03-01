@@ -5,13 +5,15 @@
 
 export function getParamNames(func : Function) : string[] {
     var funStr = func.toString();
-    return funStr.slice(funStr.indexOf('(')+1, funStr.indexOf(')')).match(/([^\s,]+)/g);
+    var result = funStr.slice(funStr.indexOf('(')+1, funStr.indexOf(')')).match(/([^\s,]+)/g);
+
+    return result || [];
 }
 
 export function paramsCount(func : Function) {
     var paramNames = getParamNames(func);
 
-    return paramNames ? paramNames.length : 0;
+    return paramNames.length;
 }
 
 export function hasParams(func : Function) : boolean {
@@ -22,12 +24,14 @@ export function getFactoryArgsCount(factory: Typeioc.IFactory<any>) {
 
     var paramNames = getParamNames(factory);
 
-    return paramNames ? paramNames.length - 1 : 0;
+    return paramNames.length > 0 ? paramNames.length - 1 : 0;
 }
 
 export function isCompatible(obj1 : Object, obj2 : Object) : boolean {
 
     for(var key in obj2) {
+
+        if(!(obj2[key] instanceof Function)) continue;
 
         var obj1Val = obj1[key];
 

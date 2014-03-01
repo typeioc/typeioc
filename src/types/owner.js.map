@@ -1,1 +1,1 @@
-{"version":3,"file":"owner.js","sourceRoot":"","sources":["owner.ts"],"names":["Owner","Owner.constructor"],"mappings":"AACA,YAAY;AADZ;IAGAA;;AAGCA,IAFGA,kBAA0BA,CAACA;IAC3BA,kBAA0BA,CAACA;IAC/BA,aAACA;AAADA,CAACA,IAAA;AAHD,sBAGC;AAAA"}
+{"version":3,"file":"owner.js","sourceRoot":"","sources":["owner.ts"],"names":["Owner","Owner.constructor"],"mappings":"AACA,YAAY;AADZ;IAGAA;IAGAC,CAACA;AAAAD,IAFGA,kBAA0BA,CAACA;IAC3BA,kBAA0BA,CAACA;IAC/BA,aAACA;AAADA,CAACA,IAAA;AAHD,sBAGC;AAAA"}

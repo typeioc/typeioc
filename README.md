@@ -54,13 +54,13 @@ containerBuilder.register<Test1Base>(Test1Base)
 
 Fluent API:
 ```
-containerBuilder.register<Test1Base>(Test1Base)                          // register component Test1Base
-    .as(() => new Test5())                                               // as instance of Test5
-    .initializeBy((c, item) => { item.doSomethingCoolHere(); })          // invoke initialization on resolved instances
-    .dispose((item : testData.Test5)  => { item.Dispose(); })            // invoke disposal when disposing container
-    .named("Some Name")                                                  // resolve with specific name
-    .within(typeioc.Types.Scope.Hierarchy)                               // specifies instance reusability
-    .ownedBy(typeioc.Types.Owner.Container);                             // specifies instance ownership
+containerBuilder.register<Test1Base>(Test1Base)                  // register component Test1Base
+    .as(() => new Test5())                                       // as instance of Test5
+    .initializeBy((c, item) => { item.doSomethingCoolHere(); })  // invoke initialization on resolved instances
+    .dispose((item : testData.Test5)  => { item.Dispose(); })    // invoke disposal when disposing container
+    .named("Some Name")                                          // resolve with specific name
+    .within(typeioc.Types.Scope.Hierarchy)                       // specifies instance reusability
+    .ownedBy(typeioc.Types.Owner.Container);                     // specifies instance ownership
 
 
 
@@ -77,8 +77,11 @@ containerBuilder.register<Test1Base>(Test1Base)                          // regi
 - [x] - Custom instance disposal.
 - [x] - Instance scoping.
 - [x] - Instance ownership.
+- [x] - Module registration
 - [x] - Fluent API.
 - [x] - Configuration (JS).
+- [ ] - Runtime dependencies substitution.
+- [ ] - Promises configuration
 - [ ] - Configuration (JSON).
 - [ ] - Instance lifetime scoping.
 - [ ] - Full API documentation.

@@ -89,7 +89,7 @@ export class ModuleRegistration implements Typeioc.Internal.IModuleRegistration{
     private forArgs(service: any, ...args:any[]) : Typeioc.IModuleReusedOwned {
 
         var options = this._internalStorage.register(service, this.emptyRegoOptionsEntry);
-        options.factory = () => Utils.construct(service, args);
+        options.factory = () =>  Utils.construct(service, args);
 
         return this.asModuleInitializedReusedOwned();
     }

@@ -1,13 +1,15 @@
 
 'use strict';
-var scaffold = require('../scaffold');
+var scaffold = require('../../scaffold');
 var testData = scaffold.TestModule;
 var testData2 = scaffold.TestModule;
 var testDataSecond = scaffold.TestModule2;
 
 var containerBuilder;
 
-exports.Level7 = {
+exports.api = {};
+
+exports.api.Level7 = {
 
     setUp: function (callback) {
         containerBuilder = scaffold.createBuilder();

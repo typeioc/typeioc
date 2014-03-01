@@ -12,7 +12,7 @@
   },
   "devDependencies": {
     "nodeunit": "~0.8.0",
-    "typescript": "0.9.5",
+    "typescript": "0.9.7",
     "gulp": "~3.3.4",
     "gulp-exec": "~1.0.3",
     "map-stream": "~0.1.0",
