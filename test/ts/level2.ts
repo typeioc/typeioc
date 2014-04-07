@@ -2,7 +2,7 @@
 'use strict';
 
 import scaffold = require('./../scaffold');
-import testData = scaffold.TestModule;
+import TestData = require('../data/test-data');
 
 
 export module Level2 {
@@ -16,11 +16,11 @@ export module Level2 {
 
     export function customParametersResolution(test) {
 
-        containerBuilder.register<testData.Test1Base>(testData.Test1Base)
-            .as((c, name) => new testData.Test4(name));
+        containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)
+            .as((c, name) => new TestData.Test4(name));
 
         var container = containerBuilder.build();
-        var test1 = container.resolve<testData.Test1Base>(testData.Test1Base, "test 4");
+        var test1 = container.resolve<TestData.Test1Base>(TestData.Test1Base, "test 4");
 
         test.notEqual(test1, null);
         test.strictEqual(test1.Name, "test 4");
@@ -30,17 +30,17 @@ export module Level2 {
 
     export function namedServicesResolution(test) {
 
-        containerBuilder.register<testData.Test1Base>(testData.Test1Base)
-            .as(() => new testData.Test4("null"));
-        containerBuilder.register<testData.Test1Base>(testData.Test1Base)
-            .as(() => new testData.Test4("a")).named("A");
-        containerBuilder.register<testData.Test1Base>(testData.Test1Base)
-            .as(() => new testData.Test4("b")).named("B");
+        containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)
+            .as(() => new TestData.Test4("null"));
+        containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)
+            .as(() => new TestData.Test4("a")).named("A");
+        containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)
+            .as(() => new TestData.Test4("b")).named("B");
 
         var container = containerBuilder.build();
-        var actual1 = container.resolveNamed<testData.Test1Base>(testData.Test1Base, "A");
-        var actual2 = container.resolveNamed<testData.Test1Base>(testData.Test1Base, "B");
-        var actual3 = container.resolve(testData.Test1Base);
+        var actual1 = container.resolveNamed<TestData.Test1Base>(TestData.Test1Base, "A");
+        var actual2 = container.resolveNamed<TestData.Test1Base>(TestData.Test1Base, "B");
+        var actual3 = container.resolve(TestData.Test1Base);
 
         test.notEqual(actual1, null);
         test.notEqual(actual2, null);
@@ -54,14 +54,14 @@ export module Level2 {
 
     export function namedServicesResolutionWithParams(test) {
 
-        containerBuilder.register<testData.Test1Base>(testData.Test1Base)
-            .as((c, name) => new testData.Test4(name)).named("A");
-        containerBuilder.register<testData.Test1Base>(testData.Test1Base)
-            .as((c, name) => new testData.Test4(name)).named("B");
+        containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)
+            .as((c, name) => new TestData.Test4(name)).named("A");
+        containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)
+            .as((c, name) => new TestData.Test4(name)).named("B");
 
         var container = containerBuilder.build();
-        var actual1 = container.resolveNamed<testData.Test1Base>(testData.Test1Base, "A", "a");
-        var actual2 = container.resolveNamed<testData.Test1Base>(testData.Test1Base, "B", "b");
+        var actual1 = container.resolveNamed<TestData.Test1Base>(TestData.Test1Base, "A", "a");
+        var actual2 = container.resolveNamed<TestData.Test1Base>(TestData.Test1Base, "B", "b");
 
         test.notEqual(actual1, null);
         test.notEqual(actual2, null);
@@ -73,11 +73,11 @@ export module Level2 {
 
     export function namedServicesResolutionWithParamsError(test) {
 
-        containerBuilder.register<testData.Test1Base>(testData.Test1Base)
-            .as((c, name) => new testData.Test4(name)).named("A");
+        containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)
+            .as((c, name) => new TestData.Test4(name)).named("A");
 
         var container = containerBuilder.build();
-        var delegate = () => container.resolveNamed<testData.Test1Base>(testData.Test1Base, "A");
+        var delegate = () => container.resolveNamed<TestData.Test1Base>(TestData.Test1Base, "A");
 
         test.throws(delegate, function(err) {
             return (err instanceof scaffold.Exceptions.ResolutionError) &&
@@ -89,11 +89,11 @@ export module Level2 {
 
     export function namedServicesParametersResolution(test) {
 
-        containerBuilder.register<testData.Test1Base>(testData.Test1Base)
-            .as((c, name) => new testData.Test4(name)).named("A");
+        containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)
+            .as((c, name) => new TestData.Test4(name)).named("A");
 
         var container = containerBuilder.build();
-        var delegate = () => container.resolveNamed<testData.Test1Base>(testData.Test1Base, "A");
+        var delegate = () => container.resolveNamed<TestData.Test1Base>(TestData.Test1Base, "A");
 
         test.throws(delegate, function(err) {
             return (err instanceof scaffold.Exceptions.ResolutionError) &&
@@ -105,11 +105,11 @@ export module Level2 {
 
     export function attemptNamedServicesParametersResolution(test) {
 
-        containerBuilder.register<testData.Test1Base>(testData.Test1Base)
-            .as((c, name) => new testData.Test4(name)).named("A");
+        containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)
+            .as((c, name) => new TestData.Test4(name)).named("A");
 
         var container = containerBuilder.build();
-        var actual = container.tryResolveNamed<testData.Test1Base>(testData.Test1Base, "A");
+        var actual = container.tryResolveNamed<TestData.Test1Base>(TestData.Test1Base, "A");
         test.equal(null, actual);
 
         test.done();
@@ -117,14 +117,14 @@ export module Level2 {
 
     export function collidingResolution(test) {
 
-        containerBuilder.register<testData.Test1Base>(testData.Test1Base)
-            .as(() => new testData.Test4("a"));
-        containerBuilder.register<testData.Test1Base>(testData.Test1Base)
-            .as(() => new testData.Test4("b"));
+        containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)
+            .as(() => new TestData.Test4("a"));
+        containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)
+            .as(() => new TestData.Test4("b"));
 
         var container = containerBuilder.build();
-        var actual1 = container.resolve<testData.Test1Base>(testData.Test1Base);
-        var actual2 = container.resolve<testData.Test1Base>(testData.Test1Base);
+        var actual1 = container.resolve<TestData.Test1Base>(TestData.Test1Base);
+        var actual2 = container.resolve<TestData.Test1Base>(TestData.Test1Base);
 
         test.notEqual(actual1, null);
         test.notEqual(actual2, null);

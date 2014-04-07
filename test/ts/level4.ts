@@ -1,7 +1,7 @@
 'use strict';
 
 import scaffold = require('./../scaffold');
-import testData = scaffold.TestModule;
+import TestData = require('../data/test-data');
 
 export module Level4 {
 
@@ -14,14 +14,14 @@ export module Level4 {
 
     export function serviceRegisteredOnParentResolveOnChildContainer(test) {
 
-        containerBuilder.register<testData.Test1Base>(testData.Test1Base)
-            .as(() => new testData.Test1())
+        containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)
+            .as(() => new TestData.Test1())
             .within(Typeioc.Types.Scope.Hierarchy);
 
         var container = containerBuilder.build();
         var child = container.createChild();
 
-        var test1 = child.resolve<testData.Test1Base>(testData.Test1Base);
+        var test1 = child.resolve<TestData.Test1Base>(TestData.Test1Base);
 
         test.notEqual(test1, null);
         test.strictEqual(test1.Name, "test 1");
@@ -33,15 +33,15 @@ export module Level4 {
 
         var registrationName = 'name reg';
 
-        containerBuilder.register<testData.Test1Base>(testData.Test1Base)
-            .as(() => new testData.Test1())
+        containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)
+            .as(() => new TestData.Test1())
             .named(registrationName)
             .within(Typeioc.Types.Scope.Hierarchy);
 
         var container = containerBuilder.build();
         var child = container.createChild();
 
-        var test1 = child.resolveNamed<testData.Test1Base>(testData.Test1Base, registrationName);
+        var test1 = child.resolveNamed<TestData.Test1Base>(TestData.Test1Base, registrationName);
 
         test.notEqual(test1, null);
         test.strictEqual(test1.Name, "test 1");
@@ -51,13 +51,13 @@ export module Level4 {
 
     export function serviceRegisteredOnParentResolveOnChildContainerNoHierarchy(test) {
 
-        containerBuilder.register<testData.Test1Base>(testData.Test1Base)
-            .as(() => new testData.Test1());
+        containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)
+            .as(() => new TestData.Test1());
 
         var container = containerBuilder.build();
         var child = container.createChild();
 
-        var test1 = child.resolve<testData.Test1Base>(testData.Test1Base);
+        var test1 = child.resolve<TestData.Test1Base>(TestData.Test1Base);
 
         test.notEqual(test1, null);
         test.strictEqual(test1.Name, "test 1");
@@ -67,14 +67,14 @@ export module Level4 {
 
     export function hierarchyScopedInstanceIsReusedOnSameContainer(test) {
 
-        containerBuilder.register<testData.Test1Base>(testData.Test1Base)
-            .as(() => new testData.Test4("test 4"))
+        containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)
+            .as(() => new TestData.Test4("test 4"))
             .within(Typeioc.Types.Scope.Hierarchy);
 
         var container = containerBuilder.build();
-        var test1 = container.resolve<testData.Test1Base>(testData.Test1Base);
+        var test1 = container.resolve<TestData.Test1Base>(TestData.Test1Base);
         test1.Name = "test 1";
-        var test2 = container.resolve<testData.Test1Base>(testData.Test1Base);
+        var test2 = container.resolve<TestData.Test1Base>(TestData.Test1Base);
 
         test.notEqual(test1, null);
         test.strictEqual(test1.Name, "test 1");
@@ -86,16 +86,16 @@ export module Level4 {
 
     export function hierarchyScopedInstanceIsReusedOnSameContainerChildFirst(test) {
 
-        containerBuilder.register<testData.Test1Base>(testData.Test1Base)
-            .as(() => new testData.Test4("test 4"))
+        containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)
+            .as(() => new TestData.Test4("test 4"))
             .within(Typeioc.Types.Scope.Hierarchy);
 
         var container = containerBuilder.build();
         var child = container.createChild();
 
-        var test1 = child.resolve<testData.Test1Base>(testData.Test1Base);
+        var test1 = child.resolve<TestData.Test1Base>(TestData.Test1Base);
         test1.Name = "test 1";
-        var test2 = container.resolve<testData.Test1Base>(testData.Test1Base);
+        var test2 = container.resolve<TestData.Test1Base>(TestData.Test1Base);
 
         test.notEqual(test1, null);
         test.strictEqual(test1.Name, "test 1");
@@ -107,16 +107,16 @@ export module Level4 {
 
     export function containerScopedInstanceIsNotReusedOnChild(test) {
 
-        containerBuilder.register<testData.Test1Base>(testData.Test1Base)
-            .as(() => new testData.Test4("test 4"))
+        containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)
+            .as(() => new TestData.Test4("test 4"))
             .within(Typeioc.Types.Scope.Container);
 
         var container = containerBuilder.build();
         var child = container.createChild();
 
-        var test1 = container.resolve<testData.Test1Base>(testData.Test1Base);
+        var test1 = container.resolve<TestData.Test1Base>(TestData.Test1Base);
         test1.Name = "test 1";
-        var test2 = child.resolve<testData.Test1Base>(testData.Test1Base);
+        var test2 = child.resolve<TestData.Test1Base>(TestData.Test1Base);
 
         test.notEqual(test1, null);
         test.strictEqual(test1.Name, "test 1");
@@ -129,14 +129,14 @@ export module Level4 {
 
     export function uknownScopeError(test) {
 
-        containerBuilder.register<testData.Test1Base>(testData.Test1Base)
-            .as(() => new testData.Test4("test 4"))
+        containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)
+            .as(() => new TestData.Test4("test 4"))
             .within(5);
 
         var container = containerBuilder.build();
         var child = container.createChild();
 
-        var delegate = () => child.resolve<testData.Test1Base>(testData.Test1Base);
+        var delegate = () => child.resolve<TestData.Test1Base>(TestData.Test1Base);
 
         test.throws(delegate, function(err) {
             return (err instanceof scaffold.Exceptions.ResolutionError) &&

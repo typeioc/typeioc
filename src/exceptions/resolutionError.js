@@ -17,4 +17,3 @@ var ResolutionError = (function (_super) {
     return ResolutionError;
 })(BaseApplicationErrorModule.ApplicationError);
 exports.ResolutionError = ResolutionError;
-//# sourceMappingURL=resolutionError.js.map

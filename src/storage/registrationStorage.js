@@ -61,4 +61,3 @@ var RegistrationStorage = (function () {
     return RegistrationStorage;
 })();
 exports.RegistrationStorage = RegistrationStorage;
-//# sourceMappingURL=registrationStorage.js.map

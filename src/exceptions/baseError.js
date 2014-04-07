@@ -7,4 +7,3 @@ var BaseError = (function () {
     return BaseError;
 })();
 exports.BaseError = BaseError;
-//# sourceMappingURL=baseError.js.map

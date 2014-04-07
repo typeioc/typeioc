@@ -3,7 +3,8 @@
 var Utils = require('../../utils/index');
 
 var ModuleRegistration = (function () {
-    function ModuleRegistration(_internalStorage, _registrationBaseService) {
+    function ModuleRegistration(_base, _internalStorage, _registrationBaseService) {
+        this._base = _base;
         this._internalStorage = _internalStorage;
         this._registrationBaseService = _registrationBaseService;
     }
@@ -42,10 +43,6 @@ var ModuleRegistration = (function () {
         enumerable: true,
         configurable: true
     });
-
-    ModuleRegistration.prototype.applyBase = function (base) {
-        this._base = base;
-    };
 
     ModuleRegistration.prototype.getAsModuleRegistration = function () {
         var self = this;
@@ -139,4 +136,3 @@ var ModuleRegistration = (function () {
     return ModuleRegistration;
 })();
 exports.ModuleRegistration = ModuleRegistration;
-//# sourceMappingURL=moduleRegistration.js.map

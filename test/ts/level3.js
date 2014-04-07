@@ -1,6 +1,6 @@
 'use strict';
 var scaffold = require('./../scaffold');
-var testData = scaffold.TestModule;
+var TestData = require('../data/test-data');
 
 (function (Level3) {
     var containerBuilder;
@@ -12,14 +12,14 @@ var testData = scaffold.TestModule;
     Level3.setUp = setUp;
 
     function defaultScopingHierarchy(test) {
-        containerBuilder.register(testData.Test1Base).as(function () {
-            return new testData.Test4("test 4");
+        containerBuilder.register(TestData.Test1Base).as(function () {
+            return new TestData.Test4("test 4");
         });
 
         var container = containerBuilder.build();
-        var test1 = container.resolve(testData.Test1Base);
+        var test1 = container.resolve(TestData.Test1Base);
         test1.Name = "test 1";
-        var test2 = container.resolve(testData.Test1Base);
+        var test2 = container.resolve(TestData.Test1Base);
 
         test.notEqual(test1, null);
         test.strictEqual(test1.Name, "test 1");
@@ -31,14 +31,14 @@ var testData = scaffold.TestModule;
     Level3.defaultScopingHierarchy = defaultScopingHierarchy;
 
     function noScopingReuse(test) {
-        containerBuilder.register(testData.Test1Base).as(function () {
-            return new testData.Test4("test 4");
+        containerBuilder.register(TestData.Test1Base).as(function () {
+            return new TestData.Test4("test 4");
         }).within(1 /* None */);
 
         var container = containerBuilder.build();
-        var test1 = container.resolve(testData.Test1Base);
+        var test1 = container.resolve(TestData.Test1Base);
         test1.Name = "test 1";
-        var test2 = container.resolve(testData.Test1Base);
+        var test2 = container.resolve(TestData.Test1Base);
 
         test.notEqual(test1, null);
         test.strictEqual(test1.Name, "test 1");
@@ -50,14 +50,14 @@ var testData = scaffold.TestModule;
     Level3.noScopingReuse = noScopingReuse;
 
     function containerScoping(test) {
-        containerBuilder.register(testData.Test1Base).as(function () {
-            return new testData.Test4("test 4");
+        containerBuilder.register(TestData.Test1Base).as(function () {
+            return new TestData.Test4("test 4");
         }).within(2 /* Container */);
 
         var container = containerBuilder.build();
-        var test1 = container.resolve(testData.Test1Base);
+        var test1 = container.resolve(TestData.Test1Base);
         test1.Name = "test 1";
-        var test2 = container.resolve(testData.Test1Base);
+        var test2 = container.resolve(TestData.Test1Base);
 
         test.notEqual(test1, null);
         test.strictEqual(test1.Name, "test 1");

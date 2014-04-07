@@ -1,202 +1,208 @@
 'use strict';
-var scaffold = require('./../../scaffold');
-var testData = scaffold.TestModule;
-var testDataSecond = scaffold.TestModule2;
-var Config = scaffold.Config;
 
-var containerBuilder;
+exports.api = {
 
-exports.api = {};
+    level8 : (function() {
 
-exports.api.Level8 = {
+        var scaffold = require('./../../scaffold');
+        var testData = scaffold.TestModule;
+        var testDataSecond = scaffold.TestModule2;
+        var Config = scaffold.Config;
 
-    setUp: function (callback) {
-        containerBuilder = scaffold.createBuilder();
-        callback();
-    },
 
-    configParameterlessResolution : function (test) {
+        var containerBuilder;
 
-        var config = Config.parameterlessResolution();
-        containerBuilder.registerConfig(config);
+        return {
 
-        var container = containerBuilder.build();
-        var actual = container.resolve(testData.Test1Base);
+            setUp: function (callback) {
+                containerBuilder = scaffold.createBuilder();
+                callback();
+            },
 
-        test.notEqual(actual, null);
-        test.strictEqual(actual.Name, "test 1");
+            configParameterlessResolution : function (test) {
 
-        test.done();
-    },
+                var config = Config.parameterlessResolution();
+                containerBuilder.registerConfig(config);
 
-    configFactoryResolution : function (test) {
+                var container = containerBuilder.build();
+                var actual = container.resolve(testData.Test1Base);
 
-        var config = Config.factoryResolution();
-        containerBuilder.registerConfig(config);
+                test.notEqual(actual, null);
+                test.strictEqual(actual.Name, "test 1");
 
-        var container = containerBuilder.build();
-        var actual = container.resolve(testData.Test1Base);
+                test.done();
+            },
 
-        test.notEqual(actual, null);
-        test.strictEqual(actual.Name, "test 1");
+            configFactoryResolution : function (test) {
 
-        test.done();
-    },
+                var config = Config.factoryResolution();
+                containerBuilder.registerConfig(config);
 
-    dependenciesResolution : function (test) {
+                var container = containerBuilder.build();
+                var actual = container.resolve(testData.Test1Base);
 
-        var config = Config.dependenciesResolution();
-        containerBuilder.registerConfig(config);
+                test.notEqual(actual, null);
+                test.strictEqual(actual.Name, "test 1");
 
-        var container = containerBuilder.build();
-        var actual = container.resolve(testData.Test1Base);
+                test.done();
+            },
 
-        test.notEqual(actual, null);
-        test.strictEqual(actual.Name, "Test 3 test 2");
+            dependenciesResolution : function (test) {
 
-        test.done();
-    },
+                var config = Config.dependenciesResolution();
+                containerBuilder.registerConfig(config);
 
-    customParametersResolution : function (test) {
+                var container = containerBuilder.build();
+                var actual = container.resolve(testData.Test1Base);
 
-        var config = Config.customParametersResolution();
-        containerBuilder.registerConfig(config);
+                test.notEqual(actual, null);
+                test.strictEqual(actual.Name, "Test 3 test 2");
 
-        var container = containerBuilder.build();
-        var test1 = container.resolve(testData.Test1Base, "test 4");
+                test.done();
+            },
 
-        test.notEqual(test1, null);
-        test.strictEqual(test1.Name, "test 4");
+            customParametersResolution : function (test) {
 
-        test.done();
-    },
+                var config = Config.customParametersResolution();
+                containerBuilder.registerConfig(config);
 
-    namedServicesResolution : function (test) {
+                var container = containerBuilder.build();
+                var test1 = container.resolve(testData.Test1Base, "test 4");
 
-        var config = Config.namedServicesResolution();
-        containerBuilder.registerConfig(config);
+                test.notEqual(test1, null);
+                test.strictEqual(test1.Name, "test 4");
 
-        var container = containerBuilder.build();
-        var actual1 = container.resolveNamed(testData.Test1Base, "A");
-        var actual2 = container.resolveNamed(testData.Test1Base, "B");
-        var actual3 = container.resolve(testData.Test1Base);
+                test.done();
+            },
 
-        test.notEqual(actual1, null);
-        test.notEqual(actual2, null);
-        test.notEqual(actual3, null);
-        test.strictEqual(actual1.Name, "a");
-        test.strictEqual(actual2.Name, "b");
-        test.strictEqual(actual3.Name, "null");
+            namedServicesResolution : function (test) {
 
-        test.done();
-    },
+                var config = Config.namedServicesResolution();
+                containerBuilder.registerConfig(config);
 
-    noScopingReuse : function (test) {
+                var container = containerBuilder.build();
+                var actual1 = container.resolveNamed(testData.Test1Base, "A");
+                var actual2 = container.resolveNamed(testData.Test1Base, "B");
+                var actual3 = container.resolve(testData.Test1Base);
 
-        var config = Config.noScopingReuse();
-        containerBuilder.registerConfig(config);
+                test.notEqual(actual1, null);
+                test.notEqual(actual2, null);
+                test.notEqual(actual3, null);
+                test.strictEqual(actual1.Name, "a");
+                test.strictEqual(actual2.Name, "b");
+                test.strictEqual(actual3.Name, "null");
 
-        var container = containerBuilder.build();
-        var test1 = container.resolve(testData.Test1Base);
-        test1.Name = "test 1";
-        var test2 = container.resolve(testData.Test1Base);
+                test.done();
+            },
 
-        test.notEqual(test1, null);
-        test.strictEqual(test1.Name, "test 1");
-        test.notEqual(test2, null);
-        test.strictEqual(test2.Name, "test 4");
+            noScopingReuse : function (test) {
 
-        test.done();
-    },
+                var config = Config.noScopingReuse();
+                containerBuilder.registerConfig(config);
 
-    containerOwnedInstancesAreDisposed : function (test) {
+                var container = containerBuilder.build();
+                var test1 = container.resolve(testData.Test1Base);
+                test1.Name = "test 1";
+                var test2 = container.resolve(testData.Test1Base);
 
-        var config = Config.containerOwnedInstancesAreDisposed();
-        containerBuilder.registerConfig(config);
+                test.notEqual(test1, null);
+                test.strictEqual(test1.Name, "test 1");
+                test.notEqual(test2, null);
+                test.strictEqual(test2.Name, "test 4");
 
-        var container = containerBuilder.build();
+                test.done();
+            },
 
-        var test1 = container.resolve(testData.Test1Base);
+            containerOwnedInstancesAreDisposed : function (test) {
 
-        container.dispose();
+                var config = Config.containerOwnedInstancesAreDisposed();
+                containerBuilder.registerConfig(config);
 
-        test.notEqual(test1, null);
-        test.strictEqual(test1.Disposed, true);
+                var container = containerBuilder.build();
 
-        test.done();
-    },
+                var test1 = container.resolve(testData.Test1Base);
 
-    initializeIsCalledWhenInstanceIsCreated : function (test) {
-        var className = "item";
+                container.dispose();
 
-        var config = Config.initializeIsCalledWhenInstanceIsCreated(className);
-        containerBuilder.registerConfig(config);
+                test.notEqual(test1, null);
+                test.strictEqual(test1.Disposed, true);
 
-        var container = containerBuilder.build();
+                test.done();
+            },
 
-        var i1 = container.resolve(testData.Initializable);
-        var i2 = container.resolve(testData.Initializable);
+            initializeIsCalledWhenInstanceIsCreated : function (test) {
+                var className = "item";
 
-        test.deepEqual(i1, i2);
-        test.deepEqual(i1.name, i2.name);
-        test.deepEqual(i1.name, className);
+                var config = Config.initializeIsCalledWhenInstanceIsCreated(className);
+                containerBuilder.registerConfig(config);
 
-        test.done();
-    },
+                var container = containerBuilder.build();
 
-    registerModuleBasicInheritance : function (test) {
+                var i1 = container.resolve(testData.Initializable);
+                var i2 = container.resolve(testData.Initializable);
 
-        var config = Config.registerModuleBasicInheritance();
-        containerBuilder.registerConfig(config);
+                test.deepEqual(i1, i2);
+                test.deepEqual(i1.name, i2.name);
+                test.deepEqual(i1.name, className);
 
-        var container = containerBuilder.build();
+                test.done();
+            },
 
-        var t1 = container.resolve(testDataSecond.ServiceModule1.TestBaseClass);
+            registerModuleBasicInheritance : function (test) {
 
-        test.equal(t1.name(), "Concrete class");
+                var config = Config.registerModuleBasicInheritance();
+                containerBuilder.registerConfig(config);
 
-        test.done();
-    },
+                var container = containerBuilder.build();
 
-    registerModuleConstructorWithParams : function (test) {
+                var t1 = container.resolve(testDataSecond.ServiceModule1.TestBaseClass);
 
-        var config = Config.registerModuleConstructorWithParams();
-        containerBuilder.registerConfig(config);
+                test.equal(t1.name(), "Concrete class");
 
-        var container = containerBuilder.build();
+                test.done();
+            },
 
-        var t1 = container.resolve(testDataSecond.ServiceModule1.TestBaseClass);
+            registerModuleConstructorWithParams : function (test) {
 
-        test.equal(t1.name(), "Concrete class77Test");
+                var config = Config.registerModuleConstructorWithParams();
+                containerBuilder.registerConfig(config);
 
-        test.done();
-    },
+                var container = containerBuilder.build();
 
-    registerModuleConstructorWithDependencies : function (test) {
+                var t1 = container.resolve(testDataSecond.ServiceModule1.TestBaseClass);
 
-        var config = Config.registerModuleConstructorWithDependencies();
-        containerBuilder.registerConfig(config);
+                test.equal(t1.name(), "Concrete class77Test");
 
-        var container = containerBuilder.build();
+                test.done();
+            },
 
-        var t1 = container.resolve(testDataSecond.ServiceModule3.TestBaseClass1);
+            registerModuleConstructorWithDependencies : function (test) {
 
-        test.equal(t1.name(), "Module6 - Class 1 - Concrete class77Test");
+                var config = Config.registerModuleConstructorWithDependencies();
+                containerBuilder.registerConfig(config);
 
-        test.done();
-    },
+                var container = containerBuilder.build();
 
-    registerComponentsWithinModel : function (test) {
+                var t1 = container.resolve(testDataSecond.ServiceModule3.TestBaseClass1);
 
-        var config = Config.registerComponentsWithinModel();
-        containerBuilder.registerConfig(config);
+                test.equal(t1.name(), "Module6 - Class 1 - Concrete class77Test");
 
-        var container = containerBuilder.build();
-        var actual = container.resolve(testData.Test1Base);
+                test.done();
+            },
 
-        test.notEqual(actual, null);
-        test.strictEqual(actual.Name, "test 1");
+            registerComponentsWithinModel : function (test) {
 
-        test.done();
-    }
+                var config = Config.registerComponentsWithinModel();
+                containerBuilder.registerConfig(config);
+
+                var container = containerBuilder.build();
+                var actual = container.resolve(testData.Test1Base);
+
+                test.notEqual(actual, null);
+                test.strictEqual(actual.Name, "test 1");
+
+                test.done();
+            }
+        };
+    })()
 }

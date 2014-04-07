@@ -53,4 +53,3 @@ function construct(constructor, args) {
     return new k();
 }
 exports.construct = construct;
-//# sourceMappingURL=index.js.map

@@ -1,42 +1,44 @@
 
 'use strict';
 
-var Scaffold = require('../../scaffold');
-var Types = Scaffold.Types;
+exports.internal = {
 
-exports.internal = {};
-exports.internal.Owner = (function() {
+    owner : (function() {
 
-    return {
+        var Scaffold = require('../../scaffold');
+        var Types = Scaffold.Types;
 
-        owner_has_Container_property: function(test) {
-            test.equal(1, Types.Owner.Container);
+        return {
 
-            test.done();
-        },
+            owner_has_Container_property: function(test) {
+                test.equal(1, Types.Owner.Container);
 
-        owner_has_Externals_property: function(test) {
-            test.equal(2, Types.Owner.Externals);
+                test.done();
+            },
 
-            test.done();
-        },
+            owner_has_Externals_property: function(test) {
+                test.equal(2, Types.Owner.Externals);
 
-        owner_has_no_more_properties: function(test) {
+                test.done();
+            },
 
-            var properties = [];
+            owner_has_no_more_properties: function(test) {
 
-            for(var key in Types.Owner) {
-                properties.push(key);
+                var properties = [];
+
+                for(var key in Types.Owner) {
+                    properties.push(key);
+                }
+
+                test.equal(2, properties.length);
+                test.equal('Container', properties[0]);
+                test.equal('Externals', properties[1]);
+
+                test.done();
             }
-
-            test.equal(2, properties.length);
-            test.equal('Container', properties[0]);
-            test.equal('Externals', properties[1]);
-
-            test.done();
-        }
-    };
-})();
+        };
+    })()
+}
 
 
 

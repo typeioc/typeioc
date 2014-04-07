@@ -190,4 +190,3 @@ var ConfigRegistration = (function () {
     return ConfigRegistration;
 })();
 exports.ConfigRegistration = ConfigRegistration;
-//# sourceMappingURL=configRegistration.js.map

@@ -4,11 +4,7 @@
 
 export class Registration<T> implements Typeioc.IRegistration<T> {
 
-    private _base : Typeioc.Internal.IRegistrationBase;
-
-    public applyBase(base : Typeioc.Internal.IRegistrationBase) {
-        this._base = base;
-    }
+    constructor(private _base : Typeioc.Internal.IRegistrationBase) {}
 
     public as(factory : Typeioc.IFactory<T>) : Typeioc.IInitializedDisposedNamedReusedOwned<T> {
 

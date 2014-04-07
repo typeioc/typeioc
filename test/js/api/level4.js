@@ -1,145 +1,151 @@
+
 'use strict';
-var scaffold = require('../../scaffold');
-var testData = scaffold.TestModule;
 
-var containerBuilder;
+exports.api = {
 
-exports.api = {};
+    level4 : (function() {
 
-exports.api.Level4 = {
+        var scaffold = require('../../scaffold');
+        var testData = scaffold.TestModule;
 
-    setUp: function (callback) {
-        containerBuilder = scaffold.createBuilder();
-        callback();
-    },
+        var containerBuilder;
 
-    serviceRegisteredOnParentResolveOnChildContainer : function(test) {
-        containerBuilder.register(testData.Test1Base).as(function () {
-            return new testData.Test1();
-        }).within(scaffold.Types.Scope.Hierarchy);
+        return {
 
-        var container = containerBuilder.build();
-        var child = container.createChild();
+            setUp: function (callback) {
+                containerBuilder = scaffold.createBuilder();
+                callback();
+            },
 
-        var test1 = child.resolve(testData.Test1Base);
+            serviceRegisteredOnParentResolveOnChildContainer : function(test) {
+                containerBuilder.register(testData.Test1Base).as(function () {
+                    return new testData.Test1();
+                }).within(scaffold.Types.Scope.Hierarchy);
 
-        test.notEqual(test1, null);
-        test.strictEqual(test1.Name, "test 1");
+                var container = containerBuilder.build();
+                var child = container.createChild();
 
-        test.done();
-    },
+                var test1 = child.resolve(testData.Test1Base);
 
-    serviceRegisteredNamedOnParentResolveNamedOnChildContainer : function (test) {
-        var registrationName = 'name reg';
+                test.notEqual(test1, null);
+                test.strictEqual(test1.Name, "test 1");
 
-        containerBuilder.register(testData.Test1Base).as(function () {
-            return new testData.Test1();
-        }).named(registrationName).within(3 /* Hierarchy */);
+                test.done();
+            },
 
-        var container = containerBuilder.build();
-        var child = container.createChild();
+            serviceRegisteredNamedOnParentResolveNamedOnChildContainer : function (test) {
+                var registrationName = 'name reg';
 
-        var test1 = child.resolveNamed(testData.Test1Base, registrationName);
+                containerBuilder.register(testData.Test1Base).as(function () {
+                    return new testData.Test1();
+                }).named(registrationName).within(3 /* Hierarchy */);
 
-        test.notEqual(test1, null);
-        test.strictEqual(test1.Name, "test 1");
+                var container = containerBuilder.build();
+                var child = container.createChild();
 
-        test.done();
-    },
+                var test1 = child.resolveNamed(testData.Test1Base, registrationName);
 
-    serviceRegisteredOnParentResolveOnChildContainerNoHierarchy : function (test) {
-        containerBuilder.register(testData.Test1Base).as(function () {
-            return new testData.Test1();
-        });
+                test.notEqual(test1, null);
+                test.strictEqual(test1.Name, "test 1");
 
-        var container = containerBuilder.build();
-        var child = container.createChild();
+                test.done();
+            },
 
-        var test1 = child.resolve(testData.Test1Base);
+            serviceRegisteredOnParentResolveOnChildContainerNoHierarchy : function (test) {
+                containerBuilder.register(testData.Test1Base).as(function () {
+                    return new testData.Test1();
+                });
 
-        test.notEqual(test1, null);
-        test.strictEqual(test1.Name, "test 1");
+                var container = containerBuilder.build();
+                var child = container.createChild();
 
-        test.done();
-    },
+                var test1 = child.resolve(testData.Test1Base);
 
-    hierarchyScopedInstanceIsReusedOnSameContainer : function (test) {
+                test.notEqual(test1, null);
+                test.strictEqual(test1.Name, "test 1");
 
-        containerBuilder.register(testData.Test1Base).as(function () {
-            return new testData.Test4("test 4");
-        }).within(scaffold.Types.Scope.Hierarchy);
+                test.done();
+            },
 
-        var container = containerBuilder.build();
-        var test1 = container.resolve(testData.Test1Base);
-        test1.Name = "test 1";
-        var test2 = container.resolve(testData.Test1Base);
+            hierarchyScopedInstanceIsReusedOnSameContainer : function (test) {
 
-        test.notEqual(test1, null);
-        test.strictEqual(test1.Name, "test 1");
-        test.notEqual(test2, null);
-        test.strictEqual(test2.Name, "test 1");
+                containerBuilder.register(testData.Test1Base).as(function () {
+                    return new testData.Test4("test 4");
+                }).within(scaffold.Types.Scope.Hierarchy);
 
-        test.done();
-    },
+                var container = containerBuilder.build();
+                var test1 = container.resolve(testData.Test1Base);
+                test1.Name = "test 1";
+                var test2 = container.resolve(testData.Test1Base);
 
-    hierarchyScopedInstanceIsReusedOnSameContainerChildFirst : function (test) {
+                test.notEqual(test1, null);
+                test.strictEqual(test1.Name, "test 1");
+                test.notEqual(test2, null);
+                test.strictEqual(test2.Name, "test 1");
 
-        containerBuilder.register(testData.Test1Base).as(function () {
-            return new testData.Test4("test 4");
-        }).within(scaffold.Types.Scope.Hierarchy);
+                test.done();
+            },
 
-        var container = containerBuilder.build();
-        var child = container.createChild();
+            hierarchyScopedInstanceIsReusedOnSameContainerChildFirst : function (test) {
 
-        var test1 = child.resolve(testData.Test1Base);
-        test1.Name = "test 1";
-        var test2 = container.resolve(testData.Test1Base);
+                containerBuilder.register(testData.Test1Base).as(function () {
+                    return new testData.Test4("test 4");
+                }).within(scaffold.Types.Scope.Hierarchy);
 
-        test.notEqual(test1, null);
-        test.strictEqual(test1.Name, "test 1");
-        test.notEqual(test2, null);
-        test.strictEqual(test2.Name, "test 1");
+                var container = containerBuilder.build();
+                var child = container.createChild();
 
-        test.done();
-    },
+                var test1 = child.resolve(testData.Test1Base);
+                test1.Name = "test 1";
+                var test2 = container.resolve(testData.Test1Base);
 
-    containerScopedInstanceIsNotReusedOnChild : function (test) {
+                test.notEqual(test1, null);
+                test.strictEqual(test1.Name, "test 1");
+                test.notEqual(test2, null);
+                test.strictEqual(test2.Name, "test 1");
 
-        containerBuilder.register(testData.Test1Base).as(function () {
-            return new testData.Test4("test 4");
-        }).within(scaffold.Types.Scope.Container);
+                test.done();
+            },
 
-        var container = containerBuilder.build();
-        var child = container.createChild();
+            containerScopedInstanceIsNotReusedOnChild : function (test) {
 
-        var test1 = container.resolve(testData.Test1Base);
-        test1.Name = "test 1";
-        var test2 = child.resolve(testData.Test1Base);
+                containerBuilder.register(testData.Test1Base).as(function () {
+                    return new testData.Test4("test 4");
+                }).within(scaffold.Types.Scope.Container);
 
-        test.notEqual(test1, null);
-        test.strictEqual(test1.Name, "test 1");
-        test.notEqual(test2, null);
-        test.strictEqual(test2.Name, "test 4");
+                var container = containerBuilder.build();
+                var child = container.createChild();
 
-        test.done();
-    },
+                var test1 = container.resolve(testData.Test1Base);
+                test1.Name = "test 1";
+                var test2 = child.resolve(testData.Test1Base);
 
-    unknownScopeError : function (test) {
-        containerBuilder.register(testData.Test1Base).as(function () {
-            return new testData.Test4("test 4");
-        }).within(5);
+                test.notEqual(test1, null);
+                test.strictEqual(test1.Name, "test 1");
+                test.notEqual(test2, null);
+                test.strictEqual(test2.Name, "test 4");
 
-        var container = containerBuilder.build();
-        var child = container.createChild();
+                test.done();
+            },
 
-        var delegate = function () {
-            return child.resolve(testData.Test1Base);
-        };
+            unknownScopeError : function (test) {
+                containerBuilder.register(testData.Test1Base).as(function () {
+                    return new testData.Test4("test 4");
+                }).within(5);
 
-        test.throws(delegate, function (err) {
-            return (err instanceof scaffold.Exceptions.ResolutionError) && /Unknown scoping/.test(err.message);
-        });
+                var container = containerBuilder.build();
+                var child = container.createChild();
 
-        test.done();
-    }
+                var delegate = function () {
+                    return child.resolve(testData.Test1Base);
+                };
+
+                test.throws(delegate, function (err) {
+                    return (err instanceof scaffold.Exceptions.ResolutionError) && /Unknown scoping/.test(err.message);
+                });
+
+                test.done();
+            }
+        }
+    })()
 }

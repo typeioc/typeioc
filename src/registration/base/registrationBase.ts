@@ -3,7 +3,6 @@
 'use strict';
 
 export class RegistrationBase implements Typeioc.Internal.IRegistrationBase {
-    private _service : any = null;
     private _factory : Typeioc.IFactory<any> = null;
     private _name : string = null;
     private _scope : Typeioc.Types.Scope;
@@ -90,8 +89,7 @@ export class RegistrationBase implements Typeioc.Internal.IRegistrationBase {
         };
     }
 
-    constructor(service: any) {
-        this._service = service;
+    constructor(private _service: any) {
         this.args = [];
     }
 

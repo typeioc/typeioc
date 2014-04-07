@@ -1,7 +1,7 @@
 'use strict';
 
 import scaffold = require('./../scaffold');
-import testData = scaffold.TestModule;
+import TestData = require('../data/test-data');
 
 
 export module Level5 {
@@ -15,15 +15,15 @@ export module Level5 {
 
     export function containerOwnedInstancesAreDisposed(test) {
 
-        containerBuilder.register<testData.Test1Base>(testData.Test1Base)
-            .as(() => new testData.Test5())
-            .dispose((item : testData.Test5)  => { item.Dispose() })
+        containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)
+            .as(() => new TestData.Test5())
+            .dispose((item : TestData.Test5)  => { item.Dispose() })
             .within(Typeioc.Types.Scope.None)
             .ownedBy(Typeioc.Types.Owner.Container);
 
         var container = containerBuilder.build();
 
-        var test1 = container.resolve<testData.Test1Base>(testData.Test1Base);
+        var test1 = container.resolve<TestData.Test1Base>(TestData.Test1Base);
 
         container.dispose();
 
@@ -35,15 +35,15 @@ export module Level5 {
 
     export function containerOwnedAndContainerReusedInstancesAreDisposed(test) {
 
-        containerBuilder.register<testData.Test1Base>(testData.Test1Base)
-            .as(() => new testData.Test5())
-            .dispose((item : testData.Test5)  => { item.Dispose() })
+        containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)
+            .as(() => new TestData.Test5())
+            .dispose((item : TestData.Test5)  => { item.Dispose() })
             .within(Typeioc.Types.Scope.Container)
             .ownedBy(Typeioc.Types.Owner.Container);
 
         var container = containerBuilder.build();
 
-        var test1 = container.resolve<testData.Test1Base>(testData.Test1Base);
+        var test1 = container.resolve<TestData.Test1Base>(TestData.Test1Base);
 
         container.dispose();
 
@@ -55,15 +55,15 @@ export module Level5 {
 
     export function containerOwnedAndHierarchyReusedInstancesAreDisposed(test) {
 
-        containerBuilder.register<testData.Test1Base>(testData.Test1Base)
-            .as(() => new testData.Test5())
-            .dispose((item : testData.Test5)  => { item.Dispose() })
+        containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)
+            .as(() => new TestData.Test5())
+            .dispose((item : TestData.Test5)  => { item.Dispose() })
             .within(Typeioc.Types.Scope.Hierarchy)
             .ownedBy(Typeioc.Types.Owner.Container);
 
         var container = containerBuilder.build();
 
-        var test1 = container.resolve<testData.Test1Base>(testData.Test1Base);
+        var test1 = container.resolve<TestData.Test1Base>(TestData.Test1Base);
 
         container.dispose();
 
@@ -75,15 +75,15 @@ export module Level5 {
 
     export function childContainerInstanceWithParentRegistrationIsNotDisposed(test) {
 
-        containerBuilder.register<testData.Test1Base>(testData.Test1Base)
-            .as(() => new testData.Test5())
+        containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)
+            .as(() => new TestData.Test5())
             .within(Typeioc.Types.Scope.Hierarchy)
             .ownedBy(Typeioc.Types.Owner.Container);
 
         var container = containerBuilder.build();
         var child = container.createChild();
 
-        var test1 = child.resolve<testData.Test1Base>(testData.Test1Base);
+        var test1 = child.resolve<TestData.Test1Base>(TestData.Test1Base);
 
         child.dispose();
 
@@ -95,16 +95,16 @@ export module Level5 {
 
     export function disposingParentContainerDisposesChildContainerInstances(test) {
 
-        containerBuilder.register<testData.Test1Base>(testData.Test1Base)
-            .as(() => new testData.Test5())
-            .dispose((item : testData.Test5)  => { item.Dispose() })
+        containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)
+            .as(() => new TestData.Test5())
+            .dispose((item : TestData.Test5)  => { item.Dispose() })
             .within(Typeioc.Types.Scope.None)
             .ownedBy(Typeioc.Types.Owner.Container);
 
         var container = containerBuilder.build();
         var child = container.createChild();
 
-        var test1 = child.resolve<testData.Test1Base>(testData.Test1Base);
+        var test1 = child.resolve<TestData.Test1Base>(TestData.Test1Base);
 
         container.dispose();
 
@@ -116,14 +116,14 @@ export module Level5 {
 
     export function disposingContainerDoesNotDisposeExternalOwnedInstances(test) {
 
-        containerBuilder.register<testData.Test1Base>(testData.Test1Base).as(() => new testData.Test5()).
+        containerBuilder.register<TestData.Test1Base>(TestData.Test1Base).as(() => new TestData.Test5()).
             within(Typeioc.Types.Scope.Hierarchy).
             ownedBy(Typeioc.Types.Owner.Externals);
 
         var container = containerBuilder.build();
         var child = container.createChild();
 
-        var test1 = child.resolve<testData.Test1Base>(testData.Test1Base);
+        var test1 = child.resolve<TestData.Test1Base>(TestData.Test1Base);
 
         container.dispose();
 
@@ -133,43 +133,22 @@ export module Level5 {
         test.done();
     }
 
-    export function serviceEntryProperlyCloned(test) {
-
-        var initializer = (c, item) => {};
-
-        var serviceEntry = new scaffold.RegistrationBase.RegistrationBase(() => new testData.Test5());
-        serviceEntry.initializer = initializer;
-        serviceEntry.scope = Typeioc.Types.Scope.Hierarchy;
-
-        var container = containerBuilder.build();
-
-        var actual = serviceEntry.cloneFor(container);
-
-        test.strictEqual(actual.factory, serviceEntry.factory);
-        test.strictEqual(actual.scope, serviceEntry.scope);
-        test.strictEqual(actual.scope, Typeioc.Types.Scope.Hierarchy);
-        test.strictEqual(actual.container, container);
-        test.strictEqual(actual.initializer, initializer);
-
-        test.done();
-    }
-
     export function initializeIsCalledWhenInstanceIsCreated(test) {
 
         var className = "item";
 
-        var initializer : Typeioc.IInitializer<testData.Initializable> = (c, item) => {
+        var initializer : Typeioc.IInitializer<TestData.Initializable> = (c, item) => {
             item.initialize(className);
         };
 
-        containerBuilder.register<testData.Initializable>(testData.Initializable)
-            .as(() => new testData.Initializable2()).
+        containerBuilder.register<TestData.Initializable>(TestData.Initializable)
+            .as(() => new TestData.Initializable2()).
             initializeBy(initializer);
 
         var container = containerBuilder.build();
 
-        var i1 = container.resolve<testData.Initializable>(testData.Initializable);
-        var i2 = container.resolve<testData.Initializable>(testData.Initializable);
+        var i1 = container.resolve<TestData.Initializable>(TestData.Initializable);
+        var i2 = container.resolve<TestData.Initializable>(TestData.Initializable);
 
         test.deepEqual(i1, i2);
         test.deepEqual(i1.name, i2.name);
@@ -182,18 +161,18 @@ export module Level5 {
 
         var className = "item";
 
-        var initializer = (c : Typeioc.IContainer, item : testData.Initializable) => {
+        var initializer = (c : Typeioc.IContainer, item : TestData.Initializable) => {
             item.initialize(className);
-            item.test6 = c.resolve<testData.Test6>(testData.Test6);
+            item.test6 = c.resolve<TestData.Test6>(TestData.Test6);
         };
 
-        containerBuilder.register(testData.Test6).as((c) => new testData.Test6());
-        containerBuilder.register(testData.Initializable).as((c) => new testData.Initializable()).
+        containerBuilder.register(TestData.Test6).as((c) => new TestData.Test6());
+        containerBuilder.register(TestData.Initializable).as((c) => new TestData.Initializable()).
             initializeBy(initializer);
 
         var container = containerBuilder.build();
 
-        var i1 = container.resolve<testData.Initializable>(testData.Initializable);
+        var i1 = container.resolve<TestData.Initializable>(TestData.Initializable);
 
         test.notEqual(i1, null);
         test.notEqual(i1, undefined);
@@ -207,16 +186,16 @@ export module Level5 {
 
         var secondContainerBuilder = scaffold.createBuilder();
 
-        containerBuilder.register<testData.Test1Base>(testData.Test1Base)
-            .as(() => new testData.Test5())
-            .dispose((item : testData.Test5)  => { item.Dispose() })
+        containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)
+            .as(() => new TestData.Test5())
+            .dispose((item : TestData.Test5)  => { item.Dispose() })
             .within(Typeioc.Types.Scope.None)
             .ownedBy(Typeioc.Types.Owner.Container);
 
 
-        secondContainerBuilder.register<testData.Test1Base>(testData.Test1Base)
-            .as(() => new testData.Test5())
-            .dispose((item : testData.Test5)  => { item.Dispose() })
+        secondContainerBuilder.register<TestData.Test1Base>(TestData.Test1Base)
+            .as(() => new TestData.Test5())
+            .dispose((item : TestData.Test5)  => { item.Dispose() })
             .within(Typeioc.Types.Scope.None)
             .ownedBy(Typeioc.Types.Owner.Container);
 
@@ -224,8 +203,8 @@ export module Level5 {
         var secondContainer = secondContainerBuilder.build();
 
 
-        var test1 = container.resolve<testData.Test1Base>(testData.Test1Base);
-        var test2 = secondContainer.resolve<testData.Test1Base>(testData.Test1Base);
+        var test1 = container.resolve<TestData.Test1Base>(TestData.Test1Base);
+        var test2 = secondContainer.resolve<TestData.Test1Base>(TestData.Test1Base);
 
         test.strictEqual(test1.Disposed, false);
         test.strictEqual(test2.Disposed, false);

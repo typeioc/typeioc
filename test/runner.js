@@ -12,6 +12,7 @@ try  {
 var mainPath = path.join(__dirname, 'js');
 var internalSubPAth = 'internal';
 var apiSubPAth = 'api';
+
 process.chdir(mainPath);
 
 fs.readdir(path.join(mainPath, internalSubPAth), function(error, files) {

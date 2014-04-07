@@ -17,4 +17,3 @@ var ApplicationError = (function (_super) {
     return ApplicationError;
 })(BaseErrorModule.BaseError);
 exports.ApplicationError = ApplicationError;
-//# sourceMappingURL=applicationError.js.map

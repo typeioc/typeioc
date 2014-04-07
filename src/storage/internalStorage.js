@@ -43,4 +43,3 @@ var InternalStorage = (function () {
     return InternalStorage;
 })();
 exports.InternalStorage = InternalStorage;
-//# sourceMappingURL=internalStorage.js.map

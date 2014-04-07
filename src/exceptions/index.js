@@ -10,4 +10,3 @@ exports.ArgumentNullError = ArgumentNullErrorModule.ArgumentNullError;
 exports.ResolutionError = ResolutionErrorModule.ResolutionError;
 exports.StorageKeyNotFoundError = StorageKeyNotFoundErrorModule.StorageKeyNotFoundError;
 exports.ConfigurationError = ConfigRegistrationErrorModule.ConfigRegistrationError;
-//# sourceMappingURL=index.js.map

@@ -1,244 +1,228 @@
 'use strict';
-var scaffold = require('../../scaffold');
-var testData = scaffold.TestModule;
 
-var containerBuilder;
 
-exports.api = {};
+exports.api = {
 
-exports.api.Level5 = {
+    level5 : (function() {
 
-    setUp: function (callback) {
-        containerBuilder = scaffold.createBuilder();
-        callback();
-    },
+        var scaffold = require('../../scaffold');
+        var testData = scaffold.TestModule;
 
-    containerOwnedInstancesAreDisposed : function (test) {
 
-        containerBuilder.register(testData.Test1Base)
-            .as(function () { return new testData.Test5(); })
-            .dispose(function (item) { item.Dispose(); })
-            .within(scaffold.Types.Scope.None)
-            .ownedBy(scaffold.Types.Owner.Container);
+        var containerBuilder;
 
-        var container = containerBuilder.build();
+        return {
 
-        var test1 = container.resolve(testData.Test1Base);
+            setUp: function (callback) {
+                containerBuilder = scaffold.createBuilder();
+                callback();
+            },
 
-        container.dispose();
+            containerOwnedInstancesAreDisposed : function (test) {
 
-        test.notEqual(test1, null);
-        test.strictEqual(test1.Disposed, true);
+                containerBuilder.register(testData.Test1Base)
+                    .as(function () { return new testData.Test5(); })
+                    .dispose(function (item) { item.Dispose(); })
+                    .within(scaffold.Types.Scope.None)
+                    .ownedBy(scaffold.Types.Owner.Container);
 
-        test.done();
-    },
+                var container = containerBuilder.build();
 
-    containerOwnedAndContainerReusedInstancesAreDisposed : function (test) {
+                var test1 = container.resolve(testData.Test1Base);
 
-        containerBuilder.register(testData.Test1Base)
-            .as(function () { return new testData.Test5(); })
-            .dispose(function (item) { item.Dispose(); })
-            .within(scaffold.Types.Scope.Container)
-            .ownedBy(scaffold.Types.Owner.Container);
+                container.dispose();
 
-        var container = containerBuilder.build();
+                test.notEqual(test1, null);
+                test.strictEqual(test1.Disposed, true);
 
-        var test1 = container.resolve(testData.Test1Base);
+                test.done();
+            },
 
-        container.dispose();
+            containerOwnedAndContainerReusedInstancesAreDisposed : function (test) {
 
-        test.notEqual(test1, null);
-        test.strictEqual(test1.Disposed, true);
+                containerBuilder.register(testData.Test1Base)
+                    .as(function () { return new testData.Test5(); })
+                    .dispose(function (item) { item.Dispose(); })
+                    .within(scaffold.Types.Scope.Container)
+                    .ownedBy(scaffold.Types.Owner.Container);
 
-        test.done();
-    },
+                var container = containerBuilder.build();
 
-    containerOwnedAndHierarchyReusedInstancesAreDisposed : function(test) {
+                var test1 = container.resolve(testData.Test1Base);
 
-        containerBuilder.register(testData.Test1Base)
-            .as(function () { return new testData.Test5(); })
-            .dispose(function (item) { item.Dispose(); })
-            .within(scaffold.Types.Scope.Hierarchy)
-            .ownedBy(scaffold.Types.Owner.Container);
+                container.dispose();
 
-        var container = containerBuilder.build();
+                test.notEqual(test1, null);
+                test.strictEqual(test1.Disposed, true);
 
-        var test1 = container.resolve(testData.Test1Base);
+                test.done();
+            },
 
-        container.dispose();
+            containerOwnedAndHierarchyReusedInstancesAreDisposed : function(test) {
 
-        test.notEqual(test1, null);
-        test.strictEqual(test1.Disposed, true);
+                containerBuilder.register(testData.Test1Base)
+                    .as(function () { return new testData.Test5(); })
+                    .dispose(function (item) { item.Dispose(); })
+                    .within(scaffold.Types.Scope.Hierarchy)
+                    .ownedBy(scaffold.Types.Owner.Container);
 
-        test.done();
-    },
+                var container = containerBuilder.build();
 
-    childContainerInstanceWithParentRegistrationIsNotDisposed : function (test) {
+                var test1 = container.resolve(testData.Test1Base);
 
-        containerBuilder.register(testData.Test1Base).as(function () {
-            return new testData.Test5();
-        }).within(scaffold.Types.Scope.Hierarchy).ownedBy(scaffold.Types.Owner.Container);
+                container.dispose();
 
-        var container = containerBuilder.build();
-        var child = container.createChild();
+                test.notEqual(test1, null);
+                test.strictEqual(test1.Disposed, true);
 
-        var test1 = child.resolve(testData.Test1Base);
+                test.done();
+            },
 
-        child.dispose();
+            childContainerInstanceWithParentRegistrationIsNotDisposed : function (test) {
 
-        test.notEqual(test1, null);
-        test.strictEqual(test1.Disposed, false);
+                containerBuilder.register(testData.Test1Base).as(function () {
+                    return new testData.Test5();
+                }).within(scaffold.Types.Scope.Hierarchy).ownedBy(scaffold.Types.Owner.Container);
 
-        test.done();
-    },
+                var container = containerBuilder.build();
+                var child = container.createChild();
 
-    disposingParentContainerDisposesChildContainerInstances : function (test) {
+                var test1 = child.resolve(testData.Test1Base);
 
-        containerBuilder.register(testData.Test1Base)
-            .as(function () { return new testData.Test5(); })
-            .dispose(function (item) { item.Dispose(); })
-            .within(scaffold.Types.Scope.None)
-            .ownedBy(scaffold.Types.Owner.Container);
+                child.dispose();
 
-        var container = containerBuilder.build();
-        var child = container.createChild();
+                test.notEqual(test1, null);
+                test.strictEqual(test1.Disposed, false);
 
-        var test1 = child.resolve(testData.Test1Base);
+                test.done();
+            },
 
-        container.dispose();
+            disposingParentContainerDisposesChildContainerInstances : function (test) {
 
-        test.notEqual(test1, null);
-        test.strictEqual(test1.Disposed, true);
+                containerBuilder.register(testData.Test1Base)
+                    .as(function () { return new testData.Test5(); })
+                    .dispose(function (item) { item.Dispose(); })
+                    .within(scaffold.Types.Scope.None)
+                    .ownedBy(scaffold.Types.Owner.Container);
 
-        test.done();
-    },
+                var container = containerBuilder.build();
+                var child = container.createChild();
 
-    disposingContainerDoesNotDisposeExternalOwnedInstances : function (test) {
+                var test1 = child.resolve(testData.Test1Base);
 
-        containerBuilder.register(testData.Test1Base).as(function () {
-            return new testData.Test5();
-        }).within(scaffold.Types.Scope.Hierarchy).ownedBy(scaffold.Types.Owner.Externals);
+                container.dispose();
 
-        var container = containerBuilder.build();
-        var child = container.createChild();
+                test.notEqual(test1, null);
+                test.strictEqual(test1.Disposed, true);
 
-        var test1 = child.resolve(testData.Test1Base);
+                test.done();
+            },
 
-        container.dispose();
+            disposingContainerDoesNotDisposeExternalOwnedInstances : function (test) {
 
-        test.notEqual(test1, null);
-        test.strictEqual(test1.Disposed, false);
+                containerBuilder.register(testData.Test1Base).as(function () {
+                    return new testData.Test5();
+                }).within(scaffold.Types.Scope.Hierarchy).ownedBy(scaffold.Types.Owner.Externals);
 
-        test.done();
-    },
+                var container = containerBuilder.build();
+                var child = container.createChild();
 
-    serviceEntryProperlyCloned : function (test) {
-        var initializer = function (c, item) { };
+                var test1 = child.resolve(testData.Test1Base);
 
-        var serviceEntry = new scaffold.RegistrationBase.RegistrationBase(function () {
-            return new testData.Test5();
-        });
-        serviceEntry.initializer = initializer;
-        serviceEntry.scope = scaffold.Types.Scope.Hierarchy;
+                container.dispose();
 
-        var containerBuilder = scaffold.createBuilder();
-        var container = containerBuilder.build();
+                test.notEqual(test1, null);
+                test.strictEqual(test1.Disposed, false);
 
-        var actual = serviceEntry.cloneFor(container);
+                test.done();
+            },
 
-        test.strictEqual(actual.factory, serviceEntry.factory);
-        test.strictEqual(actual.scope, serviceEntry.scope);
-        test.strictEqual(actual.scope, scaffold.Types.Scope.Hierarchy);
-        test.strictEqual(actual.container, container);
-        test.strictEqual(actual.initializer, initializer);
+            initializeIsCalledWhenInstanceIsCreated : function (test) {
+                var className = "item";
 
-        test.done();
-    },
+                var initializer = function(c, item) {
+                    item.initialize(className);
+                };
 
-    initializeIsCalledWhenInstanceIsCreated : function (test) {
-        var className = "item";
+                containerBuilder.register(testData.Initializable).as(function () {
+                    return new testData.Initializable2();
+                }).initializeBy(initializer);
 
-        var initializer = function(c, item) {
-            item.initialize(className);
-        };
+                var container = containerBuilder.build();
 
-        containerBuilder.register(testData.Initializable).as(function () {
-            return new testData.Initializable2();
-        }).initializeBy(initializer);
+                var i1 = container.resolve(testData.Initializable);
+                var i2 = container.resolve(testData.Initializable);
 
-        var container = containerBuilder.build();
+                test.deepEqual(i1, i2);
+                test.deepEqual(i1.name, i2.name);
+                test.deepEqual(i1.name, className);
 
-        var i1 = container.resolve(testData.Initializable);
-        var i2 = container.resolve(testData.Initializable);
+                test.done();
+            },
 
-        test.deepEqual(i1, i2);
-        test.deepEqual(i1.name, i2.name);
-        test.deepEqual(i1.name, className);
+            initializeAndResolveDependencies : function (test) {
+                var className = "item";
 
-        test.done();
-    },
+                var initializer = function(c, item) {
+                    item.initialize(className);
+                    item.test6 = c.resolve<testData.Test6>(testData.Test6);
+                };
 
-    initializeAndResolveDependencies : function (test) {
-        var className = "item";
+                containerBuilder.register(testData.Test6).as(function (c) {
+                    return new testData.Test6();
+                });
+                containerBuilder.register(testData.Initializable).as(function (c) {
+                    return new testData.Initializable();
+                }).initializeBy(initializer);
 
-        var initializer = function(c, item) {
-            item.initialize(className);
-            item.test6 = c.resolve<testData.Test6>(testData.Test6);
-        };
+                var container = containerBuilder.build();
 
-        containerBuilder.register(testData.Test6).as(function (c) {
-            return new testData.Test6();
-        });
-        containerBuilder.register(testData.Initializable).as(function (c) {
-            return new testData.Initializable();
-        }).initializeBy(initializer);
+                var i1 = container.resolve(testData.Initializable);
 
-        var container = containerBuilder.build();
+                test.notEqual(i1, null);
+                test.notEqual(i1, undefined);
+                test.deepEqual(i1.name, className);
+                test.notEqual(i1.test6, null);
 
-        var i1 = container.resolve(testData.Initializable);
+                test.done();
+            },
 
-        test.notEqual(i1, null);
-        test.notEqual(i1, undefined);
-        test.deepEqual(i1.name, className);
-        test.notEqual(i1.test6, null);
+            instancesFromDifferentContainersDisposedDifferently : function (test) {
+                var secondContainerBuilder = scaffold.createBuilder();
 
-        test.done();
-    },
+                containerBuilder.register(testData.Test1Base)
+                    .as(function () {  return new testData.Test5();  })
+                    .dispose(function (item) { item.Dispose(); })
+                    .within(scaffold.Types.Scope.None)
+                    .ownedBy(scaffold.Types.Owner.Container);
 
-    instancesFromDifferentContainersDisposedDifferently : function (test) {
-        var secondContainerBuilder = scaffold.createBuilder();
+                secondContainerBuilder.register(testData.Test1Base)
+                    .as(function () { return new testData.Test5(); })
+                    .dispose(function (item) { item.Dispose(); })
+                    .within(scaffold.Types.Scope.None)
+                    .ownedBy(scaffold.Types.Owner.Container);
 
-        containerBuilder.register(testData.Test1Base)
-            .as(function () {  return new testData.Test5();  })
-            .dispose(function (item) { item.Dispose(); })
-            .within(scaffold.Types.Scope.None)
-            .ownedBy(scaffold.Types.Owner.Container);
+                var container = containerBuilder.build();
+                var secondContainer = secondContainerBuilder.build();
 
-        secondContainerBuilder.register(testData.Test1Base)
-            .as(function () { return new testData.Test5(); })
-            .dispose(function (item) { item.Dispose(); })
-            .within(scaffold.Types.Scope.None)
-            .ownedBy(scaffold.Types.Owner.Container);
+                var test1 = container.resolve(testData.Test1Base);
+                var test2 = secondContainer.resolve(testData.Test1Base);
 
-        var container = containerBuilder.build();
-        var secondContainer = secondContainerBuilder.build();
+                test.strictEqual(test1.Disposed, false);
+                test.strictEqual(test2.Disposed, false);
 
-        var test1 = container.resolve(testData.Test1Base);
-        var test2 = secondContainer.resolve(testData.Test1Base);
+                container.dispose();
 
-        test.strictEqual(test1.Disposed, false);
-        test.strictEqual(test2.Disposed, false);
+                test.strictEqual(test1.Disposed, true);
+                test.strictEqual(test2.Disposed, false);
 
-        container.dispose();
+                secondContainer.dispose();
 
-        test.strictEqual(test1.Disposed, true);
-        test.strictEqual(test2.Disposed, false);
+                test.strictEqual(test1.Disposed, true);
+                test.strictEqual(test2.Disposed, true);
 
-        secondContainer.dispose();
-
-        test.strictEqual(test1.Disposed, true);
-        test.strictEqual(test2.Disposed, true);
-
-        test.done();
-    }
+                test.done();
+            }
+        }
+    })()
 }

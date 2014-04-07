@@ -1,155 +1,159 @@
 
 'use strict';
-var scaffold = require('../../scaffold');
-var testData = scaffold.TestModule;
+
+exports.api = {
+
+    level2 : (function() {
+
+        var scaffold = require('../../scaffold');
+        var testData = scaffold.TestModule;
+
+        var containerBuilder;
+
+        return  {
+
+            setUp: function (callback) {
+                containerBuilder = scaffold.createBuilder();
+                callback();
+            },
 
 
-var containerBuilder;
+            customParametersResolution : function (test) {
 
-exports.api = {};
+                containerBuilder.register(testData.Test1Base).as(function (c, name) {
+                    return new testData.Test4(name);
+                });
 
-exports.api.Level2 = {
+                var container = containerBuilder.build();
+                var test1 = container.resolve(testData.Test1Base, "test 4");
 
-    setUp: function (callback) {
-        containerBuilder = scaffold.createBuilder();
-        callback();
-    },
+                test.notEqual(test1, null);
+                test.strictEqual(test1.Name, "test 4");
 
+                test.done();
+            },
 
-    customParametersResolution : function (test) {
+            namedServicesResolution : function (test) {
 
-        containerBuilder.register(testData.Test1Base).as(function (c, name) {
-            return new testData.Test4(name);
-        });
+                containerBuilder.register(testData.Test1Base).as(function () {
+                    return new testData.Test4("null");
+                });
+                containerBuilder.register(testData.Test1Base).as(function () {
+                    return new testData.Test4("a");
+                }).named("A");
+                containerBuilder.register(testData.Test1Base).as(function () {
+                    return new testData.Test4("b");
+                }).named("B");
 
-        var container = containerBuilder.build();
-        var test1 = container.resolve(testData.Test1Base, "test 4");
+                var container = containerBuilder.build();
+                var actual1 = container.resolveNamed(testData.Test1Base, "A");
+                var actual2 = container.resolveNamed(testData.Test1Base, "B");
+                var actual3 = container.resolve(testData.Test1Base);
 
-        test.notEqual(test1, null);
-        test.strictEqual(test1.Name, "test 4");
+                test.notEqual(actual1, null);
+                test.notEqual(actual2, null);
+                test.notEqual(actual3, null);
+                test.strictEqual(actual1.Name, "a");
+                test.strictEqual(actual2.Name, "b");
+                test.strictEqual(actual3.Name, "null");
 
-        test.done();
-    },
-
-    namedServicesResolution : function (test) {
-
-        containerBuilder.register(testData.Test1Base).as(function () {
-            return new testData.Test4("null");
-        });
-        containerBuilder.register(testData.Test1Base).as(function () {
-            return new testData.Test4("a");
-        }).named("A");
-        containerBuilder.register(testData.Test1Base).as(function () {
-            return new testData.Test4("b");
-        }).named("B");
-
-        var container = containerBuilder.build();
-        var actual1 = container.resolveNamed(testData.Test1Base, "A");
-        var actual2 = container.resolveNamed(testData.Test1Base, "B");
-        var actual3 = container.resolve(testData.Test1Base);
-
-        test.notEqual(actual1, null);
-        test.notEqual(actual2, null);
-        test.notEqual(actual3, null);
-        test.strictEqual(actual1.Name, "a");
-        test.strictEqual(actual2.Name, "b");
-        test.strictEqual(actual3.Name, "null");
-
-        test.done();
-    },
+                test.done();
+            },
 
 
-    namedServicesResolutionWithParams : function (test) {
+            namedServicesResolutionWithParams : function (test) {
 
-        containerBuilder.register(testData.Test1Base).as(function (c, name) {
-            return new testData.Test4(name);
-        }).named("A");
-        containerBuilder.register(testData.Test1Base).as(function (c, name) {
-            return new testData.Test4(name);
-        }).named("B");
+                containerBuilder.register(testData.Test1Base).as(function (c, name) {
+                    return new testData.Test4(name);
+                }).named("A");
+                containerBuilder.register(testData.Test1Base).as(function (c, name) {
+                    return new testData.Test4(name);
+                }).named("B");
 
-        var container = containerBuilder.build();
-        var actual1 = container.resolveNamed(testData.Test1Base, "A", "a");
-        var actual2 = container.resolveNamed(testData.Test1Base, "B", "b");
+                var container = containerBuilder.build();
+                var actual1 = container.resolveNamed(testData.Test1Base, "A", "a");
+                var actual2 = container.resolveNamed(testData.Test1Base, "B", "b");
 
-        test.notEqual(actual1, null);
-        test.notEqual(actual2, null);
-        test.strictEqual(actual1.Name, "a");
-        test.strictEqual(actual2.Name, "b");
+                test.notEqual(actual1, null);
+                test.notEqual(actual2, null);
+                test.strictEqual(actual1.Name, "a");
+                test.strictEqual(actual2.Name, "b");
 
-        test.done();
-    },
-
-
-    namedServicesResolutionWithParamsError : function (test) {
-
-        containerBuilder.register(testData.Test1Base).as(function (c, name) {
-            return new testData.Test4(name);
-        }).named("A");
-
-        var container = containerBuilder.build();
-        var delegate = function () {
-            return container.resolveNamed(testData.Test1Base, "A");
-        };
-
-        test.throws(delegate, function (err) {
-            return (err instanceof scaffold.Exceptions.ResolutionError) && /Could not resolve service/.test(err.message);
-        });
-
-        test.done();
-    },
-
-    namedServicesParametersResolution : function (test) {
-
-        containerBuilder.register(testData.Test1Base).as(function (c, name) {
-            return new testData.Test4(name);
-        }).named("A");
-
-        var container = containerBuilder.build();
-        var delegate = function () {
-            return container.resolveNamed(testData.Test1Base, "A");
-        };
-
-        test.throws(delegate, function (err) {
-            return (err instanceof scaffold.Exceptions.ResolutionError) && /Could not resolve service/.test(err.message);
-        });
-
-        test.done();
-    },
+                test.done();
+            },
 
 
-    attemptNamedServicesParametersResolution : function (test) {
+            namedServicesResolutionWithParamsError : function (test) {
 
-        containerBuilder.register(testData.Test1Base).as(function (c, name) {
-            return new testData.Test4(name);
-        }).named("A");
+                containerBuilder.register(testData.Test1Base).as(function (c, name) {
+                    return new testData.Test4(name);
+                }).named("A");
 
-        var container = containerBuilder.build();
-        var actual = container.tryResolveNamed(testData.Test1Base, "A");
-        test.equal(null, actual);
+                var container = containerBuilder.build();
+                var delegate = function () {
+                    return container.resolveNamed(testData.Test1Base, "A");
+                };
 
-        test.done();
-    },
+                test.throws(delegate, function (err) {
+                    return (err instanceof scaffold.Exceptions.ResolutionError) && /Could not resolve service/.test(err.message);
+                });
+
+                test.done();
+            },
+
+            namedServicesParametersResolution : function (test) {
+
+                containerBuilder.register(testData.Test1Base).as(function (c, name) {
+                    return new testData.Test4(name);
+                }).named("A");
+
+                var container = containerBuilder.build();
+                var delegate = function () {
+                    return container.resolveNamed(testData.Test1Base, "A");
+                };
+
+                test.throws(delegate, function (err) {
+                    return (err instanceof scaffold.Exceptions.ResolutionError) && /Could not resolve service/.test(err.message);
+                });
+
+                test.done();
+            },
 
 
-    collidingResolution : function (test) {
+            attemptNamedServicesParametersResolution : function (test) {
 
-        containerBuilder.register(testData.Test1Base).as(function () {
-            return new testData.Test4("a");
-        });
-        containerBuilder.register(testData.Test1Base).as(function () {
-            return new testData.Test4("b");
-        });
+                containerBuilder.register(testData.Test1Base).as(function (c, name) {
+                    return new testData.Test4(name);
+                }).named("A");
 
-        var container = containerBuilder.build();
-        var actual1 = container.resolve(testData.Test1Base);
-        var actual2 = container.resolve(testData.Test1Base);
+                var container = containerBuilder.build();
+                var actual = container.tryResolveNamed(testData.Test1Base, "A");
+                test.equal(null, actual);
 
-        test.notEqual(actual1, null);
-        test.notEqual(actual2, null);
-        test.strictEqual(actual1.Name, "b");
-        test.strictEqual(actual2.Name, "b");
+                test.done();
+            },
 
-        test.done();
-    }
+
+            collidingResolution : function (test) {
+
+                containerBuilder.register(testData.Test1Base).as(function () {
+                    return new testData.Test4("a");
+                });
+                containerBuilder.register(testData.Test1Base).as(function () {
+                    return new testData.Test4("b");
+                });
+
+                var container = containerBuilder.build();
+                var actual1 = container.resolve(testData.Test1Base);
+                var actual2 = container.resolve(testData.Test1Base);
+
+                test.notEqual(actual1, null);
+                test.notEqual(actual2, null);
+                test.strictEqual(actual1.Name, "b");
+                test.strictEqual(actual2.Name, "b");
+
+                test.done();
+            }
+        }
+    })()
 }

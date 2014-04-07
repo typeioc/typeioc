@@ -8,4 +8,3 @@ var Defaults = (function () {
     return Defaults;
 })();
 exports.Defaults = Defaults;
-//# sourceMappingURL=defaults.js.map

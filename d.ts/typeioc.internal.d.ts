@@ -92,7 +92,6 @@ declare module Typeioc.Internal {
     }
 
     interface IModuleRegistration {
-        applyBase(base : Typeioc.Internal.IRegistrationBase);
         getAsModuleRegistration : () => Typeioc.IAsModuleRegistration;
         registrations : IRegistrationBase[];
     }

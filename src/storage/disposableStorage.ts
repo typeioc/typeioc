@@ -6,19 +6,19 @@
 var weak = require('weak');
 
 export class DisposableStorage implements  Typeioc.Internal.IDisposableStorage {
-    private disposables : Typeioc.Internal.IDisposableItem[] = [];
+    private _disposables : Typeioc.Internal.IDisposableItem[] = [];
     private weakRef = weak;
 
     public add(obj : any, disposer : Typeioc.IDisposer<any>) {
 
         var item = this.createDisposableItem(obj, disposer);
 
-        this.disposables.push(item);
+        this._disposables.push(item);
     }
 
     public disposeItems() {
-        while(this.disposables.length > 0) {
-            var item = this.disposables.pop();
+        while(this._disposables.length > 0) {
+            var item = this._disposables.pop();
 
             if(!this.weakRef.isDead(item.weakReference)) {
                 var obj = this.weakRef.get(item.weakReference);

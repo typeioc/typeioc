@@ -18,6 +18,8 @@ exports.Config = ConfigProvider;
 
 exports.Utils = require('../lib/utils/index');
 
+exports.Mockery = require('sinon');
+
 function createBuilder() {
     return typeioc.createBuilder();
 }

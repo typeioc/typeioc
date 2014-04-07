@@ -20,6 +20,8 @@ export var Config = ConfigProvider;
 
 export var Utils = require('../lib/utils/index');
 
+export var Mockery = require('sinon');
+
 
 export function createBuilder() : Typeioc.IContainerBuilder {
     return <Typeioc.IContainerBuilder>typeioc.createBuilder();

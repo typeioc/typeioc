@@ -8,4 +8,3 @@ var Scope = (function () {
     return Scope;
 })();
 exports.Scope = Scope;
-//# sourceMappingURL=scope.js.map

@@ -7,4 +7,3 @@ var Owner = (function () {
     return Owner;
 })();
 exports.Owner = Owner;
-//# sourceMappingURL=owner.js.map

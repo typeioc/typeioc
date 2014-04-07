@@ -1,209 +1,212 @@
 
 'use strict';
 
-var Scaffold = require('../../scaffold');
-var Utils = Scaffold.Utils;
+exports.internal = {
 
-exports.internal = {};
-exports.internal.utils = (function() {
+    utils : (function() {
 
-   return  {
-       getParamNames_returns_param_names : function(test) {
-           var testFunc = function(a, b, c) { }
+        var Scaffold = require('../../scaffold');
+        var Utils = Scaffold.Utils;
 
-           var result = Utils.getParamNames(testFunc);
-           test.ok(Array.isArray(result));
-           test.strictEqual(result.length, 3);
-           test.strictEqual(result[0], 'a');
-           test.strictEqual(result[1], 'b');
-           test.strictEqual(result[2], 'c');
 
-           test.done();
-       },
+        return  {
+            getParamNames_returns_param_names : function(test) {
+                var testFunc = function(a, b, c) { }
 
-       getParamNames_returns_0_when_no_params : function(test) {
-           var testFunc = function() { }
+                var result = Utils.getParamNames(testFunc);
+                test.ok(Array.isArray(result));
+                test.strictEqual(result.length, 3);
+                test.strictEqual(result[0], 'a');
+                test.strictEqual(result[1], 'b');
+                test.strictEqual(result[2], 'c');
 
-           var result = Utils.getParamNames(testFunc);
-           test.ok(Array.isArray(result));
-           test.strictEqual(result.length, 0);
+                test.done();
+            },
 
-           test.done();
-       },
+            getParamNames_returns_0_when_no_params : function(test) {
+                var testFunc = function() { }
 
-       paramsCount_returns_params_count: function(test) {
+                var result = Utils.getParamNames(testFunc);
+                test.ok(Array.isArray(result));
+                test.strictEqual(result.length, 0);
 
-           var testFunc = function(a, b, c) { }
+                test.done();
+            },
 
-           var result = Utils.paramsCount(testFunc);
-           test.strictEqual(result, 3);
+            paramsCount_returns_params_count: function(test) {
 
-           test.done();
-       },
+                var testFunc = function(a, b, c) { }
 
-       paramsCount_returns_0_when_no_params: function(test) {
+                var result = Utils.paramsCount(testFunc);
+                test.strictEqual(result, 3);
 
-           var testFunc = function() { }
+                test.done();
+            },
 
-           var result = Utils.paramsCount(testFunc);
-           test.strictEqual(result, 0);
+            paramsCount_returns_0_when_no_params: function(test) {
 
-           test.done();
-       },
+                var testFunc = function() { }
 
-       hasParams_returns_true_when_params : function(test) {
+                var result = Utils.paramsCount(testFunc);
+                test.strictEqual(result, 0);
 
-           var testFunc = function(a, b, c) { }
+                test.done();
+            },
 
-           var result = Utils.hasParams(testFunc);
-           test.ok(result);
+            hasParams_returns_true_when_params : function(test) {
 
-           test.done();
-       },
+                var testFunc = function(a, b, c) { }
 
-       hasParams_returns_false_when_no_params : function(test) {
+                var result = Utils.hasParams(testFunc);
+                test.ok(result);
 
-           var testFunc = function() { }
+                test.done();
+            },
 
-           var result = Utils.hasParams(testFunc);
-           test.ok(result === false);
+            hasParams_returns_false_when_no_params : function(test) {
 
-           test.done();
-       },
+                var testFunc = function() { }
 
-       getFactoryArgsCount_returns_params_count_for_factory : function(test) {
-           var factory  = function(c, a, b, s) {}
+                var result = Utils.hasParams(testFunc);
+                test.ok(result === false);
 
-           var result = Utils.getFactoryArgsCount(factory);
+                test.done();
+            },
 
-           test.equal(result, 3);
+            getFactoryArgsCount_returns_params_count_for_factory : function(test) {
+                var factory  = function(c, a, b, s) {}
 
-           test.done();
-       },
+                var result = Utils.getFactoryArgsCount(factory);
 
-       getFactoryArgsCount_returns_0_for_factory_container_no_params : function(test) {
-           var factory  = function(c) {}
+                test.equal(result, 3);
 
-           var result = Utils.getFactoryArgsCount(factory);
+                test.done();
+            },
 
-           test.equal(result, 0);
+            getFactoryArgsCount_returns_0_for_factory_container_no_params : function(test) {
+                var factory  = function(c) {}
 
-           test.done();
-       },
+                var result = Utils.getFactoryArgsCount(factory);
 
-       getFactoryArgsCount_returns_0_for_factory_no_params : function(test) {
-           var factory  = function() {}
+                test.equal(result, 0);
 
-           var result = Utils.getFactoryArgsCount(factory);
+                test.done();
+            },
 
-           test.equal(result, 0);
+            getFactoryArgsCount_returns_0_for_factory_no_params : function(test) {
+                var factory  = function() {}
 
-           test.done();
-       },
+                var result = Utils.getFactoryArgsCount(factory);
 
-       isCompatible_returns_true_when_same_properties : function(test) {
-           var obj1 = {
-               a : 1, b : function() {}
-           };
+                test.equal(result, 0);
 
-           var obj2 = {
-               a : 10, b : function() {}
-           };
+                test.done();
+            },
 
-           var result = Utils.isCompatible(obj1, obj2);
+            isCompatible_returns_true_when_same_properties : function(test) {
+                var obj1 = {
+                    a : 1, b : function() {}
+                };
 
-           test.ok(result);
+                var obj2 = {
+                    a : 10, b : function() {}
+                };
 
-           test.done();
-       },
+                var result = Utils.isCompatible(obj1, obj2);
 
-       isCompatible_returns_false_when_no_same_properties : function(test) {
-           var obj1 = {
-               a : 1, b : 11
-           };
+                test.ok(result);
 
-           var obj2 = {
-               a : 10, b : function() {}
-           };
+                test.done();
+            },
 
-           var result = Utils.isCompatible(obj1, obj2);
+            isCompatible_returns_false_when_no_same_properties : function(test) {
+                var obj1 = {
+                    a : 1, b : 11
+                };
 
-           test.ok(result == false);
+                var obj2 = {
+                    a : 10, b : function() {}
+                };
 
-           test.done();
-       },
+                var result = Utils.isCompatible(obj1, obj2);
 
-       isCompatible_returns_true_when_inheritance : function(test) {
+                test.ok(result == false);
 
-           var obj1 = function() {
-               this.a = 1;
-           }
-           obj1.prototype.b = function() {}
-           obj1.prototype.d = function() {}
+                test.done();
+            },
 
-           var obj2 = function() {
-               this.c = 1;
-           }
+            isCompatible_returns_true_when_inheritance : function(test) {
 
-           obj2.prototype =  Object.create(obj1.prototype);
-           obj2.prototype.constructor = obj2;
-           obj2.prototype.d2 = function() {}
+                var obj1 = function() {
+                    this.a = 1;
+                }
+                obj1.prototype.b = function() {}
+                obj1.prototype.d = function() {}
 
-           var result = Utils.isCompatible(new obj2(), new obj1());
+                var obj2 = function() {
+                    this.c = 1;
+                }
 
-           test.ok(result);
+                obj2.prototype =  Object.create(obj1.prototype);
+                obj2.prototype.constructor = obj2;
+                obj2.prototype.d2 = function() {}
 
-           test.done();
-       },
+                var result = Utils.isCompatible(new obj2(), new obj1());
 
-       isCompatible_returns_false_when_inheritance_and_extention : function(test) {
+                test.ok(result);
 
-           var obj1 = function() {
-               this.a = 1;
-           }
-           obj1.prototype.b = function() {}
-           obj1.prototype.d = function() {}
+                test.done();
+            },
 
-           var obj2 = function() {
-               this.c = 1;
-           }
+            isCompatible_returns_false_when_inheritance_and_extention : function(test) {
 
-           obj2.prototype =  Object.create(obj1.prototype);
-           obj2.prototype.constructor = obj2;
-           obj2.prototype.d2 = function() {}
+                var obj1 = function() {
+                    this.a = 1;
+                }
+                obj1.prototype.b = function() {}
+                obj1.prototype.d = function() {}
 
-           var result = Utils.isCompatible(new obj1(), new obj2());
+                var obj2 = function() {
+                    this.c = 1;
+                }
 
-           test.ok(result === false);
+                obj2.prototype =  Object.create(obj1.prototype);
+                obj2.prototype.constructor = obj2;
+                obj2.prototype.d2 = function() {}
 
-           test.done();
-       },
+                var result = Utils.isCompatible(new obj1(), new obj2());
 
-       construct_create_instance_no_params : function(test) {
-           var factory  = function() {
-               this.a = 1;
-           }
+                test.ok(result === false);
 
-           var result = Utils.construct(factory);
+                test.done();
+            },
 
-           test.ok(result);
-           test.equal(1, result.a);
+            construct_create_instance_no_params : function(test) {
+                var factory  = function() {
+                    this.a = 1;
+                }
 
-           test.done();
-       },
+                var result = Utils.construct(factory);
 
-       construct_create_instance_with_params : function(test) {
-           var factory  = function(a, b, c) {
-               this.a = a + b + c;
-           }
+                test.ok(result);
+                test.equal(1, result.a);
 
-           var result = Utils.construct(factory, [1, 2, 3]);
+                test.done();
+            },
 
-           test.ok(result);
-           test.equal(1 + 2 + 3, result.a);
+            construct_create_instance_with_params : function(test) {
+                var factory  = function(a, b, c) {
+                    this.a = a + b + c;
+                }
 
-           test.done();
-       }
-   };
-})();
+                var result = Utils.construct(factory, [1, 2, 3]);
+
+                test.ok(result);
+                test.equal(1 + 2 + 3, result.a);
+
+                test.done();
+            }
+        };
+    })()
+}
 

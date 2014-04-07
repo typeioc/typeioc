@@ -1,47 +1,51 @@
 
 'use strict';
 
-var Scaffold = require('../../scaffold');
-var Types = Scaffold.Types;
+exports.internal = {
 
-exports.internal = {};
-exports.internal.Scope = (function() {
-    return {
+    scope : (function() {
 
-        scope_has_None_property: function(test) {
-            test.equal(1, Types.Scope.None);
+        var Scaffold = require('../../scaffold');
+        var Types = Scaffold.Types;
 
-            test.done();
-        },
 
-        scope_has_Container_property: function(test) {
-            test.equal(2, Types.Scope.Container);
+        return {
 
-            test.done();
-        },
+            scope_has_None_property: function(test) {
+                test.equal(1, Types.Scope.None);
 
-        scope_has_Hierarchy_property: function(test) {
-            test.equal(3, Types.Scope.Hierarchy);
+                test.done();
+            },
 
-            test.done();
-        },
+            scope_has_Container_property: function(test) {
+                test.equal(2, Types.Scope.Container);
 
-        owner_has_no_more_properties: function(test) {
+                test.done();
+            },
 
-            var properties = [];
+            scope_has_Hierarchy_property: function(test) {
+                test.equal(3, Types.Scope.Hierarchy);
 
-            for(var key in Types.Scope) {
-                properties.push(key);
+                test.done();
+            },
+
+            owner_has_no_more_properties: function(test) {
+
+                var properties = [];
+
+                for(var key in Types.Scope) {
+                    properties.push(key);
+                }
+
+                test.equal(3, properties.length);
+                test.equal('None', properties[0]);
+                test.equal('Container', properties[1]);
+                test.equal('Hierarchy', properties[2]);
+
+                test.done();
             }
-
-            test.equal(3, properties.length);
-            test.equal('None', properties[0]);
-            test.equal('Container', properties[1]);
-            test.equal('Hierarchy', properties[2]);
-
-            test.done();
         }
-    };
-})();
+    })()
+}
 
 

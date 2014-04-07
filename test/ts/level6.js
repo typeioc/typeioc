@@ -1,6 +1,6 @@
 'use strict';
 var scaffold = require('./../scaffold');
-var testData = scaffold.TestModule;
+var TestData = require('../data/test-data');
 
 (function (Level6) {
     var containerBuilder;
@@ -12,8 +12,8 @@ var testData = scaffold.TestModule;
     Level6.setUp = setUp;
 
     function fluentApiInitializeByDisposedNamedWithinOwnedBy(test) {
-        containerBuilder.register(testData.Test1Base).as(function () {
-            return new testData.Test5();
+        containerBuilder.register(TestData.Test1Base).as(function () {
+            return new TestData.Test5();
         }).initializeBy(function (c, item) {
         }).dispose(function (item) {
             return item.Dispose();
@@ -24,8 +24,8 @@ var testData = scaffold.TestModule;
     Level6.fluentApiInitializeByDisposedNamedWithinOwnedBy = fluentApiInitializeByDisposedNamedWithinOwnedBy;
 
     function fluentApiAs(test) {
-        var registration = containerBuilder.register(testData.Test1Base).as(function () {
-            return new testData.Test5();
+        var registration = containerBuilder.register(TestData.Test1Base).as(function () {
+            return new TestData.Test5();
         });
 
         test.equal(registration['as'], undefined);
@@ -45,8 +45,8 @@ var testData = scaffold.TestModule;
     Level6.fluentApiAs = fluentApiAs;
 
     function fluentApiInitializeBy(test) {
-        var registration = containerBuilder.register(testData.Test1Base).as(function () {
-            return new testData.Test5();
+        var registration = containerBuilder.register(TestData.Test1Base).as(function () {
+            return new TestData.Test5();
         }).initializeBy(function (c, item) {
         });
 
@@ -66,8 +66,8 @@ var testData = scaffold.TestModule;
     Level6.fluentApiInitializeBy = fluentApiInitializeBy;
 
     function fluentApiDispose(test) {
-        var registration = containerBuilder.register(testData.Test1Base).as(function () {
-            return new testData.Test5();
+        var registration = containerBuilder.register(TestData.Test1Base).as(function () {
+            return new TestData.Test5();
         }).dispose(function (item) {
             return item.Dispose();
         });
@@ -87,8 +87,8 @@ var testData = scaffold.TestModule;
     Level6.fluentApiDispose = fluentApiDispose;
 
     function fluentApiNamed(test) {
-        var registration = containerBuilder.register(testData.Test1Base).as(function () {
-            return new testData.Test5();
+        var registration = containerBuilder.register(TestData.Test1Base).as(function () {
+            return new TestData.Test5();
         }).named("Some Name");
 
         test.equal(registration['as'], undefined);
@@ -105,8 +105,8 @@ var testData = scaffold.TestModule;
     Level6.fluentApiNamed = fluentApiNamed;
 
     function fluentApiWithin(test) {
-        var registration = containerBuilder.register(testData.Test1Base).as(function () {
-            return new testData.Test5();
+        var registration = containerBuilder.register(TestData.Test1Base).as(function () {
+            return new TestData.Test5();
         }).within(3 /* Hierarchy */);
 
         test.equal(registration['as'], undefined);
@@ -122,7 +122,7 @@ var testData = scaffold.TestModule;
     Level6.fluentApiWithin = fluentApiWithin;
 
     function factoryNotDefinedError(test) {
-        var registration = containerBuilder.register(testData.Test1Base);
+        var registration = containerBuilder.register(TestData.Test1Base);
 
         var delegate = function () {
             return containerBuilder.build();

@@ -1,7 +1,7 @@
 'use strict';
 var scaffold = require('./../scaffold');
-var testData = scaffold.TestModule;
-var testDataSecond = scaffold.TestModule2;
+var TestData = require('../data/test-data');
+var TestDataSecond = require('../data/test-data2');
 var Config = scaffold.Config;
 
 (function (Level8) {
@@ -18,7 +18,7 @@ var Config = scaffold.Config;
         containerBuilder.registerConfig(config);
 
         var container = containerBuilder.build();
-        var actual = container.resolve(testData.Test1Base);
+        var actual = container.resolve(TestData.Test1Base);
 
         test.notEqual(actual, null);
         test.strictEqual(actual.Name, "test 1");
@@ -32,7 +32,7 @@ var Config = scaffold.Config;
         containerBuilder.registerConfig(config);
 
         var container = containerBuilder.build();
-        var actual = container.resolve(testData.Test1Base);
+        var actual = container.resolve(TestData.Test1Base);
 
         test.notEqual(actual, null);
         test.strictEqual(actual.Name, "test 1");
@@ -46,7 +46,7 @@ var Config = scaffold.Config;
         containerBuilder.registerConfig(config);
 
         var container = containerBuilder.build();
-        var actual = container.resolve(testData.Test1Base);
+        var actual = container.resolve(TestData.Test1Base);
 
         test.notEqual(actual, null);
         test.strictEqual(actual.Name, "Test 3 test 2");
@@ -60,7 +60,7 @@ var Config = scaffold.Config;
         containerBuilder.registerConfig(config);
 
         var container = containerBuilder.build();
-        var test1 = container.resolve(testData.Test1Base, "test 4");
+        var test1 = container.resolve(TestData.Test1Base, "test 4");
 
         test.notEqual(test1, null);
         test.strictEqual(test1.Name, "test 4");
@@ -74,9 +74,9 @@ var Config = scaffold.Config;
         containerBuilder.registerConfig(config);
 
         var container = containerBuilder.build();
-        var actual1 = container.resolveNamed(testData.Test1Base, "A");
-        var actual2 = container.resolveNamed(testData.Test1Base, "B");
-        var actual3 = container.resolve(testData.Test1Base);
+        var actual1 = container.resolveNamed(TestData.Test1Base, "A");
+        var actual2 = container.resolveNamed(TestData.Test1Base, "B");
+        var actual3 = container.resolve(TestData.Test1Base);
 
         test.notEqual(actual1, null);
         test.notEqual(actual2, null);
@@ -94,9 +94,9 @@ var Config = scaffold.Config;
         containerBuilder.registerConfig(config);
 
         var container = containerBuilder.build();
-        var test1 = container.resolve(testData.Test1Base);
+        var test1 = container.resolve(TestData.Test1Base);
         test1.Name = "test 1";
-        var test2 = container.resolve(testData.Test1Base);
+        var test2 = container.resolve(TestData.Test1Base);
 
         test.notEqual(test1, null);
         test.strictEqual(test1.Name, "test 1");
@@ -113,7 +113,7 @@ var Config = scaffold.Config;
 
         var container = containerBuilder.build();
 
-        var test1 = container.resolve(testData.Test1Base);
+        var test1 = container.resolve(TestData.Test1Base);
 
         container.dispose();
 
@@ -132,8 +132,8 @@ var Config = scaffold.Config;
 
         var container = containerBuilder.build();
 
-        var i1 = container.resolve(testData.Initializable);
-        var i2 = container.resolve(testData.Initializable);
+        var i1 = container.resolve(TestData.Initializable);
+        var i2 = container.resolve(TestData.Initializable);
 
         test.deepEqual(i1, i2);
         test.deepEqual(i1.name, i2.name);
@@ -149,7 +149,7 @@ var Config = scaffold.Config;
 
         var container = containerBuilder.build();
 
-        var t1 = container.resolve(testDataSecond.ServiceModule1.TestBaseClass);
+        var t1 = container.resolve(TestDataSecond.ServiceModule1.TestBaseClass);
 
         test.equal(t1.name(), "Concrete class");
 
@@ -164,7 +164,7 @@ var Config = scaffold.Config;
 
         var container = containerBuilder.build();
 
-        var t1 = container.resolve(testDataSecond.ServiceModule1.TestBaseClass);
+        var t1 = container.resolve(TestDataSecond.ServiceModule1.TestBaseClass);
 
         test.equal(t1.name(), "Concrete class77Test");
 
@@ -178,7 +178,7 @@ var Config = scaffold.Config;
 
         var container = containerBuilder.build();
 
-        var t1 = container.resolve(testDataSecond.ServiceModule3.TestBaseClass1);
+        var t1 = container.resolve(TestDataSecond.ServiceModule3.TestBaseClass1);
 
         test.equal(t1.name(), "Module6 - Class 1 - Concrete class77Test");
 
@@ -191,7 +191,7 @@ var Config = scaffold.Config;
         containerBuilder.registerConfig(config);
 
         var container = containerBuilder.build();
-        var actual = container.resolve(testData.Test1Base);
+        var actual = container.resolve(TestData.Test1Base);
 
         test.notEqual(actual, null);
         test.strictEqual(actual.Name, "test 1");

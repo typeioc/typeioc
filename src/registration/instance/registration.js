@@ -1,12 +1,9 @@
 /// <reference path="../../../d.ts/typeioc.internal.d.ts" />
 'use strict';
 var Registration = (function () {
-    function Registration() {
+    function Registration(_base) {
+        this._base = _base;
     }
-    Registration.prototype.applyBase = function (base) {
-        this._base = base;
-    };
-
     Registration.prototype.as = function (factory) {
         var self = this;
         self._base.factory = factory;
@@ -68,4 +65,3 @@ var Registration = (function () {
     return Registration;
 })();
 exports.Registration = Registration;
-//# sourceMappingURL=registration.js.map

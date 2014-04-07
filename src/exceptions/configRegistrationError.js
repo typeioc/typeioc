@@ -17,4 +17,3 @@ var ConfigRegistrationError = (function (_super) {
     return ConfigRegistrationError;
 })(BaseApplicationErrorModule.ApplicationError);
 exports.ConfigRegistrationError = ConfigRegistrationError;
-//# sourceMappingURL=configRegistrationError.js.map

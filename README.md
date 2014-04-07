@@ -5,6 +5,14 @@ Dependency injection container for node typescript.
 
 ###Install
 
+Install typescript globally
+
+```
+npm install typescript -g
+```
+
+Install typeioc
+
 ```
 npm install typeioc
 ```

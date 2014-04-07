@@ -7,7 +7,6 @@ import Utils = require('../../utils/index');
 export class ModuleRegistration implements Typeioc.Internal.IModuleRegistration{
 
     private _asModule : Object;
-    private _base : Typeioc.Internal.IRegistrationBase;
 
     public get registrations() : Typeioc.Internal.IRegistrationBase[] {
 
@@ -42,12 +41,9 @@ export class ModuleRegistration implements Typeioc.Internal.IModuleRegistration{
         return result;
     }
 
-    constructor(private _internalStorage : Typeioc.Internal.IInternalStorage<any, Typeioc.Internal.IModuleItemRegistrationOptions>,
+    constructor(private _base : Typeioc.Internal.IRegistrationBase,
+                private _internalStorage : Typeioc.Internal.IInternalStorage<any, Typeioc.Internal.IModuleItemRegistrationOptions>,
                 private _registrationBaseService : Typeioc.Internal.IRegistrationBaseService) {
-    }
-
-    public applyBase(base : Typeioc.Internal.IRegistrationBase) {
-        this._base = base;
     }
 
     public getAsModuleRegistration() : Typeioc.IAsModuleRegistration {

@@ -17,4 +17,3 @@ var ArgumentNullError = (function (_super) {
     return ArgumentNullError;
 })(BaseApplicationErrorModule.ApplicationError);
 exports.ArgumentNullError = ArgumentNullError;
-//# sourceMappingURL=argumentNullError.js.map

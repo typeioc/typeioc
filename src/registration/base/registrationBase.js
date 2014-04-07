@@ -1,14 +1,13 @@
 /// <reference path="../../../d.ts/typeioc.internal.d.ts" />
 'use strict';
 var RegistrationBase = (function () {
-    function RegistrationBase(service) {
-        this._service = null;
+    function RegistrationBase(_service) {
+        this._service = _service;
         this._factory = null;
         this._name = null;
         this._initializer = null;
         this._disposer = null;
         this._instance = null;
-        this._service = service;
         this.args = [];
     }
     Object.defineProperty(RegistrationBase.prototype, "name", {
@@ -152,4 +151,3 @@ var RegistrationBase = (function () {
     return RegistrationBase;
 })();
 exports.RegistrationBase = RegistrationBase;
-//# sourceMappingURL=registrationBase.js.map

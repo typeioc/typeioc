@@ -83,11 +83,7 @@ export class Scaffold {
             create : (baseRegistration : Typeioc.Internal.IRegistrationBase) =>  {
                 var storage = internalStorageService.create();
 
-                var result = new ModuleRego.ModuleRegistration(storage, registrationBaseService);
-
-                result.applyBase(baseRegistration);
-
-                return result;
+                return  new ModuleRego.ModuleRegistration(baseRegistration, storage, registrationBaseService);
             }
         };
     }
@@ -129,10 +125,6 @@ export class Scaffold {
 
 class InstanceRegistrationService implements Typeioc.Internal.IInstanceRegistrationService {
     create<R>(baseRegistration : Typeioc.Internal.IRegistrationBase) : Typeioc.IRegistration<R> {
-        var result = new InstanceRegoModule.Registration();
-
-        result.applyBase(baseRegistration);
-
-        return result;
+        return new InstanceRegoModule.Registration(baseRegistration);
     }
 }
