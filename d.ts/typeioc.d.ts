@@ -1,5 +1,4 @@
 
-
 declare module Typeioc {
 
     function createBuilder() : IContainerBuilder;
