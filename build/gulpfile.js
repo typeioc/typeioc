@@ -1,6 +1,7 @@
 
 'use strict';
 
+var path = require('path');
 var exec = require('gulp-exec');
 var child_process = require('child_process');
 var gulp = require('gulp');
@@ -15,7 +16,9 @@ var definitionSources = '../d.ts/typeioc*.d.ts';
 var testSources = '../test/**/*.ts';
 var libDestination = '../lib';
 var libFiles = '../lib/*';
-var typescriptCommand = 'tsc --target ES5  --module commonjs --sourcemap ';
+var typescriptCommand = 'tsc --target ES5  --module commonjs ';
+var typescriptCommandSM = typescriptCommand + ' --sourcemap ';
+
 
 
 gulp.task('tsc', ['tsc-lib', 'tsc-tests'], function() {
@@ -49,7 +52,7 @@ gulp.task('clean-lib', function() {
 
 gulp.task('tsc-tests', function() {
     gulp.src(testSources, { read: false })
-        .pipe(exec(typescriptCommand + ' <%= file.path %>'));
+        .pipe(exec(typescriptCommandSM + ' <%= file.path %>'));
 });
 
 

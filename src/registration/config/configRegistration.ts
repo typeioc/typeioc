@@ -2,7 +2,6 @@
 
 'use strict';
 
-
 import Exceptions = require('../../exceptions/index');
 import Utils = require('../../utils/index');
 
