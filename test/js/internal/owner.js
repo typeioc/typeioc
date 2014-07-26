@@ -11,6 +11,7 @@ exports.internal = {
         return {
 
             owner_has_Container_property: function(test) {
+
                 test.equal(1, Types.Owner.Container);
 
                 test.done();
