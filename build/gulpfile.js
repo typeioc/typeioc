@@ -9,15 +9,15 @@ var util = require('gulp-util');
 var eventStream = require('event-stream');
 var typescript = require('gulp-tsc');
 var clean = require('gulp-clean');
-
+var remove = require('rimraf');
 
 var typescriptSources = '../src/**/*.ts';
 var definitionSources = '../d.ts/typeioc*.d.ts';
 var testSources = '../test/**/*.ts';
 var libDestination = 'lib';
 var libJSDestination = 'lib-js';
-var libFiles = '../lib/*';
-var libJSFiles = '../lib-js/*';
+var libFiles = '../lib';
+var libJSFiles = '../lib-js';
 var typescriptCommand = 'tsc --target ES5  --module commonjs ';
 var typescriptCommandSM = typescriptCommand + ' --sourcemap ';
 
@@ -64,16 +64,15 @@ gulp.task('tsc-lib', ['clean-lib'], function() {
     .pipe(gulp.dest('../'));
 });
 
-gulp.task('clean-lib', function() {
+gulp.task('clean-lib', function(cb) {
 
-    gulp.src(libFiles, {read: false})
-        .pipe(clean({force: true}));
+    remove(libFiles, cb);
+
 });
 
-gulp.task('clean-lib-js', function() {
+gulp.task('clean-lib-js', function(cb) {
 
-    gulp.src(libJSFiles, {read: false})
-        .pipe(clean({force: true}));
+    remove(libJSFiles, cb);
 });
 
 gulp.task('tsc-tests', function() {

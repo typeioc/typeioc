@@ -16,12 +16,12 @@
     "gulp-exec": "~2.0.1",
     "gulp-util": "~2.2.14",
     "event-stream": "~3.1.5",
-    "gulp-clean": "~0.2.4",
     "gulp-tsc": "~0.8.0",
     "sinon": "~1.9.1",
     "map-stream": "~0.1.0",
     "jscoverage": "~0.5.5",
-    "coveralls": "~2.11.1"
+    "coveralls": "~2.11.1",
+    "rimraf": "~2.2.8"
   },
   "scripts": {
     "test": "node test/runner",
