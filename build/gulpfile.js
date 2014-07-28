@@ -8,7 +8,6 @@ var gulp = require('gulp');
 var util = require('gulp-util');
 var eventStream = require('event-stream');
 var typescript = require('gulp-tsc');
-var clean = require('gulp-clean');
 var remove = require('rimraf');
 
 var typescriptSources = '../src/**/*.ts';
