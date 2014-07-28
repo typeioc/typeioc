@@ -19,10 +19,13 @@
     "gulp-clean": "~0.2.4",
     "gulp-tsc": "~0.8.0",
     "sinon": "~1.9.1",
-    "map-stream": "~0.1.0"
+    "map-stream": "~0.1.0",
+    "jscoverage": "~0.5.5",
+    "coveralls": "~2.11.1"
   },
   "scripts": {
-    "test": "node test/runner.js"
+    "test": "node test/runner",
+    "coveralls": "jscoverage lib lib-cov && TYPEIOC_COV=1 nodeunit --reporter=lcov test/js/* | coveralls"
   },
   "keywords": [
     "typescript",
