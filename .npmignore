@@ -1,5 +1,6 @@
 .idea/
 lib-cov/
+lib-js/
 npm-debug.log
 samples
 test/ts
