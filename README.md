@@ -1,6 +1,9 @@
 TypeIOC
 =======
 
+ [![Build Status](https://travis-ci.org/maxgherman/TypeIOC.svg?branch=master)](https://travis-ci.org/maxgherman/TypeIOC)
+
+
 Dependency injection container for node typescript.
 
 ###Install
