@@ -21,11 +21,13 @@
     "map-stream": "~0.1.0",
     "jscoverage": "~0.5.5",
     "coveralls": "~2.11.1",
-    "rimraf": "~2.2.8"
+    "rimraf": "~2.2.8",
+    "codeclimate-test-reporter": "0.0.3"
   },
   "scripts": {
     "test": "node test/runner",
-    "coveralls": "jscoverage lib-js lib-cov && TYPEIOC_COV=1 nodeunit --reporter=lcov test/js/* | coveralls"
+    "coveralls": "jscoverage lib-js lib-cov && TYPEIOC_COV=1 nodeunit --reporter=lcov test/js/* | coveralls",
+    "codeclimate": "jscoverage lib-js lib-cov && TYPEIOC_COV=1 nodeunit --reporter=lcov test/js/* | CODECLIMATE_REPO_TOKEN=4d695ca8fbc1be6c4f20509a918f006eb3ac84c871364cb935ac0f75ec852e01  codeclimate"
   },
   "keywords": [
     "typescript",
