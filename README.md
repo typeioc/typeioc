@@ -1,6 +1,8 @@
 TypeIOC
 =======
 
+ [![NPM](https://nodei.co/npm/typeioc.png?downloads=true)](https://nodei.co/npm/typeioc/)
+ 
  [![NPM version](https://badge.fury.io/js/typeioc.svg)](http://badge.fury.io/js/typeioc)
  [![Build Status](https://travis-ci.org/maxgherman/TypeIOC.svg?branch=master)](https://travis-ci.org/maxgherman/TypeIOC)
  [![Coverage Status](https://img.shields.io/coveralls/maxgherman/TypeIOC.svg)](https://coveralls.io/r/maxgherman/TypeIOC?branch=master)
