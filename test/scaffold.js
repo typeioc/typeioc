@@ -8,6 +8,7 @@ var ConfigProvider = ConfigModule.Config;
 exports.Exceptions = typeioc.Exceptions;
 exports.Types = typeioc.Types;
 exports.RegistrationBase = require('../lib/registration/base/registrationBase');
+exports.ExceptionBase = require('../lib/exceptions/baseError');
 exports.TestModule = require('./data/test-data');
 exports.TestModule2 = require('./data/test-data2');
 
