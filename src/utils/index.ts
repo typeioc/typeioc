@@ -10,16 +10,6 @@ export function getParamNames(func : Function) : string[] {
     return result || [];
 }
 
-export function paramsCount(func : Function) {
-    var paramNames = getParamNames(func);
-
-    return paramNames.length;
-}
-
-export function hasParams(func : Function) : boolean {
-    return paramsCount(func) > 0;
-}
-
 export function getFactoryArgsCount(factory: Typeioc.IFactory<any>) {
 
     var paramNames = getParamNames(factory);

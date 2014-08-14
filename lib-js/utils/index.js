@@ -8,18 +8,6 @@ function getParamNames(func) {
 }
 exports.getParamNames = getParamNames;
 
-function paramsCount(func) {
-    var paramNames = exports.getParamNames(func);
-
-    return paramNames.length;
-}
-exports.paramsCount = paramsCount;
-
-function hasParams(func) {
-    return exports.paramsCount(func) > 0;
-}
-exports.hasParams = hasParams;
-
 function getFactoryArgsCount(factory) {
     var paramNames = exports.getParamNames(factory);
 

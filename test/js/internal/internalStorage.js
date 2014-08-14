@@ -90,6 +90,8 @@ exports.internal = {
                 }
 
                 test.throws(delegate, function(error) {
+                    test.strictEqual(key, error.data.key);
+
                     return (error instanceof Scaffold.Exceptions.StorageKeyNotFoundError);
                 });
 
