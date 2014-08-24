@@ -33,52 +33,12 @@ exports.internal = {
                 test.done();
             },
 
-            paramsCount_returns_params_count: function(test) {
-
-                var testFunc = function(a, b, c) { }
-
-                var result = Utils.paramsCount(testFunc);
-                test.strictEqual(result, 3);
-
-                test.done();
-            },
-
-            paramsCount_returns_0_when_no_params: function(test) {
-
-                var testFunc = function() { }
-
-                var result = Utils.paramsCount(testFunc);
-                test.strictEqual(result, 0);
-
-                test.done();
-            },
-
-            hasParams_returns_true_when_params : function(test) {
-
-                var testFunc = function(a, b, c) { }
-
-                var result = Utils.hasParams(testFunc);
-                test.ok(result);
-
-                test.done();
-            },
-
-            hasParams_returns_false_when_no_params : function(test) {
-
-                var testFunc = function() { }
-
-                var result = Utils.hasParams(testFunc);
-                test.ok(result === false);
-
-                test.done();
-            },
-
             getFactoryArgsCount_returns_params_count_for_factory : function(test) {
                 var factory  = function(c, a, b, s) {}
 
                 var result = Utils.getFactoryArgsCount(factory);
 
-                test.equal(result, 3);
+                test.equal(result, 31);
 
                 test.done();
             },
