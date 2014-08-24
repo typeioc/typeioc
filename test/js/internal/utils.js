@@ -38,7 +38,7 @@ exports.internal = {
 
                 var result = Utils.getFactoryArgsCount(factory);
 
-                test.equal(result, 31);
+                test.equal(result, 3);
 
                 test.done();
             },
