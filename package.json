@@ -25,7 +25,7 @@
     "gulp-tsc": "~0.9.2"
   },
   "scripts": {
-    "test": "nodeunit test/js/*",
+    "test": "node test/runner",
     "coveralls": "jscoverage lib-js lib-cov && TYPEIOC_COV=1 nodeunit --reporter=lcov test/js/* | coveralls",
     "codeclimate": "jscoverage lib-js lib-cov && TYPEIOC_COV=1 nodeunit --reporter=lcov test/js/* | CODECLIMATE_REPO_TOKEN=4d695ca8fbc1be6c4f20509a918f006eb3ac84c871364cb935ac0f75ec852e01  codeclimate"
   },
