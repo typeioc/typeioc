@@ -206,11 +206,9 @@ var Config = (function () {
                             },
                             parameters: [
                                 {
-                                    isDependency: false,
                                     instance: 77
                                 },
                                 {
-                                    isDependency: false,
                                     instance: "Test"
                                 }
                             ]
@@ -234,11 +232,9 @@ var Config = (function () {
                             },
                             parameters: [
                                 {
-                                    isDependency: false,
                                     instance: 77
                                 },
                                 {
-                                    isDependency: false,
                                     instance: "Test"
                                 }
                             ]
@@ -269,7 +265,7 @@ var Config = (function () {
         };
     };
 
-    Config.registerComponentsWithinModel = function () {
+    Config.registerComponentsWithinModule = function () {
         return {
             modules: [
                 {

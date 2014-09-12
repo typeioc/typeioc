@@ -121,7 +121,7 @@ declare module Typeioc {
     }
 
     interface IInstantiationItem {
-        isDependency : boolean;
+        isDependency? : boolean;
         location? : IInstanceLocation;
         instance? : any;
     }

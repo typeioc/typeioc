@@ -118,13 +118,11 @@ export class ConfigRegistration implements Typeioc.Internal.IConfigRegistration 
                     var factory = forInstance.factory || self.getInstantiation(resolver, params, configModule.resolverModule);
 
                     asResolver.for<any>(resolver, factory);
-
                 });
             }
 
             var regoes = moduleRegistration.registrations;
             result.push.apply(result, regoes);
-
         }
 
         return result;
@@ -150,8 +148,8 @@ export class ConfigRegistration implements Typeioc.Internal.IConfigRegistration 
             result.factory = this.getInstantiation(resolver, params, resolverModule);
         }
 
-        result.scope = component.within !== undefined ? component.within : this._scope;
-        result.owner = component.ownedBy !== undefined ? component.ownedBy : this._owner;
+        result.scope = component.within || this._scope;
+        result.owner = component.ownedBy || this._owner;
 
         if(component.initializeBy) {
             result.initializer = component.initializeBy;
@@ -194,7 +192,7 @@ export class ConfigRegistration implements Typeioc.Internal.IConfigRegistration 
 
                 var component = this.getComponent(item.location, moduleInstance);
 
-                return item.isDependency ? c.resolve(component) : new component();
+                return item.isDependency === true ? c.resolve(component) : new component();
             });
 
             return Utils.construct(resolver, instances);

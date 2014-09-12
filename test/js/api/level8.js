@@ -192,7 +192,7 @@ exports.api = {
 
             registerComponentsWithinModel : function (test) {
 
-                var config = Config.registerComponentsWithinModel();
+                var config = Config.registerComponentsWithinModule();
                 containerBuilder.registerConfig(config);
 
                 var container = containerBuilder.build();

@@ -75,8 +75,12 @@ exports.internal = {
                 }
 
                 test.throws(delegate, function(error) {
+                    test.strictEqual(key2, error.data.key);
                     return (error instanceof Scaffold.Exceptions.StorageKeyNotFoundError);
                 });
+
+                test.expect(2);
+
 
                 test.done();
             },
@@ -95,6 +99,8 @@ exports.internal = {
                     return (error instanceof Scaffold.Exceptions.StorageKeyNotFoundError);
                 });
 
+                test.expect(2);
+
                 test.done();
             },
 
@@ -108,7 +114,7 @@ exports.internal = {
 
                 test.throws(delegate, function(error) {
 
-                    test.equal(key, error.data.key);
+                    test.strictEqual(key, error.data.key);
 
                     return true;
                 });

@@ -18,6 +18,8 @@ exports.internal = {
                 test.ok(Exceptions.StorageKeyNotFoundError);
                 test.ok(Exceptions.ConfigurationError);
 
+                test.ok(Object.getOwnPropertyNames(Exceptions).length == 5);
+
                 test.done();
             },
 
@@ -48,7 +50,8 @@ exports.internal = {
 
                 var baseError = new ExceptionBase.BaseError();
 
-                test.ok(baseError.stack);
+                var stack = baseError.stack;
+                test.ok(stack);
 
                 test.done();
             },

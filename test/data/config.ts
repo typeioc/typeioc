@@ -187,11 +187,9 @@ export class Config
                             },
                             parameters : [
                                 {
-                                    isDependency:false,
                                     instance : 77
                                 },
                                 {
-                                    isDependency:false,
                                     instance : "Test"
                                 }
                             ]
@@ -216,11 +214,9 @@ export class Config
                             },
                             parameters : [
                                 {
-                                    isDependency:false,
                                     instance : 77
                                 },
                                 {
-                                    isDependency:false,
                                     instance : "Test"
                                 }
                             ]
@@ -251,7 +247,7 @@ export class Config
         };
     }
 
-    public static registerComponentsWithinModel() : Typeioc.IConfig {
+    public static registerComponentsWithinModule() : Typeioc.IConfig {
         return {
 
             modules : [
