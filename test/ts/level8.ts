@@ -189,9 +189,9 @@ export module Level8 {
         test.done();
     }
 
-    export function registerComponentsWithinModel(test) {
+    export function registerComponentsWithinModule(test) {
 
-        var config = Config.registerComponentsWithinModel();
+        var config = Config.registerComponentsWithinModule();
         containerBuilder.registerConfig(config);
 
         var container = containerBuilder.build();

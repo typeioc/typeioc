@@ -186,8 +186,8 @@ var Config = scaffold.Config;
     }
     Level8.registerModuleConstructorWithDependencies = registerModuleConstructorWithDependencies;
 
-    function registerComponentsWithinModel(test) {
-        var config = Config.registerComponentsWithinModel();
+    function registerComponentsWithinModule(test) {
+        var config = Config.registerComponentsWithinModule();
         containerBuilder.registerConfig(config);
 
         var container = containerBuilder.build();
@@ -198,7 +198,7 @@ var Config = scaffold.Config;
 
         test.done();
     }
-    Level8.registerComponentsWithinModel = registerComponentsWithinModel;
+    Level8.registerComponentsWithinModule = registerComponentsWithinModule;
 })(exports.Level8 || (exports.Level8 = {}));
 var Level8 = exports.Level8;
 //# sourceMappingURL=level8.js.map

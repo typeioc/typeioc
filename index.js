@@ -1,10 +1,7 @@
 
-
-var libFolder = process.env.TYPEIOC_COV ? 'lib-cov' : 'lib';
-
-var builder =  require(['.', libFolder, 'scaffold'].join('/'));
-var types = require(['.', libFolder, 'types/index'].join('/'));
-var exceptions = require(['.', libFolder, 'exceptions/index'].join('/'));
+var builder =  require('./lib/scaffold');
+var types = require('./lib/types/index');
+var exceptions = require('./lib/exceptions/index');
 
 
 module.exports = {

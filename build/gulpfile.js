@@ -11,37 +11,18 @@ var typescriptSources = '../src/**/*.ts';
 var definitionSources = '../d.ts/typeioc*.d.ts';
 var testSources = '../test/**/*.ts';
 var libDestination = 'lib';
-var libJSDestination = 'lib-js';
 var libFiles = '../lib';
-var libJSFiles = '../lib-js';
 var typescriptCommand = 'tsc --target ES5  --module commonjs ';
 var typescriptCommandSM = typescriptCommand + ' --sourcemap ';
 
 
 
-gulp.task('tsc', ['tsc-lib', 'tsc-lib-js', 'tsc-tests'], function() {
+gulp.task('tsc', ['tsc-lib', 'tsc-tests'], function() {
 
 });
 
-gulp.task('tsc-lib-all', ['tsc-lib', 'tsc-lib-js'], function() {
+gulp.task('tsc-lib-all', ['tsc-lib'], function() {
 
-});
-
-
-gulp.task('tsc-lib-js', ['clean-lib-js'], function() {
-
-    eventStream.concat(
-        gulp.src(definitionSources, { read: false }),
-        gulp.src(typescriptSources, { read: false })
-    )
-        .pipe(typescript({
-            tscSearch : ['shell'],
-            module: 'commonjs',
-            target: 'ES5',
-            sourcemap : false,
-            pathFilter: function (path) { return path.replace(/^src/, libJSDestination); }
-        }))
-        .pipe(gulp.dest('../'));
 });
 
 gulp.task('tsc-lib', ['clean-lib'], function() {
@@ -64,11 +45,6 @@ gulp.task('clean-lib', function(cb) {
 
     remove(libFiles, cb);
 
-});
-
-gulp.task('clean-lib-js', function(cb) {
-
-    remove(libJSFiles, cb);
 });
 
 gulp.task('tsc-tests', function() {
