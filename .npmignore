@@ -6,5 +6,6 @@ samples
 test/ts
 test/*.ts
 test/*.js.map
+test/coverage/
 src/*.js
 src/*.js.map

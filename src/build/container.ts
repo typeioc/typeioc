@@ -59,6 +59,7 @@ export class Container implements Typeioc.Internal.IContainer {
 
     public tryResolve<R>(service: any, ...args:any[]) : R {
         var rego = this.createRegistration(service);
+        rego.args = args;
 
         return <R>this.resolveBase(rego, false);
     }

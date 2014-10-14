@@ -15,7 +15,6 @@ var Test1Base = (function () {
         enumerable: true,
         configurable: true
     });
-
     Object.defineProperty(Test1Base.prototype, "Disposed", {
         get: function () {
             return false;
@@ -26,7 +25,6 @@ var Test1Base = (function () {
     return Test1Base;
 })();
 exports.Test1Base = Test1Base;
-
 var Test2Base = (function () {
     function Test2Base() {
     }
@@ -40,7 +38,6 @@ var Test2Base = (function () {
     return Test2Base;
 })();
 exports.Test2Base = Test2Base;
-
 var Test1 = (function (_super) {
     __extends(Test1, _super);
     function Test1() {
@@ -57,7 +54,6 @@ var Test1 = (function (_super) {
     return Test1;
 })(Test1Base);
 exports.Test1 = Test1;
-
 var Test2 = (function (_super) {
     __extends(Test2, _super);
     function Test2() {
@@ -74,22 +70,18 @@ var Test2 = (function (_super) {
     return Test2;
 })(Test2Base);
 exports.Test2 = Test2;
-
 var Test3 = (function (_super) {
     __extends(Test3, _super);
     function Test3(test2) {
         _super.call(this);
-
         this.test2 = test2;
     }
     Object.defineProperty(Test3.prototype, "Name", {
         get: function () {
             var result = "Test 3 ";
-
             if (this.test2) {
                 result += this.test2.Name;
             }
-
             return result;
         },
         enumerable: true,
@@ -98,12 +90,10 @@ var Test3 = (function (_super) {
     return Test3;
 })(Test1Base);
 exports.Test3 = Test3;
-
 var Test4 = (function (_super) {
     __extends(Test4, _super);
     function Test4(name) {
         _super.call(this);
-
         this.name = name;
     }
     Object.defineProperty(Test4.prototype, "Name", {
@@ -116,11 +106,9 @@ var Test4 = (function (_super) {
         enumerable: true,
         configurable: true
     });
-
     return Test4;
 })(Test1Base);
 exports.Test4 = Test4;
-
 var Test5 = (function (_super) {
     __extends(Test5, _super);
     function Test5() {
@@ -134,7 +122,6 @@ var Test5 = (function (_super) {
         enumerable: true,
         configurable: true
     });
-
     Object.defineProperty(Test5.prototype, "Disposed", {
         get: function () {
             return this._disposed;
@@ -142,21 +129,18 @@ var Test5 = (function (_super) {
         enumerable: true,
         configurable: true
     });
-
     Test5.prototype.Dispose = function () {
         this._disposed = true;
     };
     return Test5;
 })(Test1Base);
 exports.Test5 = Test5;
-
 var Test6 = (function () {
     function Test6() {
     }
     return Test6;
 })();
 exports.Test6 = Test6;
-
 var Initializable = (function () {
     function Initializable() {
         this.name = "test name";
@@ -168,7 +152,6 @@ var Initializable = (function () {
     return Initializable;
 })();
 exports.Initializable = Initializable;
-
 var Initializable2 = (function (_super) {
     __extends(Initializable2, _super);
     function Initializable2() {
@@ -177,7 +160,7 @@ var Initializable2 = (function (_super) {
     return Initializable2;
 })(Initializable);
 exports.Initializable2 = Initializable2;
-
+var TestModule1;
 (function (TestModule1) {
     var Test1 = (function () {
         function Test1(name) {
@@ -187,7 +170,6 @@ exports.Initializable2 = Initializable2;
         return Test1;
     })();
     TestModule1.Test1 = Test1;
-
     var Test2 = (function () {
         function Test2() {
         }
@@ -197,13 +179,11 @@ exports.Initializable2 = Initializable2;
         return Test2;
     })();
     TestModule1.Test2 = Test2;
-
     function testNoclass() {
     }
     TestModule1.testNoclass = testNoclass;
-})(exports.TestModule1 || (exports.TestModule1 = {}));
-var TestModule1 = exports.TestModule1;
-
+})(TestModule1 = exports.TestModule1 || (exports.TestModule1 = {}));
+var TestModule2;
 (function (TestModule2) {
     var Test1 = (function () {
         function Test1(name) {
@@ -213,7 +193,6 @@ var TestModule1 = exports.TestModule1;
         return Test1;
     })();
     TestModule2.Test1 = Test1;
-
     var Test3 = (function () {
         function Test3() {
         }
@@ -223,27 +202,22 @@ var TestModule1 = exports.TestModule1;
         return Test3;
     })();
     TestModule2.Test3 = Test3;
-
     var Test4 = (function () {
         function Test4() {
         }
         Test4.prototype.age = function () {
             return 0;
         };
-
         Test4.prototype.age1 = function () {
             return 0;
         };
         return Test4;
     })();
     TestModule2.Test4 = Test4;
-
     function testNoclass() {
     }
     TestModule2.testNoclass = testNoclass;
-})(exports.TestModule2 || (exports.TestModule2 = {}));
-var TestModule2 = exports.TestModule2;
-
+})(TestModule2 = exports.TestModule2 || (exports.TestModule2 = {}));
 function TestNoClass() {
 }
 exports.TestNoClass = TestNoClass;

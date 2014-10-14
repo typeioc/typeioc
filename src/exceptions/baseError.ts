@@ -30,6 +30,7 @@ export class BaseError implements Error {
     constructor(message?: string) {
         this.nativeError = new Error(message);
 
+        this.name = "BaseError";
     }
 }
 

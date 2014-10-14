@@ -10,6 +10,15 @@ exports.internal = {
 
         return {
 
+            owner_is_instantiable_function: function(test) {
+
+                var owner = new Types.Owner();
+                test.ok(owner);
+                test.equal("function", typeof Types.Owner);
+
+                test.done();
+            },
+
             owner_has_Container_property: function(test) {
 
                 test.equal(1, Types.Owner.Container);

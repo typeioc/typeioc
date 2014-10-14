@@ -59,6 +59,7 @@ exports.internal = {
             applicationError_derives_BaseError: function(test) {
 
                 var baseError = new Exceptions.ApplicationError();
+                baseError.data = 'test'
 
                 test.ok(baseError instanceof ExceptionBase.BaseError);
 

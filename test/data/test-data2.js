@@ -6,7 +6,9 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
+var ServiceModule1;
 (function (ServiceModule1) {
+    ServiceModule1.testValue = 999;
     var TestBaseClass = (function () {
         function TestBaseClass() {
         }
@@ -16,17 +18,17 @@ var __extends = this.__extends || function (d, b) {
         return TestBaseClass;
     })();
     ServiceModule1.TestBaseClass = TestBaseClass;
-})(exports.ServiceModule1 || (exports.ServiceModule1 = {}));
-var ServiceModule1 = exports.ServiceModule1;
-
+})(ServiceModule1 = exports.ServiceModule1 || (exports.ServiceModule1 = {}));
+var ServiceModule2;
 (function (ServiceModule2) {
+    ServiceModule2.testValue = 999;
     function TestBaseFunction() {
     }
     ServiceModule2.TestBaseFunction = TestBaseFunction;
-})(exports.ServiceModule2 || (exports.ServiceModule2 = {}));
-var ServiceModule2 = exports.ServiceModule2;
-
+})(ServiceModule2 = exports.ServiceModule2 || (exports.ServiceModule2 = {}));
+var ServiceModule3;
 (function (ServiceModule3) {
+    ServiceModule3.testValue = 999;
     var TestBaseClass1 = (function () {
         function TestBaseClass1() {
         }
@@ -36,7 +38,6 @@ var ServiceModule2 = exports.ServiceModule2;
         return TestBaseClass1;
     })();
     ServiceModule3.TestBaseClass1 = TestBaseClass1;
-
     var TestBaseClass2 = (function () {
         function TestBaseClass2() {
         }
@@ -46,7 +47,6 @@ var ServiceModule2 = exports.ServiceModule2;
         return TestBaseClass2;
     })();
     ServiceModule3.TestBaseClass2 = TestBaseClass2;
-
     var TestBaseClass3 = (function () {
         function TestBaseClass3() {
         }
@@ -56,10 +56,10 @@ var ServiceModule2 = exports.ServiceModule2;
         return TestBaseClass3;
     })();
     ServiceModule3.TestBaseClass3 = TestBaseClass3;
-})(exports.ServiceModule3 || (exports.ServiceModule3 = {}));
-var ServiceModule3 = exports.ServiceModule3;
-
+})(ServiceModule3 = exports.ServiceModule3 || (exports.ServiceModule3 = {}));
+var SubstituteModule1;
 (function (SubstituteModule1) {
+    SubstituteModule1.testValue2 = 999;
     var ConcreteTestClass = (function (_super) {
         __extends(ConcreteTestClass, _super);
         function ConcreteTestClass() {
@@ -71,9 +71,8 @@ var ServiceModule3 = exports.ServiceModule3;
         return ConcreteTestClass;
     })(ServiceModule1.TestBaseClass);
     SubstituteModule1.ConcreteTestClass = ConcreteTestClass;
-})(exports.SubstituteModule1 || (exports.SubstituteModule1 = {}));
-var SubstituteModule1 = exports.SubstituteModule1;
-
+})(SubstituteModule1 = exports.SubstituteModule1 || (exports.SubstituteModule1 = {}));
+var SubstituteModule2;
 (function (SubstituteModule2) {
     var ConcreteTestClass = (function () {
         function ConcreteTestClass() {
@@ -84,9 +83,8 @@ var SubstituteModule1 = exports.SubstituteModule1;
         return ConcreteTestClass;
     })();
     SubstituteModule2.ConcreteTestClass = ConcreteTestClass;
-})(exports.SubstituteModule2 || (exports.SubstituteModule2 = {}));
-var SubstituteModule2 = exports.SubstituteModule2;
-
+})(SubstituteModule2 = exports.SubstituteModule2 || (exports.SubstituteModule2 = {}));
+var SubstituteModule3;
 (function (SubstituteModule3) {
     var ConcreteTestClass = (function () {
         function ConcreteTestClass(age, anotherParam) {
@@ -99,9 +97,8 @@ var SubstituteModule2 = exports.SubstituteModule2;
         return ConcreteTestClass;
     })();
     SubstituteModule3.ConcreteTestClass = ConcreteTestClass;
-})(exports.SubstituteModule3 || (exports.SubstituteModule3 = {}));
-var SubstituteModule3 = exports.SubstituteModule3;
-
+})(SubstituteModule3 = exports.SubstituteModule3 || (exports.SubstituteModule3 = {}));
+var SubstituteModule4;
 (function (SubstituteModule4) {
     var ConcreteTestClass1 = (function () {
         function ConcreteTestClass1() {
@@ -112,7 +109,6 @@ var SubstituteModule3 = exports.SubstituteModule3;
         return ConcreteTestClass1;
     })();
     SubstituteModule4.ConcreteTestClass1 = ConcreteTestClass1;
-
     var ConcreteTestClass2 = (function () {
         function ConcreteTestClass2() {
         }
@@ -122,9 +118,8 @@ var SubstituteModule3 = exports.SubstituteModule3;
         return ConcreteTestClass2;
     })();
     SubstituteModule4.ConcreteTestClass2 = ConcreteTestClass2;
-})(exports.SubstituteModule4 || (exports.SubstituteModule4 = {}));
-var SubstituteModule4 = exports.SubstituteModule4;
-
+})(SubstituteModule4 = exports.SubstituteModule4 || (exports.SubstituteModule4 = {}));
+var SubstituteModule5;
 (function (SubstituteModule5) {
     var ConcreteClass1 = (function () {
         function ConcreteClass1() {
@@ -135,7 +130,6 @@ var SubstituteModule4 = exports.SubstituteModule4;
         return ConcreteClass1;
     })();
     SubstituteModule5.ConcreteClass1 = ConcreteClass1;
-
     var ConcreteClass2 = (function () {
         function ConcreteClass2() {
         }
@@ -145,7 +139,6 @@ var SubstituteModule4 = exports.SubstituteModule4;
         return ConcreteClass2;
     })();
     SubstituteModule5.ConcreteClass2 = ConcreteClass2;
-
     var ConcreteClass3 = (function () {
         function ConcreteClass3() {
         }
@@ -155,9 +148,8 @@ var SubstituteModule4 = exports.SubstituteModule4;
         return ConcreteClass3;
     })();
     SubstituteModule5.ConcreteClass3 = ConcreteClass3;
-})(exports.SubstituteModule5 || (exports.SubstituteModule5 = {}));
-var SubstituteModule5 = exports.SubstituteModule5;
-
+})(SubstituteModule5 = exports.SubstituteModule5 || (exports.SubstituteModule5 = {}));
+var SubstituteModule6;
 (function (SubstituteModule6) {
     var ConcreteClass1 = (function () {
         function ConcreteClass1(dependancy) {
@@ -169,6 +161,5 @@ var SubstituteModule5 = exports.SubstituteModule5;
         return ConcreteClass1;
     })();
     SubstituteModule6.ConcreteClass1 = ConcreteClass1;
-})(exports.SubstituteModule6 || (exports.SubstituteModule6 = {}));
-var SubstituteModule6 = exports.SubstituteModule6;
+})(SubstituteModule6 = exports.SubstituteModule6 || (exports.SubstituteModule6 = {}));
 //# sourceMappingURL=test-data2.js.map

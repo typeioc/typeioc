@@ -160,6 +160,37 @@ export module Level8 {
         test.done();
     }
 
+    export function registerModuleContainerUsage(test) {
+
+        var config = Config.registerModuleContainerUsage();
+        containerBuilder.registerConfig(config);
+
+        var container = containerBuilder.build();
+
+        var t1 = container.resolve<TestDataSecond.ServiceModule1.TestBaseClass>(TestDataSecond.ServiceModule1.TestBaseClass);
+        var t2 = container.resolve<TestDataSecond.ServiceModule1.TestBaseClass>(TestDataSecond.ServiceModule1.TestBaseClass);
+
+        test.equal(t1.name(), "Concrete class");
+        test.strictEqual(t1, t2);
+
+        test.done();
+    }
+
+    export function registerModuleForInstanceEmptyParams(test) {
+
+        var config = Config.registerModuleForInstanceEmptyParams();
+        containerBuilder.registerConfig(config);
+
+        var container = containerBuilder.build();
+
+        var t1 = container.resolve<TestDataSecond.ServiceModule1.TestBaseClass>(TestDataSecond.ServiceModule1.TestBaseClass);
+
+        test.equal(t1.name(), "Concrete class");
+
+        test.done();
+    }
+
+
     export function registerModuleConstructorWithParams(test) {
 
         var config = Config.registerModuleConstructorWithParams();

@@ -3,6 +3,9 @@
 'use strict';
 
 export module ServiceModule1 {
+
+    export var testValue  = 999;
+
     export class TestBaseClass {
         public name() {
             return null;
@@ -11,12 +14,18 @@ export module ServiceModule1 {
 }
 
 export module ServiceModule2 {
+
+    export var testValue  = 999;
+
     export function TestBaseFunction() {
 
     }
 }
 
 export module ServiceModule3 {
+
+    export var testValue  = 999;
+
     export class TestBaseClass1 {
         public name() {
             return null;
@@ -37,6 +46,8 @@ export module ServiceModule3 {
 }
 
 export module SubstituteModule1 {
+
+    export var testValue2  = 999;
 
     export class ConcreteTestClass extends ServiceModule1.TestBaseClass {
         public name() {

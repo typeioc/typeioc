@@ -10,6 +10,15 @@ exports.internal = {
 
 
         return {
+            defaults_is_instantiable_function: function(test) {
+
+                var def = new Types.Defaults();
+                test.ok(def);
+                test.equal("function", typeof Types.Defaults);
+
+                test.done();
+            },
+
             defaults_has_Scope_property: function(test) {
                 test.equal(Types.Scope.Hierarchy, Types.Defaults.Scope);
 

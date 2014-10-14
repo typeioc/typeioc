@@ -17,15 +17,12 @@ var typescriptCommandSM = typescriptCommand + ' --sourcemap ';
 
 
 
-gulp.task('tsc', ['tsc-lib', 'tsc-tests'], function() {
+gulp.task('build', ['build-lib', 'build-tests'], function() {
 
 });
 
-gulp.task('tsc-lib-all', ['tsc-lib'], function() {
 
-});
-
-gulp.task('tsc-lib', ['clean-lib'], function() {
+gulp.task('build-lib', ['clean-lib'], function() {
 
     eventStream.concat(
         gulp.src(definitionSources, { read: false }),
@@ -47,7 +44,7 @@ gulp.task('clean-lib', function(cb) {
 
 });
 
-gulp.task('tsc-tests', function() {
+gulp.task('build-tests', function() {
     gulp.src(testSources, { read: false })
         .pipe(exec(typescriptCommandSM + ' <%= file.path %>'));
 });

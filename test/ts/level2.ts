@@ -103,14 +103,26 @@ export module Level2 {
         test.done();
     }
 
+    export function attemptServicesParametersResolution(test) {
+
+        containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)
+            .as((c, name) => new TestData.Test4(name));
+
+        var container = containerBuilder.build();
+        var actual = container.tryResolve<TestData.Test1Base>(TestData.Test1Base, 'test');
+        test.equal("test", actual.name);
+
+        test.done();
+    }
+
     export function attemptNamedServicesParametersResolution(test) {
 
         containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)
-            .as((c, name) => new TestData.Test4(name)).named("A");
+            .as((c, name) => new TestData.Test4(name)).named('A');
 
         var container = containerBuilder.build();
-        var actual = container.tryResolveNamed<TestData.Test1Base>(TestData.Test1Base, "A");
-        test.equal(null, actual);
+        var actual = container.tryResolveNamed<TestData.Test1Base>(TestData.Test1Base, 'A', 'test');
+        test.equal("test", actual.name);
 
         test.done();
     }

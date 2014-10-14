@@ -12,6 +12,97 @@ exports.api = {
 
         var containerBuilder;
 
+        var InternalConfig = (function() {
+
+            return {
+                noServiceNameParameterlessResolution : {
+                    components : [
+                        {
+                            service : {
+                                instanceModule : testData
+                            },
+                            resolver : {
+                                instanceModule : testData,
+                                name : 'Test1'
+                            }
+                        }
+                    ]
+                },
+
+                notMatchingServiceName : {
+                    components : [
+                        {
+                            service : {
+                                instanceModule : testData,
+                                name : '1111'
+                            },
+                            resolver : {
+                                instanceModule : testData,
+                                name : 'Test1'
+                            }
+                        }
+                    ]
+                },
+
+                noMatchingClassName : {
+
+                    modules : [
+                        {
+                            forModule : false,
+                            serviceModule : testDataSecond.ServiceModule1,
+                            resolverModule : testDataSecond.SubstituteModule1,
+
+                            components : [
+                                {
+                                    service : {
+                                        name : 'Test1Base'
+                                    },
+                                    resolver : {
+                                        name : 'Test1'
+                                    }
+                                }
+                            ]
+                        }
+
+                    ]
+                },
+
+                missingInstanceModule : {
+                    components : [
+                        {
+                            service : {
+                                 name : '1111'
+                            },
+                            resolver : {
+                                instanceModule : testData,
+                                name : 'Test1'
+                            }
+                        }
+                    ]
+                },
+
+                missingComponentLocation :{
+                    components : [
+                        {
+                            service : {
+                                instanceModule : testData,
+                                    name : 'Test1Base'
+                            },
+                            resolver : {
+                                instanceModule : testData,
+                                    name : 'Test3'
+                            },
+                            parameters : [
+                                {
+                                    isDependency : true
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        })();
+
         return {
 
             setUp: function (callback) {
@@ -33,6 +124,22 @@ exports.api = {
                 test.done();
             },
 
+            configNoServiceNameParameterlessResolution : function (test) {
+
+                var delegate = function() {
+                    containerBuilder.registerConfig(InternalConfig.noServiceNameParameterlessResolution);
+                };
+
+                test.throws(delegate, function(error) {
+                    test.strictEqual('Missing component name', error.message);
+                    return (error instanceof scaffold.Exceptions.ArgumentNullError);
+                });
+
+                test.expect(2)
+
+                test.done();
+            },
+
             configFactoryResolution : function (test) {
 
                 var config = Config.factoryResolution();
@@ -50,6 +157,20 @@ exports.api = {
             dependenciesResolution : function (test) {
 
                 var config = Config.dependenciesResolution();
+                containerBuilder.registerConfig(config);
+
+                var container = containerBuilder.build();
+                var actual = container.resolve(testData.Test1Base);
+
+                test.notEqual(actual, null);
+                test.strictEqual(actual.Name, "Test 3 test 2");
+
+                test.done();
+            },
+
+            dependenciesResolutionByCreation : function (test) {
+
+                var config = Config.dependenciesResolutionByCreation();
                 containerBuilder.registerConfig(config);
 
                 var container = containerBuilder.build();
@@ -162,6 +283,36 @@ exports.api = {
                 test.done();
             },
 
+            registerModuleContainerUsage : function(test) {
+
+                var config = Config.registerModuleContainerUsage();
+                containerBuilder.registerConfig(config);
+
+                var container = containerBuilder.build();
+
+                var t1 = container.resolve(testDataSecond.ServiceModule1.TestBaseClass);
+                var t2 = container.resolve(testDataSecond.ServiceModule1.TestBaseClass);
+
+                test.equal(t1.name(), "Concrete class");
+                test.strictEqual(t1, t2);
+
+                test.done();
+            },
+
+            registerModuleForInstanceEmptyParams : function(test) {
+
+                var config = Config.registerModuleForInstanceEmptyParams();
+                containerBuilder.registerConfig(config);
+
+                var container = containerBuilder.build();
+
+                var t1 = container.resolve(testDataSecond.ServiceModule1.TestBaseClass);
+
+                test.equal(t1.name(), "Concrete class");
+
+                test.done();
+            },
+
             registerModuleConstructorWithParams : function (test) {
 
                 var config = Config.registerModuleConstructorWithParams();
@@ -200,6 +351,96 @@ exports.api = {
 
                 test.notEqual(actual, null);
                 test.strictEqual(actual.Name, "test 1");
+
+                test.done();
+            },
+
+            registerComponentsWithResolverModule : function (test) {
+
+                var config = InternalConfig.noMatchingClassName;
+
+                var delegate = function() {
+                    containerBuilder.registerConfig(config);
+                };
+
+                test.throws(delegate, function(error) {
+                    test.ok(error.message.indexOf('Component not found within module instance') >= 0);
+                    return (error instanceof scaffold.Exceptions.ConfigurationError);
+                });
+
+                test.expect(2)
+
+                test.done();
+            },
+
+            registerComponentsWithResolverModule2 : function (test) {
+
+                var config = Config.registerComponentsWithResolverModule();
+                containerBuilder.registerConfig(config);
+
+                var container = containerBuilder.build();
+                var actual = container.resolve(testDataSecond.ServiceModule1.TestBaseClass);
+
+                test.notEqual(actual, null);
+                test.strictEqual(actual.name(), "Concrete class");
+
+                test.done();
+            },
+
+            registerComponentNotMatchingServiceName : function(test) {
+
+                var config = InternalConfig.notMatchingServiceName;
+
+                var delegate = function() {
+                    containerBuilder.registerConfig(config);
+                };
+
+                test.throws(delegate, function(error) {
+                    test.ok(error.message.indexOf('Component not found within instance location') >= 0);
+                    return (error instanceof scaffold.Exceptions.ConfigurationError);
+                });
+
+                test.expect(2)
+
+                test.done();
+
+            },
+
+            missingInstanceModule : function(test) {
+
+                var config = InternalConfig.missingInstanceModule;
+
+                var delegate = function() {
+                    containerBuilder.registerConfig(config);
+                };
+
+                test.throws(delegate, function(error) {
+                    test.ok(error.message.indexOf('Unable to load component') >= 0);
+                    return (error instanceof scaffold.Exceptions.ConfigurationError);
+                });
+
+
+                test.expect(2)
+
+                test.done();
+            },
+
+            missingComponentLocation : function(test) {
+                var config = InternalConfig.missingComponentLocation;
+                containerBuilder.registerConfig(config);
+
+                var container = containerBuilder.build();
+
+                var delegate = function() {
+                    container.resolve(testData.Test1Base);
+                };
+
+                test.throws(delegate, function(error) {
+                    test.ok(error.message.indexOf('Missing components location') >= 0);
+                    return (error instanceof scaffold.Exceptions.ConfigurationError);
+                });
+
+                test.expect(2)
 
                 test.done();
             }

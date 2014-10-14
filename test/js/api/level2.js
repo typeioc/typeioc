@@ -120,7 +120,7 @@ exports.api = {
             },
 
 
-            attemptNamedServicesParametersResolution : function (test) {
+            attemptNamedServicesParameterslessResolution : function (test) {
 
                 containerBuilder.register(testData.Test1Base).as(function (c, name) {
                     return new testData.Test4(name);
@@ -133,6 +133,30 @@ exports.api = {
                 test.done();
             },
 
+            attemptServicesParametersResolution : function(test) {
+
+                containerBuilder.register(testData.Test1Base)
+                    .as(function(c, name) { return new testData.Test4(name); });
+
+                var container = containerBuilder.build();
+                var actual = container.tryResolve(testData.Test1Base, 'test');
+                test.equal("test", actual.name);
+
+                test.done();
+            },
+
+            attemptNamedServicesParametersResolution : function(test) {
+
+                containerBuilder.register(testData.Test1Base)
+                    .as(function(c, name) { return new testData.Test4(name); })
+                    .named('A');
+
+                var container = containerBuilder.build();
+                var actual = container.tryResolveNamed(testData.Test1Base, 'A', 'test');
+                test.equal('test', actual.name);
+
+                test.done();
+            },
 
             collidingResolution : function (test) {
 

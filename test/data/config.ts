@@ -71,6 +71,32 @@ export class Config
         };
     }
 
+    public static dependenciesResolutionByCreation() : Typeioc.IConfig {
+        return {
+            components : [
+                {
+                    service : {
+                        instanceModule : testData,
+                        name : 'Test1Base'
+                    },
+                    resolver : {
+                        instanceModule : testData,
+                        name : 'Test3'
+                    },
+                    parameters : [
+                        {
+                            isDependency : false,
+                            location : {
+                                instanceModule : testData,
+                                name : 'Test2'
+                            }
+                        }
+                    ]
+                }
+            ]
+        };
+    }
+
     public static customParametersResolution() : Typeioc.IConfig {
         return {
             components : [
@@ -173,6 +199,37 @@ export class Config
         };
     }
 
+    public static registerModuleContainerUsage() : Typeioc.IConfig {
+        return {
+            modules : [
+                {
+                    serviceModule : Config.TestModule2.ServiceModule1,
+                    resolverModule : Config.TestModule2.SubstituteModule1,
+                    within : Typeioc.Types.Scope.Container,
+                    ownedBy : Typeioc.Types.Owner.Container
+                }
+            ]
+        };
+    }
+
+    public static registerModuleForInstanceEmptyParams() : Typeioc.IConfig {
+        return {
+            modules : [
+                {
+                    serviceModule : Config.TestModule2.ServiceModule1,
+                    resolverModule : Config.TestModule2.SubstituteModule1,
+                    forInstances : [
+                        {
+                            resolver : {
+                                name : "ConcreteTestClass"
+                            }
+                        }
+                    ]
+                }
+            ]
+        };
+    }
+
     public static registerModuleConstructorWithParams() : Typeioc.IConfig {
         return {
             modules : [
@@ -263,6 +320,31 @@ export class Config
                             },
                             resolver : {
                                 name : 'Test1'
+                            }
+                        }
+                    ]
+                }
+
+            ]
+        };
+    }
+
+    public static registerComponentsWithResolverModule() : Typeioc.IConfig {
+        return {
+
+            modules : [
+                {
+                    forModule : false,
+                    serviceModule : Config.TestModule2.ServiceModule1,
+                    resolverModule : Config.TestModule2.SubstituteModule1,
+
+                    components : [
+                        {
+                            service : {
+                                name : 'TestBaseClass'
+                            },
+                            resolver : {
+                                name : 'ConcreteTestClass'
                             }
                         }
                     ]

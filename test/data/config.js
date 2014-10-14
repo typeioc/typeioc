@@ -1,6 +1,5 @@
 ///<reference path='../../d.ts/typeioc.d.ts' />
 var testData = require('./test-data');
-
 var Config = (function () {
     function Config() {
     }
@@ -20,7 +19,6 @@ var Config = (function () {
             ]
         };
     };
-
     Config.factoryResolution = function () {
         return {
             components: [
@@ -29,14 +27,11 @@ var Config = (function () {
                         instanceModule: testData,
                         name: 'Test1Base'
                     },
-                    factory: function () {
-                        return new testData.Test1();
-                    }
+                    factory: function () { return new testData.Test1(); }
                 }
             ]
         };
     };
-
     Config.dependenciesResolution = function () {
         return {
             components: [
@@ -45,9 +40,7 @@ var Config = (function () {
                         instanceModule: testData,
                         name: 'Test2Base'
                     },
-                    factory: function () {
-                        return new testData.Test2();
-                    }
+                    factory: function () { return new testData.Test2(); }
                 },
                 {
                     service: {
@@ -71,7 +64,31 @@ var Config = (function () {
             ]
         };
     };
-
+    Config.dependenciesResolutionByCreation = function () {
+        return {
+            components: [
+                {
+                    service: {
+                        instanceModule: testData,
+                        name: 'Test1Base'
+                    },
+                    resolver: {
+                        instanceModule: testData,
+                        name: 'Test3'
+                    },
+                    parameters: [
+                        {
+                            isDependency: false,
+                            location: {
+                                instanceModule: testData,
+                                name: 'Test2'
+                            }
+                        }
+                    ]
+                }
+            ]
+        };
+    };
     Config.customParametersResolution = function () {
         return {
             components: [
@@ -80,14 +97,11 @@ var Config = (function () {
                         instanceModule: testData,
                         name: 'Test1Base'
                     },
-                    factory: function (c, name) {
-                        return new testData.Test4(name);
-                    }
+                    factory: function (c, name) { return new testData.Test4(name); }
                 }
             ]
         };
     };
-
     Config.namedServicesResolution = function () {
         return {
             components: [
@@ -96,18 +110,14 @@ var Config = (function () {
                         instanceModule: testData,
                         name: 'Test1Base'
                     },
-                    factory: function () {
-                        return new testData.Test4("null");
-                    }
+                    factory: function () { return new testData.Test4("null"); }
                 },
                 {
                     service: {
                         instanceModule: testData,
                         name: 'Test1Base'
                     },
-                    factory: function () {
-                        return new testData.Test4("a");
-                    },
+                    factory: function () { return new testData.Test4("a"); },
                     named: "A"
                 },
                 {
@@ -115,15 +125,12 @@ var Config = (function () {
                         instanceModule: testData,
                         name: 'Test1Base'
                     },
-                    factory: function () {
-                        return new testData.Test4("b");
-                    },
+                    factory: function () { return new testData.Test4("b"); },
                     named: "B"
                 }
             ]
         };
     };
-
     Config.noScopingReuse = function () {
         return {
             components: [
@@ -132,15 +139,12 @@ var Config = (function () {
                         instanceModule: testData,
                         name: 'Test1Base'
                     },
-                    factory: function () {
-                        return new testData.Test4("test 4");
-                    },
+                    factory: function () { return new testData.Test4("test 4"); },
                     within: 1 /* None */
                 }
             ]
         };
     };
-
     Config.containerOwnedInstancesAreDisposed = function () {
         return {
             components: [
@@ -149,9 +153,7 @@ var Config = (function () {
                         instanceModule: testData,
                         name: 'Test1Base'
                     },
-                    factory: function () {
-                        return new testData.Test5();
-                    },
+                    factory: function () { return new testData.Test5(); },
                     disposer: function (item) {
                         item.Dispose();
                     },
@@ -161,7 +163,6 @@ var Config = (function () {
             ]
         };
     };
-
     Config.initializeIsCalledWhenInstanceIsCreated = function (className) {
         return {
             components: [
@@ -170,9 +171,7 @@ var Config = (function () {
                         instanceModule: testData,
                         name: 'Initializable'
                     },
-                    factory: function () {
-                        return new testData.Initializable();
-                    },
+                    factory: function () { return new testData.Initializable(); },
                     initializeBy: function (c, item) {
                         item.initialize(className);
                     }
@@ -180,7 +179,6 @@ var Config = (function () {
             ]
         };
     };
-
     Config.registerModuleBasicInheritance = function () {
         return {
             modules: [
@@ -191,7 +189,35 @@ var Config = (function () {
             ]
         };
     };
-
+    Config.registerModuleContainerUsage = function () {
+        return {
+            modules: [
+                {
+                    serviceModule: Config.TestModule2.ServiceModule1,
+                    resolverModule: Config.TestModule2.SubstituteModule1,
+                    within: 2 /* Container */,
+                    ownedBy: 1 /* Container */
+                }
+            ]
+        };
+    };
+    Config.registerModuleForInstanceEmptyParams = function () {
+        return {
+            modules: [
+                {
+                    serviceModule: Config.TestModule2.ServiceModule1,
+                    resolverModule: Config.TestModule2.SubstituteModule1,
+                    forInstances: [
+                        {
+                            resolver: {
+                                name: "ConcreteTestClass"
+                            }
+                        }
+                    ]
+                }
+            ]
+        };
+    };
     Config.registerModuleConstructorWithParams = function () {
         return {
             modules: [
@@ -218,7 +244,6 @@ var Config = (function () {
             ]
         };
     };
-
     Config.registerModuleConstructorWithDependencies = function () {
         return {
             modules: [
@@ -264,7 +289,6 @@ var Config = (function () {
             ]
         };
     };
-
     Config.registerComponentsWithinModule = function () {
         return {
             modules: [
@@ -279,6 +303,27 @@ var Config = (function () {
                             },
                             resolver: {
                                 name: 'Test1'
+                            }
+                        }
+                    ]
+                }
+            ]
+        };
+    };
+    Config.registerComponentsWithResolverModule = function () {
+        return {
+            modules: [
+                {
+                    forModule: false,
+                    serviceModule: Config.TestModule2.ServiceModule1,
+                    resolverModule: Config.TestModule2.SubstituteModule1,
+                    components: [
+                        {
+                            service: {
+                                name: 'TestBaseClass'
+                            },
+                            resolver: {
+                                name: 'ConcreteTestClass'
                             }
                         }
                     ]

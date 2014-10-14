@@ -98,13 +98,13 @@ export class ConfigRegistration implements Typeioc.Internal.IConfigRegistration 
             if(configModule.within) {
                 asResolver.within(configModule.within);
             } else {
-                asResolver.within(this._scope);
+                asResolver.within(this.scope);
             }
 
             if(configModule.ownedBy) {
                 asResolver.ownedBy(configModule.ownedBy);
             } else {
-                asResolver.ownedBy(this._owner);
+                asResolver.ownedBy(this.owner);
             }
 
             if(configModule.forInstances) {
@@ -148,8 +148,8 @@ export class ConfigRegistration implements Typeioc.Internal.IConfigRegistration 
             result.factory = this.getInstantiation(resolver, params, resolverModule);
         }
 
-        result.scope = component.within || this._scope;
-        result.owner = component.ownedBy || this._owner;
+        result.scope = component.within || this.scope;
+        result.owner = component.ownedBy || this.owner;
 
         if(component.initializeBy) {
             result.initializer = component.initializeBy;
@@ -167,12 +167,24 @@ export class ConfigRegistration implements Typeioc.Internal.IConfigRegistration 
 
         if(!instanceLocation.name) throw new Exceptions.ArgumentNullError('Missing component name');
 
+        var result;
+
         if(instanceLocation.instanceModule) {
-            return instanceLocation.instanceModule[instanceLocation.name];
+
+            result = instanceLocation.instanceModule[instanceLocation.name];
+
+            if(!result) throw new Exceptions.ConfigurationError('Component not found within instance location : ' + instanceLocation.name);
+
+            return result;
         }
 
         if(moduleInstance) {
-            return moduleInstance[instanceLocation.name];
+
+            result = moduleInstance[instanceLocation.name];
+
+            if(!result) throw new Exceptions.ConfigurationError('Component not found within module instance : ' + instanceLocation.name);
+
+            return result;
         }
 
         throw new Exceptions.ConfigurationError('Unable to load component : ' + instanceLocation.name);

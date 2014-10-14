@@ -11,6 +11,15 @@ exports.internal = {
 
         return {
 
+            scope_is_instantiable_function: function(test) {
+
+                var scope = new Types.Scope();
+                test.ok(scope);
+                test.equal("function", typeof Types.Scope);
+
+                test.done();
+            },
+
             scope_has_None_property: function(test) {
                 test.equal(1, Types.Scope.None);
 
