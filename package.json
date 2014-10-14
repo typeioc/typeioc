@@ -2,6 +2,7 @@
   "name": "typeioc",
   "version": "1.2.5",
   "description": "Dependency injection container for node typescript",
+  "homepage" : "https://github.com/maxgherman/TypeIOC",
   "main": "./index",
   "directories": {
     "lib": "./lib"
