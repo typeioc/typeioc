@@ -1,11 +1,13 @@
 .idea/
 lib-cov/
 lib-js/
+build/
+src/
 npm-debug.log
 samples
 test/ts
 test/*.ts
 test/*.js.map
 test/coverage/
-src/*.js
-src/*.js.map
+COPYRIGHT
+*.yml

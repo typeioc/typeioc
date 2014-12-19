@@ -1,63 +1,138 @@
 
 'use strict';
 
-var exec = require('gulp-exec');
 var gulp = require('gulp');
-var eventStream = require('event-stream');
-var typescript = require('gulp-tsc');
-var remove = require('rimraf');
+var del = require('del');
 var header = require('gulp-header');
+var replace = require('gulp-replace');
 var pkg = require('../package.json');
 var fs = require('fs');
-
-var typescriptSources = '../src/**/*.ts';
-var definitionSources = '../d.ts/typeioc*.d.ts';
-var testSources = '../test/**/*.ts';
-var libDestination = 'lib';
-var libFiles = '../lib';
-var libFilesHeader = '../lib/**/*.js';
-var copyrightPath = '../COPYRIGHT';
-var typescriptCommand = 'tsc --target ES5  --module commonjs ';
-var typescriptCommandSM = typescriptCommand + ' --sourcemap ';
+var os = require('os');
 
 
-gulp.task('build', ['build-lib', 'build-tests'], function() {
+(function() {
 
-});
+    var paths = {
+        root :   '../',
+        code :  {
+            srcAll : '../src/**/*',
+            src : '../src',
+            definitionsAll : '../d.ts/typeioc*.d.ts',
+            definitions : '../d.ts',
+            index : '../index.js'
+        },
+        tests : {
+            tsJs:  '../test/ts/*.js',
+            map: '../test/ts/*.js.map'
+        },
+        lib: {
+            all:  '../lib/**'
+        },
+        build : {
+            sources : 'tsc @compile_lib.txt',
+            tests :   'tsc @compile_tests.txt'
+        },
+        copyright :   '../COPYRIGHT'
+    };
 
-gulp.task('build-lib', ['clean-lib'], function() {
+    var headerOptions = {
+        banner:             [fs.readFileSync(paths.copyright), os.EOL, os.EOL].join(''),
+        regex:              /^\/\*(.|[\n\r])+Copyright(.|[\n\r])+\*\/[\n\r]{2}/g,
+        regexWithFooter:    /^\/\*(.|[\n\r])+Copyright(.|[\n\r])+\*\/[\n\r]{2}?/g
+    }
 
-    eventStream.concat(
-        gulp.src(definitionSources, { read: false }),
-        gulp.src(typescriptSources, { read: false })
-    )
-    .pipe(typescript({
-        tscSearch : ['shell'],
-        module: 'commonjs',
-        target: 'ES5',
-        sourcemap : true,
-        pathFilter: function (path) { return path.replace(/^src/, libDestination); }
-    }))
-    .pipe(gulp.dest('../'));
-});
 
-gulp.task('header', function() {
+    function addHeader(sources, destination){
 
-    var banner = fs.readFileSync(copyrightPath) + '\n\n';
+        return gulp.src(sources)
+            .pipe(replace(headerOptions.regex, ''))
+            .pipe(header(headerOptions.banner, { pkg : pkg } ))
+            .pipe(gulp.dest(destination));
+    }
 
-    gulp.src(libFilesHeader)
-        .pipe(header(banner, { pkg : pkg } ))
-        .pipe(gulp.dest(libFiles));
+    function removeHeader(sources, destination){
+        return gulp.src(sources)
+            .pipe(replace(headerOptions.regexWithFooter, ''))
+            .pipe(gulp.dest(destination));
+    }
 
-});
 
-gulp.task('clean-lib', function(cb) {
+    function compileTasks() {
 
-    remove(libFiles, cb);
+        gulp.task('default', ['build-tests']);
 
-});
+        gulp.task('build-tests', ['build-lib'], function(callBack) {
 
-gulp.task('build-tests', function() {
-    gulp.src(testSources, { read: false })
-        .pipe(exec(typescriptCommandSM + ' <%= file.path %>'));
-});
+            var exec = require('child_process').exec;
+
+            exec(paths.build.tests, function (err, stdout, stderr) {
+                if(stdout) console.log(stdout);
+                if(stderr) console.log(stderr);
+                callBack(err);
+            });
+        });
+
+        gulp.task('build-lib', ['clean'], function(callBack) {
+
+            var exec = require('child_process').exec;
+
+            exec(paths.build.sources, function (err, stdout, stderr) {
+                if(stdout) console.log(stdout);
+                if(stderr) console.log(stderr);
+                callBack(err);
+            });
+        });
+    }
+
+    function cleanTasks() {
+        gulp.task('clean', function(callBack) {
+
+            del([
+                paths.lib.all,
+                paths.tests.tsJs,
+                paths.tests.map
+            ], {force : true}, callBack);
+        });
+    }
+
+    function headerTasks() {
+        gulp.task('header', ['add-source-header', 'add-definitions-header', 'add-index-header']);
+
+        gulp.task('remove-header',
+            ['remove-source-header', 'remove-definitions-header', 'remove-index-header']);
+
+        gulp.task('add-source-header', function() {
+            return addHeader(paths.code.srcAll, paths.code.src);
+        });
+
+        gulp.task('add-definitions-header', function() {
+            return addHeader(paths.code.definitionsAll, paths.code.definitions);
+        });
+
+        gulp.task('add-index-header', function() {
+            return addHeader(paths.code.index, paths.root);
+        });
+
+        gulp.task('remove-source-header', function() {
+            return removeHeader(paths.code.srcAll, paths.code.src);
+        });
+
+        gulp.task('remove-definitions-header', function() {
+            return removeHeader(paths.code.definitionsAll, paths.code.definitions);
+        });
+
+        gulp.task('remove-index-header', function() {
+            return removeHeader(paths.code.index, paths.root);
+        });
+    }
+
+    return {
+        build: function() {
+            compileTasks();
+            cleanTasks();
+            headerTasks();
+        }
+    }
+})()
+    .build();
+

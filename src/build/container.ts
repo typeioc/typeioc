@@ -1,8 +1,18 @@
+/*---------------------------------------------------------------------------------------------------
+ * Copyright (c) 2014 Maxim Gherman
+ * typeioc - Dependency injection container for node typescript
+ * @version v1.2.6
+ * @link https://github.com/maxgherman/TypeIOC
+ * @license (MIT) - https://github.com/maxgherman/TypeIOC/blob/master/LICENSE
+ * --------------------------------------------------------------------------------------------------*/
+
 /// <reference path="../../d.ts/typeioc.internal.d.ts" />
 
 'use strict';
 
 import Exceptions = require('../exceptions/index');
+import ApiContainer = require('./containerApi');
+
 
 export class Container implements Typeioc.Internal.IContainer {
 
@@ -11,21 +21,37 @@ export class Container implements Typeioc.Internal.IContainer {
     private _disposableStorage : Typeioc.Internal.IDisposableStorage;
     private _collection : Typeioc.Internal.IRegistrationStorage;
 
+    private registerImpl : (registration : Typeioc.Internal.IRegistrationBase) => void;
+    private resolveBase : (registration : Typeioc.Internal.IRegistrationBase, throwIfNotFound : boolean) => any;
+    private resolveImpl : (registration : Typeioc.Internal.IRegistrationBase, throwIfNotFound : boolean) => Typeioc.Internal.IRegistrationBase;
+    private resolveScope : (registration : Typeioc.Internal.IRegistrationBase, throwIfNotFound : boolean) => any;
+    private resolveContainerScope : (registration : Typeioc.Internal.IRegistrationBase) => any;
+    private resolveHierarchyScope : (registration : Typeioc.Internal.IRegistrationBase, throwIfNotFound : boolean) => any;
+    private createTrackable : (registration : Typeioc.Internal.IRegistrationBase) => any;
+    private createRegistration : (service: any) => Typeioc.Internal.IRegistrationBase;
+
+
     constructor(private _registrationStorageService : Typeioc.Internal.IRegistrationStorageService,
                 private _disposableStorageService : Typeioc.Internal.IIDisposableStorageService,
                 private _registrationBaseService : Typeioc.Internal.IRegistrationBaseService) {
 
         this._collection = this._registrationStorageService.create();
         this._disposableStorage = this._disposableStorageService.create();
+
+
+        this.registerImpl = registerImpl.bind(this);
+        this.resolveBase = resolveBase.bind(this);
+        this.resolveImpl = resolveImpl.bind(this);
+        this.resolveScope = resolveScope.bind(this);
+        this.resolveContainerScope = resolveContainerScope.bind(this);
+        this.resolveHierarchyScope = resolveHierarchyScope.bind(this);
+        this.createTrackable = createTrackable.bind(this);
+        this.createRegistration = createRegistration.bind(this);
     }
 
     public import(registrations : Typeioc.Internal.IRegistrationBase[]) {
-        var self = this;
 
-        registrations.forEach(function(item : Typeioc.Internal.IRegistrationBase) {
-
-            self.registerImpl(item);
-        });
+        registrations.forEach(this.registerImpl);
     }
 
     public createChild() : Typeioc.IContainer {
@@ -33,8 +59,7 @@ export class Container implements Typeioc.Internal.IContainer {
         var child = new Container(
             this._registrationStorageService,
             this._disposableStorageService,
-            this._registrationBaseService
-        );
+            this._registrationBaseService);
         child.parent = this;
         this.children.push(child);
         return child;
@@ -80,111 +105,160 @@ export class Container implements Typeioc.Internal.IContainer {
         return this.resolveBase(rego, false);
     }
 
-    private registerImpl(registration : Typeioc.Internal.IRegistrationBase) : void {
+    //------------------------------------------------------------------------------------------------------------
 
-        if(!registration.factory)
-            throw new Exceptions.ArgumentNullError("Factory is not defined for: " + registration.service.name);
+    public resolveWithDep<R>(service: any,  ...dependencies : Typeioc.IDynamicDependency[]) : R {
 
-        registration.container = this;
+        var child = <Container>this.createChild();
 
-        this._collection.addEntry(registration);
+        var regoes = dependencies.map(dependency => {
+
+            var registration = this.createRegistration(dependency.service);
+            var implementation = this.resolveImpl(registration, true);
+            var baseRegistration = implementation.cloneFor(child);
+            baseRegistration.disposer = null;
+            baseRegistration.initializer = null;
+            baseRegistration.factory = dependency.resolverFactory;
+
+            return baseRegistration;
+        });
+
+        var registration = this.createRegistration(service);
+        var implementation = this.resolveImpl(registration, true);
+        var baseRegistration = implementation.cloneFor(child);
+
+        regoes.push(baseRegistration);
+
+        child.import(regoes);
+
+        return child.resolve<R>(service);
     }
 
-    private resolveBase(registration : Typeioc.Internal.IRegistrationBase, throwIfNotFound : boolean) : any {
 
-        var entry = this.resolveImpl(registration, throwIfNotFound);
+    public resolveWith<R>(service : any) : Typeioc.IResolveWith<R> {
 
-        if(!entry && throwIfNotFound === false) return null;
-        entry.args = registration.args;
+        var importApi : ApiContainer.IImportApi = {
+            import : function<R>(api : ApiContainer.Api<R>) : R {
 
-        return this.resolveScope(entry, throwIfNotFound);
+                var rego = this.createRegistration(service);
+
+                return null;
+            }
+        }
+
+
+
+        var api = new ApiContainer.Api<R>(importApi);
+
+        return api.service.bind(api);
+    }
+}
+
+
+function registerImpl(registration : Typeioc.Internal.IRegistrationBase) : void {
+
+    if(!registration.factory)
+    throw new Exceptions.ArgumentNullError("Factory is not defined for: " + registration.service.name);
+
+    registration.container = this;
+
+    this._collection.addEntry(registration);
+}
+
+function resolveBase(registration : Typeioc.Internal.IRegistrationBase, throwIfNotFound : boolean) : any {
+
+    var entry = this.resolveImpl(registration, throwIfNotFound);
+
+    if(!entry && throwIfNotFound === false) return null;
+    entry.args = registration.args;
+
+    return this.resolveScope(entry, throwIfNotFound);
+}
+
+function resolveImpl(registration : Typeioc.Internal.IRegistrationBase, throwIfNotFound : boolean) : Typeioc.Internal.IRegistrationBase {
+
+    var serviceEntry = this._collection.getEntry(registration);
+
+    if(!serviceEntry  && this.parent) {
+        return this.parent.resolveImpl(registration, throwIfNotFound);
     }
 
-    private resolveImpl(registration : Typeioc.Internal.IRegistrationBase, throwIfNotFound : boolean) : Typeioc.Internal.IRegistrationBase {
+    if(!serviceEntry  && throwIfNotFound === true) throw new Exceptions.ResolutionError('Could not resolve service');
 
-        var serviceEntry = this._collection.getEntry(registration);
+    return serviceEntry;
+}
 
-        if(!serviceEntry  && this.parent) {
-            return this.parent.resolveImpl(registration, throwIfNotFound);
-        }
+function resolveScope(registration : Typeioc.Internal.IRegistrationBase,
+    throwIfNotFound : boolean) : any {
 
-        if(!serviceEntry  && throwIfNotFound === true) throw new Exceptions.ResolutionError('Could not resolve service');
+    switch(registration.scope) {
+        case Typeioc.Types.Scope.None:
+            return this.createTrackable(registration);
 
-        return serviceEntry;
+        case Typeioc.Types.Scope.Container:
+
+            return this.resolveContainerScope(registration);
+
+        case Typeioc.Types.Scope.Hierarchy :
+
+            return this.resolveHierarchyScope(registration, throwIfNotFound);
+
+        default:
+            throw new Exceptions.ResolutionError('Unknown scoping');
+    }
+}
+
+function resolveContainerScope(registration : Typeioc.Internal.IRegistrationBase) : any {
+    var entry : Typeioc.Internal.IRegistrationBase;
+
+    if(registration.container !== this) {
+        entry = registration.cloneFor(this);
+        this._collection.addEntry(entry);
+    } else {
+        entry = registration;
     }
 
-    private resolveScope(registration : Typeioc.Internal.IRegistrationBase,
-                         throwIfNotFound : boolean) : any {
-
-        switch(registration.scope) {
-            case Typeioc.Types.Scope.None:
-                return this.createTrackable(registration);
-
-            case Typeioc.Types.Scope.Container:
-
-                return this.resolveContainerScope(registration);
-
-            case Typeioc.Types.Scope.Hierarchy :
-
-                return this.resolveHierarchyScope(registration, throwIfNotFound);
-
-            default:
-                throw new Exceptions.ResolutionError('Unknown scoping');
-        }
+    if(!entry.instance) {
+        entry.instance = this.createTrackable(entry);
     }
 
-    private resolveContainerScope(registration : Typeioc.Internal.IRegistrationBase) {
-        var entry : Typeioc.Internal.IRegistrationBase;
+    return entry.instance;
+}
 
-        if(registration.container !== this) {
-            entry = registration.cloneFor(this);
-            this._collection.addEntry(entry);
-        } else {
-            entry = registration;
-        }
+function resolveHierarchyScope(registration : Typeioc.Internal.IRegistrationBase, throwIfNotFound : boolean) : any {
+    if(registration.container &&
+        registration.container !== this) {
 
-        if(!entry.instance) {
-            entry.instance = this.createTrackable(entry);
-        }
+        var container = <Container>registration.container;
 
-        return entry.instance;
+        return resolveBase.bind(container)(registration, throwIfNotFound);
     }
 
-    private resolveHierarchyScope(registration : Typeioc.Internal.IRegistrationBase, throwIfNotFound : boolean) {
-        if(registration.container &&
-            registration.container !== this) {
+    if(!registration.instance) {
 
-            var container = <Container>registration.container;
-
-            return container.resolveBase(registration, throwIfNotFound);
-        }
-
-        if(!registration.instance) {
-
-            registration.instance = this.createTrackable(registration);
-        }
-
-        return registration.instance;
+        registration.instance = this.createTrackable(registration);
     }
 
-    private createTrackable(registration : Typeioc.Internal.IRegistrationBase) : any {
+    return registration.instance;
+}
 
-        var instance = registration.invoker();
+function createTrackable(registration : Typeioc.Internal.IRegistrationBase) : any {
 
-        if(registration.owner === Typeioc.Types.Owner.Container &&
-            registration.disposer) {
+    var instance = registration.invoker();
 
-            this._disposableStorage.add(instance, registration.disposer);
-        }
+    if(registration.owner === Typeioc.Types.Owner.Container &&
+        registration.disposer) {
 
-        if(registration.initializer) {
-            registration.initializer(this, instance);
-        }
-
-        return instance;
+        this._disposableStorage.add(instance, registration.disposer);
     }
 
-    private createRegistration(service: any) : Typeioc.Internal.IRegistrationBase {
-        return this._registrationBaseService.create(service);
+    if(registration.initializer) {
+        registration.initializer(this, instance);
     }
+
+    return instance;
+}
+
+function createRegistration(service: any) : Typeioc.Internal.IRegistrationBase {
+    return this._registrationBaseService.create(service);
 }

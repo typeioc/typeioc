@@ -1,0 +1,11 @@
+-m commonjs
+--sourceMap
+-t ES5
+../test/ts/level1.ts
+../test/ts/level2.ts
+../test/ts/level3.ts
+../test/ts/level4.ts
+../test/ts/level5.ts
+../test/ts/level6.ts
+../test/ts/level7.ts
+../test/ts/level8.ts

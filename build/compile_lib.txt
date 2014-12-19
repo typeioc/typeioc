@@ -1,0 +1,6 @@
+-m commonjs
+--sourceMap
+--outDir ../lib
+-t ES5
+../src/scaffold.ts
+../src/types/index.ts

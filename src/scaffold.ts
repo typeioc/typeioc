@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------------------------------------------
+ * Copyright (c) 2014 Maxim Gherman
+ * typeioc - Dependency injection container for node typescript
+ * @version v1.2.6
+ * @link https://github.com/maxgherman/TypeIOC
+ * @license (MIT) - https://github.com/maxgherman/TypeIOC/blob/master/LICENSE
+ * --------------------------------------------------------------------------------------------------*/
+
 ///<reference path='../d.ts/typeioc.internal.d.ts' />
 
 'use strict';
@@ -25,7 +33,7 @@ export class Scaffold {
         var instanceRegoService = new InstanceRegistrationService();
         var moduleRegoService = this.moduleRegistrationService(moduleStorageService, baseRegoService);
         var configRegoService = this.configRegistrationService(baseRegoService, moduleRegoService);
-        var containerService = this.containerService(regoStorageService, disposableStorageService,baseRegoService);
+        var containerService = this.containerService(regoStorageService, disposableStorageService, baseRegoService);
 
 
         return new BuilderModule.ContainerBuilder(
@@ -94,13 +102,11 @@ export class Scaffold {
         return {
             create : () => {
 
-                var result = new ContainerModule.Container(
+                return new ContainerModule.Container(
                     registrationStorageService,
                     disposableStorageService,
                     registrationBaseService
                 );
-
-                return result;
             }
         };
     }

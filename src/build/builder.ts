@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------------------------------------------
+ * Copyright (c) 2014 Maxim Gherman
+ * typeioc - Dependency injection container for node typescript
+ * @version v1.2.6
+ * @link https://github.com/maxgherman/TypeIOC
+ * @license (MIT) - https://github.com/maxgherman/TypeIOC/blob/master/LICENSE
+ * --------------------------------------------------------------------------------------------------*/
+
 /// <reference path="../../d.ts/typeioc.internal.d.ts" />
 
 'use strict';
@@ -72,6 +80,7 @@ export class ContainerBuilder implements Typeioc.IContainerBuilder{
             tryResolve: container.tryResolve.bind(container),
             resolveNamed : container.resolveNamed.bind(container),
             tryResolveNamed : container.tryResolveNamed.bind(container),
+            resolveWithDep : container.resolveWithDep.bind(container),
             createChild : container.createChild.bind(container),
             dispose: container.dispose.bind(container)
         };

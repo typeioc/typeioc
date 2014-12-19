@@ -156,12 +156,12 @@ export module Level7 {
     export function registerModuleConstructorWithDependencies(test) {
 
         containerBuilder.registerModule(TestDataSecond.ServiceModule1)
-            .as(TestDataSecond.SubstituteModule3).
-            forArgs(TestDataSecond.SubstituteModule3.ConcreteTestClass, 77, "Test");
+            .as(TestDataSecond.SubstituteModule3)
+            .forArgs(TestDataSecond.SubstituteModule3.ConcreteTestClass, 77, "Test");
 
-        containerBuilder.registerModule(TestDataSecond.ServiceModule3).
-            as(TestDataSecond.SubstituteModule6).
-            for(TestDataSecond.SubstituteModule6.ConcreteClass1,
+        containerBuilder.registerModule(TestDataSecond.ServiceModule3)
+            .as(TestDataSecond.SubstituteModule6)
+            .for(TestDataSecond.SubstituteModule6.ConcreteClass1,
                 (c) => {
 
                     var dependency = c.resolve(TestDataSecond.ServiceModule1.TestBaseClass);

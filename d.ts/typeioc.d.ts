@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------------------------------------------
+ * Copyright (c) 2014 Maxim Gherman
+ * typeioc - Dependency injection container for node typescript
+ * @version v1.2.6
+ * @link https://github.com/maxgherman/TypeIOC
+ * @license (MIT) - https://github.com/maxgherman/TypeIOC/blob/master/LICENSE
+ * --------------------------------------------------------------------------------------------------*/
+
 
 declare module Typeioc {
 
@@ -50,9 +58,49 @@ declare module Typeioc {
         tryResolve<R>(service: any, ...args:any[]);
         resolveNamed<R>(service: any, name : string, ...args:any[]);
         tryResolveNamed<R>(service: any, name : string, ...args:any[]);
+        resolveWithDep<R>(service: any,  ...dependencies : IDynamicDependency[]) : R;
+
+        //resolveWith<R>(service : any) : IResolveWith<R>;
+
 
         createChild : () => IContainer;
         dispose: () =>  void;
+    }
+
+    interface IResolveAs<T> {
+        resolve<T>(service: any) : IResolveWith<T>;
+    }
+
+    interface IResolveWith<T>  extends IResolveArgsTryDepCache<T> {
+        name(value : string) : IResolveArgsTryDepCache<T>;
+    }
+
+    interface IResolveArgsTryDepCache<T> extends IResolveArgs<T>, IResolveTryDepCache<T> { }
+
+    interface IResolveTryDepCache<T> extends IResolveTry<T>, IResolveDepCache<T> { }
+
+    interface IResolveDepCache<T> extends IResolveDependencies<T>, IResolveCacheReturn<T> { }
+
+    interface IResolveCacheReturn<T> extends IResolveCache<T>, IResolveReturn<T> { }
+
+    interface IResolveArgs<T> {
+        args(...args:any[]) : IResolveTryDepCache<T>;
+    }
+
+    interface IResolveTry<T> {
+        try() : IResolveDepCache<T>;
+    }
+
+    interface IResolveDependencies<T> {
+        dependencies(...dependencies : IDynamicDependency[]) : IResolveCacheReturn<T>;
+    }
+
+    interface IResolveCache<T> {
+        cache(name? : string) : IResolveReturn<T>
+    }
+
+    interface IResolveReturn<T> {
+        exec(): T;
     }
 
     interface IInitializer<T> {
@@ -113,6 +161,12 @@ declare module Typeioc {
 
     interface IAsModuleRegistration {
         as : (asModule : Object) => IModuleReusedOwned;
+    }
+
+    interface IDynamicDependency {
+        service : any;
+        resolver : any;
+        resolverFactory: IFactory<any>;
     }
 
     interface IInstanceLocation {
