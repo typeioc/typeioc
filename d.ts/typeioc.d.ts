@@ -43,7 +43,7 @@ declare module Typeioc {
 
         class ResolutionError extends ApplicationError { }
 
-        class ConfigRegistrationError extends ApplicationError { }
+        class ConfigurationError extends ApplicationError { }
     }
 
     interface IContainerBuilder {
@@ -65,28 +65,24 @@ declare module Typeioc {
         dispose: () =>  void;
     }
 
-    interface IResolveAs<T> {
-        resolve<T>(service: any) : IResolveWith<T>;
+    interface IResolveWith<T>  extends IResolveTryNamedDepCache<T> {
+        args(...args:any[]) : IResolveTryNamedDepCache<T>;
     }
 
-    interface IResolveWith<T>  extends IResolveArgsTryDepCache<T> {
-        name(value : string) : IResolveArgsTryDepCache<T>;
-    }
+    interface IResolveTryNamedDepCache<T> extends IResolveTry<T>, IResolveNamedDepCache<T> { }
 
-    interface IResolveArgsTryDepCache<T> extends IResolveArgs<T>, IResolveTryDepCache<T> { }
-
-    interface IResolveTryDepCache<T> extends IResolveTry<T>, IResolveDepCache<T> { }
+    interface IResolveNamedDepCache<T> extends IResolveNamed<T>, IResolveDepCache<T> { }
 
     interface IResolveDepCache<T> extends IResolveDependencies<T>, IResolveCacheReturn<T> { }
 
     interface IResolveCacheReturn<T> extends IResolveCache<T>, IResolveReturn<T> { }
 
-    interface IResolveArgs<T> {
-        args(...args:any[]) : IResolveTryDepCache<T>;
+    interface IResolveNamed<T> {
+        name(value : string) : IResolveDepCache<T>;
     }
 
     interface IResolveTry<T> {
-        try() : IResolveDepCache<T>;
+        attempt() : IResolveDepCache<T>;
     }
 
     interface IResolveDependencies<T> {
@@ -152,7 +148,7 @@ declare module Typeioc {
     interface IRegistration<T> extends IAs<T> { }
 
     interface IModuleReusedOwned extends IReusedOwned {
-        for<R>(service: any, factory : IFactory<R>) : IModuleReusedOwned;
+        forService<R>(service: any, factory : IFactory<R>) : IModuleReusedOwned;
         forArgs(service: any, ...args:any[]) : IModuleReusedOwned;
         named(service: any, name : string) : IModuleReusedOwned;
     }

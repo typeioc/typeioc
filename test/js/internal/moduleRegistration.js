@@ -141,7 +141,7 @@ exports.internal = {
                 register.withArgs(service, emptyRegoOptionsEntry).returns(options);
                 internalStorage.register = register;
 
-                moduleRegistration.for(service, factory);
+                moduleRegistration.forService(service, factory);
 
                 test.ok(register.calledOnce);
                 test.strictEqual(options.factory, factory);
@@ -158,7 +158,7 @@ exports.internal = {
                 var asModuleInitializedReusedOwned = mockery.stub();
 
                 moduleRegistration.asModuleInitializedReusedOwned = asModuleInitializedReusedOwned;
-                moduleRegistration.for(undefined, undefined);
+                moduleRegistration.forService(undefined, undefined);
 
                 test.ok(asModuleInitializedReusedOwned.calledOnce);
 
@@ -393,12 +393,12 @@ exports.internal = {
                 };
                 forMethod.bind.withArgs(moduleRegistration).returns(funcResult);
 
-                moduleRegistration.for = forMethod;
+                moduleRegistration.forService = forMethod;
 
                 var result = moduleRegistration.asModuleInitializedReusedOwned();
 
                 test.ok(forMethod.bind.calledOnce);
-                test.equal(result.for, funcResult);
+                test.equal(result.forService, funcResult);
 
                 test.done();
             },
@@ -448,7 +448,7 @@ exports.internal = {
                 var actual = methods.filter(function(item) {
                     return item != 'within' &&
                         item != 'ownedBy' &&
-                        item != 'for' &&
+                        item != 'forService' &&
                         item != 'forArgs' &&
                         item != 'named';
                 });

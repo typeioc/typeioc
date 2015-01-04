@@ -154,7 +154,7 @@ exports.api = {
 
                 containerBuilder.registerModule(testDataSecond.ServiceModule3)
                     .as(testDataSecond.SubstituteModule6)
-                    .for(testDataSecond.SubstituteModule6.ConcreteClass1, function (c) {
+                    .forService(testDataSecond.SubstituteModule6.ConcreteClass1, function (c) {
                         var dependency = c.resolve(testDataSecond.ServiceModule1.TestBaseClass);
                         return new testDataSecond.SubstituteModule6.ConcreteClass1(dependency);
                     });
@@ -239,7 +239,7 @@ exports.api = {
                 containerBuilder.registerModule(testDataSecond.ServiceModule3)
                     .as(testDataSecond.SubstituteModule6)
                     .named(testDataSecond.SubstituteModule6.ConcreteClass1, "name1")
-                    .for(testDataSecond.SubstituteModule6.ConcreteClass1, function (c) {
+                    .forService(testDataSecond.SubstituteModule6.ConcreteClass1, function (c) {
                         var dependency = c.resolve(testDataSecond.ServiceModule1.TestBaseClass);
                         return new testDataSecond.SubstituteModule6.ConcreteClass1(dependency);
                     });

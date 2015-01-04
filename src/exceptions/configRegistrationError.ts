@@ -10,7 +10,7 @@
 
 import BaseApplicationErrorModule = require('./applicationError');
 
-export class ConfigRegistrationError extends BaseApplicationErrorModule.ApplicationError {
+export class ConfigurationError extends BaseApplicationErrorModule.ApplicationError {
 
     constructor (public message?: string) {
         super(message);

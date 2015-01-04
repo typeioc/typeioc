@@ -19,7 +19,7 @@
  export var ArgumentNullError = ArgumentNullErrorModule.ArgumentNullError;
  export var ResolutionError = ResolutionErrorModule.ResolutionError;
  export var StorageKeyNotFoundError = StorageKeyNotFoundErrorModule.StorageKeyNotFoundError;
- export var ConfigurationError = ConfigRegistrationErrorModule.ConfigRegistrationError;
+ export var ConfigurationError = ConfigRegistrationErrorModule.ConfigurationError;
 
 
 

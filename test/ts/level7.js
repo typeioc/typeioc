@@ -86,7 +86,7 @@ var Level7;
     Level7.registerModuleConstructorWithParams = registerModuleConstructorWithParams;
     function registerModuleConstructorWithDependencies(test) {
         containerBuilder.registerModule(TestDataSecond.ServiceModule1).as(TestDataSecond.SubstituteModule3).forArgs(TestDataSecond.SubstituteModule3.ConcreteTestClass, 77, "Test");
-        containerBuilder.registerModule(TestDataSecond.ServiceModule3).as(TestDataSecond.SubstituteModule6).for(TestDataSecond.SubstituteModule6.ConcreteClass1, function (c) {
+        containerBuilder.registerModule(TestDataSecond.ServiceModule3).as(TestDataSecond.SubstituteModule6).forService(TestDataSecond.SubstituteModule6.ConcreteClass1, function (c) {
             var dependency = c.resolve(TestDataSecond.ServiceModule1.TestBaseClass);
             return new TestDataSecond.SubstituteModule6.ConcreteClass1(dependency);
         });
@@ -138,7 +138,7 @@ var Level7;
     Level7.registerModuleMultipleSubstitutionsNamedResolution = registerModuleMultipleSubstitutionsNamedResolution;
     function registerModuleConstructorWithDependenciesNamedResolution(test) {
         containerBuilder.registerModule(TestDataSecond.ServiceModule1).as(TestDataSecond.SubstituteModule3).forArgs(TestDataSecond.SubstituteModule3.ConcreteTestClass, 77, "Test");
-        containerBuilder.registerModule(TestDataSecond.ServiceModule3).as(TestDataSecond.SubstituteModule6).named(TestDataSecond.SubstituteModule6.ConcreteClass1, "name1").for(TestDataSecond.SubstituteModule6.ConcreteClass1, function (c) {
+        containerBuilder.registerModule(TestDataSecond.ServiceModule3).as(TestDataSecond.SubstituteModule6).named(TestDataSecond.SubstituteModule6.ConcreteClass1, "name1").forService(TestDataSecond.SubstituteModule6.ConcreteClass1, function (c) {
             var dependency = c.resolve(TestDataSecond.ServiceModule1.TestBaseClass);
             return new TestDataSecond.SubstituteModule6.ConcreteClass1(dependency);
         });

@@ -21,7 +21,7 @@ export class Api<T> implements Typeioc.Internal.IContainerApi<T>{
     };
 
     private _dependencies : Array<Typeioc.IDynamicDependency> = [];
-    private _try = false;
+    private _attempt = false;
     private _args : Array<any> = [];
 
     public get serviceValue() : T {
@@ -44,12 +44,12 @@ export class Api<T> implements Typeioc.Internal.IContainerApi<T>{
         return this._dependencies && this.dependencies.length > 0;
     }
 
-    public get tryValue() : boolean  {
-        return this._try;
+    public get attemptValue() : boolean  {
+        return this._attempt;
     }
 
     public get throwResolveError() : boolean {
-        return !this.tryValue;
+        return !this.attemptValue;
     }
 
     public get argsValue() : Array<any> {
@@ -64,40 +64,40 @@ export class Api<T> implements Typeioc.Internal.IContainerApi<T>{
         this._service = value;
 
         return {
-            name: this.name.bind(this),
             args: this.args.bind(this),
-            try: this.try.bind(this),
+            attempt: this.attempt.bind(this),
+            name: this.name.bind(this),
             dependencies: this.dependencies.bind(this),
             cache: this.cache.bind(this),
             exec: this.exec.bind(this)
         }
     }
 
-    private name(value : string) : Typeioc.IResolveArgsTryDepCache<T> {
-        this._name = value;
-
-        return {
-            args: this.args.bind(this),
-            try: this.try.bind(this),
-            dependencies: this.dependencies.bind(this),
-            cache: this.cache.bind(this),
-            exec: this.exec.bind(this)
-        };
-    }
-
-    private args(data : Array<any>) : Typeioc.IResolveTryDepCache<T> {
+    private args(data : Array<any>) : Typeioc.IResolveTryNamedDepCache<T> {
         this._args = data;
 
         return {
-            try: this.try.bind(this),
+            attempt: this.attempt.bind(this),
+            name: this.name.bind(this),
             dependencies: this.dependencies.bind(this),
             cache: this.cache.bind(this),
             exec: this.exec.bind(this)
         };
     }
 
-    private try() : Typeioc.IResolveDepCache<T>{
-        this._try = true;
+    private attempt() : Typeioc.IResolveNamedDepCache<T>{
+        this._attempt = true;
+
+        return {
+            name: this.name.bind(this),
+            dependencies: this.dependencies.bind(this),
+            cache: this.cache.bind(this),
+            exec: this.exec.bind(this)
+        };
+    }
+
+    private name(value : string) : Typeioc.IResolveDepCache<T> {
+        this._name = value;
 
         return {
             dependencies: this.dependencies.bind(this),

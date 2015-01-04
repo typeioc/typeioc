@@ -82,7 +82,7 @@ export class ModuleRegistration implements Typeioc.Internal.IModuleRegistration{
         this._base.owner = owner;
     }
 
-    private for<R>(service: any, factory : Typeioc.IFactory<R>) : Typeioc.IModuleReusedOwned {
+    private forService<R>(service: any, factory : Typeioc.IFactory<R>) : Typeioc.IModuleReusedOwned {
 
         var options = this._internalStorage.register(service, this.emptyRegoOptionsEntry);
         options.factory = factory;
@@ -131,7 +131,7 @@ export class ModuleRegistration implements Typeioc.Internal.IModuleRegistration{
         return {
             within : self.within.bind(self),
             ownedBy : self.ownedBy.bind(self),
-            for : self.for.bind(self),
+            forService : self.forService.bind(self),
             forArgs : self.forArgs.bind(self),
             named : self.named.bind(self)
         };

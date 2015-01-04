@@ -49,6 +49,10 @@ export class ConfigRegistration implements Typeioc.Internal.IConfigRegistration 
     }
 
     public apply(config : Typeioc.IConfig) {
+
+        if(!config)
+            throw new Exceptions.ArgumentNullError("config");
+
         this._config = config;
     }
 
@@ -125,7 +129,7 @@ export class ConfigRegistration implements Typeioc.Internal.IConfigRegistration 
                     var params = forInstance.parameters || [];
                     var factory = forInstance.factory || self.getInstantiation(resolver, params, configModule.resolverModule);
 
-                    asResolver.for<any>(resolver, factory);
+                    asResolver.forService<any>(resolver, factory);
                 });
             }
 
@@ -173,7 +177,8 @@ export class ConfigRegistration implements Typeioc.Internal.IConfigRegistration 
     private getComponent(instanceLocation : Typeioc.IInstanceLocation,
                          moduleInstance? : Object) {
 
-        if(!instanceLocation.name) throw new Exceptions.ArgumentNullError('Missing component name');
+        if(!instanceLocation.name)
+            throw new Exceptions.ArgumentNullError('Missing component name');
 
         var result;
 

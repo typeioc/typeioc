@@ -52,7 +52,7 @@ declare module Typeioc.Internal {
         cacheValue : IApiCache;
         dependenciesValue : Array<Typeioc.IDynamicDependency>;
         isDependenciesResolvable : boolean;
-        tryValue : boolean;
+        attemptValue : boolean;
         throwResolveError : boolean;
         argsValue : Array<any>;
         service(value : any) : Typeioc.IResolveWith<T>;

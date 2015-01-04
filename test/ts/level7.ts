@@ -161,7 +161,7 @@ export module Level7 {
 
         containerBuilder.registerModule(TestDataSecond.ServiceModule3)
             .as(TestDataSecond.SubstituteModule6)
-            .for(TestDataSecond.SubstituteModule6.ConcreteClass1,
+            .forService(TestDataSecond.SubstituteModule6.ConcreteClass1,
                 (c) => {
 
                     var dependency = c.resolve(TestDataSecond.ServiceModule1.TestBaseClass);
@@ -249,7 +249,7 @@ export module Level7 {
         containerBuilder.registerModule(TestDataSecond.ServiceModule3)
             .as(TestDataSecond.SubstituteModule6).
             named(TestDataSecond.SubstituteModule6.ConcreteClass1, "name1")
-            .for(TestDataSecond.SubstituteModule6.ConcreteClass1,
+            .forService(TestDataSecond.SubstituteModule6.ConcreteClass1,
             (c) => {
 
                 var dependency = c.resolve(TestDataSecond.ServiceModule1.TestBaseClass);
