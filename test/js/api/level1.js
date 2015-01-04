@@ -133,8 +133,14 @@ exports.api = {
                     return container.resolve(testData.Test1Base);
                 };
 
+                test.expect(2);
+
                 test.throws(delegate, function (err) {
-                    return (err instanceof scaffold.Exceptions.ResolutionError) && /Could not resolve service/.test(err.message);
+
+                    test.strictEqual(err.data, testData.Test1Base);
+
+                    return (err instanceof scaffold.Exceptions.ResolutionError) &&
+                            /Could not resolve service/.test(err.message);
                 });
 
                 test.done();

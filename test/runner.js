@@ -20,26 +20,20 @@ var apiSubPAth = 'api';
 
 process.chdir(mainPath);
 
-fs.readdir(path.join(mainPath, internalSubPAth), function(error, files) {
+var internalFiles = fs.readdirSync(path.join(mainPath, internalSubPAth))
+.map(function(file) {
+    return path.join(internalSubPAth, file);
+});
 
-    var result = files.map(function(file) {
-        return path.join(internalSubPAth, file);
-    });
+var apiFiles = fs.readdirSync(path.join(mainPath, apiSubPAth))
+.map(function(file) {
+    return path.join(apiSubPAth, file);
+});
 
-    fs.readdir(path.join(mainPath, apiSubPAth), function(error, files) {
-        var paths = files.map(function(file) {
-            return path.join(apiSubPAth, file);
-        });
+reporter.run(internalFiles.concat(apiFiles), null, function(data) {
 
-        result.push.apply(result, paths);
-
-        reporter.run(result, null, function(data) {
-
-            if(data &&
-               data instanceof Error) {
-                process.exit(1);
-            }
-        });
-
-    });
+    if(data &&
+        data instanceof Error) {
+        process.exit(1);
+    }
 });

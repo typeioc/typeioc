@@ -141,6 +141,24 @@ var Test6 = (function () {
     return Test6;
 })();
 exports.Test6 = Test6;
+var Test7 = (function (_super) {
+    __extends(Test7, _super);
+    function Test7(_base1, _base2, _test4) {
+        _super.call(this);
+        this._base1 = _base1;
+        this._base2 = _base2;
+        this._test4 = _test4;
+    }
+    Object.defineProperty(Test7.prototype, "Name", {
+        get: function () {
+            return [this._base1.Name, this._base2.Name, this._test4.Name].join(' ');
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return Test7;
+})(Test1Base);
+exports.Test7 = Test7;
 var Initializable = (function () {
     function Initializable() {
         this.name = "test name";

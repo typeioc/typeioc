@@ -19,7 +19,7 @@ import InstanceRegoModule = require('./registration/instance/registration');
 import ConfigRegoModule = require('./registration/config/configRegistration');
 import ContainerModule = require('./build/container');
 import BuilderModule = require('./build/builder');
-
+import ApiContainer = require('./build/containerApi');
 
 export class Scaffold {
 
@@ -33,8 +33,12 @@ export class Scaffold {
         var instanceRegoService = new InstanceRegistrationService();
         var moduleRegoService = this.moduleRegistrationService(moduleStorageService, baseRegoService);
         var configRegoService = this.configRegistrationService(baseRegoService, moduleRegoService);
-        var containerService = this.containerService(regoStorageService, disposableStorageService, baseRegoService);
-
+        var containerApiService = this.containerApiService();
+        var containerService = this.containerService(
+            regoStorageService,
+            disposableStorageService,
+            baseRegoService,
+            containerApiService);
 
         return new BuilderModule.ContainerBuilder(
             configRegoService,
@@ -98,14 +102,16 @@ export class Scaffold {
 
     private containerService(registrationStorageService : Typeioc.Internal.IRegistrationStorageService,
                              disposableStorageService : Typeioc.Internal.IIDisposableStorageService,
-                             registrationBaseService : Typeioc.Internal.IRegistrationBaseService) : Typeioc.Internal.IContainerService {
+                             registrationBaseService : Typeioc.Internal.IRegistrationBaseService,
+                             containerApiService : Typeioc.Internal.IContainerApiService) : Typeioc.Internal.IContainerService {
         return {
             create : () => {
 
                 return new ContainerModule.Container(
                     registrationStorageService,
                     disposableStorageService,
-                    registrationBaseService
+                    registrationBaseService,
+                    containerApiService
                 );
             }
         };
@@ -126,6 +132,15 @@ export class Scaffold {
                 return result;
             }
         };
+    }
+
+    private containerApiService() : Typeioc.Internal.IContainerApiService {
+
+        return {
+            create : function<R>(container : Typeioc.Internal.IImportApi<R>) {
+                return new ApiContainer.Api(container);
+            }
+        }
     }
 }
 

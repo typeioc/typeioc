@@ -135,8 +135,14 @@ exports.api = {
                     return containerBuilder.build();
                 };
 
+                test.expect(2);
+
                 test.throws(delegate, function (err) {
-                    return (err instanceof scaffold.Exceptions.ArgumentNullError) && /Factory is not defined for: Test1Base/.test(err.message);
+
+                    test.strictEqual(err.data, testData.Test1Base);
+
+                    return (err instanceof scaffold.Exceptions.ArgumentNullError) &&
+                            /Factory is not defined/.test(err.message);
                 });
 
                 test.done();

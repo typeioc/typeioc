@@ -58,10 +58,8 @@ declare module Typeioc {
         tryResolve<R>(service: any, ...args:any[]);
         resolveNamed<R>(service: any, name : string, ...args:any[]);
         tryResolveNamed<R>(service: any, name : string, ...args:any[]);
-        resolveWithDep<R>(service: any,  ...dependencies : IDynamicDependency[]) : R;
-
-        //resolveWith<R>(service : any) : IResolveWith<R>;
-
+        resolveWithDependencies<R>(service: any, dependencies : IDynamicDependency[]) : R;
+        resolveWith<R>(service : any) : IResolveWith<R>;
 
         createChild : () => IContainer;
         dispose: () =>  void;
@@ -92,7 +90,7 @@ declare module Typeioc {
     }
 
     interface IResolveDependencies<T> {
-        dependencies(...dependencies : IDynamicDependency[]) : IResolveCacheReturn<T>;
+        dependencies(dependencies : IDynamicDependency[]) : IResolveCacheReturn<T>;
     }
 
     interface IResolveCache<T> {
@@ -165,8 +163,10 @@ declare module Typeioc {
 
     interface IDynamicDependency {
         service : any;
-        resolver : any;
-        resolverFactory: IFactory<any>;
+        factory: IFactory<any>;
+        named? : string;
+        args? : any[];
+        initializer? : IInitializer<any>;
     }
 
     interface IInstanceLocation {

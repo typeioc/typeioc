@@ -2,7 +2,7 @@
 'use strict';
 
 export class Test1Base {
-    public get Name() { return null; }
+    public get Name() : string { return null; }
 
     public get Disposed() : boolean {
         return false;
@@ -11,7 +11,7 @@ export class Test1Base {
 
 
 export class Test2Base {
-    public get Name() { return null; }
+    public get Name() : string { return null; }
 }
 
 export class Test1 extends Test1Base {
@@ -90,6 +90,19 @@ export class Test5 extends  Test1Base {
 export class Test6 {
     constructor() {
 
+    }
+}
+
+export class Test7 extends Test1Base {
+
+    constructor(private _base1 : Test1Base,
+                private _base2 : Test2Base,
+                private _test4 : Test4) {
+        super();
+    }
+
+    public get Name() {
+        return [this._base1.Name, this._base2.Name, this._test4.Name].join(' ');
     }
 }
 

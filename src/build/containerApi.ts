@@ -11,24 +11,52 @@
 
 'use strict';
 
-export interface IImportApi {
-    import<R>(api : Api<R>) : R;
-}
-
-export class Api<T> {
-    private _service: any;
+export class Api<T> implements Typeioc.Internal.IContainerApi<T>{
+    private _service: T;
     private _name:string;
 
-    private _cache = {
+    private _cache : Typeioc.Internal.IApiCache = {
         use: false,
         name: <string>undefined
     };
 
-    private _dependencies:Array<Typeioc.IDynamicDependency> = [];
+    private _dependencies : Array<Typeioc.IDynamicDependency> = [];
     private _try = false;
-    private _args:Array<any> = [];
+    private _args : Array<any> = [];
 
-    constructor(private _container : IImportApi) {
+    public get serviceValue() : T {
+        return this._service;
+    }
+
+    public get nameValue() : string {
+        return this._name;
+    }
+
+    public get cacheValue() : Typeioc.Internal.IApiCache  {
+        return this._cache;
+    }
+
+    public get dependenciesValue() : Array<Typeioc.IDynamicDependency>  {
+        return this._dependencies;
+    }
+
+    public get isDependenciesResolvable() : boolean {
+        return this._dependencies && this.dependencies.length > 0;
+    }
+
+    public get tryValue() : boolean  {
+        return this._try;
+    }
+
+    public get throwResolveError() : boolean {
+        return !this.tryValue;
+    }
+
+    public get argsValue() : Array<any> {
+        return this._args;
+    }
+
+    constructor(private _container : Typeioc.Internal.IImportApi<T>) {
 
     }
 
@@ -98,7 +126,7 @@ export class Api<T> {
     }
 
     private exec() : T {
-        return this._container.import(this);
+        return this._container.execute(this);
     }
 }
 

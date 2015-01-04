@@ -42,8 +42,33 @@ declare module Typeioc.Internal {
         create() : IContainer;
     }
 
+    interface IContainerApiService {
+        create<R>(container : IImportApi<R>) : IContainerApi<R>;
+    }
+
+    interface IContainerApi<T> {
+        serviceValue : T;
+        nameValue : string;
+        cacheValue : IApiCache;
+        dependenciesValue : Array<Typeioc.IDynamicDependency>;
+        isDependenciesResolvable : boolean;
+        tryValue : boolean;
+        throwResolveError : boolean;
+        argsValue : Array<any>;
+        service(value : any) : Typeioc.IResolveWith<T>;
+    }
+
+    interface IImportApi<T> {
+        execute(api : IContainerApi<T>) : T;
+    }
+
+    interface IApiCache {
+        use : boolean;
+        name :string
+    }
+
     interface IContainer extends Typeioc.IContainer {
-        import(registrations : IRegistrationBase[]) : void;
+        add(registrations : IRegistrationBase[]) : void;
     }
 
 
