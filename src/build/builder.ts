@@ -76,6 +76,7 @@ export class ContainerBuilder implements Typeioc.IContainerBuilder{
         container.add(regoes);
 
         return {
+            cache : container.cache,
             resolve : container.resolve.bind(container),
             tryResolve: container.tryResolve.bind(container),
             resolveNamed : container.resolveNamed.bind(container),

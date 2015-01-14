@@ -41,7 +41,7 @@ export class Api<T> implements Typeioc.Internal.IContainerApi<T>{
     }
 
     public get isDependenciesResolvable() : boolean {
-        return this._dependencies && this.dependencies.length > 0;
+        return this._dependencies && this._dependencies.length > 0;
     }
 
     public get attemptValue() : boolean  {
@@ -73,8 +73,8 @@ export class Api<T> implements Typeioc.Internal.IContainerApi<T>{
         }
     }
 
-    private args(data : Array<any>) : Typeioc.IResolveTryNamedDepCache<T> {
-        this._args = data;
+    private args(...args : Array<any>) : Typeioc.IResolveTryNamedDepCache<T> {
+        this._args = args;
 
         return {
             attempt: this.attempt.bind(this),
@@ -129,6 +129,3 @@ export class Api<T> implements Typeioc.Internal.IContainerApi<T>{
         return this._container.execute(this);
     }
 }
-
-
-

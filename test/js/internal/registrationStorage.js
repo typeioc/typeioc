@@ -34,7 +34,7 @@ exports.internal = {
 
                 internalStorage.register.withArgs(registration.service, mockery.match.func).returns(storage);
 
-                registrationStorage.addEntry(registration);
+                registrationStorage.addEntry(registration, function() {return registration;});
 
                 test.ok(internalStorage.register.calledOnce);
 
@@ -52,7 +52,7 @@ exports.internal = {
 
                 internalStorage.register.withArgs(registration.service, mockery.match.func).returns(storage);
 
-                registrationStorage.addEntry(registration);
+                registrationStorage.addEntry(registration, function() {return registration;});
 
                 var actual = storage[3];
 
@@ -76,7 +76,7 @@ exports.internal = {
 
                 internalStorage.register.withArgs(registration.service, mockery.match.func).returns(storage);
 
-                registrationStorage.addEntry(registration);
+                registrationStorage.addEntry(registration, function() {return registration;});
 
                 var actual = storage[name];
 
@@ -98,7 +98,7 @@ exports.internal = {
 
                 internalStorage.register.withArgs(registration.service, mockery.match.func).returns(storage);
 
-                registrationStorage.addEntry(registration);
+                registrationStorage.addEntry(registration, function() {return registration;});
 
                 var resultStorage = storage[name];
                 var actual = resultStorage[2];

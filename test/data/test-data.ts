@@ -16,7 +16,7 @@ export class Test2Base {
 
 export class Test1 extends Test1Base {
 
-    private name : string = "test 1";
+    private name : string = 'test 1';
     public get Name() : string {
         return this.name;
     }
@@ -24,7 +24,7 @@ export class Test1 extends Test1Base {
 
 export class Test2 extends Test2Base {
 
-    private name : string = "test 2";
+    private name : string = 'test 2';
     public get Name() : string {
         return this.name;
     }
@@ -35,7 +35,7 @@ export class Test3 extends Test1Base{
 
     public get Name() : string {
 
-        var result = "Test 3 ";
+        var result = 'Test 3 ';
 
         if(this.test2) {
             result += this.test2.Name;
@@ -75,7 +75,7 @@ export class Test5 extends  Test1Base {
     private _disposed : boolean = false;
 
     public get Name() : string {
-        return "test 5";
+        return 'test 5';
     }
 
     public get Disposed() : boolean {
@@ -108,7 +108,7 @@ export class Test7 extends Test1Base {
 
 
 export class Initializable {
-    public name : string = "test name";
+    public name : string = 'test name';
     public test6 : Test6 = null;
 
     public initialize(name : string) {
@@ -124,7 +124,7 @@ export class Initializable2 extends Initializable {
 
 export module TestModule1 {
     export class Test1 {
-        public name = "test 1";
+        public name = 'test 1';
 
         constructor(name : string) {
             this.name = name;
@@ -145,7 +145,7 @@ export module TestModule1 {
 
 export module TestModule2 {
     export class Test1 {
-        public name = "test 1";
+        public name = 'test 1';
 
         constructor(name : string) {
             this.name = name;

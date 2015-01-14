@@ -66,7 +66,7 @@ var SubstituteModule1;
             _super.apply(this, arguments);
         }
         ConcreteTestClass.prototype.name = function () {
-            return "Concrete class";
+            return 'Concrete class';
         };
         return ConcreteTestClass;
     })(ServiceModule1.TestBaseClass);
@@ -78,7 +78,7 @@ var SubstituteModule2;
         function ConcreteTestClass() {
         }
         ConcreteTestClass.prototype.name = function () {
-            return "Concrete class";
+            return 'Concrete class';
         };
         return ConcreteTestClass;
     })();
@@ -92,7 +92,7 @@ var SubstituteModule3;
             this.anotherParam = anotherParam;
         }
         ConcreteTestClass.prototype.name = function () {
-            return "Concrete class" + this.age + this.anotherParam;
+            return 'Concrete class' + this.age + this.anotherParam;
         };
         return ConcreteTestClass;
     })();
@@ -104,7 +104,7 @@ var SubstituteModule4;
         function ConcreteTestClass1() {
         }
         ConcreteTestClass1.prototype.name = function () {
-            return "Concrete class1";
+            return 'Concrete class1';
         };
         return ConcreteTestClass1;
     })();
@@ -113,7 +113,7 @@ var SubstituteModule4;
         function ConcreteTestClass2() {
         }
         ConcreteTestClass2.prototype.name = function () {
-            return "Concrete class2";
+            return 'Concrete class2';
         };
         return ConcreteTestClass2;
     })();
@@ -125,7 +125,7 @@ var SubstituteModule5;
         function ConcreteClass1() {
         }
         ConcreteClass1.prototype.name = function () {
-            return "name";
+            return 'name';
         };
         return ConcreteClass1;
     })();
@@ -134,7 +134,7 @@ var SubstituteModule5;
         function ConcreteClass2() {
         }
         ConcreteClass2.prototype.age = function () {
-            return "age";
+            return 'age';
         };
         return ConcreteClass2;
     })();
@@ -143,7 +143,7 @@ var SubstituteModule5;
         function ConcreteClass3() {
         }
         ConcreteClass3.prototype.date = function () {
-            return "date";
+            return 'date';
         };
         return ConcreteClass3;
     })();
@@ -156,7 +156,7 @@ var SubstituteModule6;
             this._dependancy = dependancy;
         }
         ConcreteClass1.prototype.name = function () {
-            return "Module6 - Class 1 - " + this._dependancy.name();
+            return 'Module6 - Class 1 - ' + this._dependancy.name();
         };
         return ConcreteClass1;
     })();

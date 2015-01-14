@@ -32,6 +32,10 @@ export class Container implements Typeioc.Internal.IContainer {
         );
     }
 
+    public get cache() : any {
+        return this._container['cache'];
+    }
+
     public add(registrations : Typeioc.Internal.IRegistrationBase[]) : void {
         this._container.add(registrations);
     }
@@ -114,20 +118,28 @@ class InternalContainer implements Typeioc.Internal.IContainer {
     private parent : InternalContainer ;
     private children : InternalContainer [] = [];
     private _disposableStorage : Typeioc.Internal.IDisposableStorage;
-    private _collection : Typeioc.Internal.IRegistrationStorage;
+    private _collection : Typeioc.Internal.IRegistrationStorage<Typeioc.Internal.IRegistrationBase>;
+    private _cache : Typeioc.Internal.IIndexedCollection;
 
     constructor(private _registrationStorageService : Typeioc.Internal.IRegistrationStorageService,
                 private _disposableStorageService : Typeioc.Internal.IIDisposableStorageService,
                 private _registrationBaseService : Typeioc.Internal.IRegistrationBaseService,
                 private _containerApiService : Typeioc.Internal.IContainerApiService) {
 
-        this._collection = this._registrationStorageService.create();
+        this._collection = this._registrationStorageService.create<Typeioc.Internal.IRegistrationBase>();
         this._disposableStorage = this._disposableStorageService.create();
+        this._cache = {};
+    }
+
+    public get cache() : Typeioc.Internal.IIndexedCollection {
+        return this._cache;
     }
 
     public add(registrations : Typeioc.Internal.IRegistrationBase[]) {
 
-        registrations.forEach(this.registerImpl.bind(this));
+        var resolveImplementation = this.registerImpl.bind(this);
+
+        registrations.forEach(resolveImplementation);
     }
 
     public createChild() : Typeioc.IContainer {
@@ -194,19 +206,28 @@ class InternalContainer implements Typeioc.Internal.IContainer {
     public resolveWith<R>(service : any) : Typeioc.IResolveWith<R> {
 
         var importApi : Typeioc.Internal.IImportApi<R> = {
-            execute : function(api : Typeioc.Internal.IContainerApi<R>) : R {
+            execute : (api : Typeioc.Internal.IContainerApi<R>) : R => {
+
+                var result;
 
                 if(api.isDependenciesResolvable) {
-                    return this.resolveWithDepBase(api);
+                    result = this.resolveWithDepBase(api);
                 } else {
-                    var rego = this.createRegistration(api.service);
+                    var rego = this.createRegistration(api.serviceValue);
                     rego.name = api.nameValue;
                     rego.args = api.argsValue;
 
-                    return this.resolveBase(rego, api.throwResolveError);
+                    result = this.resolveBase(rego, api.throwResolveError);
                 }
+
+                if(result && api.cacheValue.use === true) {
+
+                    this.addToCache(result, api);
+                }
+
+                return result;
             }
-        }
+        };
 
         var api = this._containerApiService.create<R>(importApi);
 
@@ -223,7 +244,7 @@ class InternalContainer implements Typeioc.Internal.IContainer {
 
         registration.container = this;
 
-        this._collection.addEntry(registration);
+        this._collection.addEntry(registration, () => registration);
     }
 
     private resolveBase(registration : Typeioc.Internal.IRegistrationBase, throwIfNotFound : boolean) : any {
@@ -278,7 +299,7 @@ class InternalContainer implements Typeioc.Internal.IContainer {
 
         if(registration.container !== this) {
             entry = registration.cloneFor(this);
-            this._collection.addEntry(entry);
+            this._collection.addEntry(entry, () => entry);
         } else {
             entry = registration;
         }
@@ -347,7 +368,6 @@ class InternalContainer implements Typeioc.Internal.IContainer {
 
             var registration = this.createRegistration(dependency.service);
             registration.factory = dependency.factory;
-            registration.args = dependency.args || [];
             registration.name = dependency.named;
 
             return {
@@ -363,7 +383,6 @@ class InternalContainer implements Typeioc.Internal.IContainer {
             var baseRegistration = item.implementation.cloneFor(this);
             baseRegistration.factory = item.dependency.factory;
             baseRegistration.name = item.dependency.named;
-            baseRegistration.args = item.dependency.args;
             baseRegistration.initializer = item.dependency.initializer;
             baseRegistration.disposer = undefined;
 
@@ -393,6 +412,31 @@ class InternalContainer implements Typeioc.Internal.IContainer {
         child.add(regoes);
 
         return <R>child.resolveBase(baseRegistration, api.throwResolveError);
+    }
+
+    private addToCache(value : any, api : Typeioc.Internal.IContainerApi<{}>) : void {
+        var name : any;
+
+        if(api.cacheValue.name) {
+            name = api.cacheValue.name;
+        } else
+        if(api.nameValue) {
+            name = api.nameValue;
+        } else
+        if(api.serviceValue['name']) {
+            name = api.serviceValue['name'];
+        } else
+        if(typeof api.serviceValue === 'string') {
+            name = api.serviceValue;
+        } else {
+            throw new Exceptions.ResolutionError('Missing cache name');
+        }
+
+        var cached = this._cache[name];
+
+        if(!cached) {
+            this._cache[name] = value;
+        }
     }
 }
 

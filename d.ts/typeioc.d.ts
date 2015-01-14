@@ -54,6 +54,7 @@ declare module Typeioc {
     }
 
     interface IContainer {
+        cache : any;
         resolve<R>(service: any, ...args:any[]);
         tryResolve<R>(service: any, ...args:any[]);
         resolveNamed<R>(service: any, name : string, ...args:any[]);
@@ -161,7 +162,6 @@ declare module Typeioc {
         service : any;
         factory: IFactory<any>;
         named? : string;
-        args? : any[];
         initializer? : IInitializer<any>;
     }
 

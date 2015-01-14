@@ -27,7 +27,7 @@ declare module Typeioc.Internal {
     }
 
     interface IRegistrationStorageService {
-        create () : IRegistrationStorage;
+        create<R>() : IRegistrationStorage<R>;
     }
 
     interface IIDisposableStorageService {
@@ -98,9 +98,9 @@ declare module Typeioc.Internal {
         disposeItems();
     }
 
-    interface IRegistrationStorage {
-        addEntry(registration : IRegistrationBase) : void;
-        getEntry(registration : IRegistrationBase) : IRegistrationBase;
+    interface IRegistrationStorage<T> {
+        addEntry(registration : IRegistrationBase, entry : () => T) : void;
+        getEntry(registration : IRegistrationBase) : T;
     }
 
     interface IRegistrationBase {

@@ -13,19 +13,19 @@
 import Utils = require('../utils/index');
 
 
-export class RegistrationStorage implements Typeioc.Internal.IRegistrationStorage {
+export class RegistrationStorage<T> implements Typeioc.Internal.IRegistrationStorage<T> {
 
     constructor(private _internalStorage : Typeioc.Internal.IInternalStorage<any, Typeioc.Internal.IIndexedCollection>) {
     }
 
-    public addEntry(registration : Typeioc.Internal.IRegistrationBase) : void {
+    public addEntry(registration : Typeioc.Internal.IRegistrationBase, entry : () => T) : void {
 
         var storage = this._internalStorage.register(registration.service, this.emptyBucket);
 
         var argsCount = this.getArgumentsCount(registration);
 
         if(!registration.name) {
-            storage[argsCount] = registration;
+            storage[argsCount] = entry();
         } else {
             var argsStorage = storage[registration.name];
             if(!argsStorage) {
@@ -33,11 +33,11 @@ export class RegistrationStorage implements Typeioc.Internal.IRegistrationStorag
                 storage[registration.name] = argsStorage;
             }
 
-            argsStorage[argsCount] = registration;
+            argsStorage[argsCount] = entry();
         }
     }
 
-    public getEntry(registration : Typeioc.Internal.IRegistrationBase) : Typeioc.Internal.IRegistrationBase {
+    public getEntry(registration : Typeioc.Internal.IRegistrationBase) : T {
 
         var storage = this._internalStorage.tryGet(registration.service);
 

@@ -109,7 +109,16 @@ exports.api = {
 
                 var t1 = container.resolve(testDataSecond.ServiceModule2.TestBaseFunction);
 
-                test.ok(((t1 instanceof testDataSecond.SubstituteModule4.ConcreteTestClass2) && !(t1 instanceof testDataSecond.SubstituteModule4.ConcreteTestClass1)) || (!(t1 instanceof testDataSecond.SubstituteModule4.ConcreteTestClass2) && (t1 instanceof testDataSecond.SubstituteModule4.ConcreteTestClass1)));
+                test.ok(
+                        (
+                            (t1 instanceof testDataSecond.SubstituteModule4.ConcreteTestClass2) &&
+                            !(t1 instanceof testDataSecond.SubstituteModule4.ConcreteTestClass1)
+                        ) ||
+                        (
+                            !(t1 instanceof testDataSecond.SubstituteModule4.ConcreteTestClass2) &&
+                            (t1 instanceof testDataSecond.SubstituteModule4.ConcreteTestClass1)
+                        )
+                );
 
                 test.done();
             },

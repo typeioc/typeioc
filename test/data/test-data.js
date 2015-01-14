@@ -42,7 +42,7 @@ var Test1 = (function (_super) {
     __extends(Test1, _super);
     function Test1() {
         _super.apply(this, arguments);
-        this.name = "test 1";
+        this.name = 'test 1';
     }
     Object.defineProperty(Test1.prototype, "Name", {
         get: function () {
@@ -58,7 +58,7 @@ var Test2 = (function (_super) {
     __extends(Test2, _super);
     function Test2() {
         _super.apply(this, arguments);
-        this.name = "test 2";
+        this.name = 'test 2';
     }
     Object.defineProperty(Test2.prototype, "Name", {
         get: function () {
@@ -78,7 +78,7 @@ var Test3 = (function (_super) {
     }
     Object.defineProperty(Test3.prototype, "Name", {
         get: function () {
-            var result = "Test 3 ";
+            var result = 'Test 3 ';
             if (this.test2) {
                 result += this.test2.Name;
             }
@@ -117,7 +117,7 @@ var Test5 = (function (_super) {
     }
     Object.defineProperty(Test5.prototype, "Name", {
         get: function () {
-            return "test 5";
+            return 'test 5';
         },
         enumerable: true,
         configurable: true
@@ -161,7 +161,7 @@ var Test7 = (function (_super) {
 exports.Test7 = Test7;
 var Initializable = (function () {
     function Initializable() {
-        this.name = "test name";
+        this.name = 'test name';
         this.test6 = null;
     }
     Initializable.prototype.initialize = function (name) {
@@ -182,7 +182,7 @@ var TestModule1;
 (function (TestModule1) {
     var Test1 = (function () {
         function Test1(name) {
-            this.name = "test 1";
+            this.name = 'test 1';
             this.name = name;
         }
         return Test1;
@@ -205,7 +205,7 @@ var TestModule2;
 (function (TestModule2) {
     var Test1 = (function () {
         function Test1(name) {
-            this.name = "test 1";
+            this.name = 'test 1';
             this.name = name;
         }
         return Test1;
