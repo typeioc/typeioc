@@ -10,3 +10,4 @@
 ../test/ts/level7.ts
 ../test/ts/level8.ts
 ../test/ts/level9.ts
+../test/ts/level10.ts

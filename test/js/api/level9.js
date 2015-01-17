@@ -389,6 +389,83 @@ exports.api = {
                 test.done();
             },
 
+            resolvesWithDependencyThrowsWhenNoService : function(test) {
+
+                containerBuilder.register(testData.Test2Base)
+                    .as(function (c) {
+                        return new testData.Test2();
+                    });
+                containerBuilder.register(testData.Test1Base)
+                    .as(function (c) {
+                        var test2 = c.resolve(testData.Test2Base);
+
+                        return new testData.Test3(test2);
+                    });
+
+                var container = containerBuilder.build();
+
+                var dependencies = [{
+                    factory: function (c) {
+
+                        return {
+                            get Name() {
+                                return 'name from dependency';
+                            }
+                        };
+                    }
+                }];
+
+                var delegate = function() {
+                    container.resolveWithDependencies(testData.Test1Base, dependencies);
+                }
+
+                test.throws(delegate, function(error) {
+                    test.strictEqual(error.message, 'Service is not defined');
+                    test.strictEqual(error.data, dependencies[0]);
+
+                    return error instanceof scaffold.Exceptions.ResolutionError;
+                });
+
+                test.expect(3);
+
+                test.done();
+            },
+
+            resolvesWithDependencyThrowsWhenNoFactory : function(test) {
+
+                containerBuilder.register(testData.Test2Base)
+                    .as(function (c) {
+                        return new testData.Test2();
+                    });
+                containerBuilder.register(testData.Test1Base)
+                    .as(function (c) {
+                        var test2 = c.resolve(testData.Test2Base);
+
+                        return new testData.Test3(test2);
+                    });
+
+                var container = containerBuilder.build();
+
+                var dependencies = [{
+                    service: testData.Test2Base
+                }];
+
+                var delegate = function() {
+                    container.resolveWithDependencies(testData.Test1Base, dependencies);
+                }
+
+                test.throws(delegate, function(error) {
+                    test.strictEqual(error.message, 'Factory is not defined');
+                    test.strictEqual(error.data, dependencies[0]);
+
+                    return error instanceof scaffold.Exceptions.ResolutionError;
+                });
+
+                test.expect(3);
+
+                test.done();
+            },
+
             resolveWithDependencyInitializerIsInvoked : function(test) {
 
                 var resolutionInitializer = mockery.stub();

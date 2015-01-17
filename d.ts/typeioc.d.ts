@@ -83,7 +83,7 @@ declare module Typeioc {
     }
 
     interface IResolveTry<T> {
-        attempt() : IResolveDepCache<T>;
+        attempt() : IResolveNamedDepCache<T>;
     }
 
     interface IResolveDependencies<T> {

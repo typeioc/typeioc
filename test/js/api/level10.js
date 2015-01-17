@@ -171,6 +171,8 @@ exports.api = {
                     return (error instanceof scaffold.Exceptions.ResolutionError);
                 });
 
+                test.expect(3);
+
                 test.done();
             },
 
@@ -669,6 +671,47 @@ exports.api = {
                     .exec();
 
                 test.strictEqual(actual.Name, 'Test 3 Test2 substitute');
+
+                test.done();
+            },
+
+            resolveWithAttemptDependenciesMissingResolution: function(test) {
+
+                containerBuilder.register(testData.Test2Base)
+                    .as(function (_) {
+                        return {
+                            get Name() {
+                                return 'Test2Base';
+                            }
+                        }
+                    });
+                containerBuilder.register(testData.Test1Base)
+                    .as(function (c) {
+                        var test2 = c.resolve(testData.Test2Base);
+
+                        return new testData.Test3(test2);
+                    });
+
+                var container = containerBuilder.build();
+
+                var dependencies = [{
+                    service: {},
+                    factory: function (c) {
+
+                        return {
+                            get Name() {
+                                return 'Test2 substitute';
+                            }
+                        };
+                    }
+                }];
+
+                var actual = container.resolveWith(testData.Test1Base)
+                    .attempt()
+                    .dependencies(dependencies)
+                    .exec();
+
+                test.strictEqual(actual, null);
 
                 test.done();
             },

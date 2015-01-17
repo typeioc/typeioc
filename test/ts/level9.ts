@@ -3,7 +3,7 @@
 
 import scaffold = require('./../scaffold');
 import TestData = require('../data/test-data');
-import TestDataSecond = require('../data/test-data2');
+
 
 var mockery = scaffold.Mockery;
 

@@ -55,8 +55,7 @@ export class Container implements Typeioc.Internal.IContainer {
 
     public resolve<R>(service: any, ...args:any[]) : R {
 
-        if(!service)
-            throw new Exceptions.ArgumentNullError("service");
+        checkNullArgument(service, 'service');
 
         args = flattenArgs([service], args);
 
@@ -65,8 +64,7 @@ export class Container implements Typeioc.Internal.IContainer {
 
     public tryResolve<R>(service: any, ...args:any[]) : R {
 
-        if(!service)
-            throw new Exceptions.ArgumentNullError("service");
+        checkNullArgument(service, 'service');
 
         args = flattenArgs([service], args);
 
@@ -75,8 +73,7 @@ export class Container implements Typeioc.Internal.IContainer {
 
     public resolveNamed<R>(service: any, name : string, ...args:any[]) : R {
 
-        if(!service)
-            throw new Exceptions.ArgumentNullError("service");
+        checkNullArgument(service, 'service');
 
         args = flattenArgs([service, name], args);
 
@@ -85,8 +82,7 @@ export class Container implements Typeioc.Internal.IContainer {
 
     public tryResolveNamed<R>(service: any, name : string, ...args:any[]) : R {
 
-        if(!service)
-            throw new Exceptions.ArgumentNullError("service");
+        checkNullArgument(service, 'service');
 
         args = flattenArgs([service, name], args);
 
@@ -95,8 +91,7 @@ export class Container implements Typeioc.Internal.IContainer {
 
     public resolveWithDependencies<R>(service: any, dependencies : Typeioc.IDynamicDependency[]) : R {
 
-        if(!service)
-            throw new Exceptions.ArgumentNullError("service");
+        checkNullArgument(service, 'service');
 
         if(!dependencies || dependencies.length <= 0)
             throw new Exceptions.ResolutionError('No dependencies provided');
@@ -106,8 +101,7 @@ export class Container implements Typeioc.Internal.IContainer {
 
     public resolveWith<R>(service : any) : Typeioc.IResolveWith<R> {
 
-        if(!service)
-            throw new Exceptions.ArgumentNullError("service");
+        checkNullArgument(service, 'service');
 
         return this._container.resolveWith<R>(service);
     }
@@ -432,11 +426,7 @@ class InternalContainer implements Typeioc.Internal.IContainer {
             throw new Exceptions.ResolutionError('Missing cache name');
         }
 
-        var cached = this._cache[name];
-
-        if(!cached) {
-            this._cache[name] = value;
-        }
+        this._cache[name] = value;
     }
 }
 
@@ -445,4 +435,12 @@ function flattenArgs(args : any[], tailArgs : any[]) : any[] {
     args.push.apply(args, tailArgs);
 
     return args;
+}
+
+function checkNullArgument(value : any, message: string) {
+    if(!value) {
+        var exception = new Exceptions.ArgumentNullError(message);
+        exception.data = value;
+        throw exception;
+    }
 }
