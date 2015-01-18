@@ -137,13 +137,9 @@ export module Level5 {
 
         var className = "item";
 
-        var initializer : Typeioc.IInitializer<TestData.Initializable> = (c, item) => {
-            item.initialize(className);
-        };
-
         containerBuilder.register<TestData.Initializable>(TestData.Initializable)
             .as(() => new TestData.Initializable2()).
-            initializeBy(initializer);
+            initializeBy((c, item) => item.initialize(className));
 
         var container = containerBuilder.build();
 
@@ -188,7 +184,7 @@ export module Level5 {
 
         containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)
             .as(() => new TestData.Test5())
-            .dispose((item : TestData.Test5)  => { item.Dispose() })
+            .dispose((item : TestData.Test5)  => item.Dispose())
             .within(Typeioc.Types.Scope.None)
             .ownedBy(Typeioc.Types.Owner.Container);
 

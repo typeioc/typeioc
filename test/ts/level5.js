@@ -82,10 +82,7 @@ var Level5;
     Level5.disposingContainerDoesNotDisposeExternalOwnedInstances = disposingContainerDoesNotDisposeExternalOwnedInstances;
     function initializeIsCalledWhenInstanceIsCreated(test) {
         var className = "item";
-        var initializer = function (c, item) {
-            item.initialize(className);
-        };
-        containerBuilder.register(TestData.Initializable).as(function () { return new TestData.Initializable2(); }).initializeBy(initializer);
+        containerBuilder.register(TestData.Initializable).as(function () { return new TestData.Initializable2(); }).initializeBy(function (c, item) { return item.initialize(className); });
         var container = containerBuilder.build();
         var i1 = container.resolve(TestData.Initializable);
         var i2 = container.resolve(TestData.Initializable);
@@ -114,9 +111,7 @@ var Level5;
     Level5.initializeAndResolveDependencies = initializeAndResolveDependencies;
     function instancesFromDifferentContainersDisposedIndependently(test) {
         var secondContainerBuilder = scaffold.createBuilder();
-        containerBuilder.register(TestData.Test1Base).as(function () { return new TestData.Test5(); }).dispose(function (item) {
-            item.Dispose();
-        }).within(1 /* None */).ownedBy(1 /* Container */);
+        containerBuilder.register(TestData.Test1Base).as(function () { return new TestData.Test5(); }).dispose(function (item) { return item.Dispose(); }).within(1 /* None */).ownedBy(1 /* Container */);
         secondContainerBuilder.register(TestData.Test1Base).as(function () { return new TestData.Test5(); }).dispose(function (item) {
             item.Dispose();
         }).within(1 /* None */).ownedBy(1 /* Container */);
