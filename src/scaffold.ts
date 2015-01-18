@@ -20,6 +20,7 @@ import ConfigRegoModule = require('./registration/config/configRegistration');
 import ContainerModule = require('./build/container');
 import BuilderModule = require('./build/builder');
 import ApiContainer = require('./build/containerApi');
+import InternalContainerModule = require('./build/internalContainer')
 
 export class Scaffold {
 
@@ -30,15 +31,16 @@ export class Scaffold {
         var regoStorageService = this.registrationStorageService(internalRegoStorageService);
         var disposableStorageService = this.disposableStorageService();
         var baseRegoService = this.registrationBaseService();
-        var instanceRegoService = new InstanceRegistrationService();
+        var instanceRegoService = this.instanceRegistrationService();
         var moduleRegoService = this.moduleRegistrationService(moduleStorageService, baseRegoService);
         var configRegoService = this.configRegistrationService(baseRegoService, moduleRegoService);
         var containerApiService = this.containerApiService();
-        var containerService = this.containerService(
+        var internalContainerService = this.internalContainerService(
             regoStorageService,
             disposableStorageService,
             baseRegoService,
-            containerApiService);
+            containerApiService)
+        var containerService = this.containerService(internalContainerService);
 
         return new BuilderModule.ContainerBuilder(
             configRegoService,
@@ -100,20 +102,9 @@ export class Scaffold {
         };
     }
 
-    private containerService(registrationStorageService : Typeioc.Internal.IRegistrationStorageService,
-                             disposableStorageService : Typeioc.Internal.IIDisposableStorageService,
-                             registrationBaseService : Typeioc.Internal.IRegistrationBaseService,
-                             containerApiService : Typeioc.Internal.IContainerApiService) : Typeioc.Internal.IContainerService {
+    private containerService(internalContainerService : Typeioc.Internal.IInternalContainerService) : Typeioc.Internal.IContainerService {
         return {
-            create : () => {
-
-                return new ContainerModule.Container(
-                    registrationStorageService,
-                    disposableStorageService,
-                    registrationBaseService,
-                    containerApiService
-                );
-            }
+            create : () => new ContainerModule.Container(internalContainerService)
         };
     }
 
@@ -142,10 +133,28 @@ export class Scaffold {
             }
         }
     }
-}
 
-class InstanceRegistrationService implements Typeioc.Internal.IInstanceRegistrationService {
-    create<R>(baseRegistration : Typeioc.Internal.IRegistrationBase) : Typeioc.IRegistration<R> {
-        return new InstanceRegoModule.Registration(baseRegistration);
+    private instanceRegistrationService() : Typeioc.Internal.IInstanceRegistrationService {
+        return {
+            create : function<R>(baseRegistration : Typeioc.Internal.IRegistrationBase) : Typeioc.IRegistration<R> {
+                return new InstanceRegoModule.Registration(baseRegistration);
+            }
+        };
+    }
+
+    private internalContainerService(registrationStorageService : Typeioc.Internal.IRegistrationStorageService,
+                                     disposableStorageService : Typeioc.Internal.IIDisposableStorageService,
+                                     registrationBaseService : Typeioc.Internal.IRegistrationBaseService,
+                                     containerApiService : Typeioc.Internal.IContainerApiService) : Typeioc.Internal.IInternalContainerService {
+        return {
+            create : function() : Typeioc.Internal.IContainer {
+
+                return new InternalContainerModule.InternalContainer(
+                    registrationStorageService,
+                    disposableStorageService,
+                    registrationBaseService,
+                    containerApiService);
+            }
+        }
     }
 }

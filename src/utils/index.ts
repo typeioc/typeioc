@@ -10,6 +10,7 @@
 
 'use strict';
 
+import Exceptions = require('../exceptions/index')
 
 export function getParamNames(func : Function) : string[] {
     var funStr = func.toString();
@@ -20,7 +21,7 @@ export function getParamNames(func : Function) : string[] {
 
 export function getFactoryArgsCount(factory: Typeioc.IFactory<any>) {
 
-    var paramNames = getParamNames(factory);
+    var paramNames = getParamNames(<Function>factory);
 
     return paramNames.length > 0 ? paramNames.length - 1 : 0;
 }
@@ -40,7 +41,6 @@ export function isCompatible(obj1 : Object, obj2 : Object) : boolean {
     return true;
 }
 
-
 export function construct(constructor, args) {
     function F() {
         return constructor.apply(this, args);
@@ -50,4 +50,19 @@ export function construct(constructor, args) {
     var k : any = F;
 
     return new k();
+}
+
+export function concat(array : any[], tailArray : any[]) : any[] {
+
+    array.push.apply(array, tailArray);
+
+    return array;
+}
+
+export function checkNullArgument(value : any, message: string) {
+    if(!value) {
+        var exception = new Exceptions.ArgumentNullError(message);
+        exception.data = value;
+        throw exception;
+    }
 }

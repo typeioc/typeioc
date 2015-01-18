@@ -46,6 +46,10 @@ declare module Typeioc.Internal {
         create<R>(container : IImportApi<R>) : IContainerApi<R>;
     }
 
+    interface IInternalContainerService {
+        create() : IContainer;
+    }
+
     interface IContainerApi<T> {
         serviceValue : T;
         nameValue : string;
@@ -133,5 +137,4 @@ declare module Typeioc.Internal {
         factory : Typeioc.IFactory<any>;
         name : string;
     }
-
 }
