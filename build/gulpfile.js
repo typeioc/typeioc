@@ -39,7 +39,7 @@ var os = require('os');
         banner:             [fs.readFileSync(paths.copyright), os.EOL, os.EOL].join(''),
         regex:              /^\/\*(.|[\n\r])+Copyright(.|[\n\r])+\*\/[\n\r]{2}/g,
         regexWithFooter:    /^\/\*(.|[\n\r])+Copyright(.|[\n\r])+\*\/[\n\r]{2}?/g
-    }
+    };
 
 
     function addHeader(sources, destination){
@@ -66,8 +66,14 @@ var os = require('os');
             var exec = require('child_process').exec;
 
             exec(paths.build.tests, function (err, stdout, stderr) {
-                if(stdout) console.log(stdout);
-                if(stderr) console.log(stderr);
+                if(stdout) {
+                    console.log(stdout);
+                }
+
+                if(stderr) {
+                    console.log(stderr);
+                }
+
                 callBack(err);
             });
         });
@@ -77,8 +83,14 @@ var os = require('os');
             var exec = require('child_process').exec;
 
             exec(paths.build.sources, function (err, stdout, stderr) {
-                if(stdout) console.log(stdout);
-                if(stderr) console.log(stderr);
+                if(stdout) {
+                    console.log(stdout);
+                }
+
+                if(stderr) {
+                    console.log(stderr);
+                }
+
                 callBack(err);
             });
         });
@@ -132,7 +144,6 @@ var os = require('os');
             cleanTasks();
             headerTasks();
         }
-    }
+    };
 })()
     .build();
-
