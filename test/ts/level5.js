@@ -21,6 +21,17 @@ var Level5;
         test.done();
     }
     Level5.containerOwnedInstancesAreDisposed = containerOwnedInstancesAreDisposed;
+    function containerOwnedInstancesAreDisposedDefaultSetting(test) {
+        containerBuilder.defaults.owner = scaffold.Types.Owner.Container;
+        containerBuilder.register(TestData.Test1Base).as(function () { return new TestData.Test5(); }).dispose(function (item) { return item.Dispose(); });
+        var container = containerBuilder.build();
+        var test1 = container.resolve(TestData.Test1Base);
+        container.dispose();
+        test.notEqual(test1, null);
+        test.strictEqual(test1.Disposed, true);
+        test.done();
+    }
+    Level5.containerOwnedInstancesAreDisposedDefaultSetting = containerOwnedInstancesAreDisposedDefaultSetting;
     function containerOwnedAndContainerReusedInstancesAreDisposed(test) {
         containerBuilder.register(TestData.Test1Base).as(function () { return new TestData.Test5(); }).dispose(function (item) {
             item.Dispose();

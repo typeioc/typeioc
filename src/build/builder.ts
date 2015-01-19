@@ -16,9 +16,11 @@ import Types = require('../types/index');
 export class ContainerBuilder implements Typeioc.IContainerBuilder{
     private registrations : Typeioc.Internal.IRegistrationBase[];
     private moduleRegistrations : Typeioc.Internal.IModuleRegistration[];
+    private _defaults : Typeioc.IDefaults;
 
-    public DefaultScope = Typeioc.Types.Scope.None;
-    public DefaultOwner = Typeioc.Types.Owner.Container;
+    public get defaults() : Typeioc.IDefaults {
+        return this._defaults;
+    }
 
     constructor(private _configRegistrationService : Typeioc.Internal.IConfigRegistrationService,
                 private _registrationBaseService : Typeioc.Internal.IRegistrationBaseService,
@@ -27,6 +29,11 @@ export class ContainerBuilder implements Typeioc.IContainerBuilder{
                 private _containerService : Typeioc.Internal.IContainerService) {
         this.registrations = [];
         this.moduleRegistrations = [];
+
+        this._defaults = {
+            scope : Typeioc.Types.Scope.None,
+            owner : Typeioc.Types.Owner.Container
+        };
     }
 
     public register<R>(service : any) : Typeioc.IRegistration<R> {
@@ -34,8 +41,8 @@ export class ContainerBuilder implements Typeioc.IContainerBuilder{
         var regoBase = this._registrationBaseService.create(service);
         var registration = this._instanceRegistrationService.create<R>(regoBase);
 
-        regoBase.scope = this.DefaultScope;
-        regoBase.owner = this.DefaultOwner;
+        regoBase.scope = this.defaults.scope;
+        regoBase.owner = this.defaults.owner;
 
         this.registrations.push(regoBase);
 
@@ -47,8 +54,9 @@ export class ContainerBuilder implements Typeioc.IContainerBuilder{
         var regoBase = this._registrationBaseService.create(serviceModule);
         var moduleRegistration = this._moduleRegistrationService.create(regoBase);
 
-        regoBase.scope = this.DefaultScope;
-        regoBase.owner = this.DefaultOwner;
+        regoBase.scope = this.defaults.scope;
+        regoBase.owner = this.defaults.owner;
+
 
         this.moduleRegistrations.push(moduleRegistration);
 
@@ -57,8 +65,8 @@ export class ContainerBuilder implements Typeioc.IContainerBuilder{
 
     public registerConfig(config : Typeioc.IConfig) : void {
         var configRego = this._configRegistrationService.create(config);
-        configRego.scope = this.DefaultScope;
-        configRego.owner = this.DefaultOwner;
+        configRego.scope = this.defaults.scope;
+        configRego.owner = this.defaults.owner;
 
         var regoes = configRego.registrations;
 

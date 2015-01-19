@@ -31,6 +31,27 @@ export module Level3 {
         test.done();
     }
 
+    export function defaultScopingChange(test) {
+
+        containerBuilder.defaults.scope = Typeioc.Types.Scope.Hierarchy;
+        containerBuilder.register(TestData.Test1Base).as(function () {
+            return new TestData.Test4("test 4");
+        });
+
+        var container = containerBuilder.build();
+        var test1 = container.resolve(TestData.Test1Base);
+        test1.Name = "test 1";
+        var test2 = container.resolve(TestData.Test1Base);
+
+        test.notEqual(test1, null);
+        test.strictEqual(test1.Name, "test 1");
+        test.notEqual(test2, null);
+        test.strictEqual(test2.Name, "test 1");
+        test.strictEqual(test1, test2);
+
+        test.done();
+    }
+
     export function noScopingReuse(test) {
 
         containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)

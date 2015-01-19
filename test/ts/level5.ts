@@ -33,6 +33,26 @@ export module Level5 {
         test.done();
     }
 
+    export function containerOwnedInstancesAreDisposedDefaultSetting(test) {
+
+        containerBuilder.defaults.owner = scaffold.Types.Owner.Container;
+
+        containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)
+            .as(() => new TestData.Test5())
+            .dispose((item : TestData.Test5) => item.Dispose());
+
+        var container = containerBuilder.build();
+
+        var test1 = container.resolve<TestData.Test1Base>(TestData.Test1Base);
+
+        container.dispose();
+
+        test.notEqual(test1, null);
+        test.strictEqual(test1.Disposed, true);
+
+        test.done();
+    }
+
     export function containerOwnedAndContainerReusedInstancesAreDisposed(test) {
 
         containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)

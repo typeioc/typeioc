@@ -22,12 +22,7 @@ declare module Typeioc {
             Container = 1,
             Externals = 2
         }
-
-        export class Defaults {
-            static Scope  : Scope;
-            static Owner : Owner;
-        }
-    }
+  }
 
     module Exceptions {
         class BaseError implements Error {
@@ -47,6 +42,7 @@ declare module Typeioc {
     }
 
     interface IContainerBuilder {
+        defaults : IDefaults;
         register<R>(service : any) : IRegistration<R>;
         registerModule(serviceModule : Object) : Typeioc.IAsModuleRegistration;
         registerConfig(config : Typeioc.IConfig) : void;
@@ -208,6 +204,11 @@ declare module Typeioc {
     interface IConfig {
         components? : IComponent[];
         modules? : IModule[];
+    }
+
+    interface IDefaults {
+        scope : Types.Scope;
+        owner : Types.Owner;
     }
 }
 

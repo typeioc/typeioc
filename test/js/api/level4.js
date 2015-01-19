@@ -38,7 +38,8 @@ exports.api = {
 
                 containerBuilder.register(testData.Test1Base).as(function () {
                     return new testData.Test1();
-                }).named(registrationName).within(3 /* Hierarchy */);
+                }).named(registrationName)
+                .within(scaffold.Types.Scope.Hierarchy);
 
                 var container = containerBuilder.build();
                 var child = container.createChild();

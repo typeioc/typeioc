@@ -37,6 +37,26 @@ exports.api = {
                 test.done();
             },
 
+            containerOwnedInstancesAreDisposedDefaultSetting : function (test) {
+
+                containerBuilder.defaults.owner = scaffold.Types.Owner.Container;
+
+                containerBuilder.register(testData.Test1Base)
+                    .as(function () { return new testData.Test5(); })
+                    .dispose(function (item) { item.Dispose(); });
+
+                var container = containerBuilder.build();
+
+                var test1 = container.resolve(testData.Test1Base);
+
+                container.dispose();
+
+                test.notEqual(test1, null);
+                test.strictEqual(test1.Disposed, true);
+
+                test.done();
+            },
+
             containerOwnedAndContainerReusedInstancesAreDisposed : function (test) {
 
                 containerBuilder.register(testData.Test1Base)
