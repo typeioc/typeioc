@@ -18,7 +18,7 @@ exports.api = {
                 callback();
             },
 
-            defaultScopingHierarchy : function (test) {
+            defaultScopingNone : function (test) {
                 containerBuilder.register(testData.Test1Base).as(function () {
                     return new testData.Test4("test 4");
                 });

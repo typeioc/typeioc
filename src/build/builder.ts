@@ -10,6 +10,8 @@
 
 'use strict';
 
+import Types = require('../types/index');
+
 
 export class ContainerBuilder implements Typeioc.IContainerBuilder{
     private registrations : Typeioc.Internal.IRegistrationBase[];

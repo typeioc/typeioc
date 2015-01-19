@@ -163,6 +163,7 @@ declare module Typeioc {
         factory: IFactory<any>;
         named? : string;
         initializer? : IInitializer<any>;
+        required? : boolean;
     }
 
     interface IInstanceLocation {

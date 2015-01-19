@@ -12,7 +12,6 @@ TypeIOC
  [![Code Climate](https://codeclimate.com/github/maxgherman/TypeIOC.png)](https://codeclimate.com/github/maxgherman/TypeIOC)
  [![Dependency Status](https://gemnasium.com/maxgherman/TypeIOC.svg)](https://gemnasium.com/maxgherman/TypeIOC)
  [![Stories in Progress](https://badge.waffle.io/maxgherman/TypeIOC.svg?label=In%20Progress&title=In%20Progress)](http://waffle.io/maxgherman/TypeIOC)
- [![Stories in Ready](https://badge.waffle.io/maxgherman/TypeIOC.svg?label=ready&title=Ready)](http://waffle.io/maxgherman/TypeIOC)
 
 
 Dependency injection container for node typescript.
@@ -50,6 +49,7 @@ var actual = container.resolve(TestBase);
 ```
 
 With type checking (TS):
+
 Copy typeioc.d.ts definition file from d.ts folder to your project and reference it within ts files.
 
 ```

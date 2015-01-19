@@ -19,6 +19,8 @@ export class InternalContainer implements Typeioc.Internal.IContainer {
     private _disposableStorage : Typeioc.Internal.IDisposableStorage;
     private _collection : Typeioc.Internal.IRegistrationStorage<Typeioc.Internal.IRegistrationBase>;
     private _cache : Typeioc.Internal.IIndexedCollection;
+    private _dependencyScope = Typeioc.Types.Scope.None;
+    private _dependencyOwner = Typeioc.Types.Owner.Externals;
 
     constructor(private _registrationStorageService : Typeioc.Internal.IRegistrationStorageService,
                 private _disposableStorageService : Typeioc.Internal.IIDisposableStorageService,
@@ -269,21 +271,27 @@ export class InternalContainer implements Typeioc.Internal.IContainer {
             registration.factory = dependency.factory;
             registration.name = dependency.named;
 
+            var throwOnError = dependency.required !== true && api.throwResolveError;
+
             return {
-                implementation : this.resolveImpl(registration, api.throwResolveError),
+                implementation : this.resolveImpl(registration, throwOnError),
                 dependency : dependency
             };
         })
-            .filter(item => item.implementation ? true : false);
+        .filter(item => item.implementation || item.dependency.required === true ? true : false);
 
         if(items.length !== api.dependenciesValue.length) return [];
 
         return items.map(item => {
-            var baseRegistration = item.implementation.cloneFor(this);
+            var baseRegistration = item.dependency.required === true ? this.createRegistration(item.dependency.service)
+                : item.implementation.cloneFor(this);
+
             baseRegistration.factory = item.dependency.factory;
             baseRegistration.name = item.dependency.named;
             baseRegistration.initializer = item.dependency.initializer;
             baseRegistration.disposer = undefined;
+            baseRegistration.scope = this._dependencyScope;
+            baseRegistration.owner = this._dependencyOwner;
 
             return baseRegistration;
         });

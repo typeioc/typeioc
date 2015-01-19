@@ -132,10 +132,14 @@ exports.api = {
 
                 test.throws(delegate, function(error) {
                     test.strictEqual('Missing component name', error.message);
-                    return (error instanceof scaffold.Exceptions.ArgumentNullError);
+                    test.strictEqual('name', error.innerError.message);
+                    test.strictEqual(testData, error.data.instanceModule);
+                    test.ok(error.innerError instanceof scaffold.Exceptions.ArgumentNullError);
+
+                    return (error instanceof scaffold.Exceptions.ConfigurationError);
                 });
 
-                test.expect(2)
+                test.expect(5);
 
                 test.done();
             },

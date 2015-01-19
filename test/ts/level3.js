@@ -9,7 +9,7 @@ var Level3;
         callback();
     }
     Level3.setUp = setUp;
-    function defaultScopingHierarchy(test) {
+    function defaultScopingNone(test) {
         containerBuilder.register(TestData.Test1Base).as(function () { return new TestData.Test4("test 4"); });
         var container = containerBuilder.build();
         var test1 = container.resolve(TestData.Test1Base);
@@ -21,7 +21,7 @@ var Level3;
         test.strictEqual(test2.Name, "test 4");
         test.done();
     }
-    Level3.defaultScopingHierarchy = defaultScopingHierarchy;
+    Level3.defaultScopingNone = defaultScopingNone;
     function noScopingReuse(test) {
         containerBuilder.register(TestData.Test1Base).as(function () { return new TestData.Test4("test 4"); }).within(1 /* None */);
         var container = containerBuilder.build();

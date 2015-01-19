@@ -177,8 +177,13 @@ export class ConfigRegistration implements Typeioc.Internal.IConfigRegistration 
     private getComponent(instanceLocation : Typeioc.IInstanceLocation,
                          moduleInstance? : Object) {
 
-        if(!instanceLocation.name)
-            throw new Exceptions.ArgumentNullError('Missing component name');
+        if(!instanceLocation.name) {
+            var exception = new Exceptions.ConfigurationError('Missing component name');
+            exception.innerError = new Exceptions.ArgumentNullError('name');
+            exception.data = instanceLocation;
+
+            throw exception;
+        }
 
         var result;
 

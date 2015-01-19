@@ -227,6 +227,38 @@ exports.api = {
                 test.done();
             },
 
+            resolveWithMissingDependency : function(test) {
+
+                containerBuilder.register(testData.Test1Base)
+                    .as(function (c) {
+                        var test2 = c.resolve(testData.Test2Base);
+
+                        return new testData.Test3(test2);
+                    });
+
+                var container = containerBuilder.build();
+
+                var dependencies = [{
+                    service : testData.Test2Base,
+                    required : true,
+                    factory : function(c) {
+
+                        return {
+                            get Name() {
+                                return 'name from dependency';
+                            }
+                        };
+                    }
+                }];
+
+                var actual = container.resolveWithDependencies(testData.Test1Base, dependencies);
+
+                test.ok(actual);
+                test.strictEqual(actual.Name, 'Test 3 name from dependency');
+
+                test.done();
+            },
+
             resolveWithMultipleDependencies : function(test) {
 
                 containerBuilder.register(testData.Test2Base)

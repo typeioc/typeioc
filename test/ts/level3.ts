@@ -13,7 +13,7 @@ export module Level3 {
         callback();
     }
 
-    export function defaultScopingHierarchy(test) {
+    export function defaultScopingNone(test) {
 
         containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)
             .as(() => new TestData.Test4("test 4"));
