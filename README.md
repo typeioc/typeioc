@@ -112,10 +112,11 @@ container
 - [x] - Fluent API.
 - [x] - Configuration (JS).
 - [x] - Runtime / Dynamic dependencies substitution.
+- [x] - Cached resolution results.
 - [ ] - Interseptors.
 - [ ] - Instance lifetime scoping APIs.
 - [ ] - ES6 codebase.
-- [ ] - Remove low level c++ library dependencies for week references.
+- [ ] - Remove low level c++ library dependencies for weak references.
 - [ ] - Promises configuration.
 - [ ] - In-browser usage support.
 - [ ] - Usage with 3d part libraries.

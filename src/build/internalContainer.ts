@@ -271,19 +271,20 @@ export class InternalContainer implements Typeioc.Internal.IContainer {
             registration.factory = dependency.factory;
             registration.name = dependency.named;
 
-            var throwOnError = dependency.required !== true && api.throwResolveError;
+            var throwOnError = dependency.required !== false &&
+                               api.throwResolveError === true;
 
             return {
                 implementation : this.resolveImpl(registration, throwOnError),
                 dependency : dependency
             };
         })
-        .filter(item => item.implementation || item.dependency.required === true ? true : false);
+        .filter(item => item.implementation || item.dependency.required === false ? true : false);
 
         if(items.length !== api.dependenciesValue.length) return [];
 
         return items.map(item => {
-            var baseRegistration = item.dependency.required === true ? this.createRegistration(item.dependency.service)
+            var baseRegistration = item.dependency.required === false ? this.createRegistration(item.dependency.service)
                 : item.implementation.cloneFor(this);
 
             baseRegistration.factory = item.dependency.factory;
@@ -309,6 +310,8 @@ export class InternalContainer implements Typeioc.Internal.IContainer {
         baseRegistration.args = api.argsValue;
         baseRegistration.name = api.nameValue;
         baseRegistration.disposer = undefined;
+        baseRegistration.scope = this._dependencyScope;
+        baseRegistration.owner = this._dependencyOwner;
 
         var regoes = this.createDependenciesRegistration(api);
 

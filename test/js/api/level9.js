@@ -240,7 +240,7 @@ exports.api = {
 
                 var dependencies = [{
                     service : testData.Test2Base,
-                    required : true,
+                    required : false,
                     factory : function(c) {
 
                         return {
@@ -255,6 +255,82 @@ exports.api = {
 
                 test.ok(actual);
                 test.strictEqual(actual.Name, 'Test 3 name from dependency');
+
+                test.done();
+            },
+
+            resolveWithPartialMissingDependencies : function(test) {
+
+                containerBuilder.register(testData.Test1Base)
+                    .as(function (c) {
+                        var test2 = c.resolve(testData.Test2Base);
+
+                        return new testData.Test3(test2);
+                    });
+
+                containerBuilder.register(testData.Test1Base)
+                    .as(function (c) {
+
+                        return new testData.Test4("test 4");
+                    }).named("Test 4");
+
+
+                var dynamicService = function () {};
+                containerBuilder.register(dynamicService)
+                    .as(function (c) {
+
+                        var test1 = c.resolve(testData.Test1Base);
+                        var test2 = c.resolve(testData.Test2Base);
+
+                        var test4 = c.resolveNamed(testData.Test1Base, "Test 4");
+
+                        return new testData.Test7(test1, test2, test4);
+                    });
+
+                var container = containerBuilder.build();
+
+                var dependencies = [{
+                    service : testData.Test1Base,
+                    factory : function(c) {
+
+                        return {
+                            get Name() {
+                                return 'test 1 base';
+                            }
+                        }
+                    }
+                },
+                {
+                    service : testData.Test2Base,
+                    required : false,
+                    factory : function(c) {
+
+                        return {
+                            get Name() {
+                                return 'test 2 base';
+                            }
+                        }
+                    }
+                },
+                {
+                    service : testData.Test1Base,
+                    named : "Test 4",
+                    factory : function(c) {
+
+                        return {
+                            get Name () {
+                                return 'test 4 base'
+                            }
+                        };
+                    }
+                }];
+
+                var actual = container.resolveWithDependencies(dynamicService, dependencies);
+                test.ok(actual);
+                test.ok(actual instanceof testData.Test7);
+                test.strictEqual(actual.Name, 'test 1 base test 2 base test 4 base');
+
+                test.expect(3);
 
                 test.done();
             },

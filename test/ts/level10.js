@@ -414,6 +414,110 @@ var Level9;
         test.done();
     }
     Level9.resolveWithAttemptDependencies = resolveWithAttemptDependencies;
+    function resolveWithAttemptDependenciesMissingResolution(test) {
+        containerBuilder.register(TestData.Test2Base).as(function () {
+            return {
+                get Name() {
+                    return 'Test2Base';
+                }
+            };
+        });
+        containerBuilder.register(TestData.Test1Base).as(function (c) {
+            var test2 = c.resolve(TestData.Test2Base);
+            return new TestData.Test3(test2);
+        });
+        var container = containerBuilder.build();
+        var dependencies = [{
+            service: {},
+            factory: function () {
+                return {
+                    get Name() {
+                        return 'Test2 substitute';
+                    }
+                };
+            }
+        }];
+        var actual = container.resolveWith(TestData.Test1Base).attempt().dependencies(dependencies).exec();
+        test.strictEqual(actual, null);
+        test.done();
+    }
+    Level9.resolveWithAttemptDependenciesMissingResolution = resolveWithAttemptDependenciesMissingResolution;
+    function resolveWithAttemptDependenciesMissingNonRequiredResolution(test) {
+        containerBuilder.register(TestData.Test1Base).as(function (c) {
+            var test2 = c.resolve(TestData.Test2Base);
+            return new TestData.Test3(test2);
+        });
+        var container = containerBuilder.build();
+        var dependencies = [{
+            service: TestData.Test2Base,
+            required: false,
+            factory: function () {
+                return {
+                    get Name() {
+                        return 'name from dependency';
+                    }
+                };
+            }
+        }];
+        var actual = container.resolveWith(TestData.Test1Base).attempt().dependencies(dependencies).exec();
+        test.ok(actual);
+        test.strictEqual(actual.Name, 'Test 3 name from dependency');
+        test.done();
+    }
+    Level9.resolveWithAttemptDependenciesMissingNonRequiredResolution = resolveWithAttemptDependenciesMissingNonRequiredResolution;
+    function resolveWithAttemptPartialMissingNonRequiredDependencies(test) {
+        containerBuilder.register(TestData.Test1Base).as(function (c) {
+            var test2 = c.resolve(TestData.Test2Base);
+            return new TestData.Test3(test2);
+        });
+        containerBuilder.register(TestData.Test1Base).as(function () { return new TestData.Test4("test 4"); }).named("Test 4");
+        var dynamicService = function () {
+        };
+        containerBuilder.register(dynamicService).as(function (c) {
+            var test1 = c.resolve(TestData.Test1Base);
+            var test2 = c.resolve(TestData.Test2Base);
+            var test4 = c.resolveNamed(TestData.Test1Base, "Test 4");
+            return new TestData.Test7(test1, test2, test4);
+        });
+        var container = containerBuilder.build();
+        var dependencies = [{
+            service: TestData.Test1Base,
+            factory: function () {
+                return {
+                    get Name() {
+                        return 'test 1 base';
+                    }
+                };
+            }
+        }, {
+            service: TestData.Test2Base,
+            required: false,
+            factory: function () {
+                return {
+                    get Name() {
+                        return 'test 2 base';
+                    }
+                };
+            }
+        }, {
+            service: TestData.Test1Base,
+            named: "Test 4",
+            factory: function () {
+                return {
+                    get Name() {
+                        return 'test 4 base';
+                    }
+                };
+            }
+        }];
+        var actual = container.resolveWith(dynamicService).attempt().dependencies(dependencies).exec();
+        test.ok(actual);
+        test.ok(actual instanceof TestData.Test7);
+        test.strictEqual(actual.Name, 'test 1 base test 2 base test 4 base');
+        test.expect(3);
+        test.done();
+    }
+    Level9.resolveWithAttemptPartialMissingNonRequiredDependencies = resolveWithAttemptPartialMissingNonRequiredDependencies;
     function resolveWithAttemptCache(test) {
         var argName = 'AAAAA';
         containerBuilder.register(TestData.Test1Base).as(function (c) {
