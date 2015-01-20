@@ -3,6 +3,8 @@ lib-cov/
 lib-js/
 build/
 src/
+d.ts/node.d.ts
+d.ts/typeioc.internal.d.ts
 npm-debug.log
 samples
 test/ts
