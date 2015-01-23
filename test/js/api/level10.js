@@ -214,6 +214,160 @@ exports.api = {
                 test.done();
             },
 
+            resolveWithMultipleDependenciesSeparatlyArrays : function(test) {
+
+                containerBuilder.register(testData.Test2Base)
+                    .as(function (c) {
+                        return new testData.Test2();
+                    });
+                containerBuilder.register(testData.Test1Base)
+                    .as(function (c) {
+                        var test2 = c.resolve(testData.Test2Base);
+
+                        return new testData.Test3(test2);
+                    });
+
+                containerBuilder.register(testData.Test1Base)
+                    .as(function (c) {
+
+                        return new testData.Test4("test 4");
+                    }).named("Test 4");
+
+
+                var dynamicService = function () {};
+                containerBuilder.register(dynamicService)
+                    .as(function (c) {
+
+                        var test1 = c.resolve(testData.Test1Base);
+                        var test2 = c.resolve(testData.Test2Base);
+                        var test4 = c.resolveNamed(testData.Test1Base, "Test 4");
+
+                        return new testData.Test7(test1, test2, test4);
+                    });
+
+                var container = containerBuilder.build();
+
+                var actual = container.resolveWith(dynamicService)
+                    .dependencies([{
+                        service : testData.Test1Base,
+                        factory : function(c) {
+
+                            return {
+                                get Name() {
+                                    return 'test 1 base';
+                                }
+                            }
+                        }
+                    }])
+                    .dependencies([{
+                        service : testData.Test2Base,
+                        factory : function(c) {
+
+                            return {
+                                get Name() {
+                                    return 'test 2 base';
+                                }
+                            }
+                        }
+                    }])
+                    .dependencies([{
+                        service : testData.Test1Base,
+                        named : "Test 4",
+                        factory : function(c) {
+
+                            return {
+                                get Name () {
+                                    return 'test 4 base'
+                                }
+                            };
+                        }
+                    }])
+                    .exec();
+
+                test.ok(actual);
+                test.ok(actual instanceof testData.Test7);
+                test.strictEqual(actual.Name, 'test 1 base test 2 base test 4 base');
+
+                test.done();
+            },
+
+            resolveWithMultipleDependenciesSeparatly : function(test) {
+
+                containerBuilder.register(testData.Test2Base)
+                    .as(function (c) {
+                        return new testData.Test2();
+                    });
+                containerBuilder.register(testData.Test1Base)
+                    .as(function (c) {
+                        var test2 = c.resolve(testData.Test2Base);
+
+                        return new testData.Test3(test2);
+                    });
+
+                containerBuilder.register(testData.Test1Base)
+                    .as(function (c) {
+
+                        return new testData.Test4("test 4");
+                    }).named("Test 4");
+
+
+                var dynamicService = function () {};
+                containerBuilder.register(dynamicService)
+                    .as(function (c) {
+
+                        var test1 = c.resolve(testData.Test1Base);
+                        var test2 = c.resolve(testData.Test2Base);
+                        var test4 = c.resolveNamed(testData.Test1Base, "Test 4");
+
+                        return new testData.Test7(test1, test2, test4);
+                    });
+
+                var container = containerBuilder.build();
+
+                var actual = container.resolveWith(dynamicService)
+                    .dependencies({
+                        service : testData.Test1Base,
+                        factory : function(c) {
+
+                            return {
+                                get Name() {
+                                    return 'test 1 base';
+                                }
+                            }
+                        }
+                    })
+                    .dependencies({
+                        service : testData.Test2Base,
+                        factory : function(c) {
+
+                            return {
+                                get Name() {
+                                    return 'test 2 base';
+                                }
+                            }
+                        }
+                    })
+                    .dependencies([{
+                        service : testData.Test1Base,
+                        named : "Test 4",
+                        factory : function(c) {
+
+                            return {
+                                get Name () {
+                                    return 'test 4 base'
+                                }
+                            };
+                        }
+                    }])
+                    .exec();
+
+                test.ok(actual);
+                test.ok(actual instanceof testData.Test7);
+                test.strictEqual(actual.Name, 'test 1 base test 2 base test 4 base');
+
+                test.done();
+            },
+
             resolveWithResolvesCacheDefault : function(test) {
 
                 containerBuilder.register(testData.Test2Base)
@@ -1077,7 +1231,8 @@ exports.api = {
                 test.strictEqual(registration['args'], undefined);
                 test.strictEqual(registration['attempt'], undefined);
                 test.strictEqual(registration['name'], undefined);
-                test.strictEqual(registration['dependencies'], undefined);
+                test.notEqual(registration['dependencies'], undefined);
+                test.notEqual(registration['dependencies'],null);
                 test.notEqual(registration['cache'], undefined);
                 test.notEqual(registration['cache'], null);
                 test.notEqual(registration['exec'], undefined);

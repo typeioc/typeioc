@@ -216,6 +216,153 @@ export module Level9 {
         test.done();
     }
 
+    export function resolveWithMultipleDependenciesSeparatlyArrays(test) {
+
+        containerBuilder.register(TestData.Test2Base)
+            .as(() => new TestData.Test2());
+        containerBuilder.register(TestData.Test1Base)
+            .as(c => {
+                var test2 = c.resolve(TestData.Test2Base);
+
+                return new TestData.Test3(test2);
+            });
+
+        containerBuilder.register(TestData.Test1Base)
+            .as(() => new TestData.Test4("test 4"))
+            .named("Test 4");
+
+
+        var dynamicService = function () {};
+        containerBuilder.register(dynamicService)
+            .as(c => {
+
+                var test1 = c.resolve(TestData.Test1Base);
+                var test2 = c.resolve(TestData.Test2Base);
+                var test4 = c.resolveNamed(TestData.Test1Base, "Test 4");
+
+                return new TestData.Test7(test1, test2, test4);
+            });
+
+        var container = containerBuilder.build();
+
+        var actual = container.resolveWith<{Name : string}>(dynamicService)
+            .dependencies([{
+                service : TestData.Test1Base,
+                factory : () => {
+
+                    return {
+                        get Name() {
+                            return 'test 1 base';
+                        }
+                    }
+                }
+            }])
+            .dependencies([{
+                service : TestData.Test2Base,
+                factory : () => {
+
+                    return {
+                        get Name() {
+                            return 'test 2 base';
+                        }
+                    }
+                }
+            }])
+            .dependencies([{
+                service : TestData.Test1Base,
+                named : "Test 4",
+                factory : function(c) {
+
+                    return {
+                        get Name () {
+                            return 'test 4 base'
+                        }
+                    };
+                }
+            }])
+            .exec();
+
+        test.ok(actual);
+        test.ok(actual instanceof TestData.Test7);
+        test.strictEqual(actual.Name, 'test 1 base test 2 base test 4 base');
+
+        test.done();
+    }
+
+    export function resolveWithMultipleDependenciesSeparatly(test) {
+
+        containerBuilder.register(TestData.Test2Base)
+            .as(c => new TestData.Test2());
+
+        containerBuilder.register(TestData.Test1Base)
+            .as(c => {
+                var test2 = c.resolve(TestData.Test2Base);
+
+                return new TestData.Test3(test2);
+            });
+
+        containerBuilder.register(TestData.Test1Base)
+            .as(c => new TestData.Test4("test 4"))
+            .named("Test 4");
+
+
+        var dynamicService = function () {};
+        containerBuilder.register(dynamicService)
+            .as(c => {
+
+                var test1 = c.resolve(TestData.Test1Base);
+                var test2 = c.resolve(TestData.Test2Base);
+                var test4 = c.resolveNamed(TestData.Test1Base, "Test 4");
+
+                return new TestData.Test7(test1, test2, test4);
+            });
+
+        var container = containerBuilder.build();
+
+        var actual = container.resolveWith<{Name : string}>(dynamicService)
+            .dependencies({
+                service : TestData.Test1Base,
+                factory : () => {
+
+                    return {
+                        get Name() {
+                            return 'test 1 base';
+                        }
+                    }
+                }
+            })
+            .dependencies({
+                service : TestData.Test2Base,
+                factory : c => {
+
+                    return {
+                        get Name() {
+                            return 'test 2 base';
+                        }
+                    }
+                }
+            })
+            .dependencies([{
+                service : TestData.Test1Base,
+                named : "Test 4",
+                factory : function(c) {
+
+                    return {
+                        get Name () {
+                            return 'test 4 base'
+                        }
+                    };
+                }
+            }])
+            .exec();
+
+        test.ok(actual);
+        test.ok(actual instanceof TestData.Test7);
+        test.strictEqual(actual.Name, 'test 1 base test 2 base test 4 base');
+
+        test.done();
+    }
+
     export function resolveWithResolvesCacheDefault (test) {
 
         containerBuilder.register(TestData.Test2Base)
@@ -1082,7 +1229,8 @@ export module Level9 {
         test.strictEqual(registration['args'], undefined);
         test.strictEqual(registration['attempt'], undefined);
         test.strictEqual(registration['name'], undefined);
-        test.strictEqual(registration['dependencies'], undefined);
+        test.notEqual(registration['dependencies'], undefined);
+        test.notEqual(registration['dependencies'],null);
         test.notEqual(registration['cache'], undefined);
         test.notEqual(registration['cache'], null);
         test.notEqual(registration['exec'], undefined);
@@ -1090,6 +1238,7 @@ export module Level9 {
 
         test.done();
     }
+
 
     export function fluentApiResolveWithArgsAttemptNameDependenciesCache(test) {
 

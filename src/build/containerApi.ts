@@ -61,7 +61,7 @@ export class Api<T> implements Typeioc.Internal.IContainerApi<T>{
     }
 
     public service(value : any) : Typeioc.IResolveWith<T> {
-        this._service = value;
+        this._service = value;          //  checks for value
 
         return {
             args: this.args.bind(this),
@@ -106,11 +106,18 @@ export class Api<T> implements Typeioc.Internal.IContainerApi<T>{
         };
     }
 
-    private dependencies(data : Array<Typeioc.IDynamicDependency>) : Typeioc.IResolveCacheReturn<T>
+    private dependencies(data : Typeioc.IDynamicDependency | Array<Typeioc.IDynamicDependency>) : Typeioc.IResolveDependencies<T>
     {
-        this._dependencies = data;
+        var item : any = data;
+
+        if(Array.isArray(item)) {
+            this._dependencies.push.apply(this._dependencies, item);
+        } else {
+            this._dependencies.push(item);
+        }
 
         return {
+            dependencies: this.dependencies.bind(this),
             cache: this.cache.bind(this),
             exec: this.exec.bind(this)
         };

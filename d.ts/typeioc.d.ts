@@ -83,7 +83,7 @@ declare module Typeioc {
     }
 
     interface IResolveDependencies<T> {
-        dependencies(dependencies : IDynamicDependency[]) : IResolveCacheReturn<T>;
+        dependencies(dependencies : Typeioc.IDynamicDependency | Array<Typeioc.IDynamicDependency>) : IResolveDepCache<T>;
     }
 
     interface IResolveCache<T> {
