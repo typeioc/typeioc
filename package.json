@@ -17,14 +17,15 @@
     "del": "^1.1.1",
     "gulp": "^3.8.10",
     "gulp-header": "^1.2.2",
+    "gulp-istanbul": "^0.5.0",
+    "gulp-nodeunit": "0.0.5",
     "gulp-replace": "^0.5.1",
     "gulp-util": "^3.0.2",
-    "nodeunit": "~0.9.0",
     "sinon": "^1.12.2"
   },
   "scripts": {
-    "test": "node test/runner",
-    "coverage": "istanbul cover test/runner.js",
+    "test": "gulp --gulpfile build/gulpfile.js run-tests",
+    "coverage": "gulp --gulpfile build/gulpfile.js run-tests-coverage",
     "coveralls": "cat test/coverage/lcov.info | coveralls",
     "codeclimate": "cat test/coverage/lcov.info | CODECLIMATE_REPO_TOKEN=4d695ca8fbc1be6c4f20509a918f006eb3ac84c871364cb935ac0f75ec852e01  codeclimate"
   },

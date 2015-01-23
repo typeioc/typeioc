@@ -5,6 +5,8 @@ var gulp = require('gulp');
 var del = require('del');
 var header = require('gulp-header');
 var replace = require('gulp-replace');
+var nodeunit = require('gulp-nodeunit');
+var istanbul = require('gulp-istanbul');
 var pkg = require('../package.json');
 var fs = require('fs');
 var os = require('os');
@@ -22,11 +24,14 @@ var os = require('os');
             index : '../index.js'
         },
         tests : {
+            js : '../test/js/**/*.js',
             tsJs:  '../test/ts/*.js',
-            map: '../test/ts/*.js.map'
+            map: '../test/ts/*.js.map',
+            coverage : '../test/coverage'
         },
         lib: {
-            all:  '../lib/**'
+            all:  '../lib/**',
+            js:   '../lib/**/*.js'
         },
         build : {
             sources : 'tsc @compile_lib.txt',
@@ -138,11 +143,50 @@ var os = require('os');
         });
     }
 
+    function runTests() {
+
+        var testReporter = 'default';
+
+        gulp.task('run-tests', function () {
+            gulp.src(paths.tests.js)
+                .pipe(nodeunit({
+                    reporter: testReporter
+                }));
+        });
+
+        gulp.task('run-ts-tests', function () {
+            gulp.src(paths.tests.tsJs)
+                .pipe(nodeunit({
+                    reporter: testReporter
+                }));
+        });
+
+        gulp.task('run-tests-coverage', function (cb) {
+
+            gulp.src([paths.lib.js, paths.code.index])
+                .pipe(istanbul()) // Covering files
+                .pipe(istanbul.hookRequire()) // Force `require` to return covered files
+                .on('finish', function () {
+                    gulp.src([paths.tests.js])
+                        .pipe(nodeunit({
+                            reporter: testReporter
+                        }))
+                        .pipe(istanbul.writeReports({
+                            dir: paths.tests.coverage,
+                            reporters: [ 'lcov', 'text', 'text-summary'],
+                            reportOpts: { dir: paths.tests.coverage }
+                        }))
+                        .on('end', cb);
+                });
+        });
+    }
+
     return {
         build: function() {
             compileTasks();
             cleanTasks();
             headerTasks();
+            runTests();
         }
     };
 })()

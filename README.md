@@ -113,7 +113,7 @@ container
 - [x] - Configuration (JS).
 - [x] - Runtime / Dynamic dependencies substitution.
 - [x] - Cached resolution results.
-- [ ] - Interseptors.
+- [ ] - Interceptors.
 - [ ] - Instance lifetime scoping APIs.
 - [ ] - ES6 codebase.
 - [ ] - Remove low level c++ library dependencies for weak references.
@@ -123,8 +123,6 @@ container
 - [ ] - Full API documentation.
 
 ###Running the tests
-
-Make sure you have nodeunit installed or pull it with dev dependencies.
 
 ```
 npm test
