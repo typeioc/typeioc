@@ -138,7 +138,7 @@ export class InternalContainer implements Typeioc.Internal.IContainer {
     private registerImpl(registration : Typeioc.Internal.IRegistrationBase) : void {
 
         if(!registration.factory){
-            var exception = new Exceptions.ArgumentNullError("Factory is not defined");
+            var exception = new Exceptions.NullReferenceError("Factory is not defined");
             exception.data = registration.service;
             throw exception;
         }

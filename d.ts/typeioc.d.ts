@@ -12,33 +12,71 @@ declare module Typeioc {
     function createBuilder() : IContainerBuilder;
 
     module Types {
-        export enum Scope  {
+        enum Scope  {
             None = 1,
             Container = 2,
             Hierarchy = 3
         }
 
-        export enum Owner {
+        enum Owner {
             Container = 1,
             Externals = 2
         }
-  }
+    }
 
     module Exceptions {
         class BaseError implements Error {
-            public name: string;
-            public message: string;
+
+            public stack;
+            public message : string;
+            public name : string;
             public data : any;
             public innerError : BaseError;
         }
 
         class ApplicationError extends BaseError { }
 
-        class ArgumentNullError extends ApplicationError { }
+        class ArgumentError extends ApplicationError {
+            public argumentName: string;
+        }
+
+        class ArgumentNullError extends ArgumentError { }
 
         class ResolutionError extends ApplicationError { }
 
+        class StorageKeyNotFoundError extends ApplicationError { }
+
         class ConfigurationError extends ApplicationError { }
+
+        class NullReferenceError extends ApplicationError { }
+
+        class ProxyError extends ApplicationError { }
+    }
+
+    module Interceptors {
+
+        enum CallInfoType {
+            Method = 1,
+            Getter = 2,
+            Setter = 3,
+            GetterSetter = 4
+        }
+
+        interface ICallInfo {
+            name : string;
+            args : Array<any>;
+            invoke: Function;
+            type : CallInfoType;
+            get? : () => any;
+            set? : (any) => void;
+            next? : () => any;
+        }
+
+        interface ICallSubstitute {
+            method? : string | Function;
+            type? : CallInfoType;
+            wrapper : (ICallInfo) => any;
+        }
     }
 
     interface IContainerBuilder {

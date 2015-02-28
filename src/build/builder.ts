@@ -64,13 +64,12 @@ export class ContainerBuilder implements Typeioc.IContainerBuilder{
     }
 
     public registerConfig(config : Typeioc.IConfig) : void {
-        var configRego = this._configRegistrationService.create(config);
+        var configRego = this._configRegistrationService.create();
+        configRego.apply(config);
         configRego.scope = this.defaults.scope;
         configRego.owner = this.defaults.owner;
 
-        var regoes = configRego.registrations;
-
-        this.registrations.push.apply(this.registrations, regoes);
+        this.registrations.push.apply(this.registrations, configRego.registrations);
     }
 
     public build() : Typeioc.IContainer {

@@ -8,14 +8,14 @@
 
 'use strict';
 
-import BaseArgumentErrorModule = require('./argumentError');
+import BaseApplicationErrorModule = require('./applicationError');
 
-export class ArgumentNullError extends BaseArgumentErrorModule.ArgumentError {
+export class NullReferenceError extends BaseApplicationErrorModule.ApplicationError {
 
-    constructor (argumentName, message?: string) {
-        super(argumentName, message);
+    constructor (message?: string) {
+        super(message);
 
-        this.name = "ArgumentNullError";
+        this.name = 'NullReferenceError';
     }
 }
 

@@ -32,11 +32,12 @@ exports.internal = {
                 }
 
                 test.throws(delegate, function(error) {
-                    test.strictEqual(error.message, 'service');
+                    test.strictEqual(error.message, undefined);
+                    test.strictEqual(error.argumentName, 'service');
                     return error instanceof Scaffold.Exceptions.ArgumentNullError;
                 });
 
-                test.expect(2);
+                test.expect(3);
 
                 test.done();
             },
@@ -48,11 +49,12 @@ exports.internal = {
                 }
 
                 test.throws(delegate, function(error) {
-                    test.strictEqual(error.message, 'service');
+                    test.strictEqual(error.message, undefined);
+                    test.strictEqual(error.argumentName, 'service');
                     return error instanceof Scaffold.Exceptions.ArgumentNullError;
                 });
 
-                test.expect(2);
+                test.expect(3);
 
                 test.done();
             },
@@ -64,11 +66,12 @@ exports.internal = {
                 }
 
                 test.throws(delegate, function(error) {
-                    test.strictEqual(error.message, 'service');
+                    test.strictEqual(error.message, undefined);
+                    test.strictEqual(error.argumentName, 'service');
                     return error instanceof Scaffold.Exceptions.ArgumentNullError;
                 });
 
-                test.expect(2);
+                test.expect(3);
 
                 test.done();
             },
@@ -80,11 +83,12 @@ exports.internal = {
                 }
 
                 test.throws(delegate, function(error) {
-                    test.strictEqual(error.message, 'service');
+                    test.strictEqual(error.message, undefined);
+                    test.strictEqual(error.argumentName, 'service');
                     return error instanceof Scaffold.Exceptions.ArgumentNullError;
                 });
 
-                test.expect(2);
+                test.expect(3);
 
                 test.done();
             },
@@ -96,11 +100,12 @@ exports.internal = {
                 }
 
                 test.throws(delegate, function(error) {
-                    test.strictEqual(error.message, 'service');
+                    test.strictEqual(error.message, undefined);
+                    test.strictEqual(error.argumentName, 'service');
                     return error instanceof Scaffold.Exceptions.ArgumentNullError;
                 });
 
-                test.expect(2);
+                test.expect(3);
 
                 test.done();
             },
@@ -112,11 +117,12 @@ exports.internal = {
                 }
 
                 test.throws(delegate, function(error) {
-                    test.strictEqual(error.message, 'service');
+                    test.strictEqual(error.message, undefined);
+                    test.strictEqual(error.argumentName, 'service');
                     return error instanceof Scaffold.Exceptions.ArgumentNullError;
                 });
 
-                test.expect(2);
+                test.expect(3);
 
                 test.done();
             },
@@ -128,11 +134,12 @@ exports.internal = {
                 }
 
                 test.throws(delegate, function(error) {
-                    test.strictEqual(error.message, 'service');
+                    test.strictEqual(error.message, undefined);
+                    test.strictEqual(error.argumentName, 'service');
                     return error instanceof Scaffold.Exceptions.ArgumentNullError;
                 });
 
-                test.expect(2);
+                test.expect(3);
 
                 test.done();
             },
@@ -144,11 +151,12 @@ exports.internal = {
                 }
 
                 test.throws(delegate, function(error) {
-                    test.strictEqual(error.message, 'service');
+                    test.strictEqual(error.message, undefined);
+                    test.strictEqual(error.argumentName, 'service');
                     return error instanceof Scaffold.Exceptions.ArgumentNullError;
                 });
 
-                test.expect(2);
+                test.expect(3);
 
                 test.done();
             },
@@ -160,11 +168,12 @@ exports.internal = {
                 }
 
                 test.throws(delegate, function(error) {
-                    test.strictEqual(error.message, 'service');
+                    test.strictEqual(error.message, undefined);
+                    test.strictEqual(error.argumentName, 'service');
                     return error instanceof Scaffold.Exceptions.ArgumentNullError;
                 });
 
-                test.expect(2);
+                test.expect(3);
 
                 test.done();
             },
@@ -176,11 +185,12 @@ exports.internal = {
                 }
 
                 test.throws(delegate, function(error) {
-                    test.strictEqual(error.message, 'service');
+                    test.strictEqual(error.message, undefined);
+                    test.strictEqual(error.argumentName, 'service');
                     return error instanceof Scaffold.Exceptions.ArgumentNullError;
                 });
 
-                test.expect(2);
+                test.expect(3);
 
                 test.done();
             },
@@ -192,11 +202,12 @@ exports.internal = {
                 }
 
                 test.throws(delegate, function(error) {
-                    test.strictEqual(error.message, 'service');
+                    test.strictEqual(error.message, undefined);
+                    test.strictEqual(error.argumentName, 'service');
                     return error instanceof Scaffold.Exceptions.ArgumentNullError;
                 });
 
-                test.expect(2);
+                test.expect(3);
 
                 test.done();
             },
@@ -208,11 +219,12 @@ exports.internal = {
                 }
 
                 test.throws(delegate, function(error) {
-                    test.strictEqual(error.message, 'service');
+                    test.strictEqual(error.message, undefined);
+                    test.strictEqual(error.argumentName, 'service');
                     return error instanceof Scaffold.Exceptions.ArgumentNullError;
                 });
 
-                test.expect(2);
+                test.expect(3);
 
                 test.done();
             }

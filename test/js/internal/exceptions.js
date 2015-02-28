@@ -13,12 +13,15 @@ exports.internal = {
             all_exceptions_loaded: function(test) {
 
                 test.ok(Exceptions.ApplicationError);
+                test.ok(Exceptions.ArgumentError);
                 test.ok(Exceptions.ArgumentNullError);
                 test.ok(Exceptions.ResolutionError);
                 test.ok(Exceptions.StorageKeyNotFoundError);
                 test.ok(Exceptions.ConfigurationError);
+                test.ok(Exceptions.NullReferenceError);
+                test.ok(Exceptions.ProxyError);
 
-                test.ok(Object.getOwnPropertyNames(Exceptions).length == 5);
+                test.ok(Object.getOwnPropertyNames(Exceptions).length == 8);
 
                 test.done();
             },

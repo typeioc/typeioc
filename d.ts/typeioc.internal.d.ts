@@ -10,6 +10,25 @@
 
 declare module Typeioc.Internal {
 
+    module Reflection {
+
+        enum PropertyType {
+            Method = 1,                 // method
+            Getter = 2,                 // get
+            Setter = 3,                 // set
+            FullProperty = 4,           // get and set
+            Field = 5                   // no get and set
+        }
+    }
+
+    module Interceptors {
+
+        interface ICallSubstitute extends  Typeioc.Interceptors.ICallSubstitute{
+            type : Typeioc.Interceptors.CallInfoType;
+            next? : ICallSubstitute;
+        }
+    }
+
     interface IRegistrationBaseService {
         create(service : any) : IRegistrationBase;
     }
@@ -23,7 +42,7 @@ declare module Typeioc.Internal {
     }
 
     interface IConfigRegistrationService {
-        create(config : Typeioc.IConfig) : IConfigRegistration;
+        create() : IConfigRegistration;
     }
 
     interface IRegistrationStorageService {
@@ -126,6 +145,7 @@ declare module Typeioc.Internal {
         scope : Typeioc.Types.Scope;
         owner : Typeioc.Types.Owner;
         registrations : IRegistrationBase[];
+        apply(config : Typeioc.IConfig);
     }
 
     interface IModuleRegistration {

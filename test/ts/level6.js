@@ -90,7 +90,7 @@ var Level6;
         var registration = containerBuilder.register(TestData.Test1Base);
         var delegate = function () { return containerBuilder.build(); };
         test.throws(delegate, function (err) {
-            return (err instanceof scaffold.Exceptions.ArgumentNullError) && /Factory is not defined/.test(err.message) && err.data === TestData.Test1Base;
+            return (err instanceof scaffold.Exceptions.NullReferenceError) && /Factory is not defined/.test(err.message) && err.data === TestData.Test1Base;
         });
         test.done();
     }

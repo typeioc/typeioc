@@ -26,6 +26,7 @@ var os = require('os');
         tests : {
             js : '../test/js/**/*.js',
             tsJs:  '../test/ts/*.js',
+            ts: '../test/ts/*.ts',
             map: '../test/ts/*.js.map',
             coverage : '../test/coverage'
         },
@@ -181,12 +182,24 @@ var os = require('os');
         });
     }
 
+    function watchTasks() {
+
+        gulp.watch([paths.code.srcAll,
+            paths.code.index,
+            paths.code.definitionsAll,
+            paths.tests.ts
+        ], ['build-tests']);
+
+        gulp.watch([paths.tests.js], ['run-tests']);
+    }
+
     return {
         build: function() {
             compileTasks();
             cleanTasks();
             headerTasks();
             runTests();
+            watchTasks();
         }
     };
 })()

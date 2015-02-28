@@ -36,7 +36,7 @@ export class ModuleRegistration implements Typeioc.Internal.IModuleRegistration{
 
                 if(!(srValue instanceof Function)) return;
 
-                if(Utils.isCompatible(asValue.prototype, srValue.prototype)) {
+                if(Utils.Reflection.isCompatible(asValue.prototype, srValue.prototype)) {
                     var rego = self.createRegistration({
                         service : srValue,
                         substitute : asValue});
@@ -93,7 +93,7 @@ export class ModuleRegistration implements Typeioc.Internal.IModuleRegistration{
     private forArgs(service: any, ...args:any[]) : Typeioc.IModuleReusedOwned {
 
         var options = this._internalStorage.register(service, this.emptyRegoOptionsEntry);
-        options.factory = () =>  Utils.construct(service, args);
+        options.factory = () =>  Utils.Reflection.construct(service, args);
 
         return this.asModuleInitializedReusedOwned();
     }

@@ -10,47 +10,10 @@
 
 'use strict';
 
-import Exceptions = require('../exceptions/index')
+import Exceptions = require('../exceptions/index');
+import ReflectionModule = require('./reflection');
 
-export function getParamNames(func : Function) : string[] {
-    var funStr = func.toString();
-    var result = funStr.slice(funStr.indexOf('(')+1, funStr.indexOf(')')).match(/([^\s,]+)/g);
-
-    return result || [];
-}
-
-export function getFactoryArgsCount(factory: Typeioc.IFactory<any>) {
-
-    var paramNames = getParamNames(<Function>factory);
-
-    return paramNames.length > 0 ? paramNames.length - 1 : 0;
-}
-
-export function isCompatible(obj1 : Object, obj2 : Object) : boolean {
-
-    for(var key in obj2) {
-
-        if(!(obj2[key] instanceof Function)) continue;
-
-        var obj1Val = obj1[key];
-
-        if(!obj1Val ||
-            !(obj1Val instanceof Function)) return false;
-    }
-
-    return true;
-}
-
-export function construct(constructor, args) {
-    function F() {
-        return constructor.apply(this, args);
-    }
-
-    F.prototype = constructor.prototype;
-    var k : any = F;
-
-    return new k();
-}
+export var Reflection = ReflectionModule;
 
 export function concat(array : any[], tailArray : any[]) : any[] {
 
@@ -59,9 +22,9 @@ export function concat(array : any[], tailArray : any[]) : any[] {
     return array;
 }
 
-export function checkNullArgument(value : any, message: string) {
+export function checkNullArgument(value : any, argument: string,  message?: string) {
     if(!value) {
-        var exception = new Exceptions.ArgumentNullError(message);
+        var exception = new Exceptions.ArgumentNullError(argument, message);
         exception.data = value;
         throw exception;
     }

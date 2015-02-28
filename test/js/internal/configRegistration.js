@@ -23,11 +23,12 @@ exports.internal = {
                 };
 
                 test.throws(delegate, function(error) {
-                    test.strictEqual('config', error.message);
+                    test.strictEqual(error.message, undefined);
+                    test.strictEqual(error.argumentName, 'config');
                     return (error instanceof Scaffold.Exceptions.ArgumentNullError);
                 });
 
-                test.expect(2);
+                test.expect(3);
                 test.done();
             },
 
@@ -38,11 +39,12 @@ exports.internal = {
                 };
 
                 test.throws(delegate, function(error) {
-                    test.strictEqual('config', error.message);
+                    test.strictEqual(error.message, undefined);
+                    test.strictEqual(error.argumentName, 'config');
                     return (error instanceof Scaffold.Exceptions.ArgumentNullError);
                 });
 
-                test.expect(2);
+                test.expect(3);
                 test.done();
             }
         }

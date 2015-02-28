@@ -56,7 +56,7 @@ export class RegistrationStorage<T> implements Typeioc.Internal.IRegistrationSto
     }
 
     private getArgumentsCount(registration : Typeioc.Internal.IRegistrationBase) : number {
-        return registration.factory ? Utils.getFactoryArgsCount(registration.factory) : registration.args.length;
+        return registration.factory ? Utils.Reflection.getFactoryArgsCount(registration.factory) : registration.args.length;
     }
 
     private emptyBucket() : Typeioc.Internal.IIndexedCollection {

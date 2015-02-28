@@ -127,7 +127,7 @@ export module Level6 {
         var delegate = () => containerBuilder.build();
 
         test.throws(delegate, function(err) {
-            return (err instanceof scaffold.Exceptions.ArgumentNullError) &&
+            return (err instanceof scaffold.Exceptions.NullReferenceError) &&
                     /Factory is not defined/.test(err.message) &&
                     err.data === TestData.Test1Base;
         });

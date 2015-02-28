@@ -141,7 +141,7 @@ exports.api = {
 
                     test.strictEqual(err.data, testData.Test1Base);
 
-                    return (err instanceof scaffold.Exceptions.ArgumentNullError) &&
+                    return (err instanceof scaffold.Exceptions.NullReferenceError) &&
                             /Factory is not defined/.test(err.message);
                 });
 
