@@ -7,6 +7,7 @@ exports.internal = {
 
         var Scaffold = require('../../scaffold');
         var ProxyModule = require('./../../../lib/interceptors/proxy');
+        var mockery = Scaffold.Mockery;
 
         var proxy;
 
@@ -60,7 +61,7 @@ exports.internal = {
                     a2 = this.arg2;
                 }
 
-                var Proto = proxy.fromPrototype(parent, []);
+                var Proto = proxy.fromPrototype(parent);
                 var instance = new Proto(1, 2);
 
                 test.ok(Proto);
@@ -73,45 +74,55 @@ exports.internal = {
 
             fromPrototype_should_proxy_prototype_method : function(test) {
 
+                var stub = mockery.stub();
+
                 function parent(arg1) {
                     this.arg1 = arg1;
                 }
 
                 parent.prototype.foo = function(){
+                    stub();
                     return this.arg1;
                 }
 
-                var Proto = proxy.fromPrototype(parent, []);
+                var Proto = proxy.fromPrototype(parent);
                 var instance = new Proto(1);
 
                 test.strictEqual(1, instance.foo());
+                test.ok(stub.calledOnce);
 
                 test.done();
             },
 
             fromPrototype_should_proxy_inherited_prototype_method : function(test) {
 
-                var grandParent = { foo : function() { return 1;} };
+                var stub = mockery.stub();
+
+                var grandParent = { foo : function() {  stub();  return 1;} };
 
                 function parent() { }
                 parent.prototype = grandParent;
 
-                var Proto = proxy.fromPrototype(parent, []);
+                var Proto = proxy.fromPrototype(parent);
                 var instance = new Proto();
 
                 test.strictEqual(1, instance.foo());
+                test.ok(stub.calledOnce);
 
                 test.done();
             },
 
             fromPrototype_should_proxy_static_method : function(test) {
 
-                function parent() { }
-                parent.foo = function() { return 1; }
+                var stub = mockery.stub();
 
-                var Proto = proxy.fromPrototype(parent, []);
+                function parent() { }
+                parent.foo = function() { stub(); return 1; }
+
+                var Proto = proxy.fromPrototype(parent);
 
                 test.strictEqual(1, Proto.foo());
+                test.ok(stub.calledOnce);
 
                 test.done();
             },
@@ -120,11 +131,17 @@ exports.internal = {
 
                 function parent() { }
                 parent.prototype.foo = 1;
+                parent.prototype.getFoo = function() { return this.foo; }
 
-                var Proto = proxy.fromPrototype(parent, []);
+
+                var Proto = proxy.fromPrototype(parent);
                 var instance = new Proto();
 
+                test.strictEqual(1, instance.getFoo());
                 test.strictEqual(1, instance.foo);
+                instance.foo = 123;
+                test.strictEqual(123, instance.foo);
+                test.strictEqual(123, instance.getFoo());
 
                 test.done();
             },
@@ -134,7 +151,7 @@ exports.internal = {
                 function parent() { }
                 parent.foo = 1;
 
-                var Proto = proxy.fromPrototype(parent, []);
+                var Proto = proxy.fromPrototype(parent);
 
                 test.strictEqual(1, Proto.foo);
 
@@ -148,7 +165,7 @@ exports.internal = {
                 function parent() { }
                 parent.prototype = grandParent;
 
-                var Proto = proxy.fromPrototype(parent, []);
+                var Proto = proxy.fromPrototype(parent);
                 var instance = new Proto();
 
                 test.strictEqual(1, instance.foo);
@@ -158,70 +175,91 @@ exports.internal = {
 
             fromPrototype_should_proxy_prototype_getter : function(test) {
 
+                var stub = mockery.stub();
+
                 function parent() { }
                 Object.defineProperty(parent.prototype, 'foo', {
                     get: function () {
+                        stub();
                         return 1;
                     },
                     enumerable: true,
                     configurable: true
                 });
 
-                var Proto = proxy.fromPrototype(parent, []);
+                var Proto = proxy.fromPrototype(parent);
                 var instance = new Proto();
 
                 test.strictEqual(1, instance.foo);
+                test.ok(stub.calledOnce);
 
                 test.done();
             },
 
             fromPrototype_should_proxy_prototype_property : function(test) {
 
+                var getStub = mockery.stub();
+                var setStub = mockery.stub();
+
                 function parent() {
                     this._innerValue = undefined;
                 }
 
                 Object.defineProperty(parent.prototype, 'foo', {
-                    get : function() { return this._innerValue; },
+                    get : function() {
+                        getStub()
+                        return this._innerValue;
+                    },
                     set: function (value) {
-                        return this._innerValue = value;
+                        setStub();
+                        return this._innerValue = 1 + value;
                     },
                     enumerable: true,
                     configurable: true
                 });
 
-                var Proto = proxy.fromPrototype(parent, []);
+                var Proto = proxy.fromPrototype(parent);
                 var instance = new Proto();
                 instance.foo = 3;
 
-                test.strictEqual(3, instance.foo);
+                test.strictEqual(4, instance.foo);
+                test.ok(getStub.calledOnce);
+                test.ok(setStub.calledOnce);
 
                 test.done();
             },
 
             fromPrototype_should_proxy_static_getter : function(test) {
 
+                var stub = mockery.stub();
+
                 function parent() { }
                 Object.defineProperty(parent, 'foo', {
                     get: function () {
+
+                        stub();
                         return 1;
                     },
                     enumerable: true,
                     configurable: true
                 });
 
-                var Proto = proxy.fromPrototype(parent, []);
+                var Proto = proxy.fromPrototype(parent);
 
                 test.strictEqual(1, Proto.foo);
+                test.ok(stub.calledOnce);
 
                 test.done();
             },
 
             fromPrototype_should_proxy_inherited_prototype_getter : function(test) {
 
+                var stub = mockery.stub();
+
                 var grandParent =  function() { this._innerField = 333; };
                 Object.defineProperty(grandParent, 'foo', {
                     get: function () {
+                        stub();
                         return this._innerField;
                     },
                     enumerable: true,
@@ -231,22 +269,30 @@ exports.internal = {
                 function parent() { this._innerField = 3; }
                 parent.prototype = grandParent;
 
-                var Proto = proxy.fromPrototype(parent, []);
+                var Proto = proxy.fromPrototype(parent);
                 var instance = new Proto();
 
                 test.strictEqual(3, instance.foo);
+                test.ok(stub.calledOnce);
 
                 test.done();
             },
 
             fromPrototype_should_proxy_inherited_prototype_property : function(test) {
 
+                var getStub = mockery.stub();
+                var setStub = mockery.stub();
+
                 var grandParent =  function() { this._innerField = 333; };
                 Object.defineProperty(grandParent, 'foo', {
                     get: function () {
+                        getStub();
                         return this._innerField;
                     },
-                    set: function(value) { this._innerField = value; },
+                    set: function(value) {
+                        setStub();
+                        this._innerField = value;
+                    },
                     enumerable: true,
                     configurable: true
                 });
@@ -259,19 +305,28 @@ exports.internal = {
                 instance.foo = 3;
 
                 test.strictEqual(3, instance.foo);
+                test.ok(getStub.calledOnce);
+                test.ok(setStub.calledOnce);
 
                 test.done();
             },
 
             fromPrototype_should_proxy_static_property : function(test) {
 
+                var getStub = mockery.stub();
+                var setStub = mockery.stub();
+
                 function parent() { }
                 parent._innerField = 0;
                 Object.defineProperty(parent, 'foo', {
                     get: function () {
+                        getStub();
                         return parent._innerField;
                     },
-                    set: function(value) { parent._innerField = value; },
+                    set: function(value) {
+                        setStub();
+                        parent._innerField = value;
+                    },
                     enumerable: true,
                     configurable: true
                 });
@@ -280,17 +335,23 @@ exports.internal = {
                 Proto.foo = 123;
 
                 test.strictEqual(123, Proto.foo);
+                test.ok(getStub.calledOnce);
+                test.ok(setStub.calledOnce);
 
                 test.done();
             },
 
             fromPrototype_should_proxy_prototype_method_with_args : function(test) {
 
+                var stub = mockery.stub();
+
                 function parent(arg1) {
                     this.arg1 = arg1;
                 }
 
                 parent.prototype.foo = function(arg1, arg2){
+
+                    stub();
                     return this.arg1 + arg1 + arg2;
                 }
 
@@ -298,13 +359,16 @@ exports.internal = {
                 var instance = new Proto(1);
 
                 test.strictEqual(6, instance.foo(2, 3));
+                test.ok(stub.calledOnce);
 
                 test.done();
             },
 
             fromPrototype_should_proxy_inherited_prototype_method_with_args : function(test) {
 
-                var grandParent = { foo : function(arg1, arg2) { return arg1 + arg2;} };
+                var stub = mockery.stub();
+
+                var grandParent = { foo : function(arg1, arg2) { stub();  return arg1 + arg2;} };
 
                 function parent() { }
                 parent.prototype = grandParent;
@@ -313,18 +377,22 @@ exports.internal = {
                 var instance = new Proto();
 
                 test.strictEqual(3, instance.foo(1, 2));
+                test.ok(stub.calledOnce);
 
                 test.done();
             },
 
             fromPrototype_should_proxy_static_method_with_args : function(test) {
 
+                var stub = mockery.stub();
+
                 function parent() { }
-                parent.foo = function(arg1, arg2) { return arg1 + arg2; }
+                parent.foo = function(arg1, arg2) { stub(); return arg1 + arg2; }
 
                 var Proto = proxy.fromPrototype(parent, []);
 
                 test.strictEqual(3, Proto.foo(1, 2));
+                test.ok(stub.calledOnce);
 
                 test.done();
             }

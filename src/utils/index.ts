@@ -6,12 +6,13 @@
  * @license (MIT) - https://github.com/maxgherman/TypeIOC/blob/master/LICENSE
  * --------------------------------------------------------------------------------------------------*/
 
-/// <reference path="../../d.ts/typeioc.d.ts" />
+/// <reference path="../../d.ts/typeioc.internal.d.ts" />
 
 'use strict';
 
 import Exceptions = require('../exceptions/index');
 import ReflectionModule = require('./reflection');
+import ImmutableArrayModule = require('./immutableArray');
 
 export var Reflection = ReflectionModule;
 
@@ -28,4 +29,8 @@ export function checkNullArgument(value : any, argument: string,  message?: stri
         exception.data = value;
         throw exception;
     }
+}
+
+export function createImmutable(array : Array<any>) : Typeioc.Internal.IImmutableArray {
+    return new ImmutableArrayModule.ImmutableArray(array);
 }

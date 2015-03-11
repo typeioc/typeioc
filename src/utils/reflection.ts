@@ -46,28 +46,16 @@ export function isString(value : any) :boolean {
     return (typeof value) === 'string';
 }
 
-export function getPropertyType(name : string, source : Object, descriptor?  : PropertyDescriptor)
+export function getPropertyType(name : string, source : Object, descriptor : PropertyDescriptor)
         : Typeioc.Internal.Reflection.PropertyType {
 
-    var value = source[name];
+    if(descriptor.value && isFunction(descriptor.value )) return Typeioc.Internal.Reflection.PropertyType.Method;
 
-    if(value && isFunction(value)) return Typeioc.Internal.Reflection.PropertyType.Method;
+    if(descriptor.get && !descriptor.set) return Typeioc.Internal.Reflection.PropertyType.Getter;
 
-    if(!value) {
+    if(!descriptor.get && descriptor.set) return Typeioc.Internal.Reflection.PropertyType.Setter;
 
-        var descriptor = descriptor || Object.getOwnPropertyDescriptor(source, name);
-
-        if(descriptor){
-
-            if(descriptor.writable === true) return Typeioc.Internal.Reflection.PropertyType.Field;
-
-            if(descriptor.get && !descriptor.set) return Typeioc.Internal.Reflection.PropertyType.Getter;
-
-            if(!descriptor.get && descriptor.set) return Typeioc.Internal.Reflection.PropertyType.Setter;
-
-            if(descriptor.get && descriptor.set) return Typeioc.Internal.Reflection.PropertyType.FullProperty;
-        }
-    }
+    if(descriptor.get && descriptor.set) return Typeioc.Internal.Reflection.PropertyType.FullProperty;
 
     return Typeioc.Internal.Reflection.PropertyType.Field;
 }

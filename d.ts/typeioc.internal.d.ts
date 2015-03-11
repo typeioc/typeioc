@@ -29,6 +29,10 @@ declare module Typeioc.Internal {
         }
     }
 
+    interface IImmutableArray {
+        value : Array<any>;
+    }
+
     interface IRegistrationBaseService {
         create(service : any) : IRegistrationBase;
     }

@@ -1,5 +1,5 @@
 
-/// <reference path="../../d.ts/typeioc.d.ts" />
+/// <reference path="../../d.ts/typeioc.internal.d.ts" />
 
 'use strict';
 
@@ -106,9 +106,9 @@
              self._destination[self._name] = function() {
 
                  var args  = Array.prototype.slice.call(arguments, 0);
-                 var delegate = self._contextName ? value.bind(this[self._contextName]) : value.bind(self._source);
+                 var delegate = args => self._contextName ? value.apply(this[self._contextName], args) : value.apply(self._source, args);
 
-                 return self.createCallChainFromList(args, delegate, this);
+                 return self.createCallChainFromList(Utils.createImmutable(args), delegate, this);
              };
          };
 
@@ -117,32 +117,36 @@
              Object.defineProperty(self._destination, self._name, {
                  get : self.defineWrapGetter(),
                  configurable : self._descriptor.configurable,
-                 enumerable : self._descriptor.enumerable,
-                 value : self._descriptor.value,
-                 writable : self._descriptor.writable
+                 enumerable : self._descriptor.enumerable
              });
          };
 
          result[Typeioc.Internal.Reflection.PropertyType.Setter] = () => {
 
-             Object.defineProperty(self._destination, self._name, {
+               Object.defineProperty(self._destination, self._name, {
                  set : self.defineWrapSetter(),
                  configurable : self._descriptor.configurable,
-                 enumerable : self._descriptor.enumerable,
-                 value : self._descriptor.value,
-                 writable : self._descriptor.writable
+                 enumerable : self._descriptor.enumerable
              });
          };
 
          result[Typeioc.Internal.Reflection.PropertyType.FullProperty] = () => {
 
+             var getter = self._substitute.type === Typeioc.Interceptors.CallInfoType.Any ||
+                          self._substitute.type === Typeioc.Interceptors.CallInfoType.GetterSetter ||
+                          self._substitute.type === Typeioc.Interceptors.CallInfoType.Getter ?
+                            self.defineWrapGetter() : self.defineGetter();
+
+             var setter = self._substitute.type === Typeioc.Interceptors.CallInfoType.Any ||
+                          self._substitute.type === Typeioc.Interceptors.CallInfoType.GetterSetter ||
+                          self._substitute.type === Typeioc.Interceptors.CallInfoType.Setter ?
+                            self.defineWrapSetter() : self.defineSetter();
+
              Object.defineProperty(self._destination, self._name, {
-                 get : self.defineWrapGetter(),
-                 set : self.defineWrapSetter(),
+                 get : getter,
+                 set : setter,
                  configurable : self._descriptor.configurable,
-                 enumerable : self._descriptor.enumerable,
-                 value : self._descriptor.value,
-                 writable : self._descriptor.writable
+                 enumerable : self._descriptor.enumerable
              });
          };
 
@@ -159,9 +163,9 @@
          var self = this;
 
          return function (value) {
-             var delegate = self.defineGetter();
+             var delegate = self.defineSetter().bind(this);
 
-             return self.createCallChainFromList([value], delegate, this);
+             return self.createCallChainFromList(Utils.createImmutable([value]), delegate, this, Typeioc.Interceptors.CallInfoType.Setter);
          };
      }
 
@@ -170,9 +174,10 @@
          var self = this;
 
          return function() {
-             var delegate = self.defineGetter();
 
-             return self.createCallChainFromList([], delegate, this);
+             var delegate = self.defineGetter().bind(this);
+
+             return self.createCallChainFromList(Utils.createImmutable([]), delegate, this, Typeioc.Interceptors.CallInfoType.Getter);
          };
      }
 
@@ -197,33 +202,35 @@
          };
      }
 
+     private createCallChainFromList(
+         args : Typeioc.Internal.IImmutableArray,
+         delegate : (args? : Array<any>) => any,
+         wrapperContext : Object,
+         callType? : Typeioc.Interceptors.CallInfoType) {
 
-     private createCallChainFromList(args : Array<any>, delegate : Function,  wrapperContext : Object) {
+         var mainCallInfo = this.createCallInfo(args.value, delegate, callType);
+         var currentCallInfo = mainCallInfo;
+         var nextWrapper = this._substitute.next;
 
-         var callInfo = this.createCallInfo(args, delegate);
+         while(nextWrapper) {
 
-         this.createNextInChain(callInfo, delegate, wrapperContext, this._substitute.next);
+             var childCallInfo = this.createCallInfo(args.value, delegate, callType);
+             var wrapper = nextWrapper.wrapper;
+             currentCallInfo.next = result => {
+                 childCallInfo.result = result;
+                 return wrapper.call(wrapperContext, childCallInfo);
+             };
+             currentCallInfo = childCallInfo;
+             nextWrapper = nextWrapper.next;
+         }
 
-         return this._substitute.wrapper.call(wrapperContext, callInfo);
+         return this._substitute.wrapper.call(wrapperContext, mainCallInfo);
      }
 
-     private createNextInChain(parent : Typeioc.Interceptors.ICallInfo,
-                               delegate : Function,
-                               wrapperContext : Object,
-                               parentSubstitute : Typeioc.Internal.Interceptors.ICallSubstitute) {
-
-         if(!parentSubstitute) return undefined;
-
-         parent.next = () => {
-             var callInfo = this.createCallInfo(parent.args, delegate);
-
-             this.createNextInChain(callInfo, delegate, wrapperContext, parentSubstitute.next);
-
-             return parentSubstitute.wrapper.call(wrapperContext, callInfo);
-         };
-     }
-
-     private createCallInfo(args : Array<any>, delegate : Function) : Typeioc.Interceptors.ICallInfo {
+     private createCallInfo(
+         args : Array<any>,
+         delegate : (args? : Array<any>) => any,
+         callType? : Typeioc.Interceptors.CallInfoType) : Typeioc.Interceptors.ICallInfo {
 
          var getter = <() => any>delegate;
          var setter = <(any) => void>delegate;
@@ -231,10 +238,10 @@
          return {
              name : this._name,
              args : args,
-             type : this._substitute.type,
+             type : callType || this._substitute.type,
              invoke: delegate,
-             get : this._substitute.type === Typeioc.Interceptors.CallInfoType.Getter ?  getter : null,
-             set : this._substitute.type === Typeioc.Interceptors.CallInfoType.Setter ?  setter : null
+             get : callType === Typeioc.Interceptors.CallInfoType.Getter ?  getter : null,
+             set : callType === Typeioc.Interceptors.CallInfoType.Setter ?  setter : null
          };
      }
  }

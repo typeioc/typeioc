@@ -59,23 +59,30 @@ declare module Typeioc {
             Method = 1,
             Getter = 2,
             Setter = 3,
-            GetterSetter = 4
+            GetterSetter = 4,
+            Any = 5
         }
 
         interface ICallInfo {
             name : string;
             args : Array<any>;
-            invoke: Function;
+            invoke: (args? : Array<any>) => any;
             type : CallInfoType;
             get? : () => any;
             set? : (any) => void;
-            next? : () => any;
+            next? : (result? : any)=> any;
+            result? : any;
         }
 
         interface ICallSubstitute {
             method? : string | Function;
             type? : CallInfoType;
-            wrapper : (ICallInfo) => any;
+            wrapper : (ICallInfo) => any | IWrapper;
+        }
+
+        interface IWrapper {
+            getter? : (ICallInfo) => void;
+            setter? : (ICallInfo) => any;
         }
     }
 
