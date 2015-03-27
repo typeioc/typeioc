@@ -8,80 +8,60 @@
  import DecoratorModule = require('./decorator');
 
 
- export class Proxy {
+ export class Proxy implements Typeioc.Internal.Interceptors.IProxy {
 
     public fromPrototype(parent : Function,
-                         substitutes? : Array<Typeioc.Internal.Interceptors.ICallSubstitute>) : Function {
+                         storage : Typeioc.Internal.Interceptors.IStorage) : Function {
 
         Utils.checkNullArgument(parent, 'parent');
 
-        substitutes = substitutes || [];
+        //substitutes = substitutes || [];
 
         function Proxy() {
-             this._parent = Utils.Reflection.construct(parent, arguments);
+            this._parent = Utils.Reflection.construct(parent, arguments);
+
+            for(var p in this._parent) {
+                if((p in this) == false) {
+                    this[p] = this._parent[p];
+                }
+            }
         }
 
-        this.decorate(parent.prototype, Proxy.prototype, substitutes, '_parent');
-
-        this.decorate(parent, Proxy, substitutes);
+        //this.decorate(parent.prototype, Proxy.prototype, substitutes, '_parent');
+        //
+        //this.decorate(parent, Proxy, substitutes);
 
         return Proxy;
     }
 
     private decorate(source : Function,
                      destination : Function,
-                     substitutes : Array<Typeioc.Internal.Interceptors.ICallSubstitute>,
+                     substitutes : Array<Typeioc.Interceptors.ISubstitute>,
                      contextName? : string) {
 
         for(var p in source) {
 
             var substitute = this.getSubstitute(p, source, substitutes);
-            var decorator = new DecoratorModule.Decorator(p, source, destination, substitute, contextName);
+            var decorator = new DecoratorModule.Decorator(p, source, destination, contextName);
 
             if(substitute) {
 
                 this.checkProxyCompatibility(p, substitute, decorator.propertyType);
-
-                decorator.wrap();
-
-            } else {
-                decorator.nonWrap();
+                decorator.substitute = substitute;
             }
+
+            decorator.wrap();
         }
     }
 
-    private getSubstitute(name : string, source : Function, substitutes : Array<Typeioc.Internal.Interceptors.ICallSubstitute>)
-               : Typeioc.Internal.Interceptors.ICallSubstitute {
-
-        return substitutes.filter(item =>{
-
-             var method : any = item.method;
-
-             if(Utils.Reflection.isFunction(method)) {
-                 return source[name] === item.method;
-             }
-             return method === name;
-        })[0];
+    private getSubstitute(name : string, source : Function, substitutes : Array<Typeioc.Interceptors.ISubstitute>)
+               : Typeioc.Interceptors.ISubstitute {
+        return substitutes.filter(item =>{ return item.method === name; })[0];
     }
 
     private checkProxyCompatibility(propertyName : string,
-                                     substitute : Typeioc.Interceptors.ICallSubstitute,
+                                     substitute : Typeioc.Interceptors.ISubstitute,
                                      propertyType : Typeioc.Internal.Reflection.PropertyType) {
-        if(propertyType === Typeioc.Internal.Reflection.PropertyType.Field)
-            throw this.combineError('Unable to create proxy for a field', propertyName, substitute.type);
-
-        if(Utils.Reflection.isFunction(substitute.wrapper)) {
-            this.checkWrapperDelegate(propertyName, substitute, propertyType);
-
-            return;
-        }
-
-        this.checkWrapperInstance(propertyName, substitute, propertyType);
-    }
-
-    private checkWrapperDelegate(propertyName : string,
-                                 substitute : Typeioc.Interceptors.ICallSubstitute,
-                                 propertyType : Typeioc.Internal.Reflection.PropertyType) {
 
         var type = substitute.type;
 
@@ -90,48 +70,18 @@
         if((propertyType === Typeioc.Internal.Reflection.PropertyType.Method &&
             type !== Typeioc.Interceptors.CallInfoType.Method) ||
 
-           (propertyType === Typeioc.Internal.Reflection.PropertyType.Getter &&
+            (propertyType === Typeioc.Internal.Reflection.PropertyType.Getter &&
             type !== Typeioc.Interceptors.CallInfoType.Getter) ||
 
-           (propertyType === Typeioc.Internal.Reflection.PropertyType.Setter &&
+            (propertyType === Typeioc.Internal.Reflection.PropertyType.Setter &&
             type !== Typeioc.Interceptors.CallInfoType.Setter) ||
 
-           (propertyType === Typeioc.Internal.Reflection.PropertyType.FullProperty &&
+            (propertyType === Typeioc.Internal.Reflection.PropertyType.FullProperty &&
             type !== Typeioc.Interceptors.CallInfoType.Getter &&
             type !== Typeioc.Interceptors.CallInfoType.Setter &&
             type !== Typeioc.Interceptors.CallInfoType.GetterSetter)) {
 
             throw this.combineError('Could not match proxy type and property type', propertyName, type);
-        }
-    }
-
-    private checkWrapperInstance(propertyName : string,
-                                 substitute : Typeioc.Interceptors.ICallSubstitute,
-                                 propertyType : Typeioc.Internal.Reflection.PropertyType) {
-
-        var type = substitute.type;
-
-        var wrapper = <Typeioc.Interceptors.IWrapper>substitute.wrapper;
-
-        if(!wrapper.getter && !wrapper.setter)
-            throw this.combineError('Substitute wrapper instance should have at least one of (getter, setter)', propertyName, type);
-
-        if(wrapper.getter && wrapper.setter) {
-            if(type != Typeioc.Interceptors.CallInfoType.Any && type != Typeioc.Interceptors.CallInfoType.GetterSetter) {
-                throw this.combineError('When both getter and setter are specified, substitute type should be (undefined, Any or GetterSetter)', propertyName, type);
-            }
-        }
-
-        if(wrapper.getter && !wrapper.setter) {
-            if(type != Typeioc.Interceptors.CallInfoType.Any && type != Typeioc.Interceptors.CallInfoType.Getter) {
-                throw this.combineError('When getter is specified, substitute type should be (undefined, Any or Getter)', propertyName, type);
-            }
-        }
-
-        if(!wrapper.getter && wrapper.setter) {
-            if(type != Typeioc.Interceptors.CallInfoType.Any && type != Typeioc.Interceptors.CallInfoType.Setter) {
-                throw this.combineError('When setter is specified, substitute type should be (undefined, Any or Setter)', propertyName, type);
-            }
         }
     }
 

@@ -18,7 +18,7 @@ export class InternalContainer implements Typeioc.Internal.IContainer {
     private children : InternalContainer [] = [];
     private _disposableStorage : Typeioc.Internal.IDisposableStorage;
     private _collection : Typeioc.Internal.IRegistrationStorage<Typeioc.Internal.IRegistrationBase>;
-    private _cache : Typeioc.Internal.IIndexedCollection;
+    private _cache : Typeioc.Internal.IIndexedCollection<any>;
     private _dependencyScope = Typeioc.Types.Scope.None;
     private _dependencyOwner = Typeioc.Types.Owner.Externals;
 
@@ -32,7 +32,7 @@ export class InternalContainer implements Typeioc.Internal.IContainer {
         this._cache = {};
     }
 
-    public get cache() : Typeioc.Internal.IIndexedCollection {
+    public get cache() : Typeioc.Internal.IIndexedCollection<any> {
         return this._cache;
     }
 

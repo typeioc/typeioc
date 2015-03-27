@@ -13,38 +13,41 @@
 
      private _type : Typeioc.Internal.Reflection.PropertyType;
      private _descriptor : PropertyDescriptor;
+     private _substitute : Typeioc.Interceptors.ISubstitute;
+
+     private _wrapStrategies : IStrategy;
+     private _nonWrapStrategies : IStrategy;
 
      public get propertyType() : Typeioc.Internal.Reflection.PropertyType {
          return this._type;
      }
 
+     public set substitute(value : Typeioc.Interceptors.ISubstitute) {
+         this._substitute = value;
+     }
+
      constructor(private _name : string,
                  private _source : Function,
                  private _destination : Function,
-                 private _substitute : Typeioc.Internal.Interceptors.ICallSubstitute,
                  private _contextName? : string) {
 
-         this._descriptor = Object.getOwnPropertyDescriptor(_source, _name);
+         this._descriptor = Utils.Reflection.getPropertyDescriptor(_source, _name);
          this._type = Utils.Reflection.getPropertyType(_name, _source, this._descriptor);
      }
 
      public wrap() : void
      {
-         var strategyStore = this.defineWrapStrategies();
-         var strategy = strategyStore[this._type];
-         strategy();
-     }
-
-     public nonWrap() : void
-     {
-         var strategyStore = this.defineNonWrapStrategies();
+         var strategyStore = this._substitute ? this.defineWrapStrategies() : this.defineNonWrapStrategies();
          var strategy = strategyStore[this._type];
          strategy();
      }
 
      private defineNonWrapStrategies() : IStrategy
      {
-         var result : IStrategy = {};
+         if(this._nonWrapStrategies) return this._nonWrapStrategies;
+
+         var result = <IStrategy>(this._nonWrapStrategies = {});
+
          var self = this;
 
          result[Typeioc.Internal.Reflection.PropertyType.Method] = function() {
@@ -54,9 +57,7 @@
              self._destination[self._name] = function() {
 
                  var args  = Array.prototype.slice.call(arguments, 0);
-                 var delegate = self._contextName ? value.bind(this[self._contextName]) : value.bind(self._source);
-
-                 return delegate.apply(this, args);
+                 return value.apply(this, args);
              };
          };
 
@@ -96,7 +97,10 @@
 
      private defineWrapStrategies() : IStrategy
      {
-         var result : IStrategy = {};
+         if(this._wrapStrategies) return this._wrapStrategies;
+
+         var result = <IStrategy>(this._wrapStrategies = {});
+
          var self = this;
 
          result[Typeioc.Internal.Reflection.PropertyType.Method] = () => {
@@ -105,8 +109,9 @@
 
              self._destination[self._name] = function() {
 
+                 var destination = this;
                  var args  = Array.prototype.slice.call(arguments, 0);
-                 var delegate = args => self._contextName ? value.apply(this[self._contextName], args) : value.apply(self._source, args);
+                 var delegate = args => value.apply(destination, args);
 
                  return self.createCallChainFromList(Utils.createImmutable(args), delegate, this);
              };
@@ -134,12 +139,14 @@
 
              var getter = self._substitute.type === Typeioc.Interceptors.CallInfoType.Any ||
                           self._substitute.type === Typeioc.Interceptors.CallInfoType.GetterSetter ||
-                          self._substitute.type === Typeioc.Interceptors.CallInfoType.Getter ?
+                          self._substitute.type === Typeioc.Interceptors.CallInfoType.Getter  ||
+                          self._substitute.type === Typeioc.Interceptors.CallInfoType.Field ?
                             self.defineWrapGetter() : self.defineGetter();
 
              var setter = self._substitute.type === Typeioc.Interceptors.CallInfoType.Any ||
                           self._substitute.type === Typeioc.Interceptors.CallInfoType.GetterSetter ||
-                          self._substitute.type === Typeioc.Interceptors.CallInfoType.Setter ?
+                          self._substitute.type === Typeioc.Interceptors.CallInfoType.Setter ||
+                          self._substitute.type === Typeioc.Interceptors.CallInfoType.Field ?
                             self.defineWrapSetter() : self.defineSetter();
 
              Object.defineProperty(self._destination, self._name, {
@@ -150,10 +157,7 @@
              });
          };
 
-         result[Typeioc.Internal.Reflection.PropertyType.Field] = () => {
-
-             self._destination[self._name] = self._contextName ? this[self._contextName][name] : self._source[name];
-         };
+         result[Typeioc.Internal.Reflection.PropertyType.Field] = result[Typeioc.Internal.Reflection.PropertyType.FullProperty];
 
          return result;
      }
@@ -209,22 +213,31 @@
          callType? : Typeioc.Interceptors.CallInfoType) {
 
          var mainCallInfo = this.createCallInfo(args.value, delegate, callType);
-         var currentCallInfo = mainCallInfo;
-         var nextWrapper = this._substitute.next;
-
-         while(nextWrapper) {
-
-             var childCallInfo = this.createCallInfo(args.value, delegate, callType);
-             var wrapper = nextWrapper.wrapper;
-             currentCallInfo.next = result => {
-                 childCallInfo.result = result;
-                 return wrapper.call(wrapperContext, childCallInfo);
-             };
-             currentCallInfo = childCallInfo;
-             nextWrapper = nextWrapper.next;
-         }
+         this.createCallAction(mainCallInfo, args, delegate, wrapperContext, this._substitute.next, callType);
 
          return this._substitute.wrapper.call(wrapperContext, mainCallInfo);
+
+     }
+
+     private createCallAction(callInfo : Typeioc.Interceptors.ICallInfo,
+                              args : Typeioc.Internal.IImmutableArray,
+                              delegate : (args? : Array<any>) => any,
+                              wrapperContext : Object,
+                              substitute : Typeioc.Interceptors.ISubstitute,
+                              callType? : Typeioc.Interceptors.CallInfoType) {
+
+        if(!substitute) return;
+
+        var self = this;
+        var childCallInfo = this.createCallInfo(args.value, delegate, callType);
+
+         callInfo.next = result => {
+             childCallInfo.result = result;
+
+             self.createCallAction(callInfo, args, delegate, wrapperContext, substitute.next, callType);
+
+             return substitute.wrapper.call(wrapperContext, childCallInfo);
+         };
      }
 
      private createCallInfo(

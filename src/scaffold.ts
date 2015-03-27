@@ -22,13 +22,14 @@ import BuilderModule = require('./build/builder');
 import ApiContainer = require('./build/containerApi');
 import InternalContainerModule = require('./build/internalContainer')
 import ProxyModule = require('./interceptors/proxy');
+import InterceptorModule = require('./interceptors/interceptor');
 
 export class Scaffold {
 
     public createBuilder() : Typeioc.IContainerBuilder {
 
         var moduleStorageService = this.internalStorageService<any, Typeioc.Internal.IModuleItemRegistrationOptions>();
-        var internalRegoStorageService = this.internalStorageService<any, Typeioc.Internal.IIndexedCollection>();
+        var internalRegoStorageService = this.internalStorageService<any, Typeioc.Internal.IIndexedCollection<any>>();
         var regoStorageService = this.registrationStorageService(internalRegoStorageService);
         var disposableStorageService = this.disposableStorageService();
         var baseRegoService = this.registrationBaseService();
@@ -78,7 +79,7 @@ export class Scaffold {
     }
 
     private registrationStorageService(internalStorageService :
-                                           Typeioc.Internal.IInternalStorageService<any, Typeioc.Internal.IIndexedCollection>)
+                                           Typeioc.Internal.IInternalStorageService<any, Typeioc.Internal.IIndexedCollection<any>>)
         : Typeioc.Internal.IRegistrationStorageService {
         return {
             create : <R>() => {

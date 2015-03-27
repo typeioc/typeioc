@@ -60,7 +60,8 @@ declare module Typeioc {
             Getter = 2,
             Setter = 3,
             GetterSetter = 4,
-            Any = 5
+            Any = 5,
+            Field = 6
         }
 
         interface ICallInfo {
@@ -74,15 +75,16 @@ declare module Typeioc {
             result? : any;
         }
 
-        interface ICallSubstitute {
-            method? : string | Function;
+        interface ISubstituteInfo {
+            method? : string;
             type? : CallInfoType;
-            wrapper : (ICallInfo) => any | IWrapper;
+            wrapper : (ICallInfo) => any;
         }
 
-        interface IWrapper {
-            getter? : (ICallInfo) => void;
-            setter? : (ICallInfo) => any;
+        interface ISubstitute extends ISubstituteInfo {
+            method? : string;
+            type : CallInfoType;
+            next? : ISubstitute;
         }
     }
 

@@ -60,6 +60,19 @@ export function getPropertyType(name : string, source : Object, descriptor : Pro
     return Typeioc.Internal.Reflection.PropertyType.Field;
 }
 
+export function getPropertyDescriptor(object, key) {
+    do {
+
+        var descriptor = Object.getOwnPropertyDescriptor(object, key);
+    } while(!descriptor && (object = Object.getPrototypeOf(object)));
+
+    if (descriptor) {
+        descriptor['object'] = object;
+    }
+
+    return descriptor;
+}
+
 function getParamNames(func : Function) : string[] {
     var funStr = func.toString();
     var result = funStr.slice(funStr.indexOf('(')+1, funStr.indexOf(')')).match(/([^\s,]+)/g);

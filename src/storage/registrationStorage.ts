@@ -15,7 +15,7 @@ import Utils = require('../utils/index');
 
 export class RegistrationStorage<T> implements Typeioc.Internal.IRegistrationStorage<T> {
 
-    constructor(private _internalStorage : Typeioc.Internal.IInternalStorage<any, Typeioc.Internal.IIndexedCollection>) {
+    constructor(private _internalStorage : Typeioc.Internal.IInternalStorage<any, Typeioc.Internal.IIndexedCollection<any>>) {
     }
 
     public addEntry(registration : Typeioc.Internal.IRegistrationBase, entry : () => T) : void {
@@ -59,11 +59,11 @@ export class RegistrationStorage<T> implements Typeioc.Internal.IRegistrationSto
         return registration.factory ? Utils.Reflection.getFactoryArgsCount(registration.factory) : registration.args.length;
     }
 
-    private emptyBucket() : Typeioc.Internal.IIndexedCollection {
+    private emptyBucket() : Typeioc.Internal.IIndexedCollection<any> {
         return {};
     }
 
-    private get emptyArgsBucket() : Typeioc.Internal.IIndex {
+    private get emptyArgsBucket() : Typeioc.Internal.IIndex<any> {
         return {};
     }
 

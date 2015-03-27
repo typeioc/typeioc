@@ -26,7 +26,7 @@ export class InternalStorage<K,T> implements Typeioc.Internal.IInternalStorage<K
     private _collection  : IHashTable<K, T>;
 
     constructor() {
-        this._collection =  new hashes.HashTable();
+        this._collection = new hashes.HashTable();
     }
 
     public add(key : K, value : T) : void {

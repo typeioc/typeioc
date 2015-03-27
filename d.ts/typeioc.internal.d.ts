@@ -23,9 +23,19 @@ declare module Typeioc.Internal {
 
     module Interceptors {
 
-        interface ICallSubstitute extends  Typeioc.Interceptors.ICallSubstitute{
-            type : Typeioc.Interceptors.CallInfoType;
-            next? : ICallSubstitute;
+        interface IProxy {
+            fromPrototype(parent : Function,
+                          storage : Typeioc.Internal.Interceptors.IStorage) : Function;
+        }
+
+        interface IList {
+            head : Typeioc.Interceptors.ISubstitute;
+            tail : Typeioc.Interceptors.ISubstitute;
+        }
+
+        interface IStorage {
+            known : IIndexedCollection<IIndexedCollection<IList>>;
+            unknown : IIndexedCollection<IList>
         }
     }
 
@@ -99,12 +109,12 @@ declare module Typeioc.Internal {
     }
 
 
-    interface IIndex {
-        [index: number]: any;
+    interface IIndex<T> {
+        [index: number]: T;
     }
 
-    interface IIndexedCollection extends IIndex {
-        [name: string]: any;
+    interface IIndexedCollection<T> extends IIndex<T> {
+        [name: string]: T;
     }
 
     interface IInternalStorage<K, T> {
