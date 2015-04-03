@@ -28,15 +28,18 @@ declare module Typeioc.Internal {
                           storage : Typeioc.Internal.Interceptors.IStorage) : Function;
         }
 
-        interface IList {
-            head : Typeioc.Interceptors.ISubstitute;
-            tail : Typeioc.Interceptors.ISubstitute;
-        }
-
         interface IStorage {
-            known : IIndexedCollection<IIndexedCollection<IList>>;
-            unknown : IIndexedCollection<IList>
+            known : IIndexedCollection<IIndexedCollection<IList<Typeioc.Interceptors.ISubstitute>>>;
+            unknown : IIndexedCollection<IList<Typeioc.Interceptors.ISubstitute>>;
+            add(value : Typeioc.Interceptors.ISubstitute);
+            getKnownTypes(name : string) : Array<Typeioc.Interceptors.CallInfoType>;
+            getSubstitutes(name : string, types : Array<Typeioc.Interceptors.CallInfoType>) : Array<Typeioc.Interceptors.ISubstitute>;
         }
+    }
+
+    interface IList<T> {
+        head : T;
+        tail : T;
     }
 
     interface IImmutableArray {

@@ -4,72 +4,39 @@
 
 import Utils = require('../utils/index');
 import Exceptions = require('../exceptions/index');
+import SubstituteStorageModule = require('./substituteStorage');
+import IStorage = Typeioc.Internal.Interceptors.IStorage;
+import IProxy = Typeioc.Internal.Interceptors.IProxy;
+import ISubstituteInfo = Typeioc.Interceptors.ISubstituteInfo;
+import ISubstitute = Typeioc.Interceptors.ISubstitute;
 
 export class Interceptor {
 
-    constructor(private _proxy : Typeioc.Internal.Interceptors.IProxy) { }
+    private _storage : IStorage;
 
-    public intercept(subject : Function, substitutes : Array<Typeioc.Interceptors.ISubstituteInfo>) {
+    constructor(private _proxy : IProxy) {
+        this._storage = new SubstituteStorageModule.SubstituteStorage();
+    }
+
+    public intercept(subject : Function, substitutes : Array<ISubstituteInfo>) {
 
         var storage = this.transformSubstitutes(substitutes);
 
         this._proxy.fromPrototype(subject, storage);
     }
 
-    private transformSubstitutes(substitutes : Array<Typeioc.Interceptors.ISubstituteInfo>) : Typeioc.Internal.Interceptors.IStorage {
+    private transformSubstitutes(substitutes : Array<ISubstituteInfo>) : IStorage {
 
         return substitutes.reduce((storage, current) => {
-                this.addToStorage(storage, current);
-                return storage;
+
+                var substitute = this.createSubstitute(current);
+                this._storage.add(substitute);
+                return this._storage;
             },
-            <Typeioc.Internal.Interceptors.IStorage>{
-                known : {},
-                unknown: {}
-            });
+            this._storage);
     }
 
-    private addToStorage(storage : Typeioc.Internal.Interceptors.IStorage,
-                         value : Typeioc.Interceptors.ISubstituteInfo) {
-
-        var substitute = this.createSubstitute(value);
-        var key = value.method;
-
-        if(!key) {
-
-            this.addToTypedStorage(storage.unknown, substitute);
-            return;
-        }
-
-        var item = storage.known[key];
-
-        if(!item) {
-            item = {};
-            storage.known[key] = item;
-
-        }
-
-        this.addToTypedStorage(item, substitute);
-    }
-
-    private addToTypedStorage(
-            storage : Typeioc.Internal.IIndexedCollection<Typeioc.Internal.Interceptors.IList>,
-            substitute : Typeioc.Interceptors.ISubstitute) {
-        var item = storage[substitute.type];
-
-        if(!item) {
-            item = {
-                head : substitute,
-                tail : substitute
-            };
-
-            storage[substitute.type] = item;
-        } else {
-            item.tail.next = substitute;
-            item.tail = item.tail.next;
-        }
-    }
-
-    private createSubstitute(value : Typeioc.Interceptors.ISubstituteInfo) : Typeioc.Interceptors.ISubstitute {
+    private createSubstitute(value : ISubstituteInfo) : ISubstitute {
 
         if(!value.wrapper) {
             var error = new Exceptions.ArgumentError('wrapper', 'Missing interceptor wrapper');

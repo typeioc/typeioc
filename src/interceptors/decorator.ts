@@ -3,17 +3,17 @@
 
 'use strict';
 
- import Utils = require('../utils/index');
+import Utils = require('../utils/index');
+import ISubstitute = Typeioc.Interceptors.ISubstitute;
+import IImmutableArray = Typeioc.Internal.IImmutableArray;
 
- interface IStrategy {
-    [index: number]: () => void;
- }
+ interface IStrategy extends Typeioc.Internal.IIndex<() => void> {}
 
  export class Decorator {
 
      private _type : Typeioc.Internal.Reflection.PropertyType;
      private _descriptor : PropertyDescriptor;
-     private _substitute : Typeioc.Interceptors.ISubstitute;
+     private _substitute : ISubstitute;
 
      private _wrapStrategies : IStrategy;
      private _nonWrapStrategies : IStrategy;
@@ -22,7 +22,7 @@
          return this._type;
      }
 
-     public set substitute(value : Typeioc.Interceptors.ISubstitute) {
+     public set substitute(value : ISubstitute) {
          this._substitute = value;
      }
 
@@ -207,7 +207,7 @@
      }
 
      private createCallChainFromList(
-         args : Typeioc.Internal.IImmutableArray,
+         args : IImmutableArray,
          delegate : (args? : Array<any>) => any,
          wrapperContext : Object,
          callType? : Typeioc.Interceptors.CallInfoType) {
@@ -220,10 +220,10 @@
      }
 
      private createCallAction(callInfo : Typeioc.Interceptors.ICallInfo,
-                              args : Typeioc.Internal.IImmutableArray,
+                              args : IImmutableArray,
                               delegate : (args? : Array<any>) => any,
                               wrapperContext : Object,
-                              substitute : Typeioc.Interceptors.ISubstitute,
+                              substitute : ISubstitute,
                               callType? : Typeioc.Interceptors.CallInfoType) {
 
         if(!substitute) return;

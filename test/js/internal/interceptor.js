@@ -398,7 +398,6 @@ exports.internal = {
                 test.strictEqual(wrapper2, item.wrapper);
                 test.strictEqual(Scaffold.Types.CallInfoType.Method, item.type);
 
-
                 item = item.next;
                 test.strictEqual('foo', item.method);
                 test.strictEqual(wrapper3, item.wrapper);
@@ -441,41 +440,42 @@ exports.internal = {
                         }
                     ]);
 
-                var substitutes = proxy.fromPrototype.args[0][1];
+                var storage = proxy.fromPrototype.args[0][1];
 
-                test.strictEqual(2, substitutes.length);
+                test.strictEqual(Object.getOwnPropertyNames(storage.unknown).length, 0);
+                test.strictEqual(Object.getOwnPropertyNames(storage.known).length, 2);
 
-                var item = substitutes[0];
+                var foo = storage.known['foo'];
+                var item = foo[Scaffold.Types.CallInfoType.Method].head;
 
-                test.ok('foo', item.method);
-                test.ok(Scaffold.Types.CallInfoType.Method, item.type);
+                test.strictEqual('foo', item.method);
                 test.strictEqual(wrapper1, item.wrapper);
-                test.ok(item.next);
-
-                item = item.next;
-
-                test.ok('foo', item.method);
-                test.ok(Scaffold.Types.CallInfoType.Method, item.type);
-                test.strictEqual(wrapper3, item.wrapper);
-
+                test.strictEqual(Scaffold.Types.CallInfoType.Method, item.type);
                 test.strictEqual(null, item.next);
 
-                item = substitutes[1];
+                item = foo[Scaffold.Types.CallInfoType.Any].head;
 
-                test.ok('bar', item.method);
-                test.ok(Scaffold.Types.CallInfoType.Method, item.type);
+                test.strictEqual('foo', item.method);
+                test.strictEqual(wrapper3, item.wrapper);
+                test.strictEqual(Scaffold.Types.CallInfoType.Any, item.type);
+                test.strictEqual(null, item.next);
+
+                var bar = storage.known['bar'];
+                item = bar[Scaffold.Types.CallInfoType.Method].head;
+
+                test.strictEqual('bar', item.method);
                 test.strictEqual(wrapper2, item.wrapper);
+                test.strictEqual(Scaffold.Types.CallInfoType.Method, item.type);
 
                 item = item.next;
 
-                test.ok('bar', item.method);
-                test.ok(Scaffold.Types.CallInfoType.Method, item.type);
+                test.strictEqual('bar', item.method);
                 test.strictEqual(wrapper4, item.wrapper);
-
+                test.strictEqual(Scaffold.Types.CallInfoType.Method, item.type);
                 test.strictEqual(null, item.next);
 
                 test.done();
-            }/*,
+            },
 
             intercept_creates_multi_level_nested_substitutes_with_any : function(test) {
 
@@ -492,7 +492,6 @@ exports.internal = {
                     [
                         {
                             method : 'foo',
-                            type : Scaffold.Types.CallInfoType.Method,
                             wrapper : wrapper1
                         },
                         {
@@ -517,82 +516,137 @@ exports.internal = {
                         }
                     ]);
 
-                var substitutes = proxy.fromPrototype.args[0][1];
+                var storage = proxy.fromPrototype.args[0][1];
 
-                test.strictEqual(3, substitutes.length);
+                test.strictEqual(Object.getOwnPropertyNames(storage.unknown).length, 1);
+                test.strictEqual(Object.getOwnPropertyNames(storage.known).length, 3);
 
-                var item = substitutes[0];
-
-                test.strictEqual('foo', item.method);
-                test.ok(Scaffold.Types.CallInfoType.Any, item.type);
-                test.strictEqual(wrapper2, item.wrapper);
-                test.ok(item.next);
-
-                item = item.next;
+                var foo = storage.known['foo'];
+                var item = foo[Scaffold.Types.CallInfoType.Method].head;
 
                 test.strictEqual('foo', item.method);
-                test.ok(Scaffold.Types.CallInfoType.Any, item.type);
-                test.strictEqual(wrapper5, item.wrapper);
-
-                item = item.next;
-
-                test.strictEqual('foo', item.method);
-                test.ok(Scaffold.Types.CallInfoType.Method, item.type);
-                test.strictEqual(wrapper1, item.wrapper);
-
-                item = item.next;
-
-                test.strictEqual('foo', item.method);
-                test.ok(Scaffold.Types.CallInfoType.Method, item.type);
                 test.strictEqual(wrapper4, item.wrapper);
-
+                test.strictEqual(Scaffold.Types.CallInfoType.Method, item.type);
                 test.strictEqual(null, item.next);
 
-                item = substitutes[1];
+                item = foo[Scaffold.Types.CallInfoType.Any].head;
+
+                test.strictEqual('foo', item.method);
+                test.strictEqual(wrapper1, item.wrapper);
+                test.strictEqual(Scaffold.Types.CallInfoType.Any, item.type);
+                test.strictEqual(null, item.next);
+
+                var bar = storage.known['bar'];
+                item = bar[Scaffold.Types.CallInfoType.Any].head;
 
                 test.strictEqual('bar', item.method);
-                test.ok(Scaffold.Types.CallInfoType.Any, item.type);
-                test.strictEqual(wrapper2, item.wrapper);
-                test.ok(item.next);
-
-                item = item.next;
-
-                test.strictEqual('bar', item.method);
-                test.ok(Scaffold.Types.CallInfoType.Any, item.type);
-                test.strictEqual(wrapper5, item.wrapper);
-
-                item = item.next;
-
-                test.strictEqual('bar', item.method);
-                test.ok(Scaffold.Types.CallInfoType.Method, item.type);
                 test.strictEqual(wrapper3, item.wrapper);
-
+                test.strictEqual(Scaffold.Types.CallInfoType.Any, item.type);
                 test.strictEqual(null, item.next);
 
-                item = substitutes[2];
+                var any = storage.unknown[Scaffold.Types.CallInfoType.Any].head;
 
-                test.strictEqual('test', item.method);
-                test.ok(Scaffold.Types.CallInfoType.Any, item.type);
-                test.strictEqual(wrapper2, item.wrapper);
-                test.ok(item.next);
+                test.strictEqual(undefined, any.method);
+                test.strictEqual(wrapper2, any.wrapper);
+                test.strictEqual(Scaffold.Types.CallInfoType.Any, any.type);
 
-                item = item.next;
+                any = any.next;
 
-                test.strictEqual('test', item.method);
-                test.ok(Scaffold.Types.CallInfoType.Any, item.type);
-                test.strictEqual(wrapper5, item.wrapper);
-
-                item = item.next;
-
-                test.strictEqual('test', item.method);
-                test.ok(Scaffold.Types.CallInfoType.Method, item.type);
-                test.strictEqual(wrapper6, item.wrapper);
+                test.strictEqual(undefined, any.method);
+                test.strictEqual(wrapper5, any.wrapper);
+                test.strictEqual(Scaffold.Types.CallInfoType.Any, any.type);
 
                 test.strictEqual(null, item.next);
 
                 test.done();
+            },
+
+            intercept_creates_substitutes_with_any : function(test) {
+
+                var subject = function foo() {};
+
+                var wrapper1 = function wr1(c) {};
+                var wrapper2 = function wr2(c) {};
+                var wrapper3 = function wr3(c) {};
+                var wrapper4 = function wr4(c) {};
+                var wrapper5 = function wr5(c) {};
+                var wrapper6 = function wr6(c) {};
+
+                interceptor.intercept(subject,
+                    [
+                        {
+                            wrapper : wrapper1
+                        },
+                        {
+                            type : Scaffold.Types.CallInfoType.GetterSetter,
+                            wrapper : wrapper2
+                        },
+                        {
+                            method : 'bar',
+                            type : Scaffold.Types.CallInfoType.Any,
+                            wrapper : wrapper3
+                        },
+                        {
+                            type : Scaffold.Types.CallInfoType.Method,
+                            wrapper : wrapper4
+                        },
+                        {
+                            wrapper : wrapper5
+                        },
+                        {
+                            type : Scaffold.Types.CallInfoType.Field,
+                            wrapper : wrapper6
+                        }
+                    ]);
+
+                var storage = proxy.fromPrototype.args[0][1];
+
+                test.strictEqual(Object.getOwnPropertyNames(storage.unknown).length, 4);
+                test.strictEqual(Object.getOwnPropertyNames(storage.known).length, 1);
+
+                var bar = storage.known['bar'];
+                var item = bar[Scaffold.Types.CallInfoType.Any].head;
+
+                test.strictEqual('bar', item.method);
+                test.strictEqual(wrapper3, item.wrapper);
+                test.strictEqual(Scaffold.Types.CallInfoType.Any, item.type);
+                test.strictEqual(null, item.next);
+
+                var any = storage.unknown[Scaffold.Types.CallInfoType.Any].head;
+
+                test.strictEqual(undefined, any.method);
+                test.strictEqual(wrapper1, any.wrapper);
+                test.strictEqual(Scaffold.Types.CallInfoType.Any, any.type);
+
+                any = any.next;
+                test.strictEqual(undefined, any.method);
+                test.strictEqual(wrapper5, any.wrapper);
+                test.strictEqual(Scaffold.Types.CallInfoType.Any, any.type);
+                test.strictEqual(null, any.next);
+
+                any = storage.unknown[Scaffold.Types.CallInfoType.GetterSetter].head;
+
+                test.strictEqual(undefined, any.method);
+                test.strictEqual(wrapper2, any.wrapper);
+                test.strictEqual(Scaffold.Types.CallInfoType.GetterSetter, any.type);
+                test.strictEqual(null, any.next);
+
+                any = storage.unknown[Scaffold.Types.CallInfoType.Method].head;
+
+                test.strictEqual(undefined, any.method);
+                test.strictEqual(wrapper4, any.wrapper);
+                test.strictEqual(Scaffold.Types.CallInfoType.Method, any.type);
+                test.strictEqual(null, any.next);
+
+                any = storage.unknown[Scaffold.Types.CallInfoType.Field].head;
+
+                test.strictEqual(undefined, any.method);
+                test.strictEqual(wrapper6, any.wrapper);
+                test.strictEqual(Scaffold.Types.CallInfoType.Field, any.type);
+                test.strictEqual(null, any.next);
+
+                test.done();
             }
-            */
         };
     })()
 }
