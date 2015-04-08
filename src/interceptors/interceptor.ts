@@ -10,7 +10,7 @@ import IProxy = Typeioc.Internal.Interceptors.IProxy;
 import ISubstituteInfo = Typeioc.Interceptors.ISubstituteInfo;
 import ISubstitute = Typeioc.Interceptors.ISubstitute;
 
-export class Interceptor {
+export class Interceptor implements Typeioc.Interceptors.IInterceptor {
 
     private _storage : IStorage;
 
@@ -18,11 +18,22 @@ export class Interceptor {
         this._storage = new SubstituteStorageModule.SubstituteStorage();
     }
 
-    public intercept(subject : Function, substitutes : Array<ISubstituteInfo>) {
+    public intercept(subject : Function | Object, substitutes? : Array<ISubstituteInfo>) : Function | Object {
 
-        var storage = this.transformSubstitutes(substitutes);
+        Utils.checkNullArgument(subject, 'subject');
 
-        this._proxy.fromPrototype(subject, storage);
+        var storage = substitutes ? this.transformSubstitutes(substitutes) : null;
+
+        if(Utils.Reflection.isPrototype(subject)) {
+            return this._proxy.fromPrototype(<Function>subject, storage);
+        }
+
+        if(Utils.Reflection.isObject(subject)) {
+            //this._proxy.fromPrototype(subject, storage);
+            throw new Error('Not implemented');
+        }
+
+        throw new Exceptions.ArgumentError('Subject should be a prototype function or an object');
     }
 
     private transformSubstitutes(substitutes : Array<ISubstituteInfo>) : IStorage {

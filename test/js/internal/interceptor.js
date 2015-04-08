@@ -40,13 +40,10 @@ exports.internal = {
 
             intercept_creates_multi_level_substitutes_for_one_level_substitute_infos : function(test) {
 
-                var subject = function foo() {
-                }
+                var subject = function foo() { };
 
-                var wrapper1 = function (c) {
-                };
-                var wrapper2 = function (c) {
-                };
+                var wrapper1 = function (c) { };
+                var wrapper2 = function (c) { };
 
                 interceptor.intercept(subject,
                     [
@@ -644,6 +641,55 @@ exports.internal = {
                 test.strictEqual(wrapper6, any.wrapper);
                 test.strictEqual(Scaffold.Types.CallInfoType.Field, any.type);
                 test.strictEqual(null, any.next);
+
+                test.done();
+            },
+
+            intercept_throws_when_no_wrapper: function(test) {
+
+                var substitute = {
+                    method : 'test',
+                    type: Scaffold.Types.CallInfoType.Method
+                };
+
+                var delegate = function() {
+                    interceptor.intercept(function foo() {}, [ substitute ]);
+                };
+
+                test.throws(delegate, function(error) {
+                    test.strictEqual(error.message, 'Missing interceptor wrapper');
+                    test.strictEqual(error.data, substitute);
+                    return error instanceof Scaffold.Exceptions.ArgumentError;
+                });
+
+                test.expect(3);
+                test.done();
+            },
+
+            interceptor_should_throw_ArgumentNullError_when_null_subject : function(test) {
+
+                var delegate = function() { interceptor.intercept(null); };
+
+                test.throws(delegate, function(error) {
+                    test.strictEqual('subject', error.argumentName);
+                    return (error instanceof Scaffold.Exceptions.ArgumentNullError);
+                });
+
+                test.expect(2);
+
+                test.done();
+            },
+
+            interceptor_should_throw_ArgumentNullError_when_undefined_subject : function(test) {
+
+                var delegate = function() { interceptor.intercept(undefined); };
+
+                test.throws(delegate, function(error) {
+                    test.strictEqual('subject', error.argumentName);
+                    return (error instanceof Scaffold.Exceptions.ArgumentNullError);
+                });
+
+                test.expect(2);
 
                 test.done();
             }

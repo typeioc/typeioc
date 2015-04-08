@@ -5,17 +5,16 @@
 
 import Utils = require('../utils/index');
 import Exceptions = require('../exceptions/index');
-import DecoratorModule = require('./decorator');
 import IStorage = Typeioc.Internal.Interceptors.IStorage;
 import IProxy  = Typeioc.Internal.Interceptors.IProxy;
 import ISubstitute= Typeioc.Interceptors.ISubstitute;
 
  export class Proxy implements IProxy {
 
+    constructor(private _decoratorService : Typeioc.Internal.IDecoratorService) {}
+
     public fromPrototype(parent : Function,
                          storage? : IStorage) : Function {
-
-        Utils.checkNullArgument(parent, 'parent');
 
         function Proxy() {
             this._parent = Utils.Reflection.construct(parent, arguments);
@@ -41,29 +40,29 @@ import ISubstitute= Typeioc.Interceptors.ISubstitute;
 
         for(var p in source) {
 
-            var decorator = new DecoratorModule.Decorator(p, source, destination, contextName);
+            if(p === 'constructor') continue;
+
+            var decorator = this._decoratorService.create(p, source, destination, contextName);
 
             if(storage)
             {
                 var types = storage.getKnownTypes(p);
-
-                if(types.length)
-                {
-                    this.checkProxyCompatibility(p, types, decorator.propertyType);
-                }
+                this.checkProxyCompatibility(p, types, decorator.propertyType);
 
                 storage.getSubstitutes(p, types)
                 .forEach(item => {
                         decorator.substitute = item;
                         decorator.wrap();
                     });
+            } else {
+                decorator.wrap();
             }
-
-            decorator.wrap();
         }
     }
 
     private hasProperType(types: Array<Typeioc.Interceptors.CallInfoType>, type : Typeioc.Interceptors.CallInfoType) : boolean {
+
+        if(!types.length) return true;
 
         var hasAny = types.indexOf(Typeioc.Interceptors.CallInfoType.Any) >= 0;
         var hasType = types.indexOf(type) >= 0;
@@ -75,11 +74,6 @@ import ISubstitute= Typeioc.Interceptors.ISubstitute;
         return false;
     }
 
-    private getSubstitute(name : string, source : Function, substitutes : Array<ISubstitute>)
-               : Typeioc.Interceptors.ISubstitute {
-        return substitutes.filter(item =>{ return item.method === name; })[0];
-    }
-
     private checkProxyCompatibility(propertyName : string,
                                     types: Array<Typeioc.Interceptors.CallInfoType>,
                                     propertyType : Typeioc.Internal.Reflection.PropertyType) {
@@ -88,7 +82,7 @@ import ISubstitute= Typeioc.Interceptors.ISubstitute;
             case Typeioc.Internal.Reflection.PropertyType.Method:
 
                 if(this.hasProperType(types, Typeioc.Interceptors.CallInfoType.Method) === false)
-                    throw this.combineError('Could not match proxy type and property type',
+                    throw this.combineError('Could not match proxy type and property type for method',
                         propertyName, Typeioc.Interceptors.CallInfoType.Method);
 
                 break;
@@ -96,14 +90,14 @@ import ISubstitute= Typeioc.Interceptors.ISubstitute;
             case Typeioc.Internal.Reflection.PropertyType.Getter:
 
                 if(this.hasProperType(types, Typeioc.Interceptors.CallInfoType.Getter) === false)
-                    throw this.combineError('Could not match proxy type and property type',
+                    throw this.combineError('Could not match proxy type and property type for getter',
                         propertyName, Typeioc.Interceptors.CallInfoType.Getter);
 
                 break;
 
             case Typeioc.Internal.Reflection.PropertyType.Setter:
                 if(this.hasProperType(types, Typeioc.Interceptors.CallInfoType.Setter) === false)
-                    throw this.combineError('Could not match proxy type and property type',
+                    throw this.combineError('Could not match proxy type and property type for setter',
                         propertyName, Typeioc.Interceptors.CallInfoType.Setter);
 
                 break;
@@ -112,7 +106,7 @@ import ISubstitute= Typeioc.Interceptors.ISubstitute;
                 if(this.hasProperType(types, Typeioc.Interceptors.CallInfoType.GetterSetter) === false &&
                     this.hasProperType(types, Typeioc.Interceptors.CallInfoType.Getter) === false &&
                     this.hasProperType(types, Typeioc.Interceptors.CallInfoType.Setter)=== false)
-                    throw this.combineError('Could not match proxy type and property type',
+                    throw this.combineError('Could not match proxy type and property type for getter-setter',
                         propertyName, Typeioc.Interceptors.CallInfoType.GetterSetter);
 
                 break;
@@ -120,7 +114,7 @@ import ISubstitute= Typeioc.Interceptors.ISubstitute;
             case Typeioc.Internal.Reflection.PropertyType.Field:
 
                 if(this.hasProperType(types, Typeioc.Interceptors.CallInfoType.Field) === false)
-                    throw this.combineError('Could not match proxy type and property type',
+                    throw this.combineError('Could not match proxy type and property type for field',
                         propertyName, Typeioc.Interceptors.CallInfoType.Field);
 
                 break;

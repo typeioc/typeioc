@@ -1,6 +1,8 @@
 -m commonjs
 --sourceMap
 -t ES5
+../test/scaffold.ts
+../test/scaffoldAddons.ts
 ../test/ts/level1.ts
 ../test/ts/level2.ts
 ../test/ts/level3.ts

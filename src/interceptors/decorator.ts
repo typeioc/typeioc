@@ -9,7 +9,7 @@ import IImmutableArray = Typeioc.Internal.IImmutableArray;
 
  interface IStrategy extends Typeioc.Internal.IIndex<() => void> {}
 
- export class Decorator {
+ export class Decorator implements Typeioc.Internal.Interceptors.IDecorator {
 
      private _type : Typeioc.Internal.Reflection.PropertyType;
      private _descriptor : PropertyDescriptor;

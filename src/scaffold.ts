@@ -20,9 +20,7 @@ import ConfigRegoModule = require('./registration/config/configRegistration');
 import ContainerModule = require('./build/container');
 import BuilderModule = require('./build/builder');
 import ApiContainer = require('./build/containerApi');
-import InternalContainerModule = require('./build/internalContainer')
-import ProxyModule = require('./interceptors/proxy');
-import InterceptorModule = require('./interceptors/interceptor');
+import InternalContainerModule = require('./build/internalContainer');
 
 export class Scaffold {
 
@@ -144,7 +142,7 @@ export class Scaffold {
                                      registrationBaseService : Typeioc.Internal.IRegistrationBaseService,
                                      containerApiService : Typeioc.Internal.IContainerApiService) : Typeioc.Internal.IInternalContainerService {
         return {
-            create : function() : Typeioc.Internal.IContainer {
+            create: function ():Typeioc.Internal.IContainer {
 
                 return new InternalContainerModule.InternalContainer(
                     registrationStorageService,
@@ -154,4 +152,4 @@ export class Scaffold {
             }
         }
     }
-}
+ }

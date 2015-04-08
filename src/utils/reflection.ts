@@ -42,8 +42,12 @@ export function isFunction(f : any) : boolean {
     return f instanceof Function;
 }
 
-export function isString(value : any) :boolean {
-    return (typeof value) === 'string';
+export function isPrototype(f : any) : boolean {
+    return isFunction(f) && f.prototype;
+}
+
+export function isObject(o : any) : boolean {
+    return typeof o === 'object';
 }
 
 export function getPropertyType(name : string, source : Object, descriptor : PropertyDescriptor)

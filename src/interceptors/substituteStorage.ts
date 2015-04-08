@@ -68,7 +68,7 @@ export class SubstituteStorage implements Typeioc.Internal.Interceptors.IStorage
         return types.filter(type => type !== Typeioc.Interceptors.CallInfoType.Any)
             .map(type => {
 
-                var result = item[type];
+                var result = this.copySubstitute(item[type], name);
 
                 if(anySubstitute) {
                     anySubstitute.tail.next = result.head;

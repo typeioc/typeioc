@@ -64,6 +64,10 @@ declare module Typeioc {
             Field = 6
         }
 
+        interface IInterceptor {
+            intercept(subject : Function | Object, substitutes? : Array<ISubstituteInfo>) : Function | Object;
+        }
+
         interface ICallInfo {
             name : string;
             args : Array<any>;

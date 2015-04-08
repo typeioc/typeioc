@@ -7,18 +7,19 @@
  * --------------------------------------------------------------------------------------------------*/
 
 
-var Builder =  require('./lib/scaffold');
-var types = require('./lib/types/index');
-var exceptions = require('./lib/exceptions/index');
+var main = require('./');
+var AddonsBuilder = require('./lib/scaffoldAddons');
 
-var scaffold = new Builder.Scaffold();
+var scaffold = new AddonsBuilder.ScaffoldAddons();
 
 module.exports = {
-    Types: types,
-    Exceptions : exceptions,
+    Types: main.Types,
+    Exceptions : main.Exceptions,
 
-    createBuilder: function() {
-        return scaffold.createBuilder();
+    createBuilder: main.createBuilder,
+
+    interceptor : function() {
+        return scaffold.interceptor();
     }
 };
 

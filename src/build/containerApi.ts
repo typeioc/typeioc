@@ -11,6 +11,8 @@
 
 'use strict';
 
+import Utils = require('../utils/index');
+
 export class Api<T> implements Typeioc.Internal.IContainerApi<T>{
     private _service: T;
     private _name:string;
@@ -56,12 +58,13 @@ export class Api<T> implements Typeioc.Internal.IContainerApi<T>{
         return this._args;
     }
 
-    constructor(private _container : Typeioc.Internal.IImportApi<T>) {
-
-    }
+    constructor(private _container : Typeioc.Internal.IImportApi<T>) { }
 
     public service(value : any) : Typeioc.IResolveWith<T> {
-        this._service = value;          //  checks for value
+
+        Utils.checkNullArgument(value, 'value');
+
+        this._service = value;
 
         return {
             args: this.args.bind(this),

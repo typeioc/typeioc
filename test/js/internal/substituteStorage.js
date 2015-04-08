@@ -439,7 +439,7 @@ exports.internal = {
                 test.strictEqual(actual.method, substitute.method);
                 test.strictEqual(actual.type, substitute.type);
                 test.strictEqual(actual.wrapper, substitute.wrapper);
-                test.strictEqual(actual.next, null);
+                test.strictEqual(actual.next, undefined);
 
                 test.done();
             },
@@ -454,7 +454,7 @@ exports.internal = {
                 test.done();
             },
 
-            getSubstitutes_returns__multiple_different_substitutes : function(test) {
+            getSubstitutes_returns_multiple_different_substitutes : function(test) {
 
                 var method = 'test';
 
@@ -533,6 +533,95 @@ exports.internal = {
                 test.strictEqual(substitute.method, method);
                 test.strictEqual(substitute.type, CallInfoType.Method);
                 test.strictEqual(substitute.wrapper, substitute5.wrapper);
+
+                test.done();
+            },
+
+            getSubstitutes_returns_unknown_substitute : function(test) {
+
+                var method = 'test';
+
+                var substitute1 = {
+                    method : method,
+                    type : CallInfoType.Method,
+                    wrapper : function _1() {},
+                    next : null
+                };
+
+                var substitute2 = {
+                    type : CallInfoType.Any,
+                    wrapper : function _2() {},
+                    next : null
+                };
+
+                storage.add(substitute1);
+                storage.add(substitute2);
+
+                test.strictEqual(1, Object.keys(storage.unknown).length);
+                test.strictEqual(1, Object.keys(storage.known).length);
+
+                var substitutes = storage.getSubstitutes(method, [CallInfoType.Method, CallInfoType.Any]);
+
+                test.strictEqual(substitutes.length, 1);
+
+                var substitute = substitutes[0];
+
+                test.strictEqual(substitute.method, method);
+                test.strictEqual(substitute.type, CallInfoType.Any);
+                test.strictEqual(substitute.wrapper, substitute2.wrapper);
+
+                substitute = substitute.next;
+
+                test.strictEqual(substitute.method, method);
+                test.strictEqual(substitute.type, CallInfoType.Method);
+                test.strictEqual(substitute.wrapper, substitute1.wrapper);
+                test.strictEqual(substitute.next, undefined);
+
+                test.done();
+            },
+
+            getSubstitutes_returns_substitute_chain : function(test) {
+                var method = 'test';
+
+                var substitute1 = {
+                    method : method,
+                    type : CallInfoType.Method,
+                    wrapper : function _1() {},
+                    next : null
+                };
+
+                var substitute2 = {
+                    type : CallInfoType.Any,
+                    wrapper : function _2() {},
+                    next : null
+                };
+
+                var substitute3 = {
+                    method : method,
+                    type : CallInfoType.Method,
+                    wrapper : function _1() {},
+                    next : null
+                };
+
+                var substitute4 = {
+                    type : CallInfoType.Any,
+                    wrapper : function _2() {},
+                    next : null
+                };
+
+                storage.add(substitute1);
+                storage.add(substitute2);
+                storage.add(substitute3);
+                storage.add(substitute4);
+
+                test.strictEqual(1, Object.keys(storage.unknown).length);
+                test.strictEqual(1, Object.keys(storage.known).length);
+
+                var substitutes = storage.getSubstitutes(method, [CallInfoType.Method, CallInfoType.Any]);
+
+                test.strictEqual(substitutes.length, 1);
+
+                var substitute = substitutes[0];
 
                 test.done();
             }

@@ -17,7 +17,7 @@ declare module Typeioc.Internal {
             Getter = 2,                 // get
             Setter = 3,                 // set
             FullProperty = 4,           // get and set
-            Field = 5                   // no get and set
+            Field = 5                   // field
         }
     }
 
@@ -26,6 +26,12 @@ declare module Typeioc.Internal {
         interface IProxy {
             fromPrototype(parent : Function,
                           storage : Typeioc.Internal.Interceptors.IStorage) : Function;
+        }
+
+        interface IDecorator {
+            propertyType : Reflection.PropertyType;
+            substitute : Typeioc.Interceptors.ISubstitute;
+            wrap();
         }
 
         interface IStorage {
@@ -84,6 +90,13 @@ declare module Typeioc.Internal {
 
     interface IInternalContainerService {
         create() : IContainer;
+    }
+
+    interface IDecoratorService {
+        create(name : string,
+               source : Function,
+               destination : Function,
+               contextName? : string) : Interceptors.IDecorator;
     }
 
     interface IContainerApi<T> {

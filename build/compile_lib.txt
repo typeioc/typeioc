@@ -3,4 +3,5 @@
 --outDir ../lib
 -t ES5
 ../src/scaffold.ts
+../src/scaffoldAddons.ts
 ../src/types/index.ts
