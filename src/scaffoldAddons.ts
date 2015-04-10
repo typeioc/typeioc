@@ -24,12 +24,9 @@ export class ScaffoldAddons {
 
     private decoratorService() : Typeioc.Internal.IDecoratorService {
         return{
-            create(name : string,
-                   source : Function,
-                   destination : Function,
-                   contextName? : string) : Typeioc.Internal.Interceptors.IDecorator {
+            create() : Typeioc.Internal.Interceptors.IDecorator {
 
-                return new DecoratorModule.Decorator(name, source, destination, contextName);
+                return new DecoratorModule.Decorator();
             }
         }
     }

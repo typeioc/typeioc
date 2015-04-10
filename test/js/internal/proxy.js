@@ -135,7 +135,7 @@ exports.internal = {
                 decorator.propertyType = PropertyType.Method;
 
                 function parent() { }
-                parent.prototype.foo = 1;
+                parent.prototype.foo = function() { return 1};
 
                 var substitute = {
                     method : 'foo',
@@ -160,7 +160,6 @@ exports.internal = {
             fromPrototype_should_decorate_for_any_and_any_property : function(test) {
 
                 decorator.wrap = mockery.stub();
-                decorator.propertyType = PropertyType.Method;
 
                 function parent() { }
                 parent.prototype.foo = 1;
@@ -171,12 +170,12 @@ exports.internal = {
                     wrapper : function(callInfo) { },
                     next : {
                         method : 'foo',
-                        type : Scaffold.Types.CallInfoType.Method,
+                        type : Scaffold.Types.CallInfoType.Field,
                         wrapper : function(callInfo) { }
                     }
                 };
 
-                var storage = createStorage([Scaffold.Types.CallInfoType.Method, Scaffold.Types.CallInfoType.Any], substitute);
+                var storage = createStorage([Scaffold.Types.CallInfoType.Field, Scaffold.Types.CallInfoType.Any], substitute);
                 var Proto = proxy.fromPrototype(parent, storage);
                 var instance = new Proto();
 
@@ -188,10 +187,16 @@ exports.internal = {
             fromPrototype_should_decorate_prototype_getter : function(test) {
 
                 decorator.wrap = mockery.stub();
-                decorator.propertyType = PropertyType.Getter;
 
                 function parent() { }
-                parent.prototype.foo = 1;
+                Object.defineProperty(parent.prototype, 'foo', {
+                    get: function () {
+                        return 1;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+
 
                 var substitute = {
                     method : 'foo',
@@ -210,10 +215,13 @@ exports.internal = {
             fromPrototype_should_decorate_prototype_setter : function(test) {
 
                 decorator.wrap = mockery.stub();
-                decorator.propertyType = PropertyType.Setter;
 
                 function parent() { }
-                parent.prototype.foo = 1;
+                Object.defineProperty(parent.prototype, 'foo', {
+                    set: function (value) { },
+                    enumerable: true,
+                    configurable: true
+                });
 
                 var substitute = {
                     method : 'foo',
@@ -232,10 +240,14 @@ exports.internal = {
             fromPrototype_should_decorate_prototype_full_property : function(test) {
 
                 decorator.wrap = mockery.stub();
-                decorator.propertyType = PropertyType.FullProperty;
 
                 function parent() { }
-                parent.prototype.foo = 1;
+                Object.defineProperty(parent.prototype, 'foo', {
+                    get: function () { return 1; },
+                    set: function() {},
+                    enumerable: true,
+                    configurable: true
+                });
 
                 var substitute = {
                     method : 'foo',
@@ -254,15 +266,9 @@ exports.internal = {
             fromPrototype_should_throw_when_wrong_substitute_type_for_field : function(test) {
 
                 decorator.wrap = mockery.stub();
-                decorator.propertyType = PropertyType.Field;
 
-                function parent(arg1) {
-                    this.arg1 = arg1;
-                }
-
-                parent.prototype.foo = function() {
-                    return this.arg1;
-                };
+                function parent() {}
+                parent.prototype.foo = 1;
 
                 var substitute = {
                     type: Scaffold.Types.CallInfoType.Getter,
@@ -324,15 +330,15 @@ exports.internal = {
             fromPrototype_should_throw_when_wrong_substitute_type_for_getter : function(test) {
 
                 decorator.wrap = mockery.stub();
-                decorator.propertyType = PropertyType.Getter;
 
                 function parent(arg1) {
                     this.arg1 = arg1;
                 }
-
-                parent.prototype.foo = function() {
-                    return this.arg1;
-                };
+                Object.defineProperty(parent.prototype, 'foo', {
+                    get: function () { return this.arg1; },
+                    enumerable: true,
+                    configurable: true
+                });
 
                 var substitute = {
                     type: Scaffold.Types.CallInfoType.Method,
@@ -359,15 +365,16 @@ exports.internal = {
             fromPrototype_should_throw_when_wrong_substitute_type_for_setter : function(test) {
 
                 decorator.wrap = mockery.stub();
-                decorator.propertyType = PropertyType.Setter;
 
                 function parent(arg1) {
                     this.arg1 = arg1;
                 }
 
-                parent.prototype.foo = function() {
-                    return this.arg1;
-                };
+                Object.defineProperty(parent.prototype, 'foo', {
+                    set: function (value) { this.arg1 = value; },
+                    enumerable: true,
+                    configurable: true
+                });
 
                 var substitute = {
                     type: Scaffold.Types.CallInfoType.Method,
@@ -394,15 +401,17 @@ exports.internal = {
             fromPrototype_should_throw_when_wrong_substitute_type_for_full_property : function(test) {
 
                 decorator.wrap = mockery.stub();
-                decorator.propertyType = PropertyType.FullProperty;
 
                 function parent(arg1) {
                     this.arg1 = arg1;
                 }
 
-                parent.prototype.foo = function() {
-                    return this.arg1;
-                };
+                Object.defineProperty(parent.prototype, 'foo', {
+                    get: function () { return this.arg1; },
+                    set: function(value) { this.arg1 = value; },
+                    enumerable: true,
+                    configurable: true
+                });
 
                 var substitute = {
                     type: Scaffold.Types.CallInfoType.Method,

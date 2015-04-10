@@ -899,6 +899,42 @@ exports.api = {
                 test.done();
             },
 
+            fromPrototype_should_decorate_prototype_setter : function(test) {
+
+                var setStub = mockery.stub();
+                var wrapperStub = mockery.stub();
+
+                function parent() { }
+
+                Object.defineProperty(parent.prototype, 'foo', {
+                    set: function (value) {
+
+                        setStub(value);
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+
+                var substitute = {
+                    method : 'foo',
+                    type : CallInfoType.Setter,
+                    wrapper : function(callInfo) {
+
+                        wrapperStub();
+                        return callInfo.invoke(2 * callInfo.args[0]);
+                    }
+                };
+
+                var Proto = resolve(parent, [ substitute ]);
+                var instance = new Proto();
+                instance.foo = 2;
+
+                test.ok(setStub.withArgs(4).calledOnce);
+                test.ok(wrapperStub.calledOnce);
+
+                test.done();
+            },
+
             fromPrototype_should_decorate_with_copy_of_args : function(test) {
 
                 var stub = mockery.stub();

@@ -29,9 +29,7 @@ declare module Typeioc.Internal {
         }
 
         interface IDecorator {
-            propertyType : Reflection.PropertyType;
-            substitute : Typeioc.Interceptors.ISubstitute;
-            wrap();
+            wrap(strategyInfo : IStrategyInfo);
         }
 
         interface IStorage {
@@ -40,6 +38,16 @@ declare module Typeioc.Internal {
             add(value : Typeioc.Interceptors.ISubstitute);
             getKnownTypes(name : string) : Array<Typeioc.Interceptors.CallInfoType>;
             getSubstitutes(name : string, types : Array<Typeioc.Interceptors.CallInfoType>) : Array<Typeioc.Interceptors.ISubstitute>;
+        }
+
+        interface IStrategyInfo {
+            type : Typeioc.Internal.Reflection.PropertyType;
+            descriptor : PropertyDescriptor;
+            substitute : Typeioc.Interceptors.ISubstitute;
+            name : string;
+            source : Function;
+            destination : Function;
+            contextName? : string
         }
     }
 
@@ -93,10 +101,7 @@ declare module Typeioc.Internal {
     }
 
     interface IDecoratorService {
-        create(name : string,
-               source : Function,
-               destination : Function,
-               contextName? : string) : Interceptors.IDecorator;
+        create() : Interceptors.IDecorator;
     }
 
     interface IContainerApi<T> {

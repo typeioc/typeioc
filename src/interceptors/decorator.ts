@@ -6,86 +6,79 @@
 import Utils = require('../utils/index');
 import ISubstitute = Typeioc.Interceptors.ISubstitute;
 import IImmutableArray = Typeioc.Internal.IImmutableArray;
+import IStrategyInfo = Typeioc.Internal.Interceptors.IStrategyInfo;
 
- interface IStrategy extends Typeioc.Internal.IIndex<() => void> {}
+interface ICallChainParams {
+    args : IImmutableArray;
+    delegate : (args? : Array<any>) => any;
+    wrapperContext : Object;
+    callType? : Typeioc.Interceptors.CallInfoType;
+    strategyInfo : IStrategyInfo
+}
 
- export class Decorator implements Typeioc.Internal.Interceptors.IDecorator {
+interface IStrategy extends Typeioc.Internal.IIndex<(item : IStrategyInfo) => void> {}
 
-     private _type : Typeioc.Internal.Reflection.PropertyType;
-     private _descriptor : PropertyDescriptor;
-     private _substitute : ISubstitute;
+
+export class Decorator implements Typeioc.Internal.Interceptors.IDecorator {
 
      private _wrapStrategies : IStrategy;
      private _nonWrapStrategies : IStrategy;
 
-     public get propertyType() : Typeioc.Internal.Reflection.PropertyType {
-         return this._type;
+     constructor() {
+         this._wrapStrategies = this.defineWrapStrategies();
+         this._nonWrapStrategies = this.defineNonWrapStrategies();
      }
 
-     public set substitute(value : ISubstitute) {
-         this._substitute = value;
-     }
-
-     constructor(private _name : string,
-                 private _source : Function,
-                 private _destination : Function,
-                 private _contextName? : string) {
-
-         this._descriptor = Utils.Reflection.getPropertyDescriptor(_source, _name);
-         this._type = Utils.Reflection.getPropertyType(_name, _source, this._descriptor);
-     }
-
-     public wrap() : void
+     public wrap(strategyInfo : IStrategyInfo) : void
      {
-         var strategyStore = this._substitute ? this.defineWrapStrategies() : this.defineNonWrapStrategies();
-         var strategy = strategyStore[this._type];
-         strategy();
+         strategyInfo = this.copyStrategy(strategyInfo);
+         var strategyStore = strategyInfo.substitute ? this.defineWrapStrategies() : this.defineNonWrapStrategies();
+         var strategy = strategyStore[strategyInfo.type];
+         strategy(strategyInfo);
      }
 
      private defineNonWrapStrategies() : IStrategy
      {
-         if(this._nonWrapStrategies) return this._nonWrapStrategies;
-
-         var result = <IStrategy>(this._nonWrapStrategies = {});
+         var result = <IStrategy>{};
 
          var self = this;
 
-         result[Typeioc.Internal.Reflection.PropertyType.Method] = function() {
+         result[Typeioc.Internal.Reflection.PropertyType.Method] = (strategyInfo : IStrategyInfo) => {
 
-             var value = self._source[self._name];
+             var value = strategyInfo.source[strategyInfo.name];
 
-             self._destination[self._name] = function() {
+             strategyInfo.destination[strategyInfo.name] = function() {
 
                  var args  = Array.prototype.slice.call(arguments, 0);
                  return value.apply(this, args);
              };
          };
 
-         result[Typeioc.Internal.Reflection.PropertyType.Getter] = function() {
+         result[Typeioc.Internal.Reflection.PropertyType.Getter] = (strategyInfo : IStrategyInfo) => {
 
-             Object.defineProperty(self._destination, self._name, {
-                 get : self.defineGetter(),
-                 configurable : self._descriptor.configurable,
-                 enumerable : self._descriptor.enumerable
+             Object.defineProperty(strategyInfo.destination, strategyInfo.name, {
+                 get : self.defineGetter(strategyInfo),
+                 configurable : strategyInfo.descriptor.configurable,
+                 enumerable : strategyInfo.descriptor.enumerable
              });
          };
 
-         result[Typeioc.Internal.Reflection.PropertyType.Setter] = function() {
+         result[Typeioc.Internal.Reflection.PropertyType.Setter] = (strategyInfo : IStrategyInfo) => {
 
-             Object.defineProperty(self._destination, self._name, {
-                 set : self.defineSetter(),
-                 configurable : self._descriptor.configurable,
-                 enumerable : self._descriptor.enumerable
+             Object.defineProperty(strategyInfo.destination, strategyInfo.name, {
+                 set : self.defineSetter(strategyInfo),
+                 configurable : strategyInfo.descriptor.configurable,
+                 enumerable : strategyInfo.descriptor.enumerable
              });
          };
 
-         result[Typeioc.Internal.Reflection.PropertyType.FullProperty] = function() {
+         result[Typeioc.Internal.Reflection.PropertyType.FullProperty] = (strategyInfo : IStrategyInfo) => {
 
-             Object.defineProperty(self._destination, self._name, {
-                 get : self.defineGetter(),
-                 set : self.defineSetter(),
-                 configurable : self._descriptor.configurable,
-                 enumerable : self._descriptor.enumerable
+             Object.defineProperty(strategyInfo.destination, strategyInfo.name, {
+                 get : self.defineGetter(strategyInfo),
+                 set : self.defineSetter(strategyInfo),
+                 configurable : strategyInfo.descriptor.configurable,
+                 enumerable : strategyInfo.descriptor.enumerable
               });
          };
 
@@ -97,63 +90,66 @@ import IImmutableArray = Typeioc.Internal.IImmutableArray;
 
      private defineWrapStrategies() : IStrategy
      {
-         if(this._wrapStrategies) return this._wrapStrategies;
-
-         var result = <IStrategy>(this._wrapStrategies = {});
+         var result = <IStrategy>{};
 
          var self = this;
 
-         result[Typeioc.Internal.Reflection.PropertyType.Method] = () => {
+         result[Typeioc.Internal.Reflection.PropertyType.Method] = (strategyInfo : IStrategyInfo) => {
 
-             var value = self._source[self._name];
+             var value = strategyInfo.source[strategyInfo.name];
 
-             self._destination[self._name] = function() {
+             strategyInfo.destination[strategyInfo.name] = function() {
 
                  var destination = this;
                  var args  = Array.prototype.slice.call(arguments, 0);
                  var delegate = args => value.apply(destination, args);
 
-                 return self.createCallChainFromList(Utils.createImmutable(args), delegate, this);
-             };
+                 return self.createCallChainFromList({
+                         args : Utils.createImmutable(args),
+                         delegate : delegate,
+                         wrapperContext : destination,
+                         strategyInfo : strategyInfo
+                     });
+               };
          };
 
-         result[Typeioc.Internal.Reflection.PropertyType.Getter] = () => {
+         result[Typeioc.Internal.Reflection.PropertyType.Getter] = (strategyInfo : IStrategyInfo) => {
 
-             Object.defineProperty(self._destination, self._name, {
-                 get : self.defineWrapGetter(),
-                 configurable : self._descriptor.configurable,
-                 enumerable : self._descriptor.enumerable
+             Object.defineProperty(strategyInfo.destination, strategyInfo.name, {
+                 get : self.defineWrapGetter(strategyInfo),
+                 configurable : strategyInfo.descriptor.configurable,
+                 enumerable : strategyInfo.descriptor.enumerable
              });
          };
 
-         result[Typeioc.Internal.Reflection.PropertyType.Setter] = () => {
+         result[Typeioc.Internal.Reflection.PropertyType.Setter] = (strategyInfo : IStrategyInfo) => {
 
-               Object.defineProperty(self._destination, self._name, {
-                 set : self.defineWrapSetter(),
-                 configurable : self._descriptor.configurable,
-                 enumerable : self._descriptor.enumerable
+               Object.defineProperty(strategyInfo.destination, strategyInfo.name, {
+                 set : self.defineWrapSetter(strategyInfo),
+                 configurable : strategyInfo.descriptor.configurable,
+                 enumerable : strategyInfo.descriptor.enumerable
              });
          };
 
-         result[Typeioc.Internal.Reflection.PropertyType.FullProperty] = () => {
+         result[Typeioc.Internal.Reflection.PropertyType.FullProperty] = (strategyInfo : IStrategyInfo) => {
 
-             var getter = self._substitute.type === Typeioc.Interceptors.CallInfoType.Any ||
-                          self._substitute.type === Typeioc.Interceptors.CallInfoType.GetterSetter ||
-                          self._substitute.type === Typeioc.Interceptors.CallInfoType.Getter  ||
-                          self._substitute.type === Typeioc.Interceptors.CallInfoType.Field ?
-                            self.defineWrapGetter() : self.defineGetter();
+             var getter = strategyInfo.substitute.type === Typeioc.Interceptors.CallInfoType.Any ||
+                          strategyInfo.substitute.type === Typeioc.Interceptors.CallInfoType.GetterSetter ||
+                          strategyInfo.substitute.type === Typeioc.Interceptors.CallInfoType.Getter  ||
+                          strategyInfo.substitute.type === Typeioc.Interceptors.CallInfoType.Field ?
+                            self.defineWrapGetter(strategyInfo) : self.defineGetter(strategyInfo);
 
-             var setter = self._substitute.type === Typeioc.Interceptors.CallInfoType.Any ||
-                          self._substitute.type === Typeioc.Interceptors.CallInfoType.GetterSetter ||
-                          self._substitute.type === Typeioc.Interceptors.CallInfoType.Setter ||
-                          self._substitute.type === Typeioc.Interceptors.CallInfoType.Field ?
-                            self.defineWrapSetter() : self.defineSetter();
+             var setter = strategyInfo.substitute.type === Typeioc.Interceptors.CallInfoType.Any ||
+                          strategyInfo.substitute.type === Typeioc.Interceptors.CallInfoType.GetterSetter ||
+                          strategyInfo.substitute.type === Typeioc.Interceptors.CallInfoType.Setter ||
+                          strategyInfo.substitute.type === Typeioc.Interceptors.CallInfoType.Field ?
+                            self.defineWrapSetter(strategyInfo) : self.defineSetter(strategyInfo);
 
-             Object.defineProperty(self._destination, self._name, {
+             Object.defineProperty(strategyInfo.destination, strategyInfo.name, {
                  get : getter,
                  set : setter,
-                 configurable : self._descriptor.configurable,
-                 enumerable : self._descriptor.enumerable
+                 configurable : strategyInfo.descriptor.configurable,
+                 enumerable : strategyInfo.descriptor.enumerable
              });
          };
 
@@ -162,99 +158,117 @@ import IImmutableArray = Typeioc.Internal.IImmutableArray;
          return result;
      }
 
-     private defineWrapSetter() {
+     private defineWrapSetter(strategyInfo : IStrategyInfo) {
 
          var self = this;
 
          return function (value) {
-             var delegate = self.defineSetter().bind(this);
 
-             return self.createCallChainFromList(Utils.createImmutable([value]), delegate, this, Typeioc.Interceptors.CallInfoType.Setter);
-         };
+             var destination = this;
+             var delegate = self.defineSetter(strategyInfo ).bind(this);
+
+             return self.createCallChainFromList({
+                 args : Utils.createImmutable([value]),
+                 delegate : delegate,
+                 wrapperContext : destination,
+                 callType : Typeioc.Interceptors.CallInfoType.Setter,
+                 strategyInfo : strategyInfo
+             });
+          };
      }
 
-     private defineWrapGetter() {
+     private defineWrapGetter(strategyInfo : IStrategyInfo) {
 
          var self = this;
 
          return function() {
 
-             var delegate = self.defineGetter().bind(this);
+             var destination = this;
+             var delegate = self.defineGetter(strategyInfo).bind(this);
 
-             return self.createCallChainFromList(Utils.createImmutable([]), delegate, this, Typeioc.Interceptors.CallInfoType.Getter);
-         };
+             return self.createCallChainFromList({
+                 args : Utils.createImmutable([]),
+                 delegate : delegate,
+                 wrapperContext : destination,
+                 callType : Typeioc.Interceptors.CallInfoType.Getter,
+                 strategyInfo : strategyInfo
+             });
+          };
      }
 
-     private defineGetter()
+     private defineGetter(strategyInfo : IStrategyInfo)
      {
          var self = this;
          return function() {
-           return self._contextName ? this[self._contextName][self._name] : self._source[self._name];
+           return strategyInfo.contextName ? this[strategyInfo.contextName][strategyInfo.name]
+                : strategyInfo.source[strategyInfo.name];
          };
      }
 
-     private defineSetter()
+     private defineSetter(strategyInfo : IStrategyInfo)
      {
          var self = this;
 
          return function(argValue) {
-             if(self._contextName) {
-                 this[self._contextName][self._name] = argValue;
+             if(strategyInfo.contextName) {
+                 this[strategyInfo.contextName][strategyInfo.name] = argValue;
              } else {
-                 self._source[self._name] = argValue;
+                 strategyInfo.source[strategyInfo.name] = argValue;
              }
          };
      }
 
-     private createCallChainFromList(
-         args : IImmutableArray,
-         delegate : (args? : Array<any>) => any,
-         wrapperContext : Object,
-         callType? : Typeioc.Interceptors.CallInfoType) {
+     private createCallChainFromList(info : ICallChainParams) {
 
-         var mainCallInfo = this.createCallInfo(args.value, delegate, callType);
-         this.createCallAction(mainCallInfo, args, delegate, wrapperContext, this._substitute.next, callType);
+         var mainCallInfo = this.createCallInfo(info);
+         this.createCallAction(mainCallInfo, info.strategyInfo.substitute.next, info);
 
-         return this._substitute.wrapper.call(wrapperContext, mainCallInfo);
+         return info.strategyInfo.substitute.wrapper.call(info.wrapperContext, mainCallInfo);
 
      }
 
      private createCallAction(callInfo : Typeioc.Interceptors.ICallInfo,
-                              args : IImmutableArray,
-                              delegate : (args? : Array<any>) => any,
-                              wrapperContext : Object,
                               substitute : ISubstitute,
-                              callType? : Typeioc.Interceptors.CallInfoType) {
+                              info : ICallChainParams) {
 
         if(!substitute) return;
 
         var self = this;
-        var childCallInfo = this.createCallInfo(args.value, delegate, callType);
+        var childCallInfo = this.createCallInfo(info);
 
          callInfo.next = result => {
              childCallInfo.result = result;
 
-             self.createCallAction(callInfo, args, delegate, wrapperContext, substitute.next, callType);
+             self.createCallAction(callInfo, substitute.next, info);
 
-             return substitute.wrapper.call(wrapperContext, childCallInfo);
+             return substitute.wrapper.call(info.wrapperContext, childCallInfo);
          };
      }
 
-     private createCallInfo(
-         args : Array<any>,
-         delegate : (args? : Array<any>) => any,
-         callType? : Typeioc.Interceptors.CallInfoType) : Typeioc.Interceptors.ICallInfo {
+     private createCallInfo(info : ICallChainParams) : Typeioc.Interceptors.ICallInfo {
 
-         var getter = <() => any>delegate;
-         var setter = <(any) => void>delegate;
+         var getter = <() => any>info.delegate;
+         var setter = <(any) => void>info.delegate;
 
          return {
-             name : this._name,
-             args : args,
-             type : callType || this._substitute.type,
-             invoke: delegate,
-             get : callType === Typeioc.Interceptors.CallInfoType.Getter ?  getter : null,
-             set : callType === Typeioc.Interceptors.CallInfoType.Setter ?  setter : null
+             name : info.strategyInfo.name,
+             args : info.args.value,
+             type : info.callType || info.strategyInfo.substitute.type,
+             invoke: info.delegate,
+             get : info.callType === Typeioc.Interceptors.CallInfoType.Getter ?  getter : null,
+             set : info.callType === Typeioc.Interceptors.CallInfoType.Setter ?  setter : null
          };
+     }
+
+     private copyStrategy(strategyInfo : IStrategyInfo) : IStrategyInfo {
+         return {
+             type : strategyInfo.type,
+             descriptor : strategyInfo.descriptor,
+             substitute : strategyInfo.substitute,
+             name : strategyInfo.name,
+             source : strategyInfo.source,
+             destination : strategyInfo.destination,
+             contextName : strategyInfo.contextName
+         }
      }
  }

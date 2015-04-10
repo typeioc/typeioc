@@ -50,7 +50,7 @@ export function isObject(o : any) : boolean {
     return typeof o === 'object';
 }
 
-export function getPropertyType(name : string, source : Object, descriptor : PropertyDescriptor)
+export function getPropertyType(name : string, descriptor : PropertyDescriptor)
         : Typeioc.Internal.Reflection.PropertyType {
 
     if(descriptor.value && isFunction(descriptor.value )) return Typeioc.Internal.Reflection.PropertyType.Method;

@@ -38,24 +38,43 @@ import ISubstitute= Typeioc.Interceptors.ISubstitute;
                      storage? : IStorage,
                      contextName? : string) {
 
+        var decorator = this._decoratorService.create();
+
         for(var p in source) {
 
             if(p === 'constructor') continue;
 
-            var decorator = this._decoratorService.create(p, source, destination, contextName);
+            var descriptor = Utils.Reflection.getPropertyDescriptor(source, p);
+            var propertyType = Utils.Reflection.getPropertyType(p, descriptor);
+
+            var strategyInfo = {
+                type : propertyType,
+                descriptor : descriptor,
+                substitute : null,
+                name : p,
+                source : source,
+                destination : destination,
+                contextName : contextName
+            };
+
+            var substitutes = [];
 
             if(storage)
             {
                 var types = storage.getKnownTypes(p);
-                this.checkProxyCompatibility(p, types, decorator.propertyType);
+                this.checkProxyCompatibility(p, types, propertyType);
 
-                storage.getSubstitutes(p, types)
-                .forEach(item => {
-                        decorator.substitute = item;
-                        decorator.wrap();
-                    });
+                substitutes = storage.getSubstitutes(p, types);
+            }
+
+            if(substitutes.length) {
+                substitutes.forEach(item => {
+
+                    strategyInfo.substitute = item;
+                    decorator.wrap(strategyInfo);
+                });
             } else {
-                decorator.wrap();
+                decorator.wrap(strategyInfo);
             }
         }
     }
@@ -73,6 +92,16 @@ import ISubstitute= Typeioc.Interceptors.ISubstitute;
 
         return false;
     }
+
+    private getDescriptor(source : Object, name : string) {
+
+    }
+
+    //private getPropertyType()
+    //{
+    //    this._descriptor = Utils.Reflection.getPropertyDescriptor(_source, _name);
+    //    this._type = Utils.Reflection.getPropertyType(_name, _source, this._descriptor);
+    //}
 
     private checkProxyCompatibility(propertyName : string,
                                     types: Array<Typeioc.Interceptors.CallInfoType>,
