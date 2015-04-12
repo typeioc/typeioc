@@ -1,5 +1,5 @@
 
-/// <reference path="../../d.ts/typeioc.d.ts" />
+/// <reference path="../../d.ts/typeioc.internal.d.ts" />
 
  'use strict';
 
@@ -7,13 +7,14 @@ import Utils = require('../utils/index');
 import Exceptions = require('../exceptions/index');
 import IStorage = Typeioc.Internal.Interceptors.IStorage;
 import IProxy  = Typeioc.Internal.Interceptors.IProxy;
-import ISubstitute= Typeioc.Interceptors.ISubstitute;
+import ISubstitute = Typeioc.Interceptors.ISubstitute;
+import IStrategyInfo = Typeioc.Internal.Interceptors.IStrategyInfo;
 
  export class Proxy implements IProxy {
 
     constructor(private _decoratorService : Typeioc.Internal.IDecoratorService) {}
 
-    public fromPrototype(parent : Function,
+    public byPrototype(parent : Function,
                          storage? : IStorage) : Function {
 
         function Proxy() {
@@ -33,7 +34,16 @@ import ISubstitute= Typeioc.Interceptors.ISubstitute;
         return Proxy;
     }
 
-    private decorate(source : Function,
+    public byInstance(parent : Object, storage : IStorage) : Object {
+
+        var result = Object.create(null);
+
+        this.decorate(parent, result, storage);
+
+        return result;
+    }
+
+    private decorate(source : Function | Object,
                      destination : Function,
                      storage? : IStorage,
                      contextName? : string) {
@@ -44,30 +54,19 @@ import ISubstitute= Typeioc.Interceptors.ISubstitute;
 
             if(p === 'constructor') continue;
 
-            var descriptor = Utils.Reflection.getPropertyDescriptor(source, p);
-            var propertyType = Utils.Reflection.getPropertyType(p, descriptor);
-
-            var strategyInfo = {
-                type : propertyType,
-                descriptor : descriptor,
-                substitute : null,
-                name : p,
-                source : source,
-                destination : destination,
-                contextName : contextName
-            };
-
+            var strategyInfo = this.createStrategyInfo(source, destination, p, contextName);
             var substitutes = [];
 
             if(storage)
             {
                 var types = storage.getKnownTypes(p);
-                this.checkProxyCompatibility(p, types, propertyType);
-
                 substitutes = storage.getSubstitutes(p, types);
             }
 
             if(substitutes.length) {
+
+                this.checkProxyCompatibility(p, types, strategyInfo.type);
+
                 substitutes.forEach(item => {
 
                     strategyInfo.substitute = item;
@@ -81,8 +80,6 @@ import ISubstitute= Typeioc.Interceptors.ISubstitute;
 
     private hasProperType(types: Array<Typeioc.Interceptors.CallInfoType>, type : Typeioc.Interceptors.CallInfoType) : boolean {
 
-        if(!types.length) return true;
-
         var hasAny = types.indexOf(Typeioc.Interceptors.CallInfoType.Any) >= 0;
         var hasType = types.indexOf(type) >= 0;
 
@@ -92,16 +89,6 @@ import ISubstitute= Typeioc.Interceptors.ISubstitute;
 
         return false;
     }
-
-    private getDescriptor(source : Object, name : string) {
-
-    }
-
-    //private getPropertyType()
-    //{
-    //    this._descriptor = Utils.Reflection.getPropertyDescriptor(_source, _name);
-    //    this._type = Utils.Reflection.getPropertyType(_name, _source, this._descriptor);
-    //}
 
     private checkProxyCompatibility(propertyName : string,
                                     types: Array<Typeioc.Interceptors.CallInfoType>,
@@ -148,6 +135,25 @@ import ISubstitute= Typeioc.Interceptors.ISubstitute;
 
                 break;
         }
+    }
+
+    private createStrategyInfo(source : Function | Object,
+                               destination : Function,
+                               name : string,
+                               contextName? : string) : IStrategyInfo {
+
+        var descriptor = Utils.Reflection.getPropertyDescriptor(source, name);
+        var propertyType = Utils.Reflection.getPropertyType(name, descriptor);
+
+        return {
+            type : propertyType,
+            descriptor : descriptor,
+            substitute : null,
+            name : name,
+            source : source,
+            destination : destination,
+            contextName : contextName
+        };
     }
 
     private combineError(message : string, propertyName : string, type : Typeioc.Interceptors.CallInfoType) {

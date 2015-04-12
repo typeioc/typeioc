@@ -25,15 +25,14 @@ export class Interceptor implements Typeioc.Interceptors.IInterceptor {
         var storage = substitutes ? this.transformSubstitutes(substitutes) : null;
 
         if(Utils.Reflection.isPrototype(subject)) {
-            return this._proxy.fromPrototype(<Function>subject, storage);
+            return this._proxy.byPrototype(<Function>subject, storage);
         }
 
         if(Utils.Reflection.isObject(subject)) {
-            //this._proxy.fromPrototype(subject, storage);
-            throw new Error('Not implemented');
+            return this._proxy.byInstance(subject, storage);
         }
 
-        throw new Exceptions.ArgumentError('Subject should be a prototype function or an object');
+        throw new Exceptions.ArgumentError('subject', 'Subject should be a prototype function or an object');
     }
 
     private transformSubstitutes(substitutes : Array<ISubstituteInfo>) : IStorage {

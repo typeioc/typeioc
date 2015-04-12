@@ -24,8 +24,10 @@ declare module Typeioc.Internal {
     module Interceptors {
 
         interface IProxy {
-            fromPrototype(parent : Function,
+            byPrototype(parent : Function,
                           storage : Typeioc.Internal.Interceptors.IStorage) : Function;
+
+            byInstance(parent : Object, storage : IStorage) : Object;
         }
 
         interface IDecorator {
@@ -45,8 +47,8 @@ declare module Typeioc.Internal {
             descriptor : PropertyDescriptor;
             substitute : Typeioc.Interceptors.ISubstitute;
             name : string;
-            source : Function;
-            destination : Function;
+            source : Function | Object;
+            destination : Function | Object;
             contextName? : string
         }
     }
