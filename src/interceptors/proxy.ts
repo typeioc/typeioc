@@ -1,5 +1,6 @@
 
 /// <reference path="../../d.ts/typeioc.internal.d.ts" />
+/// <reference path="../../d.ts/typeioc.addons.d.ts" />
 
  'use strict';
 
@@ -7,80 +8,95 @@ import Utils = require('../utils/index');
 import Exceptions = require('../exceptions/index');
 import IStorage = Typeioc.Internal.Interceptors.IStorage;
 import IProxy  = Typeioc.Internal.Interceptors.IProxy;
-import ISubstitute = Typeioc.Interceptors.ISubstitute;
+import ISubstitute = Addons.Interceptors.ISubstitute;
 import IStrategyInfo = Typeioc.Internal.Interceptors.IStrategyInfo;
 
- export class Proxy implements IProxy {
+interface IPropertyPredicate {
+    (name : string) : boolean;
+}
 
-    constructor(private _decoratorService : Typeioc.Internal.IDecoratorService) {}
+export class Proxy implements IProxy {
+
+    private _decorator : Typeioc.Internal.Interceptors.IDecorator;
+    private restrictedProperties;
+
+    constructor(decoratorService : Typeioc.Internal.IDecoratorService) {
+
+        this._decorator = decoratorService.create();
+
+        this.restrictedProperties = Utils.Reflection.getAllPropertyNames(function test(){});
+    }
 
     public byPrototype(parent : Function,
                          storage? : IStorage) : Function {
 
+        var self = this;
+
         function Proxy() {
             this._parent = Utils.Reflection.construct(parent, arguments);
 
-            for(var p in this._parent) {
-                if((p in this) == false) {
-                    this[p] = this._parent[p];
-                }
-            }
+
+            Object.getOwnPropertyNames(this._parent)
+                .filter(name => name !== 'constructor' &&
+                                name !== 'prototype' &&
+                                (name in this) === false &&
+                                (name in Proxy.prototype) === false)
+                .map(p => self.createStrategyInfo(this._parent, this, p))
+                .forEach(s => self.decorateProperty(s, storage));
         }
 
-        this.decorate(parent.prototype, Proxy.prototype, storage, '_parent');
+        var source = parent.prototype;
+        Utils.Reflection.getAllPropertyNames(source)
+                        .filter(name => name !== 'constructor' && name !== 'prototype')
+                        .map(p => self.createStrategyInfo(source, Proxy.prototype, p, '_parent'))
+                        .forEach(s => self.decorateProperty(s, storage));
 
-        this.decorate(parent, Proxy, storage);
+        Object.getOwnPropertyNames(parent)
+                        .filter(name =>  self.restrictedProperties.indexOf(name) === -1)
+                        .map(p => self.createStrategyInfo(parent, Proxy, p))
+                        .forEach(s => self.decorateProperty(s, storage));
 
         return Proxy;
     }
 
     public byInstance(parent : Object, storage : IStorage) : Object {
 
-        var result = Object.create(null);
+        var result = Object.create({});
 
-        this.decorate(parent, result, storage);
+        Utils.Reflection.getAllPropertyNames(parent)
+            .filter(name => name !== 'constructor')
+            .map(p => this.createStrategyInfo(parent, result, p))
+            .forEach(s => this.decorateProperty(s, storage));
 
         return result;
     }
 
-    private decorate(source : Function | Object,
-                     destination : Function,
-                     storage? : IStorage,
-                     contextName? : string) {
+    private decorateProperty(strategyInfo : IStrategyInfo, storage? : IStorage) {
 
-        var decorator = this._decoratorService.create();
+        var substitutes = [];
 
-        for(var p in source) {
+        if(storage) {
+            var types = storage.getKnownTypes(strategyInfo.name);
+            substitutes = storage.getSubstitutes(strategyInfo.name, types);
+        }
 
-            if(p === 'constructor') continue;
+        if(substitutes.length) {
 
-            var strategyInfo = this.createStrategyInfo(source, destination, p, contextName);
-            var substitutes = [];
+            this.checkProxyCompatibility(strategyInfo.name, types, strategyInfo.type);
 
-            if(storage)
-            {
-                var types = storage.getKnownTypes(p);
-                substitutes = storage.getSubstitutes(p, types);
-            }
+            substitutes.forEach(item => {
 
-            if(substitutes.length) {
-
-                this.checkProxyCompatibility(p, types, strategyInfo.type);
-
-                substitutes.forEach(item => {
-
-                    strategyInfo.substitute = item;
-                    decorator.wrap(strategyInfo);
-                });
-            } else {
-                decorator.wrap(strategyInfo);
-            }
+                strategyInfo.substitute = item;
+                this._decorator.wrap(strategyInfo);
+            });
+        } else {
+            this._decorator.wrap(strategyInfo);
         }
     }
 
-    private hasProperType(types: Array<Typeioc.Interceptors.CallInfoType>, type : Typeioc.Interceptors.CallInfoType) : boolean {
+    private hasProperType(types: Array<Addons.Interceptors.CallInfoType>, type : Addons.Interceptors.CallInfoType) : boolean {
 
-        var hasAny = types.indexOf(Typeioc.Interceptors.CallInfoType.Any) >= 0;
+        var hasAny = types.indexOf(Addons.Interceptors.CallInfoType.Any) >= 0;
         var hasType = types.indexOf(type) >= 0;
 
         if((types.length == 1 && hasAny) ||
@@ -91,47 +107,47 @@ import IStrategyInfo = Typeioc.Internal.Interceptors.IStrategyInfo;
     }
 
     private checkProxyCompatibility(propertyName : string,
-                                    types: Array<Typeioc.Interceptors.CallInfoType>,
+                                    types: Array<Addons.Interceptors.CallInfoType>,
                                     propertyType : Typeioc.Internal.Reflection.PropertyType) {
 
         switch (propertyType) {
             case Typeioc.Internal.Reflection.PropertyType.Method:
 
-                if(this.hasProperType(types, Typeioc.Interceptors.CallInfoType.Method) === false)
+                if(this.hasProperType(types, Addons.Interceptors.CallInfoType.Method) === false)
                     throw this.combineError('Could not match proxy type and property type for method',
-                        propertyName, Typeioc.Interceptors.CallInfoType.Method);
+                        propertyName, Addons.Interceptors.CallInfoType.Method);
 
                 break;
 
             case Typeioc.Internal.Reflection.PropertyType.Getter:
 
-                if(this.hasProperType(types, Typeioc.Interceptors.CallInfoType.Getter) === false)
+                if(this.hasProperType(types, Addons.Interceptors.CallInfoType.Getter) === false)
                     throw this.combineError('Could not match proxy type and property type for getter',
-                        propertyName, Typeioc.Interceptors.CallInfoType.Getter);
+                        propertyName, Addons.Interceptors.CallInfoType.Getter);
 
                 break;
 
             case Typeioc.Internal.Reflection.PropertyType.Setter:
-                if(this.hasProperType(types, Typeioc.Interceptors.CallInfoType.Setter) === false)
+                if(this.hasProperType(types, Addons.Interceptors.CallInfoType.Setter) === false)
                     throw this.combineError('Could not match proxy type and property type for setter',
-                        propertyName, Typeioc.Interceptors.CallInfoType.Setter);
+                        propertyName, Addons.Interceptors.CallInfoType.Setter);
 
                 break;
             case Typeioc.Internal.Reflection.PropertyType.FullProperty:
 
-                if(this.hasProperType(types, Typeioc.Interceptors.CallInfoType.GetterSetter) === false &&
-                    this.hasProperType(types, Typeioc.Interceptors.CallInfoType.Getter) === false &&
-                    this.hasProperType(types, Typeioc.Interceptors.CallInfoType.Setter)=== false)
+                if(this.hasProperType(types, Addons.Interceptors.CallInfoType.GetterSetter) === false &&
+                    this.hasProperType(types, Addons.Interceptors.CallInfoType.Getter) === false &&
+                    this.hasProperType(types, Addons.Interceptors.CallInfoType.Setter)=== false)
                     throw this.combineError('Could not match proxy type and property type for getter-setter',
-                        propertyName, Typeioc.Interceptors.CallInfoType.GetterSetter);
+                        propertyName, Addons.Interceptors.CallInfoType.GetterSetter);
 
                 break;
 
             case Typeioc.Internal.Reflection.PropertyType.Field:
 
-                if(this.hasProperType(types, Typeioc.Interceptors.CallInfoType.Field) === false)
+                if(this.hasProperType(types, Addons.Interceptors.CallInfoType.Field) === false)
                     throw this.combineError('Could not match proxy type and property type for field',
-                        propertyName, Typeioc.Interceptors.CallInfoType.Field);
+                        propertyName, Addons.Interceptors.CallInfoType.Field);
 
                 break;
         }
@@ -156,7 +172,7 @@ import IStrategyInfo = Typeioc.Internal.Interceptors.IStrategyInfo;
         };
     }
 
-    private combineError(message : string, propertyName : string, type : Typeioc.Interceptors.CallInfoType) {
+    private combineError(message : string, propertyName : string, type : Addons.Interceptors.CallInfoType) {
         var error = new Exceptions.ProxyError(message);
         error.data = { method : propertyName, type : type };
         return error;

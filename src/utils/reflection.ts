@@ -77,6 +77,20 @@ export function getPropertyDescriptor(object, key) {
     return descriptor;
 }
 
+export function getAllPropertyNames(obj) {
+    var props = [];
+
+    do {
+        Object.getOwnPropertyNames(obj).forEach(function ( prop ) {
+            if (props.indexOf(prop) === -1) {
+                props.push( prop );
+            }
+        });
+    } while(obj = Object.getPrototypeOf(obj));
+
+    return props;
+}
+
 function getParamNames(func : Function) : string[] {
     var funStr = func.toString();
     var result = funStr.slice(funStr.indexOf('(')+1, funStr.indexOf(')')).match(/([^\s,]+)/g);

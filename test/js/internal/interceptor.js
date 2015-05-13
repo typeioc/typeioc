@@ -11,19 +11,21 @@ exports.internal = {
         var proxy;
         var interceptor;
 
+        function setUp(callback) {
+            proxy = {
+                byPrototype : mockery.stub(),
+                byInstance : mockery.stub()
+            };
+
+            interceptor = new InterceptorModule.Interceptor(proxy);
+
+            callback();
+        }
+
         return {
 
             byPrototype : {
-                setUp: function (callback) {
-
-                    proxy = {
-                        byPrototype : mockery.stub()
-                    };
-
-                    interceptor = new InterceptorModule.Interceptor(proxy);
-
-                    callback();
-                },
+                setUp : setUp,
 
                 intercept_throws_when_no_function_no_object: function(test) {
 
@@ -713,16 +715,7 @@ exports.internal = {
             },
 
             byInstance : {
-                setUp: function (callback) {
-
-                    proxy = {
-                        byInstance : mockery.stub()
-                    };
-
-                    interceptor = new InterceptorModule.Interceptor(proxy);
-
-                    callback();
-                },
+                setUp : setUp,
 
                 intercept_creates_empty_storage_for_empty_substitute_infos : function(test) {
 

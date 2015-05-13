@@ -1,10 +1,11 @@
 
 /// <reference path="../../d.ts/typeioc.internal.d.ts" />
+/// <reference path="../../d.ts/typeioc.addons.d.ts" />
 
 'use strict';
 
 import Utils = require('../utils/index');
-import ISubstitute = Typeioc.Interceptors.ISubstitute;
+import ISubstitute = Addons.Interceptors.ISubstitute;
 import IImmutableArray = Typeioc.Internal.IImmutableArray;
 import IStrategyInfo = Typeioc.Internal.Interceptors.IStrategyInfo;
 
@@ -12,7 +13,7 @@ interface ICallChainParams {
     args : IImmutableArray;
     delegate : (args? : Array<any>) => any;
     wrapperContext : Object;
-    callType? : Typeioc.Interceptors.CallInfoType;
+    callType? : Addons.Interceptors.CallInfoType;
     strategyInfo : IStrategyInfo
 }
 
@@ -102,7 +103,15 @@ export class Decorator implements Typeioc.Internal.Interceptors.IDecorator {
 
                  var destination = this;
                  var args  = Array.prototype.slice.call(arguments, 0);
-                 var delegate = args => value.apply(destination, args);
+
+                 var delegate = args => {
+
+                     if(!args || !Utils.Reflection.isArray(args)) {
+                         args = [ args ];
+                     }
+
+                     return value.apply(destination, args);
+                 };
 
                  return self.createCallChainFromList({
                          args : Utils.createImmutable(args),
@@ -117,7 +126,7 @@ export class Decorator implements Typeioc.Internal.Interceptors.IDecorator {
 
              Object.defineProperty(strategyInfo.destination, strategyInfo.name, {
                  get : self.defineWrapGetter(strategyInfo),
-                 configurable : strategyInfo.descriptor.configurable,
+                 configurable : true,
                  enumerable : strategyInfo.descriptor.enumerable
              });
          };
@@ -126,29 +135,29 @@ export class Decorator implements Typeioc.Internal.Interceptors.IDecorator {
 
                Object.defineProperty(strategyInfo.destination, strategyInfo.name, {
                  set : self.defineWrapSetter(strategyInfo),
-                 configurable : strategyInfo.descriptor.configurable,
+                 configurable :true,
                  enumerable : strategyInfo.descriptor.enumerable
              });
          };
 
          result[Typeioc.Internal.Reflection.PropertyType.FullProperty] = (strategyInfo : IStrategyInfo) => {
 
-             var getter = strategyInfo.substitute.type === Typeioc.Interceptors.CallInfoType.Any ||
-                          strategyInfo.substitute.type === Typeioc.Interceptors.CallInfoType.GetterSetter ||
-                          strategyInfo.substitute.type === Typeioc.Interceptors.CallInfoType.Getter  ||
-                          strategyInfo.substitute.type === Typeioc.Interceptors.CallInfoType.Field ?
+             var getter = strategyInfo.substitute.type === Addons.Interceptors.CallInfoType.Any ||
+                          strategyInfo.substitute.type === Addons.Interceptors.CallInfoType.GetterSetter ||
+                          strategyInfo.substitute.type === Addons.Interceptors.CallInfoType.Getter  ||
+                          strategyInfo.substitute.type === Addons.Interceptors.CallInfoType.Field ?
                             self.defineWrapGetter(strategyInfo) : self.defineGetter(strategyInfo);
 
-             var setter = strategyInfo.substitute.type === Typeioc.Interceptors.CallInfoType.Any ||
-                          strategyInfo.substitute.type === Typeioc.Interceptors.CallInfoType.GetterSetter ||
-                          strategyInfo.substitute.type === Typeioc.Interceptors.CallInfoType.Setter ||
-                          strategyInfo.substitute.type === Typeioc.Interceptors.CallInfoType.Field ?
+             var setter = strategyInfo.substitute.type === Addons.Interceptors.CallInfoType.Any ||
+                          strategyInfo.substitute.type === Addons.Interceptors.CallInfoType.GetterSetter ||
+                          strategyInfo.substitute.type === Addons.Interceptors.CallInfoType.Setter ||
+                          strategyInfo.substitute.type === Addons.Interceptors.CallInfoType.Field ?
                             self.defineWrapSetter(strategyInfo) : self.defineSetter(strategyInfo);
 
              Object.defineProperty(strategyInfo.destination, strategyInfo.name, {
                  get : getter,
                  set : setter,
-                 configurable : strategyInfo.descriptor.configurable,
+                 configurable : true,
                  enumerable : strategyInfo.descriptor.enumerable
              });
          };
@@ -165,13 +174,13 @@ export class Decorator implements Typeioc.Internal.Interceptors.IDecorator {
          return function (value) {
 
              var destination = this;
-             var delegate = self.defineSetter(strategyInfo ).bind(this);
+             var delegate = self.defineSetter(strategyInfo).bind(this);
 
              return self.createCallChainFromList({
                  args : Utils.createImmutable([value]),
                  delegate : delegate,
                  wrapperContext : destination,
-                 callType : Typeioc.Interceptors.CallInfoType.Setter,
+                 callType : Addons.Interceptors.CallInfoType.Setter,
                  strategyInfo : strategyInfo
              });
           };
@@ -190,7 +199,7 @@ export class Decorator implements Typeioc.Internal.Interceptors.IDecorator {
                  args : Utils.createImmutable([]),
                  delegate : delegate,
                  wrapperContext : destination,
-                 callType : Typeioc.Interceptors.CallInfoType.Getter,
+                 callType : Addons.Interceptors.CallInfoType.Getter,
                  strategyInfo : strategyInfo
              });
           };
@@ -227,7 +236,7 @@ export class Decorator implements Typeioc.Internal.Interceptors.IDecorator {
 
      }
 
-     private createCallAction(callInfo : Typeioc.Interceptors.ICallInfo,
+     private createCallAction(callInfo : Addons.Interceptors.ICallInfo,
                               substitute : ISubstitute,
                               info : ICallChainParams) {
 
@@ -239,13 +248,13 @@ export class Decorator implements Typeioc.Internal.Interceptors.IDecorator {
          callInfo.next = result => {
              childCallInfo.result = result;
 
-             self.createCallAction(callInfo, substitute.next, info);
+             self.createCallAction(childCallInfo, substitute.next, info);
 
              return substitute.wrapper.call(info.wrapperContext, childCallInfo);
          };
      }
 
-     private createCallInfo(info : ICallChainParams) : Typeioc.Interceptors.ICallInfo {
+     private createCallInfo(info : ICallChainParams) : Addons.Interceptors.ICallInfo {
 
          var getter = <() => any>info.delegate;
          var setter = <(any) => void>info.delegate;
@@ -255,8 +264,8 @@ export class Decorator implements Typeioc.Internal.Interceptors.IDecorator {
              args : info.args.value,
              type : info.callType || info.strategyInfo.substitute.type,
              invoke: info.delegate,
-             get : info.callType === Typeioc.Interceptors.CallInfoType.Getter ?  getter : null,
-             set : info.callType === Typeioc.Interceptors.CallInfoType.Setter ?  setter : null
+             get : info.callType === Addons.Interceptors.CallInfoType.Getter ?  getter : null,
+             set : info.callType === Addons.Interceptors.CallInfoType.Setter ?  setter : null
          };
      }
 

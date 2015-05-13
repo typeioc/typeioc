@@ -1,11 +1,12 @@
 
 /// <reference path="../../d.ts/typeioc.internal.d.ts" />
+/// <reference path="../../d.ts/typeioc.addons.d.ts" />
 
 'use strict';
 
 
 import IIndex = Typeioc.Internal.IIndexedCollection;
-import ISubstitute = Typeioc.Interceptors.ISubstitute;
+import ISubstitute = Addons.Interceptors.ISubstitute;
 import IList = Typeioc.Internal.IList;
 
 
@@ -23,8 +24,8 @@ export class SubstituteStorage implements Typeioc.Internal.Interceptors.IStorage
     }
 
     constructor() {
-        this._known = {};
-        this._unknown = {};
+        this._known = Object.create(null);
+        this._unknown = Object.create(null);
     }
 
     public add(value : ISubstitute) {
@@ -47,7 +48,7 @@ export class SubstituteStorage implements Typeioc.Internal.Interceptors.IStorage
         this.addToTypedStorage(item, value);
     }
 
-    public getKnownTypes(name : string) : Array<Typeioc.Interceptors.CallInfoType> {
+    public getKnownTypes(name : string) : Array<Addons.Interceptors.CallInfoType> {
         var item = this._known[name];
 
         if(!item) return [];
@@ -55,17 +56,17 @@ export class SubstituteStorage implements Typeioc.Internal.Interceptors.IStorage
         return Object.getOwnPropertyNames(item).map(item => ~~item);
     }
 
-    public getSubstitutes(name : string, types : Array<Typeioc.Interceptors.CallInfoType>) : Array<ISubstitute> {
+    public getSubstitutes(name : string, types : Array<Addons.Interceptors.CallInfoType>) : Array<ISubstitute> {
         var item = this._known[name];
 
         if(!item) return [];
 
-        var anySubstitute = item[Typeioc.Interceptors.CallInfoType.Any];
+        var anySubstitute = item[Addons.Interceptors.CallInfoType.Any];
         if(anySubstitute) {
             anySubstitute = this.copySubstitute(anySubstitute, name);
         }
 
-        return types.filter(type => type !== Typeioc.Interceptors.CallInfoType.Any)
+        var items = types.filter(type => type !== Addons.Interceptors.CallInfoType.Any)
             .map(type => {
 
                 var result = this.copySubstitute(item[type], name);
@@ -86,16 +87,18 @@ export class SubstituteStorage implements Typeioc.Internal.Interceptors.IStorage
 
                 return result.head;
             });
+
+        return items.length > 0 ? items : [ anySubstitute.head ];
     }
 
-    private getUnknownSubstitute(type : Typeioc.Interceptors.CallInfoType, name : string) : IList<ISubstitute> {
+    private getUnknownSubstitute(type : Addons.Interceptors.CallInfoType, name : string) : IList<ISubstitute> {
 
         var typedSubstitute = this.unknown[type]
 
         if(typedSubstitute)
             typedSubstitute = this.copySubstitute(typedSubstitute, name);
 
-        var anySubstitute = this.unknown[Typeioc.Interceptors.CallInfoType.Any];
+        var anySubstitute = this.unknown[Addons.Interceptors.CallInfoType.Any];
 
         if(!anySubstitute) return typedSubstitute;
 

@@ -107,6 +107,7 @@ var Level1;
         containerBuilder.register(TestData.Test2Base).as(function () { return new TestData.Test2(); });
         containerBuilder.register(TestData.Test1Base).as(function (c) {
             var test2 = c.resolve(TestData.Test2Base);
+            var n = test2.Name;
             return new TestData.Test3(test2);
         });
         var container = containerBuilder.build();

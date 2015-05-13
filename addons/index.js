@@ -7,19 +7,16 @@
  * --------------------------------------------------------------------------------------------------*/
 
 
-var main = require('./');
-var AddonsBuilder = require('./lib/scaffoldAddons');
+var AddonsBuilder = require('../lib/scaffoldAddons');
 
 var scaffold = new AddonsBuilder.ScaffoldAddons();
 
 module.exports = {
-    Types: main.Types,
-    Exceptions : main.Exceptions,
 
-    createBuilder: main.createBuilder,
-
-    interceptor : function() {
-        return scaffold.interceptor();
+    Interceptors : {
+        create : function() {
+            return scaffold.interceptor();
+        }
     }
 };
 

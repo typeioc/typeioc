@@ -13,6 +13,7 @@ export var RegistrationBase = require('../lib/registration/base/registrationBase
 export var ExceptionBase = require('../lib/exceptions/baseError');
 export var TestModule = require('./data/test-data');
 export var TestModule2 = require('./data/test-data2');
+export var TestModuleInterceptors = require('./data/test-data-intercept');
 
 ConfigProvider.TestModule = TestModule;
 ConfigProvider.TestModule2 = TestModule2;

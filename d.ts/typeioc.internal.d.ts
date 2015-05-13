@@ -7,6 +7,7 @@
  * --------------------------------------------------------------------------------------------------*/
 
 ///<reference path='typeioc.d.ts' />
+///<reference path='typeioc.addons.d.ts' />
 
 declare module Typeioc.Internal {
 
@@ -35,17 +36,17 @@ declare module Typeioc.Internal {
         }
 
         interface IStorage {
-            known : IIndexedCollection<IIndexedCollection<IList<Typeioc.Interceptors.ISubstitute>>>;
-            unknown : IIndexedCollection<IList<Typeioc.Interceptors.ISubstitute>>;
-            add(value : Typeioc.Interceptors.ISubstitute);
-            getKnownTypes(name : string) : Array<Typeioc.Interceptors.CallInfoType>;
-            getSubstitutes(name : string, types : Array<Typeioc.Interceptors.CallInfoType>) : Array<Typeioc.Interceptors.ISubstitute>;
+            known : IIndexedCollection<IIndexedCollection<IList<Addons.Interceptors.ISubstitute>>>;
+            unknown : IIndexedCollection<IList<Addons.Interceptors.ISubstitute>>;
+            add(value : Addons.Interceptors.ISubstitute);
+            getKnownTypes(name : string) : Array<Addons.Interceptors.CallInfoType>;
+            getSubstitutes(name : string, types : Array<Addons.Interceptors.CallInfoType>) : Array<Addons.Interceptors.ISubstitute>;
         }
 
         interface IStrategyInfo {
             type : Typeioc.Internal.Reflection.PropertyType;
             descriptor : PropertyDescriptor;
-            substitute : Typeioc.Interceptors.ISubstitute;
+            substitute : Addons.Interceptors.ISubstitute;
             name : string;
             source : Function | Object;
             destination : Function | Object;

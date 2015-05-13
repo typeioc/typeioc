@@ -42,7 +42,7 @@ export module Level9 {
             }
         }];
 
-        var actualDynamic = container.resolveWithDependencies<TestData.Test1Base>(TestData.Test1Base, dependencies);
+        var actualDynamic = container.resolveWithDependencies(TestData.Test1Base, dependencies);
 
         test.strictEqual(actualDynamic.Name, 'Test 3 name from dependency');
 
@@ -95,7 +95,7 @@ export module Level9 {
             });
 
         var container = containerBuilder.build();
-        var actualNative = container.resolve<TestData.Test1Base>(TestData.Test1Base);
+        var actualNative = container.resolve(TestData.Test1Base);
 
         var dependencies = [{
             service: TestData.Test2Base,
@@ -287,7 +287,7 @@ export module Level9 {
             }
         }];
 
-        var actual = container.resolveWithDependencies<TestData.Test1Base>(TestData.Test1Base, dependencies);
+        var actual = container.resolveWithDependencies(TestData.Test1Base, dependencies);
 
         test.ok(actual);
         test.strictEqual(actual.Name, 'Test 3 name from dependency');
@@ -359,7 +359,7 @@ export module Level9 {
                 }
             }];
 
-        var actual = container.resolveWithDependencies<{Name : string}>(dynamicService, dependencies);
+        var actual = <{Name : string}>container.resolveWithDependencies(dynamicService, dependencies);
         test.ok(actual);
         test.ok(actual instanceof TestData.Test7);
         test.strictEqual(actual.Name, 'test 1 base test 2 base test 4 base');
@@ -429,7 +429,7 @@ export module Level9 {
             }
         }];
 
-        var actual = container.resolveWithDependencies<TestData.Test7>(dynamicService, dependencies);
+        var actual = container.resolveWithDependencies(dynamicService, dependencies);
         test.ok(actual);
         test.ok(actual instanceof TestData.Test7);
         test.strictEqual(actual.Name, 'test 1 base test 2 base test 4 base');
@@ -610,7 +610,7 @@ export module Level9 {
             }
         }];
 
-        var actual = container.resolveWithDependencies<TestData.Test7>(dynamicService, dependencies);
+        var actual = container.resolveWithDependencies(dynamicService, dependencies);
         test.ok(actual);
         test.ok(actual instanceof TestData.Test7);
         test.strictEqual(actual.Name, 'test 1 base test 2 test 4 base');
@@ -675,7 +675,7 @@ export module Level9 {
             }
         }];
 
-        var actual = container.resolveWithDependencies<TestData.Test7>(dynamicService, dependencies);
+        var actual = container.resolveWithDependencies(dynamicService, dependencies);
         test.ok(actual);
         test.ok(actual instanceof TestData.Test7);
         test.strictEqual(actual.Name, 'Test 3 test 2 test 2 base test 4 base');
@@ -738,7 +738,7 @@ export module Level9 {
             }
         }];
 
-        var actual = container.resolveWithDependencies<TestData.Test7>(dynamicService, dependencies);
+        var actual = container.resolveWithDependencies(dynamicService, dependencies);
         test.ok(actual);
         test.ok(actual instanceof TestData.Test7);
         test.strictEqual(actual.Name, 'test 1 base test 2 base test 4');

@@ -10,6 +10,7 @@ exports.RegistrationBase = require('../lib/registration/base/registrationBase');
 exports.ExceptionBase = require('../lib/exceptions/baseError');
 exports.TestModule = require('./data/test-data');
 exports.TestModule2 = require('./data/test-data2');
+exports.TestModuleInterceptors = require('./data/test-data-intercept');
 ConfigProvider.TestModule = exports.TestModule;
 ConfigProvider.TestModule2 = exports.TestModule2;
 exports.Config = ConfigProvider;

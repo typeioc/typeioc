@@ -42,7 +42,7 @@ export class Container implements Typeioc.Internal.IContainer {
         this._container.dispose();
     }
 
-    public resolve<R>(service: any, ...args:any[]) : R {
+    public resolve<R>(service: R, ...args:any[]) : R {
 
         Utils.checkNullArgument(service, 'service');
 
@@ -51,7 +51,7 @@ export class Container implements Typeioc.Internal.IContainer {
         return this._container.resolve.apply(this._container, args);
     }
 
-    public tryResolve<R>(service: any, ...args:any[]) : R {
+    public tryResolve<R>(service: R, ...args:any[]) : R {
 
         Utils.checkNullArgument(service, 'service');
 
@@ -60,7 +60,7 @@ export class Container implements Typeioc.Internal.IContainer {
         return this._container.tryResolve.apply(this._container, args);
     }
 
-    public resolveNamed<R>(service: any, name : string, ...args:any[]) : R {
+    public resolveNamed<R>(service: R, name : string, ...args:any[]) : R {
 
         Utils.checkNullArgument(service, 'service');
 
@@ -69,7 +69,7 @@ export class Container implements Typeioc.Internal.IContainer {
         return this._container.resolveNamed.apply(this._container, args);
     }
 
-    public tryResolveNamed<R>(service: any, name : string, ...args:any[]) : R {
+    public tryResolveNamed<R>(service: R, name : string, ...args:any[]) : R {
 
         Utils.checkNullArgument(service, 'service');
 
@@ -78,7 +78,7 @@ export class Container implements Typeioc.Internal.IContainer {
         return this._container.tryResolveNamed.apply(this._container, args);
     }
 
-    public resolveWithDependencies<R>(service: any, dependencies : Typeioc.IDynamicDependency[]) : R {
+    public resolveWithDependencies<R>(service: R, dependencies : Typeioc.IDynamicDependency[]) : R {
 
         Utils.checkNullArgument(service, 'service');
 

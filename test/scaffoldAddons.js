@@ -1,15 +1,9 @@
 /// <reference path='../d.ts/node.d.ts' />
-/// <reference path='../d.ts/typeioc.d.ts' />
+/// <reference path='../d.ts/typeioc.addons.d.ts' />
 'use strict';
-var addons = require('../addons');
-exports.Exceptions = addons.Exceptions;
-exports.Types = addons.Types;
+var addons = require('../addons/index');
 function interceptor() {
-    return addons.interceptor();
+    return addons.Interceptors.create();
 }
 exports.interceptor = interceptor;
-function createBuilder() {
-    return addons.createBuilder();
-}
-exports.createBuilder = createBuilder;
 //# sourceMappingURL=scaffoldAddons.js.map

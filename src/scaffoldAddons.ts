@@ -7,6 +7,7 @@
  * --------------------------------------------------------------------------------------------------*/
 
 ///<reference path='../d.ts/typeioc.internal.d.ts' />
+///<reference path='../d.ts/typeioc.addons.d.ts' />
 
 'use strict';
 
@@ -16,10 +17,12 @@ import InterceptorModule = require('./interceptors/interceptor');
 
 export class ScaffoldAddons {
 
-    public interceptor() {
+    public interceptor() : Addons.Interceptors.IInterceptor {
 
         var decoratorService = this.decoratorService();
-        return this.interceptorService(decoratorService);
+        var proxy = new ProxyModule.Proxy(decoratorService);
+
+        return new InterceptorModule.Interceptor(proxy);
     }
 
     private decoratorService() : Typeioc.Internal.IDecoratorService {
@@ -29,11 +32,5 @@ export class ScaffoldAddons {
                 return new DecoratorModule.Decorator();
             }
         }
-    }
-
-    private interceptorService(decoratorService : Typeioc.Internal.IDecoratorService) {
-        var proxy = new ProxyModule.Proxy(decoratorService);
-
-        return new InterceptorModule.Interceptor(proxy);
     }
 }

@@ -24,8 +24,8 @@ export module Level7 {
 
         var container = containerBuilder.build();
 
-        var t1 = container.resolve<TestData.TestModule1.Test1>(TestData.TestModule1.Test1);
-        var t2 = container.resolve<TestData.TestModule2.Test1>(TestData.TestModule2.Test1);
+        var t1 = container.resolve(TestData.TestModule1.Test1);
+        var t2 = container.resolve(TestData.TestModule2.Test1);
 
         test.equal(t1.name, "test 1");
         test.equal(t2.name, "test 2");
@@ -45,8 +45,8 @@ export module Level7 {
 
         var container = containerBuilder.build();
 
-        var t1 = container.resolve<TestData.TestModule1.Test1>(TestData.TestModule1.Test1);
-        var t2 = container.resolve<TestData2.TestModule1.Test1>(TestData2.TestModule1.Test1);
+        var t1 = container.resolve(TestData.TestModule1.Test1);
+        var t2 = container.resolve(TestData2.TestModule1.Test1);
 
         test.strictEqual(t1, t2);
         test.equal(t1.name, "test 2");
@@ -62,7 +62,7 @@ export module Level7 {
 
         var container = containerBuilder.build();
 
-        var t1 = container.resolve<TestDataSecond.ServiceModule1.TestBaseClass>(TestDataSecond.ServiceModule1.TestBaseClass);
+        var t1 = container.resolve(TestDataSecond.ServiceModule1.TestBaseClass);
 
         test.equal(t1.name(), "Concrete class");
 
@@ -76,7 +76,7 @@ export module Level7 {
 
         var container = containerBuilder.build();
 
-        var t1 = container.resolve<TestDataSecond.ServiceModule1.TestBaseClass>(TestDataSecond.ServiceModule1.TestBaseClass);
+        var t1 = container.resolve(TestDataSecond.ServiceModule1.TestBaseClass);
 
         test.equal(t1.name(), "Concrete class");
 
@@ -127,7 +127,7 @@ export module Level7 {
 
         var container = containerBuilder.build();
 
-        var delegate = () => container.resolve<TestDataSecond.ServiceModule1.TestBaseClass>(TestDataSecond.ServiceModule1.TestBaseClass, 77);
+        var delegate = () => container.resolve(TestDataSecond.ServiceModule1.TestBaseClass, 77);
 
         test.throws(delegate, function(err) {
             return (err instanceof scaffold.Exceptions.ResolutionError) &&

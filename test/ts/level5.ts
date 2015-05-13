@@ -23,7 +23,7 @@ export module Level5 {
 
         var container = containerBuilder.build();
 
-        var test1 = container.resolve<TestData.Test1Base>(TestData.Test1Base);
+        var test1 = container.resolve(TestData.Test1Base);
 
         container.dispose();
 
@@ -43,7 +43,7 @@ export module Level5 {
 
         var container = containerBuilder.build();
 
-        var test1 = container.resolve<TestData.Test1Base>(TestData.Test1Base);
+        var test1 = container.resolve(TestData.Test1Base);
 
         container.dispose();
 
@@ -63,7 +63,7 @@ export module Level5 {
 
         var container = containerBuilder.build();
 
-        var test1 = container.resolve<TestData.Test1Base>(TestData.Test1Base);
+        var test1 = container.resolve(TestData.Test1Base);
 
         container.dispose();
 
@@ -83,7 +83,7 @@ export module Level5 {
 
         var container = containerBuilder.build();
 
-        var test1 = container.resolve<TestData.Test1Base>(TestData.Test1Base);
+        var test1 = container.resolve(TestData.Test1Base);
 
         container.dispose();
 
@@ -103,7 +103,7 @@ export module Level5 {
         var container = containerBuilder.build();
         var child = container.createChild();
 
-        var test1 = child.resolve<TestData.Test1Base>(TestData.Test1Base);
+        var test1 = child.resolve(TestData.Test1Base);
 
         child.dispose();
 
@@ -124,7 +124,7 @@ export module Level5 {
         var container = containerBuilder.build();
         var child = container.createChild();
 
-        var test1 = child.resolve<TestData.Test1Base>(TestData.Test1Base);
+        var test1 = child.resolve(TestData.Test1Base);
 
         container.dispose();
 
@@ -143,7 +143,7 @@ export module Level5 {
         var container = containerBuilder.build();
         var child = container.createChild();
 
-        var test1 = child.resolve<TestData.Test1Base>(TestData.Test1Base);
+        var test1 = child.resolve(TestData.Test1Base);
 
         container.dispose();
 
@@ -163,8 +163,8 @@ export module Level5 {
 
         var container = containerBuilder.build();
 
-        var i1 = container.resolve<TestData.Initializable>(TestData.Initializable);
-        var i2 = container.resolve<TestData.Initializable>(TestData.Initializable);
+        var i1 = container.resolve(TestData.Initializable);
+        var i2 = container.resolve(TestData.Initializable);
 
         test.deepEqual(i1, i2);
         test.deepEqual(i1.name, i2.name);
@@ -188,7 +188,7 @@ export module Level5 {
 
         var container = containerBuilder.build();
 
-        var i1 = container.resolve<TestData.Initializable>(TestData.Initializable);
+        var i1 = container.resolve(TestData.Initializable);
 
         test.notEqual(i1, null);
         test.notEqual(i1, undefined);
@@ -219,8 +219,8 @@ export module Level5 {
         var secondContainer = secondContainerBuilder.build();
 
 
-        var test1 = container.resolve<TestData.Test1Base>(TestData.Test1Base);
-        var test2 = secondContainer.resolve<TestData.Test1Base>(TestData.Test1Base);
+        var test1 = container.resolve(TestData.Test1Base);
+        var test2 = secondContainer.resolve(TestData.Test1Base);
 
         test.strictEqual(test1.Disposed, false);
         test.strictEqual(test2.Disposed, false);

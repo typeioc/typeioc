@@ -53,45 +53,6 @@ declare module Typeioc {
         class ProxyError extends ApplicationError { }
     }
 
-    module Interceptors {
-
-        enum CallInfoType {
-            Method = 1,
-            Getter = 2,
-            Setter = 3,
-            GetterSetter = 4,
-            Any = 5,
-            Field = 6
-        }
-
-        interface IInterceptor {
-            intercept(subject : Function | Object, substitutes? : Array<ISubstituteInfo>) : Function | Object;
-        }
-
-        interface ICallInfo {
-            name : string;
-            args : Array<any>;
-            invoke: (args? : Array<any>) => any;
-            type : CallInfoType;
-            get? : () => any;
-            set? : (any) => void;
-            next? : (result? : any)=> any;
-            result? : any;
-        }
-
-        interface ISubstituteInfo {
-            method? : string;
-            type? : CallInfoType;
-            wrapper : (ICallInfo) => any;
-        }
-
-        interface ISubstitute extends ISubstituteInfo {
-            method? : string;
-            type : CallInfoType;
-            next? : ISubstitute;
-        }
-    }
-
     interface IContainerBuilder {
         defaults : IDefaults;
         register<R>(service : any) : IRegistration<R>;
@@ -102,11 +63,11 @@ declare module Typeioc {
 
     interface IContainer {
         cache : any;
-        resolve<R>(service: any, ...args:any[]);
-        tryResolve<R>(service: any, ...args:any[]);
-        resolveNamed<R>(service: any, name : string, ...args:any[]);
-        tryResolveNamed<R>(service: any, name : string, ...args:any[]);
-        resolveWithDependencies<R>(service: any, dependencies : IDynamicDependency[]) : R;
+        resolve<R>(service: R, ...args:any[]);
+        tryResolve<R>(service: R, ...args:any[]);
+        resolveNamed<R>(service: R, name : string, ...args:any[]);
+        tryResolveNamed<R>(service: R, name : string, ...args:any[]);
+        resolveWithDependencies<R>(service: R, dependencies : IDynamicDependency[]);
         resolveWith<R>(service : any) : IResolveWith<R>;
 
         createChild : () => IContainer;
@@ -264,5 +225,5 @@ declare module Typeioc {
 }
 
 declare module "typeioc" {
-export = Typeioc;
+    export = Typeioc;
 }

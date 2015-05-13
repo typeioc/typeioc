@@ -1,6 +1,10 @@
 -m commonjs
 --sourceMap
 -t ES5
+../test/data/test-data.ts
+../test/data/test-data2.ts
+../test/data/test-data-intercept.ts
+../test/data/config.ts
 ../test/scaffold.ts
 ../test/scaffoldAddons.ts
 ../test/ts/level1.ts
@@ -13,3 +17,5 @@
 ../test/ts/level8.ts
 ../test/ts/level9.ts
 ../test/ts/level10.ts
+../test/ts/level11.ts
+../test/ts/level12.ts

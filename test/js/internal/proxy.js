@@ -23,32 +23,38 @@ exports.internal = {
             create : function() { return decorator; }
         };
 
-        function createStorage(types, substitutes, exclude) {
+        function createStorage(types, substitutes, include) {
 
             var types = Array.isArray(types) ? types : [ types ];
             var substitutes = Array.isArray(substitutes) ? substitutes : [ substitutes ];
 
+            include = include || 'foo';
+
             return {
                 getKnownTypes : function(p) {
-                    return p !== exclude ? types : [];
+                    return p === include ? types : [];
                 },
                 getSubstitutes : function(p) {
-                    return p !== exclude ? substitutes : [];
+                    return p === include ? substitutes : [];
                 }
             };
+        }
+
+        function setUp(callback) {
+
+            proxy = new ProxyModule.Proxy(decoratorService);
+
+            callback();
         }
 
         return {
 
             byPrototype : {
-                setUp: function (callback) {
-
-                    proxy = new ProxyModule.Proxy(decoratorService);
-
-                    callback();
-                },
+                setUp : setUp,
 
                 should_construct_parent_instance : function(test) {
+
+                    decorator.wrap = mockery.stub();
 
                     var a1 = 0;
                     var a2 = 0;
@@ -74,7 +80,13 @@ exports.internal = {
 
                 should_proxy_prototype_method : function(test) {
 
-                    decorator.wrap = mockery.stub();
+                    var stub = mockery.stub();
+
+                    decorator.wrap = function(info) {
+                        info.destination[info.name] = 111;
+
+                        stub(info.name);
+                    };
 
                     function parent(arg1) {
                         this.arg1 = arg1;
@@ -87,14 +99,20 @@ exports.internal = {
                     var Proto = proxy.byPrototype(parent);
                     var instance = new Proto(1);
 
-                    test.ok(decorator.wrap.calledOnce);
+                    test.ok(stub.withArgs('foo').calledOnce);
 
                     test.done();
                 },
 
                 should_decorate_prototype_field : function(test) {
 
-                    decorator.wrap = mockery.stub();
+                    var stub = mockery.stub();
+
+                    decorator.wrap = function(info) {
+                        info.destination[info.name] = 111;
+
+                        stub(info.name);
+                    };
 
                     function parent() { }
                     parent.prototype.foo = 1;
@@ -109,15 +127,20 @@ exports.internal = {
                     var Proto = proxy.byPrototype(parent, storage);
                     var instance = new Proto();
 
-                    test.ok(decorator.wrap.calledOnce);
+                    test.ok(stub.withArgs('foo').calledOnce);
 
                     test.done();
                 },
 
                 should_decorate_for_any : function(test) {
 
-                    decorator.wrap = mockery.stub();
-                    decorator.propertyType = PropertyType.Field;
+                    var stub = mockery.stub();
+
+                    decorator.wrap = function(info) {
+                        info.destination[info.name] = 111;
+
+                        stub(info.name);
+                    };
 
                     function parent() { }
                     parent.prototype.foo = 1;
@@ -132,15 +155,20 @@ exports.internal = {
                     var Proto = proxy.byPrototype(parent, storage);
                     var instance = new Proto();
 
-                    test.ok(decorator.wrap.calledOnce);
+                    test.ok(stub.withArgs('foo').calledOnce);
 
                     test.done();
                 },
 
                 should_decorate_for_any_and_method : function(test) {
 
-                    decorator.wrap = mockery.stub();
-                    decorator.propertyType = PropertyType.Method;
+                    var stub = mockery.stub();
+
+                    decorator.wrap = function(info) {
+                        info.destination[info.name] = 111;
+
+                        stub(info.name);
+                    };
 
                     function parent() { }
                     parent.prototype.foo = function() { return 1};
@@ -160,14 +188,20 @@ exports.internal = {
                     var Proto = proxy.byPrototype(parent, storage);
                     var instance = new Proto();
 
-                    test.ok(decorator.wrap.calledOnce);
+                    test.ok(stub.withArgs('foo').calledOnce);
 
                     test.done();
                 },
 
                 should_decorate_for_any_and_any_property : function(test) {
 
-                    decorator.wrap = mockery.stub();
+                    var stub = mockery.stub();
+
+                    decorator.wrap = function(info) {
+                        info.destination[info.name] = 111;
+
+                        stub(info.name);
+                    };
 
                     function parent() { }
                     parent.prototype.foo = 1;
@@ -187,14 +221,20 @@ exports.internal = {
                     var Proto = proxy.byPrototype(parent, storage);
                     var instance = new Proto();
 
-                    test.ok(decorator.wrap.calledOnce);
+                    test.ok(stub.withArgs('foo').calledOnce);
 
                     test.done();
                 },
 
                 should_decorate_prototype_getter : function(test) {
 
-                    decorator.wrap = mockery.stub();
+                    var stub = mockery.stub();
+
+                    decorator.wrap = function(info) {
+                        info.destination[info.name] = 111;
+
+                        stub(info.name);
+                    };
 
                     function parent() { }
                     Object.defineProperty(parent.prototype, 'foo', {
@@ -215,14 +255,20 @@ exports.internal = {
                     var Proto = proxy.byPrototype(parent, storage);
                     var instance = new Proto();
 
-                    test.ok(decorator.wrap.calledOnce);
+                    test.ok(stub.withArgs('foo').calledOnce);
 
                     test.done();
                 },
 
                 should_decorate_prototype_setter : function(test) {
 
-                    decorator.wrap = mockery.stub();
+                    var stub = mockery.stub();
+
+                    decorator.wrap = function(info) {
+                        info.destination[info.name] = 111;
+
+                        stub(info.name);
+                    };
 
                     function parent() { }
                     Object.defineProperty(parent.prototype, 'foo', {
@@ -240,14 +286,20 @@ exports.internal = {
                     var Proto = proxy.byPrototype(parent, storage);
                     var instance = new Proto();
 
-                    test.ok(decorator.wrap.calledOnce);
+                    test.ok(stub.withArgs('foo').calledOnce);
 
                     test.done();
                 },
 
                 should_decorate_prototype_full_property : function(test) {
 
-                    decorator.wrap = mockery.stub();
+                    var stub = mockery.stub();
+
+                    decorator.wrap = function(info) {
+                        info.destination[info.name] = 111;
+
+                        stub(info.name);
+                    };
 
                     function parent() { }
                     Object.defineProperty(parent.prototype, 'foo', {
@@ -266,7 +318,7 @@ exports.internal = {
                     var Proto = proxy.byPrototype(parent, storage);
                     var instance = new Proto();
 
-                    test.ok(decorator.wrap.calledOnce);
+                    test.ok(stub.withArgs('foo').calledOnce);
 
                     test.done();
                 },
@@ -446,12 +498,7 @@ exports.internal = {
 
             byInstance : {
 
-                setUp: function (callback) {
-
-                    proxy = new ProxyModule.Proxy(decoratorService);
-
-                    callback();
-                },
+                setUp : setUp,
 
                 should_proxy_instance_method : function(test) {
 
@@ -465,7 +512,7 @@ exports.internal = {
 
                     var instance = proxy.byInstance(parent);
 
-                    test.ok(decorator.wrap.calledOnce);
+                    test.ok(decorator.wrap.withArgs(mockery.match({ name: 'foo' })).calledOnce);
 
                     test.done();
                 },
@@ -486,7 +533,7 @@ exports.internal = {
                     var storage = createStorage(Scaffold.Types.CallInfoType.Field, substitute);
                     var instance = proxy.byInstance(new parent(), storage);
 
-                    test.ok(decorator.wrap.calledOnce);
+                    test.ok(decorator.wrap.withArgs(mockery.match({ name: 'foo' })).calledOnce);
 
                     test.done();
                 },
@@ -507,7 +554,7 @@ exports.internal = {
                     var storage = createStorage(Scaffold.Types.CallInfoType.Any, substitute);
                     var instance = proxy.byInstance(new parent(), storage);
 
-                    test.ok(decorator.wrap.calledOnce);
+                    test.ok(decorator.wrap.withArgs(mockery.match({ name: 'foo' })).calledOnce);
 
                     test.done();
                 },
@@ -533,7 +580,7 @@ exports.internal = {
                     var storage = createStorage(Scaffold.Types.CallInfoType.Method, substitute);
                     var instance = proxy.byInstance(new parent(), storage);
 
-                    test.ok(decorator.wrap.calledOnce);
+                    test.ok(decorator.wrap.withArgs(mockery.match({ name: 'foo' })).calledOnce);
 
                     test.done();
                 },
@@ -559,7 +606,7 @@ exports.internal = {
                     var storage = createStorage([Scaffold.Types.CallInfoType.Field, Scaffold.Types.CallInfoType.Any], substitute);
                     var instance = proxy.byInstance(new parent(), storage);
 
-                    test.ok(decorator.wrap.calledOnce);
+                    test.ok(decorator.wrap.withArgs(mockery.match({ name: 'foo' })).calledOnce);
 
                     test.done();
                 },
@@ -585,7 +632,7 @@ exports.internal = {
                     var storage = createStorage(Scaffold.Types.CallInfoType.Getter, substitute);
                     var instance = proxy.byInstance(new parent(), storage);
 
-                    test.ok(decorator.wrap.calledOnce);
+                    test.ok(decorator.wrap.withArgs(mockery.match({ name: 'foo' })).calledOnce);
 
                     test.done();
                 },
@@ -609,7 +656,7 @@ exports.internal = {
                     var storage = createStorage(Scaffold.Types.CallInfoType.Setter, substitute);
                     var instance = proxy.byInstance(new parent(), storage);
 
-                    test.ok(decorator.wrap.calledOnce);
+                    test.ok(decorator.wrap.withArgs(mockery.match({ name: 'foo' })).calledOnce);
 
                     test.done();
                 },
@@ -634,7 +681,7 @@ exports.internal = {
                     var storage = createStorage(Scaffold.Types.CallInfoType.GetterSetter, substitute);
                     var instance = proxy.byInstance(new parent(), storage);
 
-                    test.ok(decorator.wrap.calledOnce);
+                    test.ok(decorator.wrap.withArgs(mockery.match({ name: 'foo' })).calledOnce);
 
                     test.done();
                 },
@@ -686,7 +733,7 @@ exports.internal = {
                         wrapper : function(callInfo) { }
                     };
 
-                    var storage = createStorage(Scaffold.Types.CallInfoType.Getter, substitute, 'arg1');
+                    var storage = createStorage(Scaffold.Types.CallInfoType.Getter, substitute);
                     var delegate = function() {
                         proxy.byInstance(new parent(), storage);
                     };
@@ -723,7 +770,7 @@ exports.internal = {
                         wrapper : function(callInfo) { }
                     };
 
-                    var storage = createStorage(Scaffold.Types.CallInfoType.Method, substitute, 'arg1');
+                    var storage = createStorage(Scaffold.Types.CallInfoType.Method, substitute);
                     var delegate = function() { proxy.byInstance(new parent(), storage); };
 
                     test.throws(delegate, function(error) {
@@ -759,7 +806,7 @@ exports.internal = {
                         wrapper : function(callInfo) { }
                     };
 
-                    var storage = createStorage(Scaffold.Types.CallInfoType.Method, substitute, 'arg1');
+                    var storage = createStorage(Scaffold.Types.CallInfoType.Method, substitute);
                     var delegate = function() { proxy.byInstance(new parent(), storage); };
 
                     test.throws(delegate, function(error) {
@@ -796,7 +843,7 @@ exports.internal = {
                         wrapper : function(callInfo) { }
                     };
 
-                    var storage = createStorage(Scaffold.Types.CallInfoType.Method, substitute, 'arg1');
+                    var storage = createStorage(Scaffold.Types.CallInfoType.Method, substitute);
                     var delegate = function() { proxy.byInstance(new parent(), storage); };
 
                     test.throws(delegate, function(error) {

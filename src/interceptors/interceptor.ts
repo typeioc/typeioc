@@ -1,4 +1,5 @@
 /// <reference path="../../d.ts/typeioc.internal.d.ts" />
+/// <reference path="../../d.ts/typeioc.addons.d.ts" />
 
 'use strict';
 
@@ -7,10 +8,11 @@ import Exceptions = require('../exceptions/index');
 import SubstituteStorageModule = require('./substituteStorage');
 import IStorage = Typeioc.Internal.Interceptors.IStorage;
 import IProxy = Typeioc.Internal.Interceptors.IProxy;
-import ISubstituteInfo = Typeioc.Interceptors.ISubstituteInfo;
-import ISubstitute = Typeioc.Interceptors.ISubstitute;
+import ISubstituteInfo = Addons.Interceptors.ISubstituteInfo;
+import ISubstitute = Addons.Interceptors.ISubstitute;
 
-export class Interceptor implements Typeioc.Interceptors.IInterceptor {
+
+export class Interceptor implements Addons.Interceptors.IInterceptor {
 
     private _storage : IStorage;
 
@@ -18,21 +20,38 @@ export class Interceptor implements Typeioc.Interceptors.IInterceptor {
         this._storage = new SubstituteStorageModule.SubstituteStorage();
     }
 
-    public intercept(subject : Function | Object, substitutes? : Array<ISubstituteInfo>) : Function | Object {
+    public interceptPrototype<R extends Function>(subject : R, substitutes? : Array<ISubstituteInfo>) : R {
+
+        return this.intercept(subject, substitutes);
+    }
+
+    public interceptInstance<R extends Object>(subject : R, substitutes? : Array<ISubstituteInfo>) : R {
+
+        return this.intercept(subject, substitutes);
+    }
+
+    public intercept<R extends (Function | Object)>(subject : R, substitutes? : Array<ISubstituteInfo>) : R {
 
         Utils.checkNullArgument(subject, 'subject');
 
         var storage = substitutes ? this.transformSubstitutes(substitutes) : null;
 
-        if(Utils.Reflection.isPrototype(subject)) {
-            return this._proxy.byPrototype(<Function>subject, storage);
+        var result : any;
+        var argument : any = subject;
+
+        if(Utils.Reflection.isPrototype(argument)) {
+
+            result = this._proxy.byPrototype(argument, storage);
+
+        }else if(Utils.Reflection.isObject(argument)) {
+
+            result = this._proxy.byInstance(argument, storage);
+        } else {
+
+            throw new Exceptions.ArgumentError('subject', 'Subject should be a prototype function or an object');
         }
 
-        if(Utils.Reflection.isObject(subject)) {
-            return this._proxy.byInstance(subject, storage);
-        }
-
-        throw new Exceptions.ArgumentError('subject', 'Subject should be a prototype function or an object');
+        return result;
     }
 
     private transformSubstitutes(substitutes : Array<ISubstituteInfo>) : IStorage {
@@ -56,7 +75,7 @@ export class Interceptor implements Typeioc.Interceptors.IInterceptor {
 
         return {
             method : value.method,
-            type : value.type || Typeioc.Interceptors.CallInfoType.Any,
+            type : value.type || Addons.Interceptors.CallInfoType.Any,
             wrapper : value.wrapper,
             next : null
         };
