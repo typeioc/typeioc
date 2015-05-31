@@ -35,8 +35,8 @@ var os = require('os');
             js:   '../lib/**/*.js'
         },
         build : {
-            sources : 'tsc @compile_lib.txt',
-            tests :   'tsc @compile_tests.txt'
+            sources : 'tsc -p ./lib/',
+            tests :   'tsc -p ./tests/'
         },
         copyright :   '../COPYRIGHT'
     };
