@@ -182,17 +182,12 @@ var os = require('os');
         });
     }
 
-    function watchTasks() {
-        gulp.watch([paths.tests.js], ['run-tests']);
-    }
-
     return {
         build: function() {
             compileTasks();
             cleanTasks();
             headerTasks();
             runTests();
-            watchTasks();
         }
     };
 })()
