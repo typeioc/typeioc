@@ -1,3 +1,11 @@
+/*---------------------------------------------------------------------------------------------------
+ * Copyright (c) 2015 Maxim Gherman
+ * typeioc - Dependency injection container for node typescript
+ * @version v1.2.8
+ * @link https://github.com/maxgherman/TypeIOC
+ * @license (MIT) - https://github.com/maxgherman/TypeIOC/blob/master/LICENSE
+ * --------------------------------------------------------------------------------------------------*/
+
 
 /// <reference path="../../d.ts/typeioc.internal.d.ts" />
 /// <reference path="../../d.ts/typeioc.addons.d.ts" />
