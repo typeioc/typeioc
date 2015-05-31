@@ -6,8 +6,10 @@ exports.internal = {
     proxy: (function () {
 
         var Scaffold = require('../../scaffold');
+        var ScaffoldAddons = require('../../scaffoldAddons');
         var ProxyModule = require('./../../../lib/interceptors/proxy');
         var mockery = Scaffold.Mockery;
+        var CallInfoType = ScaffoldAddons.Interceptors.CallInfoType;
 
         var PropertyType = {
             Method : 1,                 // method
@@ -19,9 +21,6 @@ exports.internal = {
 
         var proxy;
         var decorator = {};
-        var decoratorService = {
-            create : function() { return decorator; }
-        };
 
         function createStorage(types, substitutes, include) {
 
@@ -42,7 +41,7 @@ exports.internal = {
 
         function setUp(callback) {
 
-            proxy = new ProxyModule.Proxy(decoratorService);
+            proxy = new ProxyModule.Proxy(decorator);
 
             callback();
         }
@@ -119,11 +118,11 @@ exports.internal = {
 
                     var substitute = {
                         method : 'foo',
-                        type : Scaffold.Types.CallInfoType.Field,
+                        type : CallInfoType.Field,
                         wrapper : function(callInfo) { }
                     };
 
-                    var storage = createStorage(Scaffold.Types.CallInfoType.Field, substitute);
+                    var storage = createStorage(CallInfoType.Field, substitute);
                     var Proto = proxy.byPrototype(parent, storage);
                     var instance = new Proto();
 
@@ -147,11 +146,11 @@ exports.internal = {
 
                     var substitute = {
                         method : 'foo',
-                        type : Scaffold.Types.CallInfoType.Any,
+                        type : CallInfoType.Any,
                         wrapper : function(callInfo) { }
                     };
 
-                    var storage = createStorage(Scaffold.Types.CallInfoType.Any, substitute);
+                    var storage = createStorage(CallInfoType.Any, substitute);
                     var Proto = proxy.byPrototype(parent, storage);
                     var instance = new Proto();
 
@@ -175,16 +174,16 @@ exports.internal = {
 
                     var substitute = {
                         method : 'foo',
-                        type : Scaffold.Types.CallInfoType.Any,
+                        type : CallInfoType.Any,
                         wrapper : function(callInfo) { },
                         next : {
                             method : 'foo',
-                            type : Scaffold.Types.CallInfoType.Method,
+                            type : CallInfoType.Method,
                             wrapper : function(callInfo) { }
                         }
                     };
 
-                    var storage = createStorage(Scaffold.Types.CallInfoType.Method, substitute);
+                    var storage = createStorage(CallInfoType.Method, substitute);
                     var Proto = proxy.byPrototype(parent, storage);
                     var instance = new Proto();
 
@@ -208,16 +207,16 @@ exports.internal = {
 
                     var substitute = {
                         method : 'foo',
-                        type : Scaffold.Types.CallInfoType.Any,
+                        type : CallInfoType.Any,
                         wrapper : function(callInfo) { },
                         next : {
                             method : 'foo',
-                            type : Scaffold.Types.CallInfoType.Field,
+                            type : CallInfoType.Field,
                             wrapper : function(callInfo) { }
                         }
                     };
 
-                    var storage = createStorage([Scaffold.Types.CallInfoType.Field, Scaffold.Types.CallInfoType.Any], substitute);
+                    var storage = createStorage([CallInfoType.Field, CallInfoType.Any], substitute);
                     var Proto = proxy.byPrototype(parent, storage);
                     var instance = new Proto();
 
@@ -251,7 +250,7 @@ exports.internal = {
                         wrapper : function(callInfo) { }
                     };
 
-                    var storage = createStorage(Scaffold.Types.CallInfoType.Getter, substitute);
+                    var storage = createStorage(CallInfoType.Getter, substitute);
                     var Proto = proxy.byPrototype(parent, storage);
                     var instance = new Proto();
 
@@ -282,7 +281,7 @@ exports.internal = {
                         wrapper : function(callInfo) { }
                     };
 
-                    var storage = createStorage(Scaffold.Types.CallInfoType.Setter, substitute);
+                    var storage = createStorage(CallInfoType.Setter, substitute);
                     var Proto = proxy.byPrototype(parent, storage);
                     var instance = new Proto();
 
@@ -314,7 +313,7 @@ exports.internal = {
                         wrapper : function(callInfo) { }
                     };
 
-                    var storage = createStorage(Scaffold.Types.CallInfoType.GetterSetter, substitute);
+                    var storage = createStorage(CallInfoType.GetterSetter, substitute);
                     var Proto = proxy.byPrototype(parent, storage);
                     var instance = new Proto();
 
@@ -331,24 +330,25 @@ exports.internal = {
                     parent.prototype.foo = 1;
 
                     var substitute = {
-                        type: Scaffold.Types.CallInfoType.Getter,
+                        type: CallInfoType.Getter,
                         method : 'foo',
                         wrapper : function(callInfo) { }
                     };
 
-                    var storage = createStorage(Scaffold.Types.CallInfoType.Getter, substitute);
+                    var storage = createStorage(CallInfoType.Getter, substitute);
                     var delegate = function() { proxy.byPrototype(parent, storage); };
 
                     test.throws(delegate, function(error) {
-                        test.strictEqual(error.message, 'Could not match proxy type and property type for field');
+                        test.strictEqual(error.message, 'Could not match proxy type and property type. Expected: "Field", Actual: "Getter"');
                         test.strictEqual(error.data.method, 'foo');
-                        test.strictEqual(error.data.type, Scaffold.Types.CallInfoType.Field);
+                        test.strictEqual(error.data.expected, 'Field');
+                        test.strictEqual(error.data.actual, 'Getter');
                         return error instanceof Scaffold.Exceptions.ProxyError;
                     });
 
                     test.strictEqual(decorator.wrap.callCount, 0);
 
-                    test.expect(5);
+                    test.expect(6);
                     test.done();
                 },
 
@@ -366,24 +366,25 @@ exports.internal = {
                     };
 
                     var substitute = {
-                        type: Scaffold.Types.CallInfoType.Getter,
+                        type: CallInfoType.Getter,
                         method : 'foo',
                         wrapper : function(callInfo) { }
                     };
 
-                    var storage = createStorage(Scaffold.Types.CallInfoType.Getter, substitute);
+                    var storage = createStorage(CallInfoType.Getter, substitute);
                     var delegate = function() { proxy.byPrototype(parent, storage); };
 
                     test.throws(delegate, function(error) {
-                        test.strictEqual(error.message, 'Could not match proxy type and property type for method');
+                        test.strictEqual(error.message, 'Could not match proxy type and property type. Expected: "Method", Actual: "Getter"');
                         test.strictEqual(error.data.method, 'foo');
-                        test.strictEqual(error.data.type, Scaffold.Types.CallInfoType.Method);
+                        test.strictEqual(error.data.expected, 'Method');
+                        test.strictEqual(error.data.actual, 'Getter');
                         return error instanceof Scaffold.Exceptions.ProxyError;
                     });
 
                     test.strictEqual(decorator.wrap.callCount, 0);
 
-                    test.expect(5);
+                    test.expect(6);
                     test.done();
                 },
 
@@ -401,24 +402,25 @@ exports.internal = {
                     });
 
                     var substitute = {
-                        type: Scaffold.Types.CallInfoType.Method,
+                        type: CallInfoType.Method,
                         method : 'foo',
                         wrapper : function(callInfo) { }
                     };
 
-                    var storage = createStorage(Scaffold.Types.CallInfoType.Method, substitute);
+                    var storage = createStorage(CallInfoType.Method, substitute);
                     var delegate = function() { proxy.byPrototype(parent, storage); };
 
                     test.throws(delegate, function(error) {
-                        test.strictEqual(error.message, 'Could not match proxy type and property type for getter');
+                        test.strictEqual(error.message, 'Could not match proxy type and property type. Expected: "Getter", Actual: "Method"');
                         test.strictEqual(error.data.method, 'foo');
-                        test.strictEqual(error.data.type, Scaffold.Types.CallInfoType.Getter);
+                        test.strictEqual(error.data.expected, 'Getter');
+                        test.strictEqual(error.data.actual, 'Method');
                         return error instanceof Scaffold.Exceptions.ProxyError;
                     });
 
                     test.strictEqual(decorator.wrap.callCount, 0);
 
-                    test.expect(5);
+                    test.expect(6);
                     test.done();
                 },
 
@@ -437,24 +439,25 @@ exports.internal = {
                     });
 
                     var substitute = {
-                        type: Scaffold.Types.CallInfoType.Method,
+                        type: CallInfoType.Method,
                         method : 'foo',
                         wrapper : function(callInfo) { }
                     };
 
-                    var storage = createStorage(Scaffold.Types.CallInfoType.Method, substitute);
+                    var storage = createStorage(CallInfoType.Method, substitute);
                     var delegate = function() { proxy.byPrototype(parent, storage); };
 
                     test.throws(delegate, function(error) {
-                        test.strictEqual(error.message, 'Could not match proxy type and property type for setter');
+                        test.strictEqual(error.message, 'Could not match proxy type and property type. Expected: "Setter", Actual: "Method"');
                         test.strictEqual(error.data.method, 'foo');
-                        test.strictEqual(error.data.type, Scaffold.Types.CallInfoType.Setter);
+                        test.strictEqual(error.data.expected, 'Setter');
+                        test.strictEqual(error.data.actual, 'Method');
                         return error instanceof Scaffold.Exceptions.ProxyError;
                     });
 
                     test.strictEqual(decorator.wrap.callCount, 0);
 
-                    test.expect(5);
+                    test.expect(6);
                     test.done();
                 },
 
@@ -474,24 +477,25 @@ exports.internal = {
                     });
 
                     var substitute = {
-                        type: Scaffold.Types.CallInfoType.Method,
+                        type: CallInfoType.Method,
                         method : 'foo',
                         wrapper : function(callInfo) { }
                     };
 
-                    var storage = createStorage(Scaffold.Types.CallInfoType.Method, substitute);
+                    var storage = createStorage(CallInfoType.Method, substitute);
                     var delegate = function() { proxy.byPrototype(parent, storage); };
 
                     test.throws(delegate, function(error) {
-                        test.strictEqual(error.message, 'Could not match proxy type and property type for getter-setter');
+                        test.strictEqual(error.message, 'Could not match proxy type and property type. Expected: "GetterSetter", Actual: "Method"');
                         test.strictEqual(error.data.method, 'foo');
-                        test.strictEqual(error.data.type, Scaffold.Types.CallInfoType.GetterSetter);
+                        test.strictEqual(error.data.expected, 'GetterSetter');
+                        test.strictEqual(error.data.actual, 'Method');
                         return error instanceof Scaffold.Exceptions.ProxyError;
                     });
 
                     test.strictEqual(decorator.wrap.callCount, 0);
 
-                    test.expect(5);
+                    test.expect(6);
                     test.done();
                 }
             },
@@ -526,11 +530,11 @@ exports.internal = {
 
                     var substitute = {
                         method : 'foo',
-                        type : Scaffold.Types.CallInfoType.Field,
+                        type : CallInfoType.Field,
                         wrapper : function(callInfo) { }
                     };
 
-                    var storage = createStorage(Scaffold.Types.CallInfoType.Field, substitute);
+                    var storage = createStorage(CallInfoType.Field, substitute);
                     var instance = proxy.byInstance(new parent(), storage);
 
                     test.ok(decorator.wrap.withArgs(mockery.match({ name: 'foo' })).calledOnce);
@@ -547,11 +551,11 @@ exports.internal = {
 
                     var substitute = {
                         method : 'foo',
-                        type : Scaffold.Types.CallInfoType.Any,
+                        type : CallInfoType.Any,
                         wrapper : function(callInfo) { }
                     };
 
-                    var storage = createStorage(Scaffold.Types.CallInfoType.Any, substitute);
+                    var storage = createStorage(CallInfoType.Any, substitute);
                     var instance = proxy.byInstance(new parent(), storage);
 
                     test.ok(decorator.wrap.withArgs(mockery.match({ name: 'foo' })).calledOnce);
@@ -568,16 +572,16 @@ exports.internal = {
 
                     var substitute = {
                         method : 'foo',
-                        type : Scaffold.Types.CallInfoType.Any,
+                        type : CallInfoType.Any,
                         wrapper : function(callInfo) { },
                         next : {
                             method : 'foo',
-                            type : Scaffold.Types.CallInfoType.Method,
+                            type : CallInfoType.Method,
                             wrapper : function(callInfo) { }
                         }
                     };
 
-                    var storage = createStorage(Scaffold.Types.CallInfoType.Method, substitute);
+                    var storage = createStorage(CallInfoType.Method, substitute);
                     var instance = proxy.byInstance(new parent(), storage);
 
                     test.ok(decorator.wrap.withArgs(mockery.match({ name: 'foo' })).calledOnce);
@@ -594,16 +598,16 @@ exports.internal = {
 
                     var substitute = {
                         method : 'foo',
-                        type : Scaffold.Types.CallInfoType.Any,
+                        type : CallInfoType.Any,
                         wrapper : function(callInfo) { },
                         next : {
                             method : 'foo',
-                            type : Scaffold.Types.CallInfoType.Field,
+                            type : CallInfoType.Field,
                             wrapper : function(callInfo) { }
                         }
                     };
 
-                    var storage = createStorage([Scaffold.Types.CallInfoType.Field, Scaffold.Types.CallInfoType.Any], substitute);
+                    var storage = createStorage([CallInfoType.Field, CallInfoType.Any], substitute);
                     var instance = proxy.byInstance(new parent(), storage);
 
                     test.ok(decorator.wrap.withArgs(mockery.match({ name: 'foo' })).calledOnce);
@@ -629,7 +633,7 @@ exports.internal = {
                         wrapper : function(callInfo) { }
                     };
 
-                    var storage = createStorage(Scaffold.Types.CallInfoType.Getter, substitute);
+                    var storage = createStorage(CallInfoType.Getter, substitute);
                     var instance = proxy.byInstance(new parent(), storage);
 
                     test.ok(decorator.wrap.withArgs(mockery.match({ name: 'foo' })).calledOnce);
@@ -653,7 +657,7 @@ exports.internal = {
                         wrapper : function(callInfo) { }
                     };
 
-                    var storage = createStorage(Scaffold.Types.CallInfoType.Setter, substitute);
+                    var storage = createStorage(CallInfoType.Setter, substitute);
                     var instance = proxy.byInstance(new parent(), storage);
 
                     test.ok(decorator.wrap.withArgs(mockery.match({ name: 'foo' })).calledOnce);
@@ -678,7 +682,7 @@ exports.internal = {
                         wrapper : function(callInfo) { }
                     };
 
-                    var storage = createStorage(Scaffold.Types.CallInfoType.GetterSetter, substitute);
+                    var storage = createStorage(CallInfoType.GetterSetter, substitute);
                     var instance = proxy.byInstance(new parent(), storage);
 
                     test.ok(decorator.wrap.withArgs(mockery.match({ name: 'foo' })).calledOnce);
@@ -694,24 +698,25 @@ exports.internal = {
                     parent.prototype.foo = 1;
 
                     var substitute = {
-                        type: Scaffold.Types.CallInfoType.Getter,
+                        type: CallInfoType.Getter,
                         method : 'foo',
                         wrapper : function(callInfo) { }
                     };
 
-                    var storage = createStorage(Scaffold.Types.CallInfoType.Getter, substitute);
+                    var storage = createStorage(CallInfoType.Getter, substitute);
                     var delegate = function() { proxy.byInstance(new parent(), storage); };
 
                     test.throws(delegate, function(error) {
-                        test.strictEqual(error.message, 'Could not match proxy type and property type for field');
+                        test.strictEqual(error.message, 'Could not match proxy type and property type. Expected: "Field", Actual: "Getter"');
                         test.strictEqual(error.data.method, 'foo');
-                        test.strictEqual(error.data.type, Scaffold.Types.CallInfoType.Field);
+                        test.strictEqual(error.data.expected, 'Field');
+                        test.strictEqual(error.data.actual, 'Getter');
                         return error instanceof Scaffold.Exceptions.ProxyError;
                     });
 
                     test.strictEqual(decorator.wrap.callCount, 0);
 
-                    test.expect(5);
+                    test.expect(6);
                     test.done();
                 },
 
@@ -728,26 +733,27 @@ exports.internal = {
                     };
 
                     var substitute = {
-                        type: Scaffold.Types.CallInfoType.Getter,
+                        type: CallInfoType.Getter,
                         method : 'foo',
                         wrapper : function(callInfo) { }
                     };
 
-                    var storage = createStorage(Scaffold.Types.CallInfoType.Getter, substitute);
+                    var storage = createStorage(CallInfoType.Getter, substitute);
                     var delegate = function() {
                         proxy.byInstance(new parent(), storage);
                     };
 
                     test.throws(delegate, function(error) {
-                        test.strictEqual(error.message, 'Could not match proxy type and property type for method');
+                        test.strictEqual(error.message, 'Could not match proxy type and property type. Expected: "Method", Actual: "Getter"');
                         test.strictEqual(error.data.method, 'foo');
-                        test.strictEqual(error.data.type, Scaffold.Types.CallInfoType.Method);
+                        test.strictEqual(error.data.expected, 'Method');
+                        test.strictEqual(error.data.actual, 'Getter');
                         return error instanceof Scaffold.Exceptions.ProxyError;
                     });
 
                     test.strictEqual(decorator.wrap.callCount, 1);
 
-                    test.expect(5);
+                    test.expect(6);
                     test.done();
                 },
 
@@ -765,24 +771,25 @@ exports.internal = {
                     });
 
                     var substitute = {
-                        type: Scaffold.Types.CallInfoType.Method,
+                        type: CallInfoType.Method,
                         method : 'foo',
                         wrapper : function(callInfo) { }
                     };
 
-                    var storage = createStorage(Scaffold.Types.CallInfoType.Method, substitute);
+                    var storage = createStorage(CallInfoType.Method, substitute);
                     var delegate = function() { proxy.byInstance(new parent(), storage); };
 
                     test.throws(delegate, function(error) {
-                        test.strictEqual(error.message, 'Could not match proxy type and property type for getter');
+                        test.strictEqual(error.message, 'Could not match proxy type and property type. Expected: "Getter", Actual: "Method"');
                         test.strictEqual(error.data.method, 'foo');
-                        test.strictEqual(error.data.type, Scaffold.Types.CallInfoType.Getter);
+                        test.strictEqual(error.data.expected, 'Getter');
+                        test.strictEqual(error.data.actual, 'Method');
                         return error instanceof Scaffold.Exceptions.ProxyError;
                     });
 
                     test.strictEqual(decorator.wrap.callCount, 1);
 
-                    test.expect(5);
+                    test.expect(6);
                     test.done();
                 },
 
@@ -801,24 +808,25 @@ exports.internal = {
                     });
 
                     var substitute = {
-                        type: Scaffold.Types.CallInfoType.Method,
+                        type: CallInfoType.Method,
                         method : 'foo',
                         wrapper : function(callInfo) { }
                     };
 
-                    var storage = createStorage(Scaffold.Types.CallInfoType.Method, substitute);
+                    var storage = createStorage(CallInfoType.Method, substitute);
                     var delegate = function() { proxy.byInstance(new parent(), storage); };
 
                     test.throws(delegate, function(error) {
-                        test.strictEqual(error.message, 'Could not match proxy type and property type for setter');
+                        test.strictEqual(error.message, 'Could not match proxy type and property type. Expected: "Setter", Actual: "Method"');
                         test.strictEqual(error.data.method, 'foo');
-                        test.strictEqual(error.data.type, Scaffold.Types.CallInfoType.Setter);
+                        test.strictEqual(error.data.expected, 'Setter');
+                        test.strictEqual(error.data.actual, 'Method');
                         return error instanceof Scaffold.Exceptions.ProxyError;
                     });
 
                     test.strictEqual(decorator.wrap.callCount, 1);
 
-                    test.expect(5);
+                    test.expect(6);
                     test.done();
                 },
 
@@ -838,24 +846,25 @@ exports.internal = {
                     });
 
                     var substitute = {
-                        type: Scaffold.Types.CallInfoType.Method,
+                        type: CallInfoType.Method,
                         method : 'foo',
                         wrapper : function(callInfo) { }
                     };
 
-                    var storage = createStorage(Scaffold.Types.CallInfoType.Method, substitute);
+                    var storage = createStorage(CallInfoType.Method, substitute);
                     var delegate = function() { proxy.byInstance(new parent(), storage); };
 
                     test.throws(delegate, function(error) {
-                        test.strictEqual(error.message, 'Could not match proxy type and property type for getter-setter');
+                        test.strictEqual(error.message, 'Could not match proxy type and property type. Expected: "GetterSetter", Actual: "Method"');
                         test.strictEqual(error.data.method, 'foo');
-                        test.strictEqual(error.data.type, Scaffold.Types.CallInfoType.GetterSetter);
+                        test.strictEqual(error.data.expected, 'GetterSetter');
+                        test.strictEqual(error.data.actual, 'Method');
                         return error instanceof Scaffold.Exceptions.ProxyError;
                     });
 
                     test.strictEqual(decorator.wrap.callCount, 1);
 
-                    test.expect(5);
+                    test.expect(6);
                     test.done();
                 }
             }

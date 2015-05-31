@@ -3,7 +3,7 @@
 var Scaffold = require('./../scaffold');
 var ScaffoldAddons = require('./../scaffoldAddons');
 var DataInterceptors = Scaffold.TestModuleInterceptors;
-var CallInfoType = Scaffold.Types.CallInfoType;
+var CallInfoType = ScaffoldAddons.Interceptors.CallInfoType;
 var Level12;
 (function (Level12) {
     var interceptor = null;
@@ -12,11 +12,13 @@ var Level12;
         if (!substitutes)
             substitutes = [];
         var register2 = 'test';
-        containerBuilder.register(register).as(function (c) {
+        containerBuilder.register(register)
+            .as(function (c) {
             var resolution = c.resolve(register2);
             return interceptor.intercept(resolution, substitutes);
         });
-        containerBuilder.register(register2).as(function () { return subject; });
+        containerBuilder.register(register2)
+            .as(function () { return subject; });
         var container = containerBuilder.build();
         return container.resolve(register);
     }
@@ -24,11 +26,13 @@ var Level12;
         if (!substitutes)
             substitutes = [];
         var register2 = 'test';
-        containerBuilder.register(register).as(function (c) {
+        containerBuilder.register(register)
+            .as(function (c) {
             var resolution = c.resolve(register2);
             return interceptor.interceptPrototype(resolution, substitutes);
         });
-        containerBuilder.register(register2).as(function () { return subject; });
+        containerBuilder.register(register2)
+            .as(function () { return subject; });
         var container = containerBuilder.build();
         return container.resolve(register);
     }
@@ -36,17 +40,19 @@ var Level12;
         if (!substitutes)
             substitutes = [];
         var register2 = 'test';
-        containerBuilder.register(register).as(function (c) {
+        containerBuilder.register(register)
+            .as(function (c) {
             var resolution = c.resolve(register2);
             return interceptor.interceptInstance(resolution, substitutes);
         });
-        containerBuilder.register(register2).as(function () { return subject; });
+        containerBuilder.register(register2)
+            .as(function () { return subject; });
         var container = containerBuilder.build();
         return container.resolve(register);
     }
     function setUp(callback) {
         containerBuilder = Scaffold.createBuilder();
-        interceptor = ScaffoldAddons.interceptor();
+        interceptor = ScaffoldAddons.Interceptors.create();
         callback();
     }
     Level12.byPrototype = {
@@ -256,6 +262,48 @@ var Level12;
             var instance = new Proto();
             var actual = instance.foo(1);
             test.strictEqual(acc.start, actual);
+            test.done();
+        },
+        should_decorate_multiple_method_interceptions: function (test) {
+            var substitute1 = {
+                method: 'foo',
+                wrapper: function (callInfo) {
+                    return 'substitute 1';
+                }
+            };
+            var substitute2 = {
+                method: 'foo',
+                wrapper: function (callInfo) {
+                    return 'substitute 2';
+                }
+            };
+            var substitute3 = {
+                method: 'foo',
+                wrapper: function (callInfo) {
+                    return 'substitute 3';
+                }
+            };
+            var Proto41 = interceptor.intercept(DataInterceptors.Module41.Parent, [substitute1]);
+            var Proto42 = interceptor.intercept(DataInterceptors.Module42.Parent, [substitute2]);
+            var Proto40 = interceptor.intercept(DataInterceptors.Module40.Parent, [substitute3]);
+            var instance41 = new Proto41(1);
+            var instance42 = new Proto42();
+            var instance40 = new Proto40(3);
+            test.strictEqual(instance41.foo('some value 1'), 'substitute 1');
+            test.strictEqual(instance42.foo('some value 2'), 'substitute 2');
+            test.strictEqual(instance40.foo('some value 3'), 'substitute 3');
+            test.done();
+        },
+        should_decorate_method_single_interception: function (test) {
+            var substitute1 = {
+                method: 'foo',
+                wrapper: function (callInfo) {
+                    return 'substitute 1';
+                }
+            };
+            var Proto41 = interceptor.intercept(DataInterceptors.Module41.Parent, substitute1);
+            var instance41 = new Proto41(1);
+            test.strictEqual(instance41.foo('some value 1'), 'substitute 1');
             test.done();
         }
     };

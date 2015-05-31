@@ -6,7 +6,7 @@ exports.api = {
 
         var Scaffold = require('./../../scaffold');
         var ScaffoldAddons = require('./../../scaffoldAddons');
-        var CallInfoType = Scaffold.Types.CallInfoType;
+        var CallInfoType = ScaffoldAddons.Interceptors.CallInfoType;
 
         var interceptor = null;
         var containerBuilder = null;
@@ -73,7 +73,7 @@ exports.api = {
 
         function setUp(callback) {
             containerBuilder = Scaffold.createBuilder();
-            interceptor = ScaffoldAddons.interceptor();
+            interceptor = ScaffoldAddons.Interceptors.create();
             callback();
         }
 
@@ -560,6 +560,56 @@ exports.api = {
 
 
                     test.done();
+                },
+
+                should_decorate_100_getter_proxies: function(test) {
+
+                    var parent = function(start) {
+                        this.start = start;
+                    };
+
+
+                    Object.defineProperty(parent.prototype, 'foo', {
+                        get : function() {
+
+                            return this.start;
+                        },
+                        enumerable: false,
+                        configurable: false
+                    });
+
+                    var accumulator = function(start) {
+                        this.start = start;
+                    }
+
+                    accumulator.prototype.add = function(value) {
+                        this.start += value;
+                    }
+
+                    var substitutes = [];
+                    var index = 0;
+                    var limit = 100;
+                    var acc = new accumulator(0);
+                    while(substitutes.length < limit) {
+
+                        substitutes.push({
+                            method: 'foo',
+                            wrapper : function(callInfo) {
+
+                                index++;
+                                acc.add(1);
+                                return callInfo.get() + (index === limit ? 0 : callInfo.next());
+                            }
+                        });
+                    }
+
+                    var Proto = resolveByPrototype(parent, substitutes);
+                    var instance = new Proto(1);
+
+                    var actual = instance.foo;
+                    test.strictEqual(acc.start, actual);
+
+                    test.done();
                 }
             },
 
@@ -927,9 +977,173 @@ exports.api = {
                     test.strictEqual(acc.start, instance.foo);
 
                     test.done();
-                }
-            }
+                },
 
+                should_decorate_multiple_method_interceptions: function(test) {
+
+                    var substitute1 = {
+                        method : 'foo',
+                        wrapper : function(callInfo) {
+
+                            return 'substitute 1';
+                        }
+                    };
+
+                    var substitute2 = {
+                        method : 'foo',
+                        wrapper : function(callInfo) {
+
+                            return 'substitute 2'
+                        }
+                    };
+
+                    var substitute3 = {
+                        method : 'foo',
+                        wrapper : function(callInfo) {
+
+                            return 'substitute 3'
+                        }
+                    };
+
+                    var parent1 = function(value) {
+                        this.value = value;
+                    };
+
+                    parent1.prototype.foo = function() {
+                        return this.value;
+                    };
+
+                    var parent2 = function() { }
+
+                    parent2.prototype.foo = function() {
+                        return '--------';
+                    };
+
+                    var parent3 = function(value) {
+                        this.value = value;
+                    };
+
+                    parent3.prototype.foo = function() {
+                        return this.value;
+                    };
+
+                    var proto1 = interceptor.intercept(parent1,[ substitute1 ]);
+                    var proto2 = interceptor.intercept(parent2,[ substitute2 ]);
+                    var proto3 = interceptor.intercept(parent3,[ substitute3 ]);
+
+                    var instance1 = new proto1(1);
+                    var instance2 = new proto2();
+                    var instance3 = new proto3(3);
+
+                    test.strictEqual(instance1.foo('some value 1'), 'substitute 1');
+                    test.strictEqual(instance2.foo('some value 2'), 'substitute 2');
+                    test.strictEqual(instance3.foo('some value 3'), 'substitute 3');
+
+                    test.done();
+                },
+
+                should_decorate_multiple_property_interceptions: function(test) {
+
+                    var substitute1 = {
+                        method : 'foo',
+                        wrapper : function(callInfo) {
+
+                            return 'substitute 1';
+                        }
+                    };
+
+                    var substitute2 = {
+                        method : 'foo',
+                        wrapper : function(callInfo) {
+
+                            return 'substitute 2'
+                        }
+                    };
+
+                    var substitute3 = {
+                        method : 'foo',
+                        wrapper : function(callInfo) {
+
+                            return 'substitute 3'
+                        }
+                    };
+
+                    var parent1 = function(value) {
+                        this.value = value;
+                    };
+
+                    Object.defineProperty(parent1.prototype, 'foo', {
+                        get : function() {
+                            return this.value;
+                        },
+                        enumerable: true,
+                        configurable: true
+                    });
+
+                    var parent2 = function() { }
+
+                    Object.defineProperty(parent2.prototype, 'foo', {
+                        get : function() {
+                            return '---------';
+                        },
+                        enumerable: true,
+                        configurable: true
+                    });
+
+                    var parent3 = function(value) {
+                        this.value = value;
+                    };
+
+                    Object.defineProperty(parent3.prototype, 'foo', {
+                        get : function() {
+                            return this.value;
+                        },
+                        enumerable: true,
+                        configurable: true
+                    });
+
+                    var proto1 = interceptor.intercept(parent1,[ substitute1 ]);
+                    var proto2 = interceptor.intercept(parent2,[ substitute2 ]);
+                    var proto3 = interceptor.intercept(parent3,[ substitute3 ]);
+
+                    var instance1 = new proto1(1);
+                    var instance2 = new proto2();
+                    var instance3 = new proto3(3);
+
+                    test.strictEqual(instance1.foo, 'substitute 1');
+                    test.strictEqual(instance2.foo, 'substitute 2');
+                    test.strictEqual(instance3.foo, 'substitute 3');
+
+                    test.done();
+                }
+            },
+
+            should_decorate_method_single_interception: function(test) {
+
+                var substitute1 = {
+                    method : 'foo',
+                    wrapper : function(callInfo) {
+
+                        return 'substitute 1';
+                    }
+                };
+
+                var parent1 = function(value) {
+                    this.value = value;
+                };
+
+                parent1.prototype.foo = function() {
+                    return this.value;
+                };
+
+
+                var proto1 = interceptor.intercept(parent1, substitute1);
+                var instance1 = new proto1(1);
+
+                test.strictEqual(instance1.foo('some value 1'), 'substitute 1');
+
+                test.done();
+            }
 
         }
     })()

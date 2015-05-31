@@ -5,7 +5,7 @@
 import Scaffold = require('./../scaffold');
 import ScaffoldAddons = require('./../scaffoldAddons');
 import DataInterceptors = Scaffold.TestModuleInterceptors;
-var CallInfoType = Scaffold.Types.CallInfoType;
+var CallInfoType = ScaffoldAddons.Interceptors.CallInfoType;
 
 export module Level11 {
 
@@ -23,7 +23,7 @@ export module Level11 {
         containerBuilder.register(register)
             .as(c => {
 
-                var resolution = c.resolve(register2);
+                var resolution = c.resolve<R>(register2);
                 return interceptor.intercept(resolution, substitutes);
             });
 
@@ -31,12 +31,12 @@ export module Level11 {
             .as(() => subject);
 
         var container = containerBuilder.build();
-        return container.resolve(register);
+        return container.resolve<R>(register);
     }
 
     function setUp(callback) {
         containerBuilder = Scaffold.createBuilder();
-        interceptor = ScaffoldAddons.interceptor();
+        interceptor = ScaffoldAddons.Interceptors.create();
         callback();
     }
 

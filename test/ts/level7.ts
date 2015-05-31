@@ -24,8 +24,8 @@ export module Level7 {
 
         var container = containerBuilder.build();
 
-        var t1 = container.resolve(TestData.TestModule1.Test1);
-        var t2 = container.resolve(TestData.TestModule2.Test1);
+        var t1 = container.resolve<TestData.TestModule1.Test1>(TestData.TestModule1.Test1);
+        var t2 = container.resolve<TestData.TestModule2.Test1>(TestData.TestModule2.Test1);
 
         test.equal(t1.name, "test 1");
         test.equal(t2.name, "test 2");
@@ -45,8 +45,8 @@ export module Level7 {
 
         var container = containerBuilder.build();
 
-        var t1 = container.resolve(TestData.TestModule1.Test1);
-        var t2 = container.resolve(TestData2.TestModule1.Test1);
+        var t1 = container.resolve<TestData.TestModule1.Test1>(TestData.TestModule1.Test1);
+        var t2 = container.resolve<TestData2.TestModule1.Test1>(TestData2.TestModule1.Test1);
 
         test.strictEqual(t1, t2);
         test.equal(t1.name, "test 2");
@@ -62,7 +62,7 @@ export module Level7 {
 
         var container = containerBuilder.build();
 
-        var t1 = container.resolve(TestDataSecond.ServiceModule1.TestBaseClass);
+        var t1 = container.resolve<TestDataSecond.ServiceModule1.TestBaseClass>(TestDataSecond.ServiceModule1.TestBaseClass);
 
         test.equal(t1.name(), "Concrete class");
 
@@ -76,7 +76,7 @@ export module Level7 {
 
         var container = containerBuilder.build();
 
-        var t1 = container.resolve(TestDataSecond.ServiceModule1.TestBaseClass);
+        var t1 = container.resolve<TestDataSecond.ServiceModule1.TestBaseClass>(TestDataSecond.ServiceModule1.TestBaseClass);
 
         test.equal(t1.name(), "Concrete class");
 
@@ -90,7 +90,7 @@ export module Level7 {
 
         var container = containerBuilder.build();
 
-        var t1 = container.resolve(TestDataSecond.ServiceModule2.TestBaseFunction);
+        var t1 = container.resolve<TestDataSecond.SubstituteModule2.ConcreteTestClass>(TestDataSecond.ServiceModule2.TestBaseFunction);
 
         test.equal(t1.name(), "Concrete class");
 
@@ -145,7 +145,7 @@ export module Level7 {
 
         var container = containerBuilder.build();
 
-        var t1 = container.resolve(TestDataSecond.ServiceModule1.TestBaseClass);
+        var t1 = container.resolve<TestDataSecond.ServiceModule1.TestBaseClass>(TestDataSecond.ServiceModule1.TestBaseClass);
 
         test.equal(t1.name(), "Concrete class77Test");
 
@@ -164,13 +164,13 @@ export module Level7 {
             .forService(TestDataSecond.SubstituteModule6.ConcreteClass1,
                 (c) => {
 
-                    var dependency = c.resolve(TestDataSecond.ServiceModule1.TestBaseClass);
+                    var dependency = c.resolve<TestDataSecond.SubstituteModule3.ConcreteTestClass>(TestDataSecond.ServiceModule1.TestBaseClass);
                     return new TestDataSecond.SubstituteModule6.ConcreteClass1(dependency);
                 });
 
         var container = containerBuilder.build();
 
-        var t1 = container.resolve(TestDataSecond.ServiceModule3.TestBaseClass1);
+        var t1 = container.resolve<TestDataSecond.ServiceModule3.TestBaseClass1>(TestDataSecond.ServiceModule3.TestBaseClass1);
 
         test.equal(t1.name(), "Module6 - Class 1 - Concrete class77Test");
 
@@ -184,9 +184,9 @@ export module Level7 {
 
         var container = containerBuilder.build();
 
-        var t1 = container.resolve(TestDataSecond.ServiceModule3.TestBaseClass1);
-        var t2 = container.resolve(TestDataSecond.ServiceModule3.TestBaseClass2);
-        var t3 = container.resolve(TestDataSecond.ServiceModule3.TestBaseClass3);
+        var t1 = container.resolve<TestDataSecond.ServiceModule3.TestBaseClass1>(TestDataSecond.ServiceModule3.TestBaseClass1);
+        var t2 = container.resolve<TestDataSecond.ServiceModule3.TestBaseClass2>(TestDataSecond.ServiceModule3.TestBaseClass2);
+        var t3 = container.resolve<TestDataSecond.ServiceModule3.TestBaseClass3>(TestDataSecond.ServiceModule3.TestBaseClass3);
 
         test.ok(t1 instanceof TestDataSecond.SubstituteModule5.ConcreteClass1);
         test.equal(t1.name(), "name");
@@ -208,9 +208,9 @@ export module Level7 {
 
         var container = containerBuilder.build();
 
-        var t1 = container.resolve(TestDataSecond.ServiceModule3.TestBaseClass1);
-        var t2 = container.resolve(TestDataSecond.ServiceModule3.TestBaseClass2);
-        var t3 = container.resolve(TestDataSecond.ServiceModule3.TestBaseClass3);
+        var t1 = container.resolve<TestDataSecond.ServiceModule3.TestBaseClass1>(TestDataSecond.ServiceModule3.TestBaseClass1);
+        var t2 = container.resolve<TestDataSecond.ServiceModule3.TestBaseClass2>(TestDataSecond.ServiceModule3.TestBaseClass2);
+        var t3 = container.resolve<TestDataSecond.ServiceModule3.TestBaseClass3>(TestDataSecond.ServiceModule3.TestBaseClass3);
 
         test.ok(t1 instanceof TestDataSecond.SubstituteModule5.ConcreteClass1);
         test.equal(t1.name(), "name");
@@ -231,8 +231,8 @@ export module Level7 {
 
         var container = containerBuilder.build();
 
-        var t1 = container.resolveNamed(TestDataSecond.ServiceModule2.TestBaseFunction, "name1");
-        var t2 = container.resolveNamed(TestDataSecond.ServiceModule2.TestBaseFunction, "name2");
+        var t1 = container.resolveNamed<TestDataSecond.SubstituteModule4.ConcreteTestClass1>(TestDataSecond.ServiceModule2.TestBaseFunction, "name1");
+        var t2 = container.resolveNamed<TestDataSecond.SubstituteModule4.ConcreteTestClass2>(TestDataSecond.ServiceModule2.TestBaseFunction, "name2");
 
         test.equal(t1.name(), "Concrete class1");
         test.equal(t2.name(), "Concrete class2");
@@ -252,13 +252,13 @@ export module Level7 {
             .forService(TestDataSecond.SubstituteModule6.ConcreteClass1,
             (c) => {
 
-                var dependency = c.resolve(TestDataSecond.ServiceModule1.TestBaseClass);
+                var dependency = c.resolve<TestDataSecond.SubstituteModule3.ConcreteTestClass>(TestDataSecond.ServiceModule1.TestBaseClass);
                 return new TestDataSecond.SubstituteModule6.ConcreteClass1(dependency);
             });
 
         var container = containerBuilder.build();
 
-        var t1 = container.resolveNamed(TestDataSecond.ServiceModule3.TestBaseClass1, "name1");
+        var t1 = container.resolveNamed<TestDataSecond.SubstituteModule6.ConcreteClass1>(TestDataSecond.ServiceModule3.TestBaseClass1, "name1");
 
         test.equal(t1.name(), "Module6 - Class 1 - Concrete class77Test");
 

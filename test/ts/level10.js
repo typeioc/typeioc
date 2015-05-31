@@ -10,11 +10,13 @@ var Level9;
     }
     Level9.setUp = setUp;
     function resolveWithResolvesService(test) {
-        containerBuilder.register(TestData.Test2Base).as(function () {
+        containerBuilder.register(TestData.Test2Base)
+            .as(function () {
             return new TestData.Test2();
         });
         var container = containerBuilder.build();
-        var actual = container.resolveWith(TestData.Test2Base).exec();
+        var actual = container.resolveWith(TestData.Test2Base)
+            .exec();
         test.ok(actual);
         test.ok(actual instanceof TestData.Test2);
         test.strictEqual(actual.Name, 'test 2');
@@ -22,12 +24,14 @@ var Level9;
     }
     Level9.resolveWithResolvesService = resolveWithResolvesService;
     function resolveWithThrowsErrorWhenNotFound(test) {
-        containerBuilder.register(TestData.Test2Base).as(function () {
+        containerBuilder.register(TestData.Test2Base)
+            .as(function () {
             return new TestData.Test2();
         });
         var container = containerBuilder.build();
         var delegate = function () {
-            container.resolveWith(TestData.Test1Base).exec();
+            container.resolveWith(TestData.Test1Base)
+                .exec();
         };
         test.throws(delegate, function (error) {
             test.strictEqual(error.message, 'Could not resolve service');
@@ -42,11 +46,15 @@ var Level9;
         var arg1 = 'arg 1';
         var arg2 = 'arg 2';
         var expected = arg1 + ' ' + arg2;
-        containerBuilder.register(TestData.Test1Base).as(function (c, name1, name2) {
+        containerBuilder.register(TestData.Test1Base)
+            .as(function (c, name1, name2) {
             return new TestData.Test4(expected);
         });
         var container = containerBuilder.build();
-        var actual = container.resolveWith(TestData.Test1Base).args(arg1, arg2).exec();
+        var actual = container
+            .resolveWith(TestData.Test1Base)
+            .args(arg1, arg2)
+            .exec();
         test.ok(actual);
         test.ok(actual instanceof TestData.Test4);
         test.strictEqual(actual.Name, expected);
@@ -54,11 +62,15 @@ var Level9;
     }
     Level9.resolveWithResolvesServiceWithArgs = resolveWithResolvesServiceWithArgs;
     function resolveWithAttemptsResolvesService(test) {
-        containerBuilder.register(TestData.Test2Base).as(function () {
+        containerBuilder.register(TestData.Test2Base)
+            .as(function () {
             return new TestData.Test2();
         });
         var container = containerBuilder.build();
-        var actual = container.resolveWith(TestData.Test2Base).attempt().exec();
+        var actual = container
+            .resolveWith(TestData.Test2Base)
+            .attempt()
+            .exec();
         test.ok(actual);
         test.ok(actual instanceof TestData.Test2);
         test.strictEqual(actual.Name, 'test 2');
@@ -66,22 +78,31 @@ var Level9;
     }
     Level9.resolveWithAttemptsResolvesService = resolveWithAttemptsResolvesService;
     function resolveWithAttemptsFalseService(test) {
-        containerBuilder.register(TestData.Test2Base).as(function () {
+        containerBuilder.register(TestData.Test2Base)
+            .as(function () {
             return new TestData.Test2();
         });
         var container = containerBuilder.build();
-        var actual = container.resolveWith(TestData.Test1Base).attempt().exec();
+        var actual = container
+            .resolveWith(TestData.Test1Base)
+            .attempt()
+            .exec();
         test.ok(actual === null);
         test.done();
     }
     Level9.resolveWithAttemptsFalseService = resolveWithAttemptsFalseService;
     function resolveWithResolvesNamedService(test) {
         var testName = 'testName';
-        containerBuilder.register(TestData.Test2Base).as(function () {
+        containerBuilder.register(TestData.Test2Base)
+            .as(function () {
             return new TestData.Test2();
-        }).named(testName);
+        })
+            .named(testName);
         var container = containerBuilder.build();
-        var actual = container.resolveWith(TestData.Test2Base).name(testName).exec();
+        var actual = container
+            .resolveWith(TestData.Test2Base)
+            .name(testName)
+            .exec();
         test.ok(actual);
         test.ok(actual instanceof TestData.Test2);
         test.strictEqual(actual.Name, 'test 2');
@@ -90,12 +111,16 @@ var Level9;
     Level9.resolveWithResolvesNamedService = resolveWithResolvesNamedService;
     function resolveWithThrowsWhenNoName(test) {
         var testName = 'testName';
-        containerBuilder.register(TestData.Test2Base).as(function () {
+        containerBuilder.register(TestData.Test2Base)
+            .as(function () {
             return new TestData.Test2();
-        }).named(testName);
+        })
+            .named(testName);
         var container = containerBuilder.build();
         var delegate = function () {
-            container.resolveWith(TestData.Test2Base).exec();
+            container
+                .resolveWith(TestData.Test2Base)
+                .exec();
         };
         test.throws(delegate, function (error) {
             test.strictEqual(error.message, 'Could not resolve service');
@@ -107,25 +132,30 @@ var Level9;
     }
     Level9.resolveWithThrowsWhenNoName = resolveWithThrowsWhenNoName;
     function resolvesWithResolvesDependency(test) {
-        containerBuilder.register(TestData.Test2Base).as(function (c) {
+        containerBuilder.register(TestData.Test2Base)
+            .as(function (c) {
             return new TestData.Test2();
         });
-        containerBuilder.register(TestData.Test1Base).as(function (c) {
+        containerBuilder.register(TestData.Test1Base)
+            .as(function (c) {
             var test2 = c.resolve(TestData.Test2Base);
             return new TestData.Test3(test2);
         });
         var container = containerBuilder.build();
         var dependencies = [{
-            service: TestData.Test2Base,
-            factory: function () {
-                return {
-                    get Name() {
-                        return 'name from dependency';
-                    }
-                };
-            }
-        }];
-        var actual = container.resolveWith(TestData.Test1Base).dependencies(dependencies).exec();
+                service: TestData.Test2Base,
+                factory: function () {
+                    return {
+                        get Name() {
+                            return 'name from dependency';
+                        }
+                    };
+                }
+            }];
+        var actual = container
+            .resolveWith(TestData.Test1Base)
+            .dependencies(dependencies)
+            .exec();
         test.ok(actual);
         test.ok(actual instanceof TestData.Test1Base);
         test.strictEqual(actual.Name, 'Test 3 name from dependency');
@@ -133,50 +163,58 @@ var Level9;
     }
     Level9.resolvesWithResolvesDependency = resolvesWithResolvesDependency;
     function resolveWithMultipleDependenciesSeparatlyArrays(test) {
-        containerBuilder.register(TestData.Test2Base).as(function () { return new TestData.Test2(); });
-        containerBuilder.register(TestData.Test1Base).as(function (c) {
+        containerBuilder.register(TestData.Test2Base)
+            .as(function () { return new TestData.Test2(); });
+        containerBuilder.register(TestData.Test1Base)
+            .as(function (c) {
             var test2 = c.resolve(TestData.Test2Base);
             return new TestData.Test3(test2);
         });
-        containerBuilder.register(TestData.Test1Base).as(function () { return new TestData.Test4("test 4"); }).named("Test 4");
-        var dynamicService = function () {
-        };
-        containerBuilder.register(dynamicService).as(function (c) {
+        containerBuilder.register(TestData.Test1Base)
+            .as(function () { return new TestData.Test4("test 4"); })
+            .named("Test 4");
+        var dynamicService = function () { };
+        containerBuilder.register(dynamicService)
+            .as(function (c) {
             var test1 = c.resolve(TestData.Test1Base);
             var test2 = c.resolve(TestData.Test2Base);
             var test4 = c.resolveNamed(TestData.Test1Base, "Test 4");
             return new TestData.Test7(test1, test2, test4);
         });
         var container = containerBuilder.build();
-        var actual = container.resolveWith(dynamicService).dependencies([{
-            service: TestData.Test1Base,
-            factory: function () {
-                return {
-                    get Name() {
-                        return 'test 1 base';
-                    }
-                };
-            }
-        }]).dependencies([{
-            service: TestData.Test2Base,
-            factory: function () {
-                return {
-                    get Name() {
-                        return 'test 2 base';
-                    }
-                };
-            }
-        }]).dependencies([{
-            service: TestData.Test1Base,
-            named: "Test 4",
-            factory: function (c) {
-                return {
-                    get Name() {
-                        return 'test 4 base';
-                    }
-                };
-            }
-        }]).exec();
+        var actual = container.resolveWith(dynamicService)
+            .dependencies([{
+                service: TestData.Test1Base,
+                factory: function () {
+                    return {
+                        get Name() {
+                            return 'test 1 base';
+                        }
+                    };
+                }
+            }])
+            .dependencies([{
+                service: TestData.Test2Base,
+                factory: function () {
+                    return {
+                        get Name() {
+                            return 'test 2 base';
+                        }
+                    };
+                }
+            }])
+            .dependencies([{
+                service: TestData.Test1Base,
+                named: "Test 4",
+                factory: function (c) {
+                    return {
+                        get Name() {
+                            return 'test 4 base';
+                        }
+                    };
+                }
+            }])
+            .exec();
         test.ok(actual);
         test.ok(actual instanceof TestData.Test7);
         test.strictEqual(actual.Name, 'test 1 base test 2 base test 4 base');
@@ -184,22 +222,27 @@ var Level9;
     }
     Level9.resolveWithMultipleDependenciesSeparatlyArrays = resolveWithMultipleDependenciesSeparatlyArrays;
     function resolveWithMultipleDependenciesSeparatly(test) {
-        containerBuilder.register(TestData.Test2Base).as(function (c) { return new TestData.Test2(); });
-        containerBuilder.register(TestData.Test1Base).as(function (c) {
+        containerBuilder.register(TestData.Test2Base)
+            .as(function (c) { return new TestData.Test2(); });
+        containerBuilder.register(TestData.Test1Base)
+            .as(function (c) {
             var test2 = c.resolve(TestData.Test2Base);
             return new TestData.Test3(test2);
         });
-        containerBuilder.register(TestData.Test1Base).as(function (c) { return new TestData.Test4("test 4"); }).named("Test 4");
-        var dynamicService = function () {
-        };
-        containerBuilder.register(dynamicService).as(function (c) {
+        containerBuilder.register(TestData.Test1Base)
+            .as(function (c) { return new TestData.Test4("test 4"); })
+            .named("Test 4");
+        var dynamicService = function () { };
+        containerBuilder.register(dynamicService)
+            .as(function (c) {
             var test1 = c.resolve(TestData.Test1Base);
             var test2 = c.resolve(TestData.Test2Base);
             var test4 = c.resolveNamed(TestData.Test1Base, "Test 4");
             return new TestData.Test7(test1, test2, test4);
         });
         var container = containerBuilder.build();
-        var actual = container.resolveWith(dynamicService).dependencies({
+        var actual = container.resolveWith(dynamicService)
+            .dependencies({
             service: TestData.Test1Base,
             factory: function () {
                 return {
@@ -208,7 +251,8 @@ var Level9;
                     }
                 };
             }
-        }).dependencies({
+        })
+            .dependencies({
             service: TestData.Test2Base,
             factory: function (c) {
                 return {
@@ -217,17 +261,19 @@ var Level9;
                     }
                 };
             }
-        }).dependencies([{
-            service: TestData.Test1Base,
-            named: "Test 4",
-            factory: function (c) {
-                return {
-                    get Name() {
-                        return 'test 4 base';
-                    }
-                };
-            }
-        }]).exec();
+        })
+            .dependencies([{
+                service: TestData.Test1Base,
+                named: "Test 4",
+                factory: function (c) {
+                    return {
+                        get Name() {
+                            return 'test 4 base';
+                        }
+                    };
+                }
+            }])
+            .exec();
         test.ok(actual);
         test.ok(actual instanceof TestData.Test7);
         test.strictEqual(actual.Name, 'test 1 base test 2 base test 4 base');
@@ -235,11 +281,15 @@ var Level9;
     }
     Level9.resolveWithMultipleDependenciesSeparatly = resolveWithMultipleDependenciesSeparatly;
     function resolveWithResolvesCacheDefault(test) {
-        containerBuilder.register(TestData.Test2Base).as(function () {
+        containerBuilder.register(TestData.Test2Base)
+            .as(function () {
             return new TestData.Test2();
         });
         var container = containerBuilder.build();
-        container.resolveWith(TestData.Test2Base).cache().exec();
+        container
+            .resolveWith(TestData.Test2Base)
+            .cache()
+            .exec();
         var cache = container.cache;
         var actual = cache.Test2Base;
         var actual2 = cache.Test2Base;
@@ -251,11 +301,14 @@ var Level9;
     }
     Level9.resolveWithResolvesCacheDefault = resolveWithResolvesCacheDefault;
     function resolveWithResolvesCacheWithName(test) {
-        containerBuilder.register(TestData.Test2Base).as(function () {
+        containerBuilder.register(TestData.Test2Base)
+            .as(function () {
             return new TestData.Test2();
         });
         var container = containerBuilder.build();
-        container.resolveWith(TestData.Test2Base).cache('TestName111').exec();
+        container.resolveWith(TestData.Test2Base)
+            .cache('TestName111')
+            .exec();
         var cache = container.cache;
         var actual = cache.TestName111;
         test.ok(actual);
@@ -265,13 +318,16 @@ var Level9;
     }
     Level9.resolveWithResolvesCacheWithName = resolveWithResolvesCacheWithName;
     function resolveWithResolvesCacheWithServiceNamedResolution(test) {
-        var named = function AAAAA() {
-        };
-        containerBuilder.register(TestData.Test2Base).as(function () {
+        var named = function AAAAA() { };
+        containerBuilder.register(TestData.Test2Base)
+            .as(function () {
             return new TestData.Test2();
         }).named(named.name);
         var container = containerBuilder.build();
-        container.resolveWith(TestData.Test2Base).name(named.name).cache().exec();
+        container.resolveWith(TestData.Test2Base)
+            .name(named.name)
+            .cache()
+            .exec();
         var cache = container.cache;
         var actual = cache.AAAAA;
         test.ok(actual);
@@ -282,11 +338,14 @@ var Level9;
     Level9.resolveWithResolvesCacheWithServiceNamedResolution = resolveWithResolvesCacheWithServiceNamedResolution;
     function resolveWithResolvesCacheWithServiceValueName(test) {
         var name = "AAAAAA";
-        containerBuilder.register(name).as(function () {
+        containerBuilder.register(name)
+            .as(function () {
             return new TestData.Test2();
         });
         var container = containerBuilder.build();
-        container.resolveWith(name).cache().exec();
+        container.resolveWith(name)
+            .cache()
+            .exec();
         var cache = container.cache;
         var actual = cache[name];
         var actual2 = cache.AAAAAA;
@@ -299,12 +358,15 @@ var Level9;
     Level9.resolveWithResolvesCacheWithServiceValueName = resolveWithResolvesCacheWithServiceValueName;
     function resolveWithCacheThrowsWhenNoName(test) {
         var service = {};
-        containerBuilder.register(service).as(function () {
+        containerBuilder.register(service)
+            .as(function () {
             return new TestData.Test2();
         });
         var container = containerBuilder.build();
         var delegate = function () {
-            container.resolveWith(service).cache().exec();
+            container.resolveWith(service)
+                .cache()
+                .exec();
         };
         test.throws(delegate, function (error) {
             test.strictEqual(error.message, 'Missing cache name');
@@ -316,12 +378,16 @@ var Level9;
     }
     Level9.resolveWithCacheThrowsWhenNoName = resolveWithCacheThrowsWhenNoName;
     function resolveWithCacheFromChildContainer(test) {
-        containerBuilder.register(TestData.Test2Base).as(function () {
+        containerBuilder.register(TestData.Test2Base)
+            .as(function () {
             return new TestData.Test2();
         });
         var container = containerBuilder.build();
         var child = container.createChild();
-        var actual = child.resolveWith(TestData.Test2Base).cache().exec();
+        var actual = child
+            .resolveWith(TestData.Test2Base)
+            .cache()
+            .exec();
         test.ok(actual);
         test.ok(actual instanceof TestData.Test2);
         test.strictEqual(actual.Name, 'test 2');
@@ -330,11 +396,16 @@ var Level9;
     Level9.resolveWithCacheFromChildContainer = resolveWithCacheFromChildContainer;
     function resolveWithArgsAttempt(test) {
         var name = 'AAAAA';
-        containerBuilder.register(TestData.Test1Base).as(function (c, name) {
+        containerBuilder.register(TestData.Test1Base)
+            .as(function (c, name) {
             return new TestData.Test4(name);
         });
         var container = containerBuilder.build();
-        var actual = container.resolveWith(TestData.Test1Base).args(name).attempt().exec();
+        var actual = container
+            .resolveWith(TestData.Test1Base)
+            .args(name)
+            .attempt()
+            .exec();
         test.ok(actual);
         test.ok(actual instanceof TestData.Test4);
         test.strictEqual(actual.Name, name);
@@ -343,11 +414,16 @@ var Level9;
     Level9.resolveWithArgsAttempt = resolveWithArgsAttempt;
     function resolveWithArgsAttemptThrows(test) {
         var name = 'AAAAA';
-        containerBuilder.register(TestData.Test1Base).as(function (c, name) {
+        containerBuilder.register(TestData.Test1Base)
+            .as(function (c, name) {
             return new TestData.Test4(name);
         });
         var container = containerBuilder.build();
-        var actual = container.resolveWith(TestData.Test2Base).args(name).attempt().exec();
+        var actual = container
+            .resolveWith(TestData.Test2Base)
+            .args(name)
+            .attempt()
+            .exec();
         test.strictEqual(actual, null);
         test.done();
     }
@@ -355,11 +431,17 @@ var Level9;
     function resolveWithArgsNamed(test) {
         var argName = 'AAAAA';
         var resolutionName = 'Test name';
-        containerBuilder.register(TestData.Test1Base).as(function (c, name) {
+        containerBuilder.register(TestData.Test1Base)
+            .as(function (c, name) {
             return new TestData.Test4(name);
-        }).named(resolutionName);
+        })
+            .named(resolutionName);
         var container = containerBuilder.build();
-        var actual = container.resolveWith(TestData.Test1Base).args(argName).name(resolutionName).exec();
+        var actual = container
+            .resolveWith(TestData.Test1Base)
+            .args(argName)
+            .name(resolutionName)
+            .exec();
         test.ok(actual);
         test.ok(actual instanceof TestData.Test4);
         test.strictEqual(actual.Name, argName);
@@ -368,10 +450,12 @@ var Level9;
     Level9.resolveWithArgsNamed = resolveWithArgsNamed;
     function resolveWithArgsDependencies(test) {
         var param = 'Some name';
-        containerBuilder.register(TestData.Test2Base).as(function (c) {
+        containerBuilder.register(TestData.Test2Base)
+            .as(function (c) {
             return new TestData.Test2();
         });
-        containerBuilder.register(TestData.Test1Base).as(function (c, arg) {
+        containerBuilder.register(TestData.Test1Base)
+            .as(function (c, arg) {
             var test2 = c.resolve(TestData.Test2Base);
             var result = new TestData.Test3(test2);
             return {
@@ -382,74 +466,89 @@ var Level9;
         });
         var container = containerBuilder.build();
         var dependencies = [{
-            service: TestData.Test2Base,
-            factory: function () {
-                return {
-                    get Name() {
-                        return 'name from dependency';
-                    }
-                };
-            }
-        }];
-        var actual = container.resolveWith(TestData.Test1Base).args(param).dependencies(dependencies).exec();
+                service: TestData.Test2Base,
+                factory: function () {
+                    return {
+                        get Name() {
+                            return 'name from dependency';
+                        }
+                    };
+                }
+            }];
+        var actual = container
+            .resolveWith(TestData.Test1Base)
+            .args(param)
+            .dependencies(dependencies)
+            .exec();
         test.ok(actual);
         test.strictEqual(actual.Name, 'Test 3 name from dependency Some name');
         test.done();
     }
     Level9.resolveWithArgsDependencies = resolveWithArgsDependencies;
     function resolveWithArgsParamsDependencies(test) {
-        containerBuilder.register(TestData.Test2Base).as(function (_, a, b, d) {
+        containerBuilder.register(TestData.Test2Base)
+            .as(function (_, a, b, d) {
             return {
                 get Name() {
                     return [a, b, d].join(' ');
                 }
             };
         });
-        containerBuilder.register(TestData.Test1Base).as(function (c, a, b, d) {
+        containerBuilder.register(TestData.Test1Base)
+            .as(function (c, a, b, d) {
             var test2 = c.resolve(TestData.Test2Base, a, b, d);
             return new TestData.Test3(test2);
         });
         var container = containerBuilder.build();
         var dependencies = [{
-            service: TestData.Test2Base,
-            factory: function (c, a, b, d) {
-                return {
-                    get Name() {
-                        return [a, b, d,].join(' - ');
-                    }
-                };
-            }
-        }];
-        var actual = container.resolveWith(TestData.Test1Base).args('4', '5', '6').dependencies(dependencies).exec();
+                service: TestData.Test2Base,
+                factory: function (c, a, b, d) {
+                    return {
+                        get Name() {
+                            return [a, b, d,].join(' - ');
+                        }
+                    };
+                }
+            }];
+        var actual = container
+            .resolveWith(TestData.Test1Base)
+            .args('4', '5', '6')
+            .dependencies(dependencies)
+            .exec();
         test.strictEqual(actual.Name, 'Test 3 4 - 5 - 6');
         test.done();
     }
     Level9.resolveWithArgsParamsDependencies = resolveWithArgsParamsDependencies;
     function resolveWithArgsParamsDependenciesThrowsWhenWrongArgsCount(test) {
-        containerBuilder.register(TestData.Test2Base).as(function (_, a, b, d) {
+        containerBuilder.register(TestData.Test2Base)
+            .as(function (_, a, b, d) {
             return {
                 get Name() {
                     return [a, b, d].join(' ');
                 }
             };
         });
-        containerBuilder.register(TestData.Test1Base).as(function (c, a, b, d) {
+        containerBuilder.register(TestData.Test1Base)
+            .as(function (c, a, b, d) {
             var test2 = c.resolve(TestData.Test2Base, a, b, d);
             return new TestData.Test3(test2);
         });
         var container = containerBuilder.build();
         var dependencies = [{
-            service: TestData.Test2Base,
-            factory: function (c, a, b) {
-                return {
-                    get Name() {
-                        return [a, b].join(' - ');
-                    }
-                };
-            }
-        }];
+                service: TestData.Test2Base,
+                factory: function (c, a, b) {
+                    return {
+                        get Name() {
+                            return [a, b].join(' - ');
+                        }
+                    };
+                }
+            }];
         var delegate = function () {
-            container.resolveWith(TestData.Test1Base).args('4', '5', '6').dependencies(dependencies).exec();
+            container.resolveWith(TestData.Test1Base)
+                .args('4', '5', '6')
+                .dependencies(dependencies)
+                .exec();
         };
         test.throws(delegate, function (error) {
             test.strictEqual(error.message, 'Could not resolve service');
@@ -462,11 +561,16 @@ var Level9;
     Level9.resolveWithArgsParamsDependenciesThrowsWhenWrongArgsCount = resolveWithArgsParamsDependenciesThrowsWhenWrongArgsCount;
     function resolveWithArgsCacheNoName(test) {
         var argName = 'AAAAA';
-        containerBuilder.register(TestData.Test1Base).as(function (c, name) {
+        containerBuilder.register(TestData.Test1Base)
+            .as(function (c, name) {
             return new TestData.Test4(name);
         });
         var container = containerBuilder.build();
-        container.resolveWith(TestData.Test1Base).args(argName).cache().exec();
+        container
+            .resolveWith(TestData.Test1Base)
+            .args(argName)
+            .cache()
+            .exec();
         var actual = container.cache.Test1Base;
         test.ok(actual);
         test.ok(actual instanceof TestData.Test4);
@@ -477,11 +581,17 @@ var Level9;
     function resolveWithAttemptWithName(test) {
         var argName = 'AAAAA';
         var resolutionName = 'Test';
-        containerBuilder.register(TestData.Test1Base).as(function () {
+        containerBuilder.register(TestData.Test1Base)
+            .as(function () {
             return new TestData.Test4(argName);
-        }).named(resolutionName);
+        })
+            .named(resolutionName);
         var container = containerBuilder.build();
-        var actual = container.resolveWith(TestData.Test1Base).attempt().name(resolutionName).exec();
+        var actual = container
+            .resolveWith(TestData.Test1Base)
+            .attempt()
+            .name(resolutionName)
+            .exec();
         test.ok(actual);
         test.ok(actual instanceof TestData.Test4);
         test.strictEqual(actual.Name, argName);
@@ -489,93 +599,112 @@ var Level9;
     }
     Level9.resolveWithAttemptWithName = resolveWithAttemptWithName;
     function resolveWithAttemptDependencies(test) {
-        containerBuilder.register(TestData.Test2Base).as(function (_) {
+        containerBuilder.register(TestData.Test2Base)
+            .as(function (_) {
             return {
                 get Name() {
                     return 'Test2Base';
                 }
             };
         });
-        containerBuilder.register(TestData.Test1Base).as(function (c) {
+        containerBuilder.register(TestData.Test1Base)
+            .as(function (c) {
             var test2 = c.resolve(TestData.Test2Base);
             return new TestData.Test3(test2);
         });
         var container = containerBuilder.build();
         var dependencies = [{
-            service: TestData.Test2Base,
-            factory: function (c) {
-                return {
-                    get Name() {
-                        return 'Test2 substitute';
-                    }
-                };
-            }
-        }];
-        var actual = container.resolveWith(TestData.Test1Base).attempt().dependencies(dependencies).exec();
+                service: TestData.Test2Base,
+                factory: function (c) {
+                    return {
+                        get Name() {
+                            return 'Test2 substitute';
+                        }
+                    };
+                }
+            }];
+        var actual = container
+            .resolveWith(TestData.Test1Base)
+            .attempt()
+            .dependencies(dependencies)
+            .exec();
         test.strictEqual(actual.Name, 'Test 3 Test2 substitute');
         test.done();
     }
     Level9.resolveWithAttemptDependencies = resolveWithAttemptDependencies;
     function resolveWithAttemptDependenciesMissingResolution(test) {
-        containerBuilder.register(TestData.Test2Base).as(function () {
+        containerBuilder.register(TestData.Test2Base)
+            .as(function () {
             return {
                 get Name() {
                     return 'Test2Base';
                 }
             };
         });
-        containerBuilder.register(TestData.Test1Base).as(function (c) {
+        containerBuilder.register(TestData.Test1Base)
+            .as(function (c) {
             var test2 = c.resolve(TestData.Test2Base);
             return new TestData.Test3(test2);
         });
         var container = containerBuilder.build();
         var dependencies = [{
-            service: {},
-            factory: function () {
-                return {
-                    get Name() {
-                        return 'Test2 substitute';
-                    }
-                };
-            }
-        }];
-        var actual = container.resolveWith(TestData.Test1Base).attempt().dependencies(dependencies).exec();
+                service: {},
+                factory: function () {
+                    return {
+                        get Name() {
+                            return 'Test2 substitute';
+                        }
+                    };
+                }
+            }];
+        var actual = container.resolveWith(TestData.Test1Base)
+            .attempt()
+            .dependencies(dependencies)
+            .exec();
         test.strictEqual(actual, null);
         test.done();
     }
     Level9.resolveWithAttemptDependenciesMissingResolution = resolveWithAttemptDependenciesMissingResolution;
     function resolveWithAttemptDependenciesMissingNonRequiredResolution(test) {
-        containerBuilder.register(TestData.Test1Base).as(function (c) {
+        containerBuilder.register(TestData.Test1Base)
+            .as(function (c) {
             var test2 = c.resolve(TestData.Test2Base);
             return new TestData.Test3(test2);
         });
         var container = containerBuilder.build();
         var dependencies = [{
-            service: TestData.Test2Base,
-            required: false,
-            factory: function () {
-                return {
-                    get Name() {
-                        return 'name from dependency';
-                    }
-                };
-            }
-        }];
-        var actual = container.resolveWith(TestData.Test1Base).attempt().dependencies(dependencies).exec();
+                service: TestData.Test2Base,
+                required: false,
+                factory: function () {
+                    return {
+                        get Name() {
+                            return 'name from dependency';
+                        }
+                    };
+                }
+            }];
+        var actual = container
+            .resolveWith(TestData.Test1Base)
+            .attempt()
+            .dependencies(dependencies)
+            .exec();
         test.ok(actual);
         test.strictEqual(actual.Name, 'Test 3 name from dependency');
         test.done();
     }
     Level9.resolveWithAttemptDependenciesMissingNonRequiredResolution = resolveWithAttemptDependenciesMissingNonRequiredResolution;
     function resolveWithAttemptPartialMissingNonRequiredDependencies(test) {
-        containerBuilder.register(TestData.Test1Base).as(function (c) {
+        containerBuilder.register(TestData.Test1Base)
+            .as(function (c) {
             var test2 = c.resolve(TestData.Test2Base);
             return new TestData.Test3(test2);
         });
-        containerBuilder.register(TestData.Test1Base).as(function () { return new TestData.Test4("test 4"); }).named("Test 4");
-        var dynamicService = function () {
-        };
-        containerBuilder.register(dynamicService).as(function (c) {
+        containerBuilder.register(TestData.Test1Base)
+            .as(function () { return new TestData.Test4("test 4"); })
+            .named("Test 4");
+        var dynamicService = function () { };
+        containerBuilder.register(dynamicService)
+            .as(function (c) {
             var test1 = c.resolve(TestData.Test1Base);
             var test2 = c.resolve(TestData.Test2Base);
             var test4 = c.resolveNamed(TestData.Test1Base, "Test 4");
@@ -583,36 +712,42 @@ var Level9;
         });
         var container = containerBuilder.build();
         var dependencies = [{
-            service: TestData.Test1Base,
-            factory: function () {
-                return {
-                    get Name() {
-                        return 'test 1 base';
-                    }
-                };
-            }
-        }, {
-            service: TestData.Test2Base,
-            required: false,
-            factory: function () {
-                return {
-                    get Name() {
-                        return 'test 2 base';
-                    }
-                };
-            }
-        }, {
-            service: TestData.Test1Base,
-            named: "Test 4",
-            factory: function () {
-                return {
-                    get Name() {
-                        return 'test 4 base';
-                    }
-                };
-            }
-        }];
-        var actual = container.resolveWith(dynamicService).attempt().dependencies(dependencies).exec();
+                service: TestData.Test1Base,
+                factory: function () {
+                    return {
+                        get Name() {
+                            return 'test 1 base';
+                        }
+                    };
+                }
+            },
+            {
+                service: TestData.Test2Base,
+                required: false,
+                factory: function () {
+                    return {
+                        get Name() {
+                            return 'test 2 base';
+                        }
+                    };
+                }
+            },
+            {
+                service: TestData.Test1Base,
+                named: "Test 4",
+                factory: function () {
+                    return {
+                        get Name() {
+                            return 'test 4 base';
+                        }
+                    };
+                }
+            }];
+        var actual = container
+            .resolveWith(dynamicService)
+            .attempt()
+            .dependencies(dependencies)
+            .exec();
         test.ok(actual);
         test.ok(actual instanceof TestData.Test7);
         test.strictEqual(actual.Name, 'test 1 base test 2 base test 4 base');
@@ -622,11 +757,16 @@ var Level9;
     Level9.resolveWithAttemptPartialMissingNonRequiredDependencies = resolveWithAttemptPartialMissingNonRequiredDependencies;
     function resolveWithAttemptCache(test) {
         var argName = 'AAAAA';
-        containerBuilder.register(TestData.Test1Base).as(function (c) {
+        containerBuilder.register(TestData.Test1Base)
+            .as(function (c) {
             return new TestData.Test4(argName);
         });
         var container = containerBuilder.build();
-        container.resolveWith(TestData.Test1Base).attempt().cache().exec();
+        container
+            .resolveWith(TestData.Test1Base)
+            .attempt()
+            .cache()
+            .exec();
         var actual = container.cache.Test1Base;
         test.ok(actual);
         test.ok(actual instanceof TestData.Test4);
@@ -636,29 +776,36 @@ var Level9;
     Level9.resolveWithAttemptCache = resolveWithAttemptCache;
     function resolveWithNameDependencies(test) {
         var resolutionName = 'AAAAA';
-        containerBuilder.register(TestData.Test2Base).as(function (_) {
+        containerBuilder.register(TestData.Test2Base)
+            .as(function (_) {
             return {
                 get Name() {
                     return 'Test2Base';
                 }
             };
         });
-        containerBuilder.register(TestData.Test1Base).as(function (c) {
+        containerBuilder.register(TestData.Test1Base)
+            .as(function (c) {
             var test2 = c.resolve(TestData.Test2Base);
             return new TestData.Test3(test2);
-        }).named(resolutionName);
+        })
+            .named(resolutionName);
         var container = containerBuilder.build();
         var dependencies = [{
-            service: TestData.Test2Base,
-            factory: function (c) {
-                return {
-                    get Name() {
-                        return 'Test2 substitute';
-                    }
-                };
-            }
-        }];
-        var actual = container.resolveWith(TestData.Test1Base).name(resolutionName).dependencies(dependencies).exec();
+                service: TestData.Test2Base,
+                factory: function (c) {
+                    return {
+                        get Name() {
+                            return 'Test2 substitute';
+                        }
+                    };
+                }
+            }];
+        var actual = container
+            .resolveWith(TestData.Test1Base)
+            .name(resolutionName)
+            .dependencies(dependencies)
+            .exec();
         test.strictEqual(actual.Name, 'Test 3 Test2 substitute');
         test.done();
     }
@@ -666,11 +813,17 @@ var Level9;
     function resolutionWithNameCache(test) {
         var argName = 'ArgName';
         var resolutionName = 'AAAAA';
-        containerBuilder.register(TestData.Test1Base).as(function () {
+        containerBuilder.register(TestData.Test1Base)
+            .as(function () {
             return new TestData.Test4(argName);
-        }).named(resolutionName);
+        })
+            .named(resolutionName);
         var container = containerBuilder.build();
-        container.resolveWith(TestData.Test1Base).name(resolutionName).cache().exec();
+        container
+            .resolveWith(TestData.Test1Base)
+            .name(resolutionName)
+            .cache()
+            .exec();
         var actual = container.cache.AAAAA;
         test.ok(actual);
         test.ok(actual instanceof TestData.Test4);
@@ -679,29 +832,34 @@ var Level9;
     }
     Level9.resolutionWithNameCache = resolutionWithNameCache;
     function resolveWithDependenciesCache(test) {
-        containerBuilder.register(TestData.Test2Base).as(function (_) {
+        containerBuilder.register(TestData.Test2Base)
+            .as(function (_) {
             return {
                 get Name() {
                     return 'Test2Base';
                 }
             };
         });
-        containerBuilder.register(TestData.Test1Base).as(function (c) {
+        containerBuilder.register(TestData.Test1Base)
+            .as(function (c) {
             var test2 = c.resolve(TestData.Test2Base);
             return new TestData.Test3(test2);
         });
         var container = containerBuilder.build();
         var dependencies = [{
-            service: TestData.Test2Base,
-            factory: function (c) {
-                return {
-                    get Name() {
-                        return 'Test2 substitute';
-                    }
-                };
-            }
-        }];
-        container.resolveWith(TestData.Test1Base).dependencies(dependencies).cache().exec();
+                service: TestData.Test2Base,
+                factory: function (c) {
+                    return {
+                        get Name() {
+                            return 'Test2 substitute';
+                        }
+                    };
+                }
+            }];
+        container.resolveWith(TestData.Test1Base)
+            .dependencies(dependencies)
+            .cache()
+            .exec();
         var actual = container.cache.Test1Base;
         test.ok(actual);
         test.ok(actual instanceof TestData.Test3);
@@ -729,7 +887,9 @@ var Level9;
     Level9.fluentApiResolveWith = fluentApiResolveWith;
     function fluentApiResolveWithArgs(test) {
         var container = containerBuilder.build();
-        var registration = container.resolveWith(TestData.Test1Base).args([]);
+        var registration = container
+            .resolveWith(TestData.Test1Base)
+            .args([]);
         test.strictEqual(registration['args'], undefined);
         test.notEqual(registration['attempt'], undefined);
         test.notEqual(registration['attempt'], null);
@@ -746,7 +906,10 @@ var Level9;
     Level9.fluentApiResolveWithArgs = fluentApiResolveWithArgs;
     function fluentApiResolveWithArgsAttempt(test) {
         var container = containerBuilder.build();
-        var registration = container.resolveWith(TestData.Test1Base).args([]).attempt();
+        var registration = container
+            .resolveWith(TestData.Test1Base)
+            .args([])
+            .attempt();
         test.strictEqual(registration['args'], undefined);
         test.strictEqual(registration['attempt'], undefined);
         test.notEqual(registration['name'], undefined);
@@ -762,7 +925,11 @@ var Level9;
     Level9.fluentApiResolveWithArgsAttempt = fluentApiResolveWithArgsAttempt;
     function fluentApiResolveWithArgsAttemptName(test) {
         var container = containerBuilder.build();
-        var registration = container.resolveWith(TestData.Test1Base).args([]).attempt().name('');
+        var registration = container
+            .resolveWith(TestData.Test1Base)
+            .args([])
+            .attempt()
+            .name('');
         test.strictEqual(registration['args'], undefined);
         test.strictEqual(registration['attempt'], undefined);
         test.strictEqual(registration['name'], undefined);
@@ -777,7 +944,12 @@ var Level9;
     Level9.fluentApiResolveWithArgsAttemptName = fluentApiResolveWithArgsAttemptName;
     function fluentApiResolveWithArgsAttemptNameDependencies(test) {
         var container = containerBuilder.build();
-        var registration = container.resolveWith(TestData.Test1Base).args([]).attempt().name('').dependencies([]);
+        var registration = container
+            .resolveWith(TestData.Test1Base)
+            .args([])
+            .attempt()
+            .name('')
+            .dependencies([]);
         test.strictEqual(registration['args'], undefined);
         test.strictEqual(registration['attempt'], undefined);
         test.strictEqual(registration['name'], undefined);
@@ -792,7 +964,13 @@ var Level9;
     Level9.fluentApiResolveWithArgsAttemptNameDependencies = fluentApiResolveWithArgsAttemptNameDependencies;
     function fluentApiResolveWithArgsAttemptNameDependenciesCache(test) {
         var container = containerBuilder.build();
-        var registration = container.resolveWith(TestData.Test1Base).args([]).attempt().name('').dependencies([]).cache();
+        var registration = container
+            .resolveWith(TestData.Test1Base)
+            .args([])
+            .attempt()
+            .name('')
+            .dependencies([])
+            .cache();
         test.strictEqual(registration['args'], undefined);
         test.strictEqual(registration['attempt'], undefined);
         test.strictEqual(registration['name'], undefined);

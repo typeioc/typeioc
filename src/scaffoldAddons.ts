@@ -19,18 +19,9 @@ export class ScaffoldAddons {
 
     public interceptor() : Addons.Interceptors.IInterceptor {
 
-        var decoratorService = this.decoratorService();
-        var proxy = new ProxyModule.Proxy(decoratorService);
+        var decorator= new DecoratorModule.Decorator();
+        var proxy = new ProxyModule.Proxy(decorator);
 
         return new InterceptorModule.Interceptor(proxy);
-    }
-
-    private decoratorService() : Typeioc.Internal.IDecoratorService {
-        return{
-            create() : Typeioc.Internal.Interceptors.IDecorator {
-
-                return new DecoratorModule.Decorator();
-            }
-        }
     }
 }

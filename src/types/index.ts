@@ -10,9 +10,6 @@
 
 import OwnerModule = require('./owner');
 import ScopeModule = require('./scope');
-import CallInfoTypeModule = require('./callInfoType');
-
 
 export var Owner = OwnerModule.Owner;
 export var Scope = ScopeModule.Scope;
-export var CallInfoType = CallInfoTypeModule.CallInfoType;

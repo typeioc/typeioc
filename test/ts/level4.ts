@@ -21,7 +21,7 @@ export module Level4 {
         var container = containerBuilder.build();
         var child = container.createChild();
 
-        var test1 = child.resolve(TestData.Test1Base);
+        var test1 = child.resolve<TestData.Test1>(TestData.Test1Base);
 
         test.notEqual(test1, null);
         test.strictEqual(test1.Name, "test 1");
@@ -41,7 +41,7 @@ export module Level4 {
         var container = containerBuilder.build();
         var child = container.createChild();
 
-        var test1 = child.resolveNamed(TestData.Test1Base, registrationName);
+        var test1 = child.resolveNamed<TestData.Test1>(TestData.Test1Base, registrationName);
 
         test.notEqual(test1, null);
         test.strictEqual(test1.Name, "test 1");
@@ -57,7 +57,7 @@ export module Level4 {
         var container = containerBuilder.build();
         var child = container.createChild();
 
-        var test1 = child.resolve(TestData.Test1Base);
+        var test1 = child.resolve<TestData.Test1>(TestData.Test1Base);
 
         test.notEqual(test1, null);
         test.strictEqual(test1.Name, "test 1");
@@ -72,9 +72,9 @@ export module Level4 {
             .within(Typeioc.Types.Scope.Hierarchy);
 
         var container = containerBuilder.build();
-        var test1 = container.resolve(TestData.Test1Base);
+        var test1 = container.resolve<TestData.Test4>(TestData.Test1Base);
         test1.Name = "test 1";
-        var test2 = container.resolve(TestData.Test1Base);
+        var test2 = container.resolve<TestData.Test4>(TestData.Test1Base);
 
         test.notEqual(test1, null);
         test.strictEqual(test1.Name, "test 1");
@@ -93,9 +93,9 @@ export module Level4 {
         var container = containerBuilder.build();
         var child = container.createChild();
 
-        var test1 = child.resolve(TestData.Test1Base);
+        var test1 = child.resolve<TestData.Test4>(TestData.Test1Base);
         test1.Name = "test 1";
-        var test2 = container.resolve(TestData.Test1Base);
+        var test2 = container.resolve<TestData.Test4>(TestData.Test1Base);
 
         test.notEqual(test1, null);
         test.strictEqual(test1.Name, "test 1");
@@ -114,9 +114,9 @@ export module Level4 {
         var container = containerBuilder.build();
         var child = container.createChild();
 
-        var test1 = container.resolve(TestData.Test1Base);
+        var test1 = container.resolve<TestData.Test4>(TestData.Test1Base);
         test1.Name = "test 1";
-        var test2 = child.resolve(TestData.Test1Base);
+        var test2 = child.resolve<TestData.Test4>(TestData.Test1Base);
 
         test.notEqual(test1, null);
         test.strictEqual(test1.Name, "test 1");

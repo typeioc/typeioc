@@ -14,27 +14,29 @@ import ISubstitute = Addons.Interceptors.ISubstitute;
 
 export class Interceptor implements Addons.Interceptors.IInterceptor {
 
-    private _storage : IStorage;
+    constructor(private _proxy : IProxy) { }
 
-    constructor(private _proxy : IProxy) {
-        this._storage = new SubstituteStorageModule.SubstituteStorage();
-    }
-
-    public interceptPrototype<R extends Function>(subject : R, substitutes? : Array<ISubstituteInfo>) : R {
+    public interceptPrototype<R extends Function>(subject : R, substitutes? : ISubstituteInfo | Array<ISubstituteInfo>) : R {
 
         return this.intercept(subject, substitutes);
     }
 
-    public interceptInstance<R extends Object>(subject : R, substitutes? : Array<ISubstituteInfo>) : R {
+    public interceptInstance<R extends Object>(subject : R, substitutes? : ISubstituteInfo | Array<ISubstituteInfo>) : R {
 
         return this.intercept(subject, substitutes);
     }
 
-    public intercept<R extends (Function | Object)>(subject : R, substitutes? : Array<ISubstituteInfo>) : R {
+    public intercept<R extends (Function | Object)>(subject : R, substitutes? : ISubstituteInfo | Array<ISubstituteInfo>) : R {
 
         Utils.checkNullArgument(subject, 'subject');
 
-        var storage = substitutes ? this.transformSubstitutes(substitutes) : null;
+        var data : any = substitutes;
+
+        if(data && !Utils.Reflection.isArray(data)) {
+            data = [ substitutes ];
+        }
+
+        var storage = data ? this.transformSubstitutes(data) : null;
 
         var result : any;
         var argument : any = subject;
@@ -56,13 +58,15 @@ export class Interceptor implements Addons.Interceptors.IInterceptor {
 
     private transformSubstitutes(substitutes : Array<ISubstituteInfo>) : IStorage {
 
+        var storage = new SubstituteStorageModule.SubstituteStorage();
+
         return substitutes.reduce((storage, current) => {
 
                 var substitute = this.createSubstitute(current);
-                this._storage.add(substitute);
-                return this._storage;
+                storage.add(substitute);
+                return storage;
             },
-            this._storage);
+            storage);
     }
 
     private createSubstitute(value : ISubstituteInfo) : ISubstitute {

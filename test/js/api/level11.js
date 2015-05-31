@@ -7,7 +7,7 @@ exports.api = {
         var Scaffold = require('./../../scaffold');
         var ScaffoldAddons = require('./../../scaffoldAddons');
         var mockery = Scaffold.Mockery;
-        var CallInfoType = Scaffold.Types.CallInfoType;
+        var CallInfoType = ScaffoldAddons.Interceptors.CallInfoType;
 
         var interceptor = null;
         var containerBuilder = null;
@@ -31,7 +31,7 @@ exports.api = {
 
         function setUp(callback) {
             containerBuilder = Scaffold.createBuilder();
-            interceptor = ScaffoldAddons.interceptor();
+            interceptor = ScaffoldAddons.Interceptors.create();
             callback();
         }
 

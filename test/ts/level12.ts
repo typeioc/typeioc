@@ -5,7 +5,7 @@
 import Scaffold = require('./../scaffold');
 import ScaffoldAddons = require('./../scaffoldAddons');
 import DataInterceptors = Scaffold.TestModuleInterceptors;
-var CallInfoType = Scaffold.Types.CallInfoType;
+var CallInfoType = ScaffoldAddons.Interceptors.CallInfoType;
 
 export module Level12 {
 
@@ -30,10 +30,10 @@ export module Level12 {
             .as(() => subject);
 
         var container = containerBuilder.build();
-        return container.resolve(register);
+        return container.resolve<R>(register);
     }
 
-    function resolveByPrototype<R>(register:R, subject:R, substitutes?:Array<Addons.Interceptors.ISubstituteInfo>):R {
+    function resolveByPrototype<R extends Function>(register:R, subject:R, substitutes?:Array<Addons.Interceptors.ISubstituteInfo>):R {
 
         if (!substitutes)
             substitutes = [];
@@ -43,7 +43,7 @@ export module Level12 {
         containerBuilder.register(register)
             .as(c => {
 
-                var resolution = c.resolve(register2);
+                var resolution = c.resolve<R>(register2);
                 return interceptor.interceptPrototype(resolution, substitutes);
             });
 
@@ -51,7 +51,7 @@ export module Level12 {
             .as(() => subject);
 
         var container = containerBuilder.build();
-        return container.resolve(register);
+        return container.resolve<R>(register);
     }
 
     function resolveByInstance<R>(register:R, subject:R, substitutes?:Array<Addons.Interceptors.ISubstituteInfo>):R {
@@ -72,12 +72,12 @@ export module Level12 {
             .as(() => subject);
 
         var container = containerBuilder.build();
-        return container.resolve(register);
+        return container.resolve<R>(register);
     }
 
     function setUp(callback) {
         containerBuilder = Scaffold.createBuilder();
-        interceptor = ScaffoldAddons.interceptor();
+        interceptor = ScaffoldAddons.Interceptors.create();
         callback();
     }
 
@@ -377,6 +377,66 @@ export module Level12 {
             var actual = instance.foo(1);
             test.strictEqual(acc.start, actual);
 
+
+            test.done();
+        },
+
+        should_decorate_multiple_method_interceptions: function(test) {
+
+            var substitute1 = {
+                method : 'foo',
+                wrapper : function(callInfo) {
+
+                    return 'substitute 1';
+                }
+            };
+
+            var substitute2 = {
+                method : 'foo',
+                wrapper : function(callInfo) {
+
+                    return 'substitute 2';
+                }
+            };
+
+            var substitute3 = {
+                method : 'foo',
+                wrapper : function(callInfo) {
+
+                    return 'substitute 3';
+                }
+            };
+
+            var Proto41 = interceptor.intercept(DataInterceptors.Module41.Parent,[ substitute1 ]);
+            var Proto42 = interceptor.intercept(DataInterceptors.Module42.Parent,[ substitute2 ]);
+            var Proto40 = interceptor.intercept(DataInterceptors.Module40.Parent,[ substitute3 ]);
+
+            var instance41 = new Proto41(1);
+            var instance42 = new Proto42();
+            var instance40 = new Proto40(3);
+
+            test.strictEqual(instance41.foo('some value 1'), 'substitute 1');
+            test.strictEqual(instance42.foo('some value 2'), 'substitute 2');
+            test.strictEqual(instance40.foo('some value 3'), 'substitute 3');
+
+            test.done();
+        },
+
+        should_decorate_method_single_interception: function(test) {
+
+            var substitute1 = {
+                method : 'foo',
+                wrapper : function(callInfo) {
+
+                    return 'substitute 1';
+                }
+            };
+
+            var Proto41 = interceptor.intercept(DataInterceptors.Module41.Parent, substitute1);
+
+            var instance41 = new Proto41(1);
+
+            test.strictEqual(instance41.foo('some value 1'), 'substitute 1');
 
             test.done();
         }

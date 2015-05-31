@@ -6,6 +6,4 @@
 
 var addons = require('../addons/index');
 
-export function interceptor() : Addons.Interceptors.IInterceptor {
-    return addons.Interceptors.create();
-}
+export var Interceptors = addons.Interceptors;

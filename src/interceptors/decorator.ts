@@ -88,7 +88,6 @@ export class Decorator implements Typeioc.Internal.Interceptors.IDecorator {
          return result;
      }
 
-
      private defineWrapStrategies() : IStrategy
      {
          var result = <IStrategy>{};

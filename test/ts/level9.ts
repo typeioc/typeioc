@@ -23,7 +23,7 @@ export module Level9 {
             .as(() =>  new TestData.Test2());
         containerBuilder.register(TestData.Test1Base)
             .as(c => {
-                var test2 = c.resolve(TestData.Test2Base);
+                var test2 = c.resolve<TestData.Test2>(TestData.Test2Base);
 
                 return new TestData.Test3(test2);
             });
@@ -42,7 +42,7 @@ export module Level9 {
             }
         }];
 
-        var actualDynamic = container.resolveWithDependencies(TestData.Test1Base, dependencies);
+        var actualDynamic = container.resolveWithDependencies<TestData.Test1>(TestData.Test1Base, dependencies);
 
         test.strictEqual(actualDynamic.Name, 'Test 3 name from dependency');
 
@@ -55,7 +55,7 @@ export module Level9 {
             .as(() => new TestData.Test2());
         containerBuilder.register(TestData.Test1Base)
             .as(c => {
-                var test2 = c.resolve(TestData.Test2Base);
+                var test2 = c.resolve<TestData.Test2>(TestData.Test2Base);
 
                 return new TestData.Test3(test2);
             });
@@ -89,13 +89,13 @@ export module Level9 {
             .as(() => new TestData.Test2());
         containerBuilder.register(TestData.Test1Base)
             .as(c => {
-                var test2 = c.resolve(TestData.Test2Base);
+                var test2 = c.resolve<TestData.Test2>(TestData.Test2Base);
 
                 return new TestData.Test3(test2);
             });
 
         var container = containerBuilder.build();
-        var actualNative = container.resolve(TestData.Test1Base);
+        var actualNative = container.resolve<TestData.Test3>(TestData.Test1Base);
 
         var dependencies = [{
             service: TestData.Test2Base,
@@ -109,7 +109,7 @@ export module Level9 {
             }
         }];
 
-        var actualDynamic = container.resolveWithDependencies(TestData.Test1Base, dependencies);
+        var actualDynamic = container.resolveWithDependencies<TestData.Test3>(TestData.Test1Base, dependencies);
 
         test.notStrictEqual(actualDynamic, actualNative);
         test.ok(actualNative instanceof TestData.Test3);
@@ -124,14 +124,14 @@ export module Level9 {
             .as(() => new TestData.Test2());
         containerBuilder.register(TestData.Test1Base)
             .as(c => {
-                var test2 = c.resolve(TestData.Test2Base);
+                var test2 = c.resolve<TestData.Test2>(TestData.Test2Base);
 
                 return new TestData.Test3(test2);
             });
 
         var container = containerBuilder.build();
 
-        var delegate = () => container.resolveWithDependencies(TestData.Test1Base, undefined);
+        var delegate = () => container.resolveWithDependencies<TestData.Test3>(TestData.Test1Base, undefined);
 
         test.throws(delegate, error => {
             test.strictEqual(error.message, 'No dependencies provided');
@@ -149,7 +149,7 @@ export module Level9 {
             .as(() => new TestData.Test2());
         containerBuilder.register(TestData.Test1Base)
             .as(c => {
-                var test2 = c.resolve(TestData.Test2Base);
+                var test2 = c.resolve<TestData.Test2>(TestData.Test2Base);
 
                 return new TestData.Test3(test2);
             });
@@ -174,7 +174,7 @@ export module Level9 {
             .as(() => new TestData.Test2());
         containerBuilder.register(TestData.Test1Base)
             .as(c => {
-                var test2 = c.resolve(TestData.Test2Base);
+                var test2 = c.resolve<TestData.Test2>(TestData.Test2Base);
 
                 return new TestData.Test3(test2);
             });
@@ -230,7 +230,7 @@ export module Level9 {
 
         containerBuilder.register(TestData.Test1Base)
             .as(c => {
-                var test2 = c.resolve(TestData.Test2Base);
+                var test2 = c.resolve<TestData.Test2>(TestData.Test2Base);
 
                 return new TestData.Test3(test2);
             });
@@ -267,7 +267,7 @@ export module Level9 {
 
         containerBuilder.register(TestData.Test1Base)
             .as(c => {
-                var test2 = c.resolve(TestData.Test2Base);
+                var test2 = c.resolve<TestData.Test2>(TestData.Test2Base);
 
                 return new TestData.Test3(test2);
             });
@@ -287,7 +287,7 @@ export module Level9 {
             }
         }];
 
-        var actual = container.resolveWithDependencies(TestData.Test1Base, dependencies);
+        var actual = container.resolveWithDependencies<TestData.Test1>(TestData.Test1Base, dependencies);
 
         test.ok(actual);
         test.strictEqual(actual.Name, 'Test 3 name from dependency');
@@ -299,7 +299,7 @@ export module Level9 {
 
         containerBuilder.register(TestData.Test1Base)
             .as(c => {
-                var test2 = c.resolve(TestData.Test2Base);
+                var test2 = c.resolve<TestData.Test2>(TestData.Test2Base);
 
                 return new TestData.Test3(test2);
             });
@@ -313,10 +313,10 @@ export module Level9 {
         containerBuilder.register(dynamicService)
             .as(c=> {
 
-                var test1 = c.resolve(TestData.Test1Base);
-                var test2 = c.resolve(TestData.Test2Base);
+                var test1 = c.resolve<TestData.Test1Base>(TestData.Test1Base);
+                var test2 = c.resolve<TestData.Test2Base>(TestData.Test2Base);
 
-                var test4 = c.resolveNamed(TestData.Test1Base, "Test 4");
+                var test4 = c.resolveNamed<TestData.Test4>(TestData.Test1Base, "Test 4");
 
                 return new TestData.Test7(test1, test2, test4);
             });
@@ -375,7 +375,7 @@ export module Level9 {
             .as(() => new TestData.Test2());
         containerBuilder.register(TestData.Test1Base)
             .as(c => {
-                var test2 = c.resolve(TestData.Test2Base);
+                var test2 = c.resolve<TestData.Test2>(TestData.Test2Base);
 
                 return new TestData.Test3(test2);
             });
@@ -388,9 +388,9 @@ export module Level9 {
         containerBuilder.register(dynamicService)
             .as(c => {
 
-                var test1 = c.resolve(TestData.Test1Base);
-                var test2 = c.resolve(TestData.Test2Base);
-                var test4 = c.resolveNamed(TestData.Test1Base, "Test 4");
+                var test1 = c.resolve<TestData.Test1Base>(TestData.Test1Base);
+                var test2 = c.resolve<TestData.Test2Base>(TestData.Test2Base);
+                var test4 = c.resolveNamed<TestData.Test4>(TestData.Test1Base, "Test 4");
 
                 return new TestData.Test7(test1, test2, test4);
             });
@@ -429,7 +429,7 @@ export module Level9 {
             }
         }];
 
-        var actual = container.resolveWithDependencies(dynamicService, dependencies);
+        var actual = container.resolveWithDependencies<TestData.Test7>(dynamicService, dependencies);
         test.ok(actual);
         test.ok(actual instanceof TestData.Test7);
         test.strictEqual(actual.Name, 'test 1 base test 2 base test 4 base');
@@ -443,7 +443,7 @@ export module Level9 {
             .as(() =>  new TestData.Test2());
         containerBuilder.register(TestData.Test1Base)
             .as(c => {
-                var test2 = c.resolve(TestData.Test2Base);
+                var test2 = c.resolve<TestData.Test2>(TestData.Test2Base);
 
                 return new TestData.Test3(test2);
             }).named('Test');
@@ -481,7 +481,7 @@ export module Level9 {
             .as(() => new TestData.Test2());
         containerBuilder.register(TestData.Test1Base)
             .as((c, _, __, ___) => {
-                var test2 = c.resolve(TestData.Test2Base);
+                var test2 = c.resolve<TestData.Test2>(TestData.Test2Base);
 
                 return new TestData.Test3(test2);
             });
@@ -561,7 +561,7 @@ export module Level9 {
             .as(() => new TestData.Test2());
         containerBuilder.register(TestData.Test1Base)
             .as(c => {
-                var test2 = c.resolve(TestData.Test2Base);
+                var test2 = c.resolve<TestData.Test2>(TestData.Test2Base);
 
                 return new TestData.Test3(test2);
             });
@@ -574,12 +574,12 @@ export module Level9 {
         containerBuilder.register(dynamicService)
             .as(c => {
 
-                var test1 = c.resolve(TestData.Test1Base);
-                var test2 = c.resolve(TestData.Test2Base);
+                var test1 = c.resolve<TestData.Test1Base>(TestData.Test1Base);
+                var test2 = c.resolve<TestData.Test2Base>(TestData.Test2Base);
 
                 test.ok(test2 instanceof TestData.Test2);
 
-                var test4 = c.resolveNamed(TestData.Test1Base, "Test 4");
+                var test4 = c.resolveNamed<TestData.Test4>(TestData.Test1Base, "Test 4");
 
                 return new TestData.Test7(test1, test2, test4);
             });
@@ -610,7 +610,7 @@ export module Level9 {
             }
         }];
 
-        var actual = container.resolveWithDependencies(dynamicService, dependencies);
+        var actual = container.resolveWithDependencies<TestData.Test7>(dynamicService, dependencies);
         test.ok(actual);
         test.ok(actual instanceof TestData.Test7);
         test.strictEqual(actual.Name, 'test 1 base test 2 test 4 base');
@@ -626,7 +626,7 @@ export module Level9 {
             .as(() => new TestData.Test2());
         containerBuilder.register(TestData.Test1Base)
             .as(c => {
-                var test2 = c.resolve(TestData.Test2Base);
+                var test2 = c.resolve<TestData.Test2>(TestData.Test2Base);
 
                 return new TestData.Test3(test2);
             });
@@ -639,12 +639,12 @@ export module Level9 {
         containerBuilder.register(dynamicService)
             .as(c => {
 
-                var test1 = c.resolve(TestData.Test1Base);
+                var test1 = c.resolve<TestData.Test1Base>(TestData.Test1Base);
 
                 test.ok(test1 instanceof TestData.Test3);
 
-                var test2 = c.resolve(TestData.Test2Base);
-                var test4 = c.resolveNamed(TestData.Test1Base, "Test 4");
+                var test2 = c.resolve<TestData.Test2Base>(TestData.Test2Base);
+                var test4 = c.resolveNamed<TestData.Test4>(TestData.Test1Base, "Test 4");
 
                 return new TestData.Test7(test1, test2, test4);
             });
@@ -675,7 +675,7 @@ export module Level9 {
             }
         }];
 
-        var actual = container.resolveWithDependencies(dynamicService, dependencies);
+        var actual = container.resolveWithDependencies<TestData.Test7>(dynamicService, dependencies);
         test.ok(actual);
         test.ok(actual instanceof TestData.Test7);
         test.strictEqual(actual.Name, 'Test 3 test 2 test 2 base test 4 base');
@@ -691,7 +691,7 @@ export module Level9 {
             .as(() => new TestData.Test2());
         containerBuilder.register(TestData.Test1Base)
             .as(c => {
-                var test2 = c.resolve(TestData.Test2Base);
+                var test2 = c.resolve<TestData.Test2>(TestData.Test2Base);
 
                 return new TestData.Test3(test2);
             });
@@ -704,9 +704,9 @@ export module Level9 {
         containerBuilder.register(dynamicService)
             .as(c=> {
 
-                var test1 = c.resolve(TestData.Test1Base);
-                var test2 = c.resolve(TestData.Test2Base);
-                var test4 = c.resolveNamed(TestData.Test1Base, "Test 4");
+                var test1 = c.resolve<TestData.Test1Base>(TestData.Test1Base);
+                var test2 = c.resolve<TestData.Test2Base>(TestData.Test2Base);
+                var test4 = c.resolveNamed<TestData.Test4>(TestData.Test1Base, "Test 4");
 
                 test.ok(test4 instanceof TestData.Test4);
 
@@ -738,7 +738,7 @@ export module Level9 {
             }
         }];
 
-        var actual = container.resolveWithDependencies(dynamicService, dependencies);
+        var actual = container.resolveWithDependencies<TestData.Test7>(dynamicService, dependencies);
         test.ok(actual);
         test.ok(actual instanceof TestData.Test7);
         test.strictEqual(actual.Name, 'test 1 base test 2 base test 4');

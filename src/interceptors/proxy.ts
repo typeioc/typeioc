@@ -17,14 +17,11 @@ interface IPropertyPredicate {
 
 export class Proxy implements IProxy {
 
-    private _decorator : Typeioc.Internal.Interceptors.IDecorator;
     private restrictedProperties;
 
-    constructor(decoratorService : Typeioc.Internal.IDecoratorService) {
+    constructor(private _decorator : Typeioc.Internal.Interceptors.IDecorator) {
 
-        this._decorator = decoratorService.create();
-
-        this.restrictedProperties = Utils.Reflection.getAllPropertyNames(function test(){});
+        this.restrictedProperties = Utils.Reflection.getAllPropertyNames(Function);
     }
 
     public byPrototype(parent : Function,
@@ -114,40 +111,35 @@ export class Proxy implements IProxy {
             case Typeioc.Internal.Reflection.PropertyType.Method:
 
                 if(this.hasProperType(types, Addons.Interceptors.CallInfoType.Method) === false)
-                    throw this.combineError('Could not match proxy type and property type for method',
-                        propertyName, Addons.Interceptors.CallInfoType.Method);
+                    throw this.combineError(propertyName, 'Method', types);
 
                 break;
 
             case Typeioc.Internal.Reflection.PropertyType.Getter:
 
                 if(this.hasProperType(types, Addons.Interceptors.CallInfoType.Getter) === false)
-                    throw this.combineError('Could not match proxy type and property type for getter',
-                        propertyName, Addons.Interceptors.CallInfoType.Getter);
+                    throw this.combineError(propertyName, 'Getter', types);
 
                 break;
 
             case Typeioc.Internal.Reflection.PropertyType.Setter:
                 if(this.hasProperType(types, Addons.Interceptors.CallInfoType.Setter) === false)
-                    throw this.combineError('Could not match proxy type and property type for setter',
-                        propertyName, Addons.Interceptors.CallInfoType.Setter);
+                    throw this.combineError(propertyName, 'Setter', types);
 
                 break;
             case Typeioc.Internal.Reflection.PropertyType.FullProperty:
 
                 if(this.hasProperType(types, Addons.Interceptors.CallInfoType.GetterSetter) === false &&
-                    this.hasProperType(types, Addons.Interceptors.CallInfoType.Getter) === false &&
-                    this.hasProperType(types, Addons.Interceptors.CallInfoType.Setter)=== false)
-                    throw this.combineError('Could not match proxy type and property type for getter-setter',
-                        propertyName, Addons.Interceptors.CallInfoType.GetterSetter);
+                   this.hasProperType(types, Addons.Interceptors.CallInfoType.Getter) === false &&
+                   this.hasProperType(types, Addons.Interceptors.CallInfoType.Setter)=== false)
+                    throw this.combineError(propertyName, 'GetterSetter', types);
 
                 break;
 
             case Typeioc.Internal.Reflection.PropertyType.Field:
 
                 if(this.hasProperType(types, Addons.Interceptors.CallInfoType.Field) === false)
-                    throw this.combineError('Could not match proxy type and property type for field',
-                        propertyName, Addons.Interceptors.CallInfoType.Field);
+                    throw this.combineError(propertyName, 'Field', types);
 
                 break;
         }
@@ -172,9 +164,22 @@ export class Proxy implements IProxy {
         };
     }
 
-    private combineError(message : string, propertyName : string, type : Addons.Interceptors.CallInfoType) {
+    private combineError(propertyName : string, nativeTypeName: string, types : Array<Addons.Interceptors.CallInfoType>) {
+
+        var type = types.filter(t => t !== Addons.Interceptors.CallInfoType.Any)[0];
+
+        var allTypes = {};
+        allTypes[Addons.Interceptors.CallInfoType.Field] = 'Field';
+        allTypes[Addons.Interceptors.CallInfoType.Getter] = 'Getter';
+        allTypes[Addons.Interceptors.CallInfoType.Setter] = 'Setter';
+        allTypes[Addons.Interceptors.CallInfoType.Method] = 'Method';
+        allTypes[Addons.Interceptors.CallInfoType.GetterSetter] = 'GetterSetter';
+
+        var typeName = allTypes[type];
+
+        var message = ['Could not match proxy type and property type. Expected: "', nativeTypeName, '", Actual: "', typeName, '"'].join('');
         var error = new Exceptions.ProxyError(message);
-        error.data = { method : propertyName, type : type };
+        error.data = { method : propertyName, expected : nativeTypeName, actual : typeName };
         return error;
     }
  }

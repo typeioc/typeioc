@@ -13,7 +13,7 @@ declare module Typeioc.Internal {
 
     module Reflection {
 
-        enum PropertyType {
+        const enum PropertyType {
             Method = 1,                 // method
             Getter = 2,                 // get
             Setter = 3,                 // set
@@ -101,10 +101,6 @@ declare module Typeioc.Internal {
 
     interface IInternalContainerService {
         create() : IContainer;
-    }
-
-    interface IDecoratorService {
-        create() : Interceptors.IDecorator;
     }
 
     interface IContainerApi<T> {

@@ -185,7 +185,7 @@ export module Level9 {
             });
         containerBuilder.register(TestData.Test1Base)
             .as(function (c) {
-                var test2 = c.resolve(TestData.Test2Base);
+                var test2 = c.resolve<TestData.Test2>(TestData.Test2Base);
 
                 return new TestData.Test3(test2);
             });
@@ -222,7 +222,7 @@ export module Level9 {
             .as(() => new TestData.Test2());
         containerBuilder.register(TestData.Test1Base)
             .as(c => {
-                var test2 = c.resolve(TestData.Test2Base);
+                var test2 = c.resolve<TestData.Test2>(TestData.Test2Base);
 
                 return new TestData.Test3(test2);
             });
@@ -236,9 +236,9 @@ export module Level9 {
         containerBuilder.register(dynamicService)
             .as(c => {
 
-                var test1 = c.resolve(TestData.Test1Base);
-                var test2 = c.resolve(TestData.Test2Base);
-                var test4 = c.resolveNamed(TestData.Test1Base, "Test 4");
+                var test1 = c.resolve<TestData.Test1Base>(TestData.Test1Base);
+                var test2 = c.resolve<TestData.Test2Base>(TestData.Test2Base);
+                var test4 = c.resolveNamed<TestData.Test4>(TestData.Test1Base, "Test 4");
 
                 return new TestData.Test7(test1, test2, test4);
             });
@@ -296,7 +296,7 @@ export module Level9 {
 
         containerBuilder.register(TestData.Test1Base)
             .as(c => {
-                var test2 = c.resolve(TestData.Test2Base);
+                var test2 = c.resolve<TestData.Test2>(TestData.Test2Base);
 
                 return new TestData.Test3(test2);
             });
@@ -310,9 +310,9 @@ export module Level9 {
         containerBuilder.register(dynamicService)
             .as(c => {
 
-                var test1 = c.resolve(TestData.Test1Base);
-                var test2 = c.resolve(TestData.Test2Base);
-                var test4 = c.resolveNamed(TestData.Test1Base, "Test 4");
+                var test1 = c.resolve<TestData.Test1Base>(TestData.Test1Base);
+                var test2 = c.resolve<TestData.Test2Base>(TestData.Test2Base);
+                var test4 = c.resolveNamed<TestData.Test4>(TestData.Test1Base, "Test 4");
 
                 return new TestData.Test7(test1, test2, test4);
             });
@@ -605,7 +605,7 @@ export module Level9 {
             });
         containerBuilder.register(TestData.Test1Base)
             .as(function (c, arg) {
-                var test2 = c.resolve(TestData.Test2Base);
+                var test2 = c.resolve<TestData.Test2>(TestData.Test2Base);
 
                 var result = new TestData.Test3(test2);
 
@@ -654,7 +654,7 @@ export module Level9 {
             });
         containerBuilder.register(TestData.Test1Base)
             .as(function (c, a, b, d) {
-                var test2 = c.resolve(TestData.Test2Base, a, b, d);
+                var test2 = c.resolve<TestData.Test2>(TestData.Test2Base, a, b, d);
 
                 return new TestData.Test3(test2);
             });
@@ -696,7 +696,7 @@ export module Level9 {
             });
         containerBuilder.register(TestData.Test1Base)
             .as(function (c, a, b, d) {
-                var test2 = c.resolve(TestData.Test2Base, a, b, d);
+                var test2 = c.resolve<TestData.Test2>(TestData.Test2Base, a, b, d);
 
                 return new TestData.Test3(test2);
             });
@@ -799,7 +799,7 @@ export module Level9 {
             });
         containerBuilder.register(TestData.Test1Base)
             .as(function (c) {
-                var test2 = c.resolve(TestData.Test2Base);
+                var test2 = c.resolve<TestData.Test2>(TestData.Test2Base);
 
                 return new TestData.Test3(test2);
             });
@@ -841,7 +841,7 @@ export module Level9 {
             });
         containerBuilder.register(TestData.Test1Base)
             .as(c => {
-                var test2 = c.resolve(TestData.Test2Base);
+                var test2 = c.resolve<TestData.Test2>(TestData.Test2Base);
 
                 return new TestData.Test3(test2);
             });
@@ -874,7 +874,7 @@ export module Level9 {
 
         containerBuilder.register(TestData.Test1Base)
             .as(c => {
-                var test2 = c.resolve(TestData.Test2Base);
+                var test2 = c.resolve<TestData.Test2>(TestData.Test2Base);
 
                 return new TestData.Test3(test2);
             });
@@ -910,7 +910,7 @@ export module Level9 {
 
         containerBuilder.register(TestData.Test1Base)
             .as(c => {
-                var test2 = c.resolve(TestData.Test2Base);
+                var test2 = c.resolve<TestData.Test2>(TestData.Test2Base);
 
                 return new TestData.Test3(test2);
             });
@@ -923,10 +923,9 @@ export module Level9 {
         containerBuilder.register(dynamicService)
             .as(c => {
 
-                var test1 = c.resolve(TestData.Test1Base);
-                var test2 = c.resolve(TestData.Test2Base);
-
-                var test4 = c.resolveNamed(TestData.Test1Base, "Test 4");
+                var test1 = c.resolve<TestData.Test1Base>(TestData.Test1Base);
+                var test2 = c.resolve<TestData.Test2Base>(TestData.Test2Base);
+                var test4 = c.resolveNamed<TestData.Test4>(TestData.Test1Base, "Test 4");
 
                 return new TestData.Test7(test1, test2, test4);
             });
@@ -1024,7 +1023,7 @@ export module Level9 {
 
         containerBuilder.register(TestData.Test1Base)
             .as(function (c) {
-                var test2 = c.resolve(TestData.Test2Base);
+                var test2 = c.resolve<TestData.Test2>(TestData.Test2Base);
 
                 return new TestData.Test3(test2);
             })
@@ -1095,7 +1094,7 @@ export module Level9 {
 
         containerBuilder.register(TestData.Test1Base)
             .as(function (c) {
-                var test2 = c.resolve(TestData.Test2Base);
+                var test2 = c.resolve<TestData.Test2>(TestData.Test2Base);
 
                 return new TestData.Test3(test2);
             });

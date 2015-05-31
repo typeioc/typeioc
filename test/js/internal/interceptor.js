@@ -5,8 +5,10 @@ exports.internal = {
     interceptor: (function () {
 
         var Scaffold = require('../../scaffold');
+        var ScaffoldAddons = require('../../scaffoldAddons');
         var InterceptorModule = require('./../../../lib/interceptors/interceptor');
         var mockery = Scaffold.Mockery;
+        var CallInfoType = ScaffoldAddons.Interceptors.CallInfoType;
 
         var proxy;
         var interceptor;
@@ -84,25 +86,25 @@ exports.internal = {
                     var foo = storage.known['foo'];
                     test.strictEqual(Object.getOwnPropertyNames(foo).length, 1);
 
-                    var item = foo[Scaffold.Types.CallInfoType.Any];
+                    var item = foo[CallInfoType.Any];
 
                     test.strictEqual(item.head, item.tail);
 
                     test.strictEqual('foo', item.head.method);
                     test.strictEqual(wrapper1, item.head.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Any, item.head.type);
+                    test.strictEqual(CallInfoType.Any, item.head.type);
                     test.strictEqual(null, item.head.next);
 
                     var bar = storage.known['bar'];
                     test.strictEqual(Object.getOwnPropertyNames(bar).length, 1);
 
-                    item = bar[Scaffold.Types.CallInfoType.Any];
+                    item = bar[CallInfoType.Any];
 
                     test.strictEqual(item.head, item.tail);
 
                     test.strictEqual('bar', item.head.method);
                     test.strictEqual(wrapper2, item.head.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Any, item.head.type);
+                    test.strictEqual(CallInfoType.Any, item.head.type);
                     test.strictEqual(null, item.head.next);
 
                     test.done();
@@ -118,7 +120,7 @@ exports.internal = {
                         [
                             {
                                 method : 'foo',
-                                type : Scaffold.Types.CallInfoType.Method,
+                                type : CallInfoType.Method,
                                 wrapper : wrapper
                             }
                         ]);
@@ -129,13 +131,13 @@ exports.internal = {
                     test.strictEqual(Object.getOwnPropertyNames(storage.known).length, 1);
 
                     var foo = storage.known['foo'];
-                    var item = foo[Scaffold.Types.CallInfoType.Method];
+                    var item = foo[CallInfoType.Method];
 
                     test.strictEqual(item.head, item.tail);
 
                     test.strictEqual('foo', item.head.method);
                     test.strictEqual(wrapper, item.head.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Method, item.head.type);
+                    test.strictEqual(CallInfoType.Method, item.head.type);
                     test.strictEqual(null, item.head.next);
 
                     test.done();
@@ -151,7 +153,7 @@ exports.internal = {
                         [
                             {
                                 method : 'foo',
-                                type : Scaffold.Types.CallInfoType.Field,
+                                type : CallInfoType.Field,
                                 wrapper : wrapper
                             }
                         ]);
@@ -162,13 +164,13 @@ exports.internal = {
                     test.strictEqual(Object.getOwnPropertyNames(storage.known).length, 1);
 
                     var foo = storage.known['foo'];
-                    var item = foo[Scaffold.Types.CallInfoType.Field];
+                    var item = foo[CallInfoType.Field];
 
                     test.strictEqual(item.head, item.tail);
 
                     test.strictEqual('foo', item.head.method);
                     test.strictEqual(wrapper, item.head.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Field, item.head.type);
+                    test.strictEqual(CallInfoType.Field, item.head.type);
                     test.strictEqual(null, item.head.next);
 
                     test.done();
@@ -184,7 +186,7 @@ exports.internal = {
                         [
                             {
                                 method : 'foo',
-                                type : Scaffold.Types.CallInfoType.Getter,
+                                type : CallInfoType.Getter,
                                 wrapper : wrapper
                             }
                         ]);
@@ -195,13 +197,13 @@ exports.internal = {
                     test.strictEqual(Object.getOwnPropertyNames(storage.known).length, 1);
 
                     var foo = storage.known['foo'];
-                    var item = foo[Scaffold.Types.CallInfoType.Getter];
+                    var item = foo[CallInfoType.Getter];
 
                     test.strictEqual(item.head, item.tail);
 
                     test.strictEqual('foo', item.head.method);
                     test.strictEqual(wrapper, item.head.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Getter, item.head.type);
+                    test.strictEqual(CallInfoType.Getter, item.head.type);
                     test.strictEqual(null, item.head.next);
                     test.done();
                 },
@@ -216,7 +218,7 @@ exports.internal = {
                         [
                             {
                                 method : 'foo',
-                                type : Scaffold.Types.CallInfoType.Setter,
+                                type : CallInfoType.Setter,
                                 wrapper : wrapper
                             }
                         ]);
@@ -227,13 +229,13 @@ exports.internal = {
                     test.strictEqual(Object.getOwnPropertyNames(storage.known).length, 1);
 
                     var foo = storage.known['foo'];
-                    var item = foo[Scaffold.Types.CallInfoType.Setter];
+                    var item = foo[CallInfoType.Setter];
 
                     test.strictEqual(item.head, item.tail);
 
                     test.strictEqual('foo', item.head.method);
                     test.strictEqual(wrapper, item.head.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Setter, item.head.type);
+                    test.strictEqual(CallInfoType.Setter, item.head.type);
                     test.strictEqual(null, item.head.next);
 
                     test.done();
@@ -249,7 +251,7 @@ exports.internal = {
                         [
                             {
                                 method : 'foo',
-                                type : Scaffold.Types.CallInfoType.GetterSetter,
+                                type : CallInfoType.GetterSetter,
                                 wrapper : wrapper
                             }
                         ]);
@@ -260,13 +262,13 @@ exports.internal = {
                     test.strictEqual(Object.getOwnPropertyNames(storage.known).length, 1);
 
                     var foo = storage.known['foo'];
-                    var item = foo[Scaffold.Types.CallInfoType.GetterSetter];
+                    var item = foo[CallInfoType.GetterSetter];
 
                     test.strictEqual(item.head, item.tail);
 
                     test.strictEqual('foo', item.head.method);
                     test.strictEqual(wrapper, item.head.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.GetterSetter, item.head.type);
+                    test.strictEqual(CallInfoType.GetterSetter, item.head.type);
                     test.strictEqual(null, item.head.next);
 
                     test.done();
@@ -292,13 +294,13 @@ exports.internal = {
                     test.strictEqual(Object.getOwnPropertyNames(storage.known).length, 1);
 
                     var foo = storage.known['foo'];
-                    var item = foo[Scaffold.Types.CallInfoType.Any];
+                    var item = foo[CallInfoType.Any];
 
                     test.strictEqual(item.head, item.tail);
 
                     test.strictEqual('foo', item.head.method);
                     test.strictEqual(wrapper, item.head.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Any, item.head.type);
+                    test.strictEqual(CallInfoType.Any, item.head.type);
                     test.strictEqual(null, item.head.next);
 
                     test.done();
@@ -325,13 +327,13 @@ exports.internal = {
                     test.strictEqual(Object.getOwnPropertyNames(storage.known).length, 1);
 
                     var foo = storage.known['foo'];
-                    var item = foo[Scaffold.Types.CallInfoType.Any];
+                    var item = foo[CallInfoType.Any];
 
                     test.strictEqual(item.head, item.tail);
 
                     test.strictEqual('foo', item.head.method);
                     test.strictEqual(wrapper, item.head.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Any, item.head.type);
+                    test.strictEqual(CallInfoType.Any, item.head.type);
                     test.strictEqual(null, item.head.next);
 
                     test.done();
@@ -358,13 +360,13 @@ exports.internal = {
                     test.strictEqual(Object.getOwnPropertyNames(storage.known).length, 1);
 
                     var foo = storage.known['foo'];
-                    var item = foo[Scaffold.Types.CallInfoType.Any];
+                    var item = foo[CallInfoType.Any];
 
                     test.strictEqual(item.head, item.tail);
 
                     test.strictEqual('foo', item.head.method);
                     test.strictEqual(wrapper, item.head.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Any, item.head.type);
+                    test.strictEqual(CallInfoType.Any, item.head.type);
                     test.strictEqual(null, item.head.next);
 
                     test.done();
@@ -382,17 +384,17 @@ exports.internal = {
                         [
                             {
                                 method : 'foo',
-                                type : Scaffold.Types.CallInfoType.Method,
+                                type : CallInfoType.Method,
                                 wrapper : wrapper1
                             },
                             {
                                 method : 'foo',
-                                type : Scaffold.Types.CallInfoType.Method,
+                                type : CallInfoType.Method,
                                 wrapper : wrapper2
                             },
                             {
                                 method : 'foo',
-                                type : Scaffold.Types.CallInfoType.Method,
+                                type : CallInfoType.Method,
                                 wrapper : wrapper3
                             }
                         ]);
@@ -403,21 +405,21 @@ exports.internal = {
                     test.strictEqual(Object.getOwnPropertyNames(storage.known).length, 1);
 
                     var foo = storage.known['foo'];
-                    var item = foo[Scaffold.Types.CallInfoType.Method].head;
+                    var item = foo[CallInfoType.Method].head;
 
                     test.strictEqual('foo', item.method);
                     test.strictEqual(wrapper1, item.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Method, item.type);
+                    test.strictEqual(CallInfoType.Method, item.type);
 
                     item = item.next;
                     test.strictEqual('foo', item.method);
                     test.strictEqual(wrapper2, item.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Method, item.type);
+                    test.strictEqual(CallInfoType.Method, item.type);
 
                     item = item.next;
                     test.strictEqual('foo', item.method);
                     test.strictEqual(wrapper3, item.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Method, item.type);
+                    test.strictEqual(CallInfoType.Method, item.type);
 
                     test.strictEqual(null, item.next);
 
@@ -437,12 +439,12 @@ exports.internal = {
                         [
                             {
                                 method : 'foo',
-                                type : Scaffold.Types.CallInfoType.Method,
+                                type : CallInfoType.Method,
                                 wrapper : wrapper1
                             },
                             {
                                 method : 'bar',
-                                type : Scaffold.Types.CallInfoType.Method,
+                                type : CallInfoType.Method,
                                 wrapper : wrapper2
                             },
                             {
@@ -451,7 +453,7 @@ exports.internal = {
                             },
                             {
                                 method : 'bar',
-                                type : Scaffold.Types.CallInfoType.Method,
+                                type : CallInfoType.Method,
                                 wrapper : wrapper4
                             }
                         ]);
@@ -462,32 +464,32 @@ exports.internal = {
                     test.strictEqual(Object.getOwnPropertyNames(storage.known).length, 2);
 
                     var foo = storage.known['foo'];
-                    var item = foo[Scaffold.Types.CallInfoType.Method].head;
+                    var item = foo[CallInfoType.Method].head;
 
                     test.strictEqual('foo', item.method);
                     test.strictEqual(wrapper1, item.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Method, item.type);
+                    test.strictEqual(CallInfoType.Method, item.type);
                     test.strictEqual(null, item.next);
 
-                    item = foo[Scaffold.Types.CallInfoType.Any].head;
+                    item = foo[CallInfoType.Any].head;
 
                     test.strictEqual('foo', item.method);
                     test.strictEqual(wrapper3, item.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Any, item.type);
+                    test.strictEqual(CallInfoType.Any, item.type);
                     test.strictEqual(null, item.next);
 
                     var bar = storage.known['bar'];
-                    item = bar[Scaffold.Types.CallInfoType.Method].head;
+                    item = bar[CallInfoType.Method].head;
 
                     test.strictEqual('bar', item.method);
                     test.strictEqual(wrapper2, item.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Method, item.type);
+                    test.strictEqual(CallInfoType.Method, item.type);
 
                     item = item.next;
 
                     test.strictEqual('bar', item.method);
                     test.strictEqual(wrapper4, item.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Method, item.type);
+                    test.strictEqual(CallInfoType.Method, item.type);
                     test.strictEqual(null, item.next);
 
                     test.done();
@@ -515,12 +517,12 @@ exports.internal = {
                             },
                             {
                                 method : 'bar',
-                                type : Scaffold.Types.CallInfoType.Any,
+                                type : CallInfoType.Any,
                                 wrapper : wrapper3
                             },
                             {
                                 method : 'foo',
-                                type : Scaffold.Types.CallInfoType.Method,
+                                type : CallInfoType.Method,
                                 wrapper : wrapper4
                             },
                             {
@@ -538,39 +540,39 @@ exports.internal = {
                     test.strictEqual(Object.getOwnPropertyNames(storage.known).length, 3);
 
                     var foo = storage.known['foo'];
-                    var item = foo[Scaffold.Types.CallInfoType.Method].head;
+                    var item = foo[CallInfoType.Method].head;
 
                     test.strictEqual('foo', item.method);
                     test.strictEqual(wrapper4, item.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Method, item.type);
+                    test.strictEqual(CallInfoType.Method, item.type);
                     test.strictEqual(null, item.next);
 
-                    item = foo[Scaffold.Types.CallInfoType.Any].head;
+                    item = foo[CallInfoType.Any].head;
 
                     test.strictEqual('foo', item.method);
                     test.strictEqual(wrapper1, item.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Any, item.type);
+                    test.strictEqual(CallInfoType.Any, item.type);
                     test.strictEqual(null, item.next);
 
                     var bar = storage.known['bar'];
-                    item = bar[Scaffold.Types.CallInfoType.Any].head;
+                    item = bar[CallInfoType.Any].head;
 
                     test.strictEqual('bar', item.method);
                     test.strictEqual(wrapper3, item.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Any, item.type);
+                    test.strictEqual(CallInfoType.Any, item.type);
                     test.strictEqual(null, item.next);
 
-                    var any = storage.unknown[Scaffold.Types.CallInfoType.Any].head;
+                    var any = storage.unknown[CallInfoType.Any].head;
 
                     test.strictEqual(undefined, any.method);
                     test.strictEqual(wrapper2, any.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Any, any.type);
+                    test.strictEqual(CallInfoType.Any, any.type);
 
                     any = any.next;
 
                     test.strictEqual(undefined, any.method);
                     test.strictEqual(wrapper5, any.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Any, any.type);
+                    test.strictEqual(CallInfoType.Any, any.type);
 
                     test.strictEqual(null, item.next);
 
@@ -594,23 +596,23 @@ exports.internal = {
                                 wrapper : wrapper1
                             },
                             {
-                                type : Scaffold.Types.CallInfoType.GetterSetter,
+                                type : CallInfoType.GetterSetter,
                                 wrapper : wrapper2
                             },
                             {
                                 method : 'bar',
-                                type : Scaffold.Types.CallInfoType.Any,
+                                type : CallInfoType.Any,
                                 wrapper : wrapper3
                             },
                             {
-                                type : Scaffold.Types.CallInfoType.Method,
+                                type : CallInfoType.Method,
                                 wrapper : wrapper4
                             },
                             {
                                 wrapper : wrapper5
                             },
                             {
-                                type : Scaffold.Types.CallInfoType.Field,
+                                type : CallInfoType.Field,
                                 wrapper : wrapper6
                             }
                         ]);
@@ -621,44 +623,44 @@ exports.internal = {
                     test.strictEqual(Object.getOwnPropertyNames(storage.known).length, 1);
 
                     var bar = storage.known['bar'];
-                    var item = bar[Scaffold.Types.CallInfoType.Any].head;
+                    var item = bar[CallInfoType.Any].head;
 
                     test.strictEqual('bar', item.method);
                     test.strictEqual(wrapper3, item.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Any, item.type);
+                    test.strictEqual(CallInfoType.Any, item.type);
                     test.strictEqual(null, item.next);
 
-                    var any = storage.unknown[Scaffold.Types.CallInfoType.Any].head;
+                    var any = storage.unknown[CallInfoType.Any].head;
 
                     test.strictEqual(undefined, any.method);
                     test.strictEqual(wrapper1, any.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Any, any.type);
+                    test.strictEqual(CallInfoType.Any, any.type);
 
                     any = any.next;
                     test.strictEqual(undefined, any.method);
                     test.strictEqual(wrapper5, any.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Any, any.type);
+                    test.strictEqual(CallInfoType.Any, any.type);
                     test.strictEqual(null, any.next);
 
-                    any = storage.unknown[Scaffold.Types.CallInfoType.GetterSetter].head;
+                    any = storage.unknown[CallInfoType.GetterSetter].head;
 
                     test.strictEqual(undefined, any.method);
                     test.strictEqual(wrapper2, any.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.GetterSetter, any.type);
+                    test.strictEqual(CallInfoType.GetterSetter, any.type);
                     test.strictEqual(null, any.next);
 
-                    any = storage.unknown[Scaffold.Types.CallInfoType.Method].head;
+                    any = storage.unknown[CallInfoType.Method].head;
 
                     test.strictEqual(undefined, any.method);
                     test.strictEqual(wrapper4, any.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Method, any.type);
+                    test.strictEqual(CallInfoType.Method, any.type);
                     test.strictEqual(null, any.next);
 
-                    any = storage.unknown[Scaffold.Types.CallInfoType.Field].head;
+                    any = storage.unknown[CallInfoType.Field].head;
 
                     test.strictEqual(undefined, any.method);
                     test.strictEqual(wrapper6, any.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Field, any.type);
+                    test.strictEqual(CallInfoType.Field, any.type);
                     test.strictEqual(null, any.next);
 
                     test.done();
@@ -668,7 +670,7 @@ exports.internal = {
 
                     var substitute = {
                         method : 'test',
-                        type: Scaffold.Types.CallInfoType.Method
+                        type: CallInfoType.Method
                     };
 
                     var delegate = function() {
@@ -758,25 +760,25 @@ exports.internal = {
                     var foo = storage.known['foo'];
                     test.strictEqual(Object.getOwnPropertyNames(foo).length, 1);
 
-                    var item = foo[Scaffold.Types.CallInfoType.Any];
+                    var item = foo[CallInfoType.Any];
 
                     test.strictEqual(item.head, item.tail);
 
                     test.strictEqual('foo', item.head.method);
                     test.strictEqual(wrapper1, item.head.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Any, item.head.type);
+                    test.strictEqual(CallInfoType.Any, item.head.type);
                     test.strictEqual(null, item.head.next);
 
                     var bar = storage.known['bar'];
                     test.strictEqual(Object.getOwnPropertyNames(bar).length, 1);
 
-                    item = bar[Scaffold.Types.CallInfoType.Any];
+                    item = bar[CallInfoType.Any];
 
                     test.strictEqual(item.head, item.tail);
 
                     test.strictEqual('bar', item.head.method);
                     test.strictEqual(wrapper2, item.head.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Any, item.head.type);
+                    test.strictEqual(CallInfoType.Any, item.head.type);
                     test.strictEqual(null, item.head.next);
 
                     test.done();
@@ -792,7 +794,7 @@ exports.internal = {
                         [
                             {
                                 method : 'foo',
-                                type : Scaffold.Types.CallInfoType.Method,
+                                type : CallInfoType.Method,
                                 wrapper : wrapper
                             }
                         ]);
@@ -803,13 +805,13 @@ exports.internal = {
                     test.strictEqual(Object.getOwnPropertyNames(storage.known).length, 1);
 
                     var foo = storage.known['foo'];
-                    var item = foo[Scaffold.Types.CallInfoType.Method];
+                    var item = foo[CallInfoType.Method];
 
                     test.strictEqual(item.head, item.tail);
 
                     test.strictEqual('foo', item.head.method);
                     test.strictEqual(wrapper, item.head.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Method, item.head.type);
+                    test.strictEqual(CallInfoType.Method, item.head.type);
                     test.strictEqual(null, item.head.next);
 
                     test.done();
@@ -825,7 +827,7 @@ exports.internal = {
                         [
                             {
                                 method : 'foo',
-                                type : Scaffold.Types.CallInfoType.Field,
+                                type : CallInfoType.Field,
                                 wrapper : wrapper
                             }
                         ]);
@@ -836,13 +838,13 @@ exports.internal = {
                     test.strictEqual(Object.getOwnPropertyNames(storage.known).length, 1);
 
                     var foo = storage.known['foo'];
-                    var item = foo[Scaffold.Types.CallInfoType.Field];
+                    var item = foo[CallInfoType.Field];
 
                     test.strictEqual(item.head, item.tail);
 
                     test.strictEqual('foo', item.head.method);
                     test.strictEqual(wrapper, item.head.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Field, item.head.type);
+                    test.strictEqual(CallInfoType.Field, item.head.type);
                     test.strictEqual(null, item.head.next);
 
                     test.done();
@@ -858,7 +860,7 @@ exports.internal = {
                         [
                             {
                                 method : 'foo',
-                                type : Scaffold.Types.CallInfoType.Getter,
+                                type : CallInfoType.Getter,
                                 wrapper : wrapper
                             }
                         ]);
@@ -869,13 +871,13 @@ exports.internal = {
                     test.strictEqual(Object.getOwnPropertyNames(storage.known).length, 1);
 
                     var foo = storage.known['foo'];
-                    var item = foo[Scaffold.Types.CallInfoType.Getter];
+                    var item = foo[CallInfoType.Getter];
 
                     test.strictEqual(item.head, item.tail);
 
                     test.strictEqual('foo', item.head.method);
                     test.strictEqual(wrapper, item.head.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Getter, item.head.type);
+                    test.strictEqual(CallInfoType.Getter, item.head.type);
                     test.strictEqual(null, item.head.next);
                     test.done();
                 },
@@ -890,7 +892,7 @@ exports.internal = {
                         [
                             {
                                 method : 'foo',
-                                type : Scaffold.Types.CallInfoType.Setter,
+                                type : CallInfoType.Setter,
                                 wrapper : wrapper
                             }
                         ]);
@@ -901,13 +903,13 @@ exports.internal = {
                     test.strictEqual(Object.getOwnPropertyNames(storage.known).length, 1);
 
                     var foo = storage.known['foo'];
-                    var item = foo[Scaffold.Types.CallInfoType.Setter];
+                    var item = foo[CallInfoType.Setter];
 
                     test.strictEqual(item.head, item.tail);
 
                     test.strictEqual('foo', item.head.method);
                     test.strictEqual(wrapper, item.head.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Setter, item.head.type);
+                    test.strictEqual(CallInfoType.Setter, item.head.type);
                     test.strictEqual(null, item.head.next);
 
                     test.done();
@@ -923,7 +925,7 @@ exports.internal = {
                         [
                             {
                                 method : 'foo',
-                                type : Scaffold.Types.CallInfoType.GetterSetter,
+                                type : CallInfoType.GetterSetter,
                                 wrapper : wrapper
                             }
                         ]);
@@ -934,13 +936,13 @@ exports.internal = {
                     test.strictEqual(Object.getOwnPropertyNames(storage.known).length, 1);
 
                     var foo = storage.known['foo'];
-                    var item = foo[Scaffold.Types.CallInfoType.GetterSetter];
+                    var item = foo[CallInfoType.GetterSetter];
 
                     test.strictEqual(item.head, item.tail);
 
                     test.strictEqual('foo', item.head.method);
                     test.strictEqual(wrapper, item.head.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.GetterSetter, item.head.type);
+                    test.strictEqual(CallInfoType.GetterSetter, item.head.type);
                     test.strictEqual(null, item.head.next);
 
                     test.done();
@@ -966,13 +968,13 @@ exports.internal = {
                     test.strictEqual(Object.getOwnPropertyNames(storage.known).length, 1);
 
                     var foo = storage.known['foo'];
-                    var item = foo[Scaffold.Types.CallInfoType.Any];
+                    var item = foo[CallInfoType.Any];
 
                     test.strictEqual(item.head, item.tail);
 
                     test.strictEqual('foo', item.head.method);
                     test.strictEqual(wrapper, item.head.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Any, item.head.type);
+                    test.strictEqual(CallInfoType.Any, item.head.type);
                     test.strictEqual(null, item.head.next);
 
                     test.done();
@@ -999,13 +1001,13 @@ exports.internal = {
                     test.strictEqual(Object.getOwnPropertyNames(storage.known).length, 1);
 
                     var foo = storage.known['foo'];
-                    var item = foo[Scaffold.Types.CallInfoType.Any];
+                    var item = foo[CallInfoType.Any];
 
                     test.strictEqual(item.head, item.tail);
 
                     test.strictEqual('foo', item.head.method);
                     test.strictEqual(wrapper, item.head.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Any, item.head.type);
+                    test.strictEqual(CallInfoType.Any, item.head.type);
                     test.strictEqual(null, item.head.next);
 
                     test.done();
@@ -1032,13 +1034,13 @@ exports.internal = {
                     test.strictEqual(Object.getOwnPropertyNames(storage.known).length, 1);
 
                     var foo = storage.known['foo'];
-                    var item = foo[Scaffold.Types.CallInfoType.Any];
+                    var item = foo[CallInfoType.Any];
 
                     test.strictEqual(item.head, item.tail);
 
                     test.strictEqual('foo', item.head.method);
                     test.strictEqual(wrapper, item.head.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Any, item.head.type);
+                    test.strictEqual(CallInfoType.Any, item.head.type);
                     test.strictEqual(null, item.head.next);
 
                     test.done();
@@ -1056,17 +1058,17 @@ exports.internal = {
                         [
                             {
                                 method : 'foo',
-                                type : Scaffold.Types.CallInfoType.Method,
+                                type : CallInfoType.Method,
                                 wrapper : wrapper1
                             },
                             {
                                 method : 'foo',
-                                type : Scaffold.Types.CallInfoType.Method,
+                                type : CallInfoType.Method,
                                 wrapper : wrapper2
                             },
                             {
                                 method : 'foo',
-                                type : Scaffold.Types.CallInfoType.Method,
+                                type : CallInfoType.Method,
                                 wrapper : wrapper3
                             }
                         ]);
@@ -1077,21 +1079,21 @@ exports.internal = {
                     test.strictEqual(Object.getOwnPropertyNames(storage.known).length, 1);
 
                     var foo = storage.known['foo'];
-                    var item = foo[Scaffold.Types.CallInfoType.Method].head;
+                    var item = foo[CallInfoType.Method].head;
 
                     test.strictEqual('foo', item.method);
                     test.strictEqual(wrapper1, item.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Method, item.type);
+                    test.strictEqual(CallInfoType.Method, item.type);
 
                     item = item.next;
                     test.strictEqual('foo', item.method);
                     test.strictEqual(wrapper2, item.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Method, item.type);
+                    test.strictEqual(CallInfoType.Method, item.type);
 
                     item = item.next;
                     test.strictEqual('foo', item.method);
                     test.strictEqual(wrapper3, item.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Method, item.type);
+                    test.strictEqual(CallInfoType.Method, item.type);
 
                     test.strictEqual(null, item.next);
 
@@ -1111,12 +1113,12 @@ exports.internal = {
                         [
                             {
                                 method : 'foo',
-                                type : Scaffold.Types.CallInfoType.Method,
+                                type : CallInfoType.Method,
                                 wrapper : wrapper1
                             },
                             {
                                 method : 'bar',
-                                type : Scaffold.Types.CallInfoType.Method,
+                                type : CallInfoType.Method,
                                 wrapper : wrapper2
                             },
                             {
@@ -1125,7 +1127,7 @@ exports.internal = {
                             },
                             {
                                 method : 'bar',
-                                type : Scaffold.Types.CallInfoType.Method,
+                                type : CallInfoType.Method,
                                 wrapper : wrapper4
                             }
                         ]);
@@ -1136,32 +1138,32 @@ exports.internal = {
                     test.strictEqual(Object.getOwnPropertyNames(storage.known).length, 2);
 
                     var foo = storage.known['foo'];
-                    var item = foo[Scaffold.Types.CallInfoType.Method].head;
+                    var item = foo[CallInfoType.Method].head;
 
                     test.strictEqual('foo', item.method);
                     test.strictEqual(wrapper1, item.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Method, item.type);
+                    test.strictEqual(CallInfoType.Method, item.type);
                     test.strictEqual(null, item.next);
 
-                    item = foo[Scaffold.Types.CallInfoType.Any].head;
+                    item = foo[CallInfoType.Any].head;
 
                     test.strictEqual('foo', item.method);
                     test.strictEqual(wrapper3, item.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Any, item.type);
+                    test.strictEqual(CallInfoType.Any, item.type);
                     test.strictEqual(null, item.next);
 
                     var bar = storage.known['bar'];
-                    item = bar[Scaffold.Types.CallInfoType.Method].head;
+                    item = bar[CallInfoType.Method].head;
 
                     test.strictEqual('bar', item.method);
                     test.strictEqual(wrapper2, item.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Method, item.type);
+                    test.strictEqual(CallInfoType.Method, item.type);
 
                     item = item.next;
 
                     test.strictEqual('bar', item.method);
                     test.strictEqual(wrapper4, item.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Method, item.type);
+                    test.strictEqual(CallInfoType.Method, item.type);
                     test.strictEqual(null, item.next);
 
                     test.done();
@@ -1189,12 +1191,12 @@ exports.internal = {
                             },
                             {
                                 method : 'bar',
-                                type : Scaffold.Types.CallInfoType.Any,
+                                type : CallInfoType.Any,
                                 wrapper : wrapper3
                             },
                             {
                                 method : 'foo',
-                                type : Scaffold.Types.CallInfoType.Method,
+                                type : CallInfoType.Method,
                                 wrapper : wrapper4
                             },
                             {
@@ -1212,39 +1214,39 @@ exports.internal = {
                     test.strictEqual(Object.getOwnPropertyNames(storage.known).length, 3);
 
                     var foo = storage.known['foo'];
-                    var item = foo[Scaffold.Types.CallInfoType.Method].head;
+                    var item = foo[CallInfoType.Method].head;
 
                     test.strictEqual('foo', item.method);
                     test.strictEqual(wrapper4, item.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Method, item.type);
+                    test.strictEqual(CallInfoType.Method, item.type);
                     test.strictEqual(null, item.next);
 
-                    item = foo[Scaffold.Types.CallInfoType.Any].head;
+                    item = foo[CallInfoType.Any].head;
 
                     test.strictEqual('foo', item.method);
                     test.strictEqual(wrapper1, item.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Any, item.type);
+                    test.strictEqual(CallInfoType.Any, item.type);
                     test.strictEqual(null, item.next);
 
                     var bar = storage.known['bar'];
-                    item = bar[Scaffold.Types.CallInfoType.Any].head;
+                    item = bar[CallInfoType.Any].head;
 
                     test.strictEqual('bar', item.method);
                     test.strictEqual(wrapper3, item.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Any, item.type);
+                    test.strictEqual(CallInfoType.Any, item.type);
                     test.strictEqual(null, item.next);
 
-                    var any = storage.unknown[Scaffold.Types.CallInfoType.Any].head;
+                    var any = storage.unknown[CallInfoType.Any].head;
 
                     test.strictEqual(undefined, any.method);
                     test.strictEqual(wrapper2, any.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Any, any.type);
+                    test.strictEqual(CallInfoType.Any, any.type);
 
                     any = any.next;
 
                     test.strictEqual(undefined, any.method);
                     test.strictEqual(wrapper5, any.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Any, any.type);
+                    test.strictEqual(CallInfoType.Any, any.type);
 
                     test.strictEqual(null, item.next);
 
@@ -1268,23 +1270,23 @@ exports.internal = {
                                 wrapper : wrapper1
                             },
                             {
-                                type : Scaffold.Types.CallInfoType.GetterSetter,
+                                type : CallInfoType.GetterSetter,
                                 wrapper : wrapper2
                             },
                             {
                                 method : 'bar',
-                                type : Scaffold.Types.CallInfoType.Any,
+                                type : CallInfoType.Any,
                                 wrapper : wrapper3
                             },
                             {
-                                type : Scaffold.Types.CallInfoType.Method,
+                                type : CallInfoType.Method,
                                 wrapper : wrapper4
                             },
                             {
                                 wrapper : wrapper5
                             },
                             {
-                                type : Scaffold.Types.CallInfoType.Field,
+                                type : CallInfoType.Field,
                                 wrapper : wrapper6
                             }
                         ]);
@@ -1295,44 +1297,44 @@ exports.internal = {
                     test.strictEqual(Object.getOwnPropertyNames(storage.known).length, 1);
 
                     var bar = storage.known['bar'];
-                    var item = bar[Scaffold.Types.CallInfoType.Any].head;
+                    var item = bar[CallInfoType.Any].head;
 
                     test.strictEqual('bar', item.method);
                     test.strictEqual(wrapper3, item.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Any, item.type);
+                    test.strictEqual(CallInfoType.Any, item.type);
                     test.strictEqual(null, item.next);
 
-                    var any = storage.unknown[Scaffold.Types.CallInfoType.Any].head;
+                    var any = storage.unknown[CallInfoType.Any].head;
 
                     test.strictEqual(undefined, any.method);
                     test.strictEqual(wrapper1, any.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Any, any.type);
+                    test.strictEqual(CallInfoType.Any, any.type);
 
                     any = any.next;
                     test.strictEqual(undefined, any.method);
                     test.strictEqual(wrapper5, any.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Any, any.type);
+                    test.strictEqual(CallInfoType.Any, any.type);
                     test.strictEqual(null, any.next);
 
-                    any = storage.unknown[Scaffold.Types.CallInfoType.GetterSetter].head;
+                    any = storage.unknown[CallInfoType.GetterSetter].head;
 
                     test.strictEqual(undefined, any.method);
                     test.strictEqual(wrapper2, any.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.GetterSetter, any.type);
+                    test.strictEqual(CallInfoType.GetterSetter, any.type);
                     test.strictEqual(null, any.next);
 
-                    any = storage.unknown[Scaffold.Types.CallInfoType.Method].head;
+                    any = storage.unknown[CallInfoType.Method].head;
 
                     test.strictEqual(undefined, any.method);
                     test.strictEqual(wrapper4, any.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Method, any.type);
+                    test.strictEqual(CallInfoType.Method, any.type);
                     test.strictEqual(null, any.next);
 
-                    any = storage.unknown[Scaffold.Types.CallInfoType.Field].head;
+                    any = storage.unknown[CallInfoType.Field].head;
 
                     test.strictEqual(undefined, any.method);
                     test.strictEqual(wrapper6, any.wrapper);
-                    test.strictEqual(Scaffold.Types.CallInfoType.Field, any.type);
+                    test.strictEqual(CallInfoType.Field, any.type);
                     test.strictEqual(null, any.next);
 
                     test.done();
@@ -1342,7 +1344,7 @@ exports.internal = {
 
                     var substitute = {
                         method : 'test',
-                        type: Scaffold.Types.CallInfoType.Method
+                        type: CallInfoType.Method
                     };
 
                     var subject = function foo() {};

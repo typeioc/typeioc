@@ -10,7 +10,8 @@ var Level2;
     }
     Level2.setUp = setUp;
     function customParametersResolution(test) {
-        containerBuilder.register(TestData.Test1Base).as(function (c, name) { return new TestData.Test4(name); });
+        containerBuilder.register(TestData.Test1Base)
+            .as(function (c, name) { return new TestData.Test4(name); });
         var container = containerBuilder.build();
         var test1 = container.resolve(TestData.Test1Base, "test 4");
         test.notEqual(test1, null);
@@ -19,9 +20,12 @@ var Level2;
     }
     Level2.customParametersResolution = customParametersResolution;
     function namedServicesResolution(test) {
-        containerBuilder.register(TestData.Test1Base).as(function () { return new TestData.Test4("null"); });
-        containerBuilder.register(TestData.Test1Base).as(function () { return new TestData.Test4("a"); }).named("A");
-        containerBuilder.register(TestData.Test1Base).as(function () { return new TestData.Test4("b"); }).named("B");
+        containerBuilder.register(TestData.Test1Base)
+            .as(function () { return new TestData.Test4("null"); });
+        containerBuilder.register(TestData.Test1Base)
+            .as(function () { return new TestData.Test4("a"); }).named("A");
+        containerBuilder.register(TestData.Test1Base)
+            .as(function () { return new TestData.Test4("b"); }).named("B");
         var container = containerBuilder.build();
         var actual1 = container.resolveNamed(TestData.Test1Base, "A");
         var actual2 = container.resolveNamed(TestData.Test1Base, "B");
@@ -36,8 +40,10 @@ var Level2;
     }
     Level2.namedServicesResolution = namedServicesResolution;
     function namedServicesResolutionWithParams(test) {
-        containerBuilder.register(TestData.Test1Base).as(function (c, name) { return new TestData.Test4(name); }).named("A");
-        containerBuilder.register(TestData.Test1Base).as(function (c, name) { return new TestData.Test4(name); }).named("B");
+        containerBuilder.register(TestData.Test1Base)
+            .as(function (c, name) { return new TestData.Test4(name); }).named("A");
+        containerBuilder.register(TestData.Test1Base)
+            .as(function (c, name) { return new TestData.Test4(name); }).named("B");
         var container = containerBuilder.build();
         var actual1 = container.resolveNamed(TestData.Test1Base, "A", "a");
         var actual2 = container.resolveNamed(TestData.Test1Base, "B", "b");
@@ -49,44 +55,52 @@ var Level2;
     }
     Level2.namedServicesResolutionWithParams = namedServicesResolutionWithParams;
     function namedServicesResolutionWithParamsError(test) {
-        containerBuilder.register(TestData.Test1Base).as(function (c, name) { return new TestData.Test4(name); }).named("A");
+        containerBuilder.register(TestData.Test1Base)
+            .as(function (c, name) { return new TestData.Test4(name); }).named("A");
         var container = containerBuilder.build();
         var delegate = function () { return container.resolveNamed(TestData.Test1Base, "A"); };
         test.throws(delegate, function (err) {
-            return (err instanceof scaffold.Exceptions.ResolutionError) && /Could not resolve service/.test(err.message);
+            return (err instanceof scaffold.Exceptions.ResolutionError) &&
+                /Could not resolve service/.test(err.message);
         });
         test.done();
     }
     Level2.namedServicesResolutionWithParamsError = namedServicesResolutionWithParamsError;
     function namedServicesParametersResolution(test) {
-        containerBuilder.register(TestData.Test1Base).as(function (c, name) { return new TestData.Test4(name); }).named("A");
+        containerBuilder.register(TestData.Test1Base)
+            .as(function (c, name) { return new TestData.Test4(name); }).named("A");
         var container = containerBuilder.build();
         var delegate = function () { return container.resolveNamed(TestData.Test1Base, "A"); };
         test.throws(delegate, function (err) {
-            return (err instanceof scaffold.Exceptions.ResolutionError) && /Could not resolve service/.test(err.message);
+            return (err instanceof scaffold.Exceptions.ResolutionError) &&
+                /Could not resolve service/.test(err.message);
         });
         test.done();
     }
     Level2.namedServicesParametersResolution = namedServicesParametersResolution;
     function attemptServicesParametersResolution(test) {
-        containerBuilder.register(TestData.Test1Base).as(function (c, name) { return new TestData.Test4(name); });
+        containerBuilder.register(TestData.Test1Base)
+            .as(function (c, name) { return new TestData.Test4(name); });
         var container = containerBuilder.build();
         var actual = container.tryResolve(TestData.Test1Base, 'test');
-        test.equal("test", actual.name);
+        test.equal("test", actual.Name);
         test.done();
     }
     Level2.attemptServicesParametersResolution = attemptServicesParametersResolution;
     function attemptNamedServicesParametersResolution(test) {
-        containerBuilder.register(TestData.Test1Base).as(function (c, name) { return new TestData.Test4(name); }).named('A');
+        containerBuilder.register(TestData.Test1Base)
+            .as(function (c, name) { return new TestData.Test4(name); }).named('A');
         var container = containerBuilder.build();
         var actual = container.tryResolveNamed(TestData.Test1Base, 'A', 'test');
-        test.equal("test", actual.name);
+        test.equal("test", actual.Name);
         test.done();
     }
     Level2.attemptNamedServicesParametersResolution = attemptNamedServicesParametersResolution;
     function collidingResolution(test) {
-        containerBuilder.register(TestData.Test1Base).as(function () { return new TestData.Test4("a"); });
-        containerBuilder.register(TestData.Test1Base).as(function () { return new TestData.Test4("b"); });
+        containerBuilder.register(TestData.Test1Base)
+            .as(function () { return new TestData.Test4("a"); });
+        containerBuilder.register(TestData.Test1Base)
+            .as(function () { return new TestData.Test4("b"); });
         var container = containerBuilder.build();
         var actual1 = container.resolve(TestData.Test1Base);
         var actual2 = container.resolve(TestData.Test1Base);

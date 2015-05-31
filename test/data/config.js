@@ -154,9 +154,7 @@ var Config = (function () {
                         name: 'Test1Base'
                     },
                     factory: function () { return new testData.Test5(); },
-                    disposer: function (item) {
-                        item.Dispose();
-                    },
+                    disposer: function (item) { item.Dispose(); },
                     within: 1 /* None */,
                     ownedBy: 1 /* Container */
                 }
@@ -172,9 +170,7 @@ var Config = (function () {
                         name: 'Initializable'
                     },
                     factory: function () { return new testData.Initializable(); },
-                    initializeBy: function (c, item) {
-                        item.initialize(className);
-                    }
+                    initializeBy: function (c, item) { item.initialize(className); }
                 }
             ]
         };

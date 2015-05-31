@@ -6,7 +6,7 @@ declare module Addons {
 
         function create() : IInterceptor;
 
-        enum CallInfoType {
+        const enum CallInfoType {
             Method = 1,
             Getter = 2,
             Setter = 3,
@@ -16,9 +16,9 @@ declare module Addons {
         }
 
         interface IInterceptor {
-            interceptPrototype<R extends Function>(subject : R, substitutes? : Array<ISubstituteInfo>) : R;
-            interceptInstance<R extends Object>(subject : R, substitutes? : Array<ISubstituteInfo>) : R;
-            intercept<R extends Function | Object>(subject : R, substitutes? : Array<ISubstituteInfo>) : R;
+            interceptPrototype<R extends Function>(subject : R, substitutes? : ISubstituteInfo | Array<ISubstituteInfo>) : R;
+            interceptInstance<R extends Object>(subject : R, substitutes? : ISubstituteInfo | Array<ISubstituteInfo>) : R;
+            intercept<R extends Function | Object>(subject : R, substitutes? : ISubstituteInfo | Array<ISubstituteInfo>) : R;
         }
 
         interface ICallInfo {

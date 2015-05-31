@@ -3,7 +3,7 @@
 var Scaffold = require('./../scaffold');
 var ScaffoldAddons = require('./../scaffoldAddons');
 var DataInterceptors = Scaffold.TestModuleInterceptors;
-var CallInfoType = Scaffold.Types.CallInfoType;
+var CallInfoType = ScaffoldAddons.Interceptors.CallInfoType;
 var Level11;
 (function (Level11) {
     var mockery = Scaffold.Mockery;
@@ -13,17 +13,19 @@ var Level11;
         if (!substitutes)
             substitutes = [];
         var register2 = 'test';
-        containerBuilder.register(register).as(function (c) {
+        containerBuilder.register(register)
+            .as(function (c) {
             var resolution = c.resolve(register2);
             return interceptor.intercept(resolution, substitutes);
         });
-        containerBuilder.register(register2).as(function () { return subject; });
+        containerBuilder.register(register2)
+            .as(function () { return subject; });
         var container = containerBuilder.build();
         return container.resolve(register);
     }
     function setUp(callback) {
         containerBuilder = Scaffold.createBuilder();
-        interceptor = ScaffoldAddons.interceptor();
+        interceptor = ScaffoldAddons.Interceptors.create();
         callback();
     }
     Level11.byPrototype = {

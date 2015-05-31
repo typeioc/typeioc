@@ -10,7 +10,9 @@ var Level4;
     }
     Level4.setUp = setUp;
     function serviceRegisteredOnParentResolveOnChildContainer(test) {
-        containerBuilder.register(TestData.Test1Base).as(function () { return new TestData.Test1(); }).within(3 /* Hierarchy */);
+        containerBuilder.register(TestData.Test1Base)
+            .as(function () { return new TestData.Test1(); })
+            .within(3 /* Hierarchy */);
         var container = containerBuilder.build();
         var child = container.createChild();
         var test1 = child.resolve(TestData.Test1Base);
@@ -21,7 +23,10 @@ var Level4;
     Level4.serviceRegisteredOnParentResolveOnChildContainer = serviceRegisteredOnParentResolveOnChildContainer;
     function serviceRegisteredNamedOnParentResolveNamedOnChildContainer(test) {
         var registrationName = 'name reg';
-        containerBuilder.register(TestData.Test1Base).as(function () { return new TestData.Test1(); }).named(registrationName).within(3 /* Hierarchy */);
+        containerBuilder.register(TestData.Test1Base)
+            .as(function () { return new TestData.Test1(); })
+            .named(registrationName)
+            .within(3 /* Hierarchy */);
         var container = containerBuilder.build();
         var child = container.createChild();
         var test1 = child.resolveNamed(TestData.Test1Base, registrationName);
@@ -31,7 +36,8 @@ var Level4;
     }
     Level4.serviceRegisteredNamedOnParentResolveNamedOnChildContainer = serviceRegisteredNamedOnParentResolveNamedOnChildContainer;
     function serviceRegisteredOnParentResolveOnChildContainerNoHierarchy(test) {
-        containerBuilder.register(TestData.Test1Base).as(function () { return new TestData.Test1(); });
+        containerBuilder.register(TestData.Test1Base)
+            .as(function () { return new TestData.Test1(); });
         var container = containerBuilder.build();
         var child = container.createChild();
         var test1 = child.resolve(TestData.Test1Base);
@@ -41,7 +47,9 @@ var Level4;
     }
     Level4.serviceRegisteredOnParentResolveOnChildContainerNoHierarchy = serviceRegisteredOnParentResolveOnChildContainerNoHierarchy;
     function hierarchyScopedInstanceIsReusedOnSameContainer(test) {
-        containerBuilder.register(TestData.Test1Base).as(function () { return new TestData.Test4("test 4"); }).within(3 /* Hierarchy */);
+        containerBuilder.register(TestData.Test1Base)
+            .as(function () { return new TestData.Test4("test 4"); })
+            .within(3 /* Hierarchy */);
         var container = containerBuilder.build();
         var test1 = container.resolve(TestData.Test1Base);
         test1.Name = "test 1";
@@ -54,7 +62,9 @@ var Level4;
     }
     Level4.hierarchyScopedInstanceIsReusedOnSameContainer = hierarchyScopedInstanceIsReusedOnSameContainer;
     function hierarchyScopedInstanceIsReusedOnSameContainerChildFirst(test) {
-        containerBuilder.register(TestData.Test1Base).as(function () { return new TestData.Test4("test 4"); }).within(3 /* Hierarchy */);
+        containerBuilder.register(TestData.Test1Base)
+            .as(function () { return new TestData.Test4("test 4"); })
+            .within(3 /* Hierarchy */);
         var container = containerBuilder.build();
         var child = container.createChild();
         var test1 = child.resolve(TestData.Test1Base);
@@ -68,7 +78,9 @@ var Level4;
     }
     Level4.hierarchyScopedInstanceIsReusedOnSameContainerChildFirst = hierarchyScopedInstanceIsReusedOnSameContainerChildFirst;
     function containerScopedInstanceIsNotReusedOnChild(test) {
-        containerBuilder.register(TestData.Test1Base).as(function () { return new TestData.Test4("test 4"); }).within(2 /* Container */);
+        containerBuilder.register(TestData.Test1Base)
+            .as(function () { return new TestData.Test4("test 4"); })
+            .within(2 /* Container */);
         var container = containerBuilder.build();
         var child = container.createChild();
         var test1 = container.resolve(TestData.Test1Base);
@@ -82,12 +94,15 @@ var Level4;
     }
     Level4.containerScopedInstanceIsNotReusedOnChild = containerScopedInstanceIsNotReusedOnChild;
     function uknownScopeError(test) {
-        containerBuilder.register(TestData.Test1Base).as(function () { return new TestData.Test4("test 4"); }).within(5);
+        containerBuilder.register(TestData.Test1Base)
+            .as(function () { return new TestData.Test4("test 4"); })
+            .within(5);
         var container = containerBuilder.build();
         var child = container.createChild();
         var delegate = function () { return child.resolve(TestData.Test1Base); };
         test.throws(delegate, function (err) {
-            return (err instanceof scaffold.Exceptions.ResolutionError) && /Unknown scoping/.test(err.message);
+            return (err instanceof scaffold.Exceptions.ResolutionError) &&
+                /Unknown scoping/.test(err.message);
         });
         test.done();
     }

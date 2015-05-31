@@ -12,13 +12,13 @@ declare module Typeioc {
     function createBuilder() : IContainerBuilder;
 
     module Types {
-        enum Scope  {
+        const enum Scope  {
             None = 1,
             Container = 2,
             Hierarchy = 3
         }
 
-        enum Owner {
+        const enum Owner {
             Container = 1,
             Externals = 2
         }
@@ -63,11 +63,11 @@ declare module Typeioc {
 
     interface IContainer {
         cache : any;
-        resolve<R>(service: R, ...args:any[]);
-        tryResolve<R>(service: R, ...args:any[]);
-        resolveNamed<R>(service: R, name : string, ...args:any[]);
-        tryResolveNamed<R>(service: R, name : string, ...args:any[]);
-        resolveWithDependencies<R>(service: R, dependencies : IDynamicDependency[]);
+        resolve<R>(service: any, ...args:any[]) : R;
+        tryResolve<R>(service: any, ...args:any[]) : R;
+        resolveNamed<R>(service: any, name : string, ...args:any[]) : R;
+        tryResolveNamed<R>(service: any, name : string, ...args:any[]): R;
+        resolveWithDependencies<R>(service: any, dependencies : IDynamicDependency[]) : R;
         resolveWith<R>(service : any) : IResolveWith<R>;
 
         createChild : () => IContainer;

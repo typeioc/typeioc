@@ -30,7 +30,7 @@ export module Level1 {
             .as(() => new TestData.Test1());
 
         var container = containerBuilder.build();
-        var actual = container.resolve(TestData.Test1Base);
+        var actual = container.resolve<TestData.Test1Base>(TestData.Test1Base);
 
         test.notEqual(actual, null);
         test.strictEqual(actual.Name, "test 1");
@@ -44,8 +44,8 @@ export module Level1 {
         containerBuilder.register<TestData.Test2Base>(TestData.Test2Base).as(() => new TestData.Test2());
 
         var container = containerBuilder.build();
-        var actual1 = container.resolve(TestData.Test1Base);
-        var actual2 = container.resolve(TestData.Test2Base);
+        var actual1 = container.resolve<TestData.Test1Base>(TestData.Test1Base);
+        var actual2 = container.resolve<TestData.Test1Base>(TestData.Test2Base);
 
         test.notEqual(actual1, null);
         test.strictEqual(actual1.Name, "test 1");
@@ -61,8 +61,8 @@ export module Level1 {
         containerBuilder.register<TestData.Test1Base>(TestData.Test1Base).as(() => new TestData.Test1());
 
         var container = containerBuilder.build();
-        var actual1 = container.resolve(TestData.Test1Base);
-        var actual2 = container.resolve(TestData.Test1Base);
+        var actual1 = container.resolve<TestData.Test1Base>(TestData.Test1Base);
+        var actual2 = container.resolve<TestData.Test1Base>(TestData.Test1Base);
 
         test.notEqual(actual1, null);
         test.strictEqual(actual1.Name, "test 1");
@@ -78,8 +78,8 @@ export module Level1 {
         containerBuilder.register<TestData.Test1Base>(TestData.Test1Base).as((c) => new TestData.Test1());
 
         var container = containerBuilder.build();
-        var actual1 = container.resolve(TestData.Test1Base);
-        var actual2 = container.resolve(TestData.Test1Base);
+        var actual1 = container.resolve<TestData.Test1Base>(TestData.Test1Base);
+        var actual2 = container.resolve<TestData.Test1Base>(TestData.Test1Base);
 
         test.notEqual(actual1, null);
         test.strictEqual(actual1.Name, "test 1");
@@ -94,7 +94,7 @@ export module Level1 {
         containerBuilder.register<TestData.Test1Base>(TestData.Test1Base).as((c) => new TestData.Test1());
 
         var container = containerBuilder.build();
-        var actual1 = container.resolve(TestData.Test1Base);
+        var actual1 = container.resolve<TestData.Test1Base>(TestData.Test1Base);
 
         test.notEqual(actual1, null);
         test.strictEqual(actual1.Name, "test 1");
@@ -154,7 +154,7 @@ export module Level1 {
 
         containerBuilder.register<TestData.Test2Base>(TestData.Test2Base).as(() => new TestData.Test2());
         containerBuilder.register<TestData.Test1Base>(TestData.Test1Base).as((c) => {
-            var test2 = c.resolve(TestData.Test2Base);
+            var test2 = c.resolve<TestData.Test2>(TestData.Test2Base);
 
             var n = test2.Name;
 
@@ -162,7 +162,7 @@ export module Level1 {
         });
 
         var container = containerBuilder.build();
-        var actual = container.resolve(TestData.Test1Base);
+        var actual = container.resolve<TestData.Test1Base>(TestData.Test1Base);
 
         test.notEqual(actual, null);
         test.strictEqual(actual.Name, "Test 3 test 2");

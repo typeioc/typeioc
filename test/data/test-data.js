@@ -9,9 +9,7 @@ var Test1Base = (function () {
     function Test1Base() {
     }
     Object.defineProperty(Test1Base.prototype, "Name", {
-        get: function () {
-            return null;
-        },
+        get: function () { return null; },
         enumerable: true,
         configurable: true
     });
@@ -29,9 +27,7 @@ var Test2Base = (function () {
     function Test2Base() {
     }
     Object.defineProperty(Test2Base.prototype, "Name", {
-        get: function () {
-            return null;
-        },
+        get: function () { return null; },
         enumerable: true,
         configurable: true
     });
@@ -197,8 +193,7 @@ var TestModule1;
         return Test2;
     })();
     TestModule1.Test2 = Test2;
-    function testNoclass() {
-    }
+    function testNoclass() { }
     TestModule1.testNoclass = testNoclass;
 })(TestModule1 = exports.TestModule1 || (exports.TestModule1 = {}));
 var TestModule2;
@@ -232,12 +227,10 @@ var TestModule2;
         return Test4;
     })();
     TestModule2.Test4 = Test4;
-    function testNoclass() {
-    }
+    function testNoclass() { }
     TestModule2.testNoclass = testNoclass;
 })(TestModule2 = exports.TestModule2 || (exports.TestModule2 = {}));
-function TestNoClass() {
-}
+function TestNoClass() { }
 exports.TestNoClass = TestNoClass;
 ;
 //# sourceMappingURL=test-data.js.map

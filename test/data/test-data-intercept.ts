@@ -760,7 +760,7 @@ export module Module42 {
 
     export class Parent {
         public foo(value) {
-            return value
+            return value;
         }
     }
 

@@ -16,7 +16,8 @@ var Level1;
     }
     Level1.containerConstruction = containerConstruction;
     function parameterlessResolution(test) {
-        containerBuilder.register(TestData.Test1Base).as(function () { return new TestData.Test1(); });
+        containerBuilder.register(TestData.Test1Base)
+            .as(function () { return new TestData.Test1(); });
         var container = containerBuilder.build();
         var actual = container.resolve(TestData.Test1Base);
         test.notEqual(actual, null);
@@ -76,7 +77,8 @@ var Level1;
         var container = containerBuilder.build();
         var delegate = function () { return container.resolve(TestData.Test1Base); };
         test.throws(delegate, function (err) {
-            return (err instanceof scaffold.Exceptions.ResolutionError) && /Could not resolve service/.test(err.message);
+            return (err instanceof scaffold.Exceptions.ResolutionError) &&
+                /Could not resolve service/.test(err.message);
         });
         test.done();
     }
