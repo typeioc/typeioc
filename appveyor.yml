@@ -16,9 +16,6 @@ environment:
   matrix:
     # node.js
     - nodejs_version: "0.12"
-    # io.js
-    - nodejs_version: "1.0"
-
 platform:
   - x86
   - x64
@@ -28,6 +25,7 @@ platform:
 install:
   - ps: Install-Product node $env:nodejs_version
   - npm install
+  - npm install gulp -g
 
 build: off
 
