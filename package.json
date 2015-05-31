@@ -24,6 +24,8 @@
     "sinon": "^1.14.1"
   },
   "scripts": {
+    "clean": "gulp --gulpfile build/gulpfile.js clean",
+    "compile": "gulp --gulpfile build/gulpfile.js",
     "test": "gulp --gulpfile build/gulpfile.js run-tests",
     "coverage": "gulp --gulpfile build/gulpfile.js run-tests-coverage",
     "coveralls": "cat test/coverage/lcov.info | coveralls",

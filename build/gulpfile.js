@@ -21,7 +21,9 @@ var os = require('os');
             src : '../src',
             definitionsAll : '../d.ts/typeioc*.d.ts',
             definitions : '../d.ts',
-            index : '../index.js'
+            index : '../index.js',
+            addonsAll: '../addons/**/*',
+            addons: '../addons'
         },
         tests : {
             js : '../test/js/**/*.js',
@@ -114,10 +116,10 @@ var os = require('os');
     }
 
     function headerTasks() {
-        gulp.task('header', ['add-source-header', 'add-definitions-header', 'add-index-header']);
+        gulp.task('header', ['add-source-header', 'add-definitions-header', 'add-index-header', 'add-addons-header']);
 
         gulp.task('remove-header',
-            ['remove-source-header', 'remove-definitions-header', 'remove-index-header']);
+            ['remove-source-header', 'remove-definitions-header', 'remove-index-header', 'remove-addons-header']);
 
         gulp.task('add-source-header', function() {
             return addHeader(paths.code.srcAll, paths.code.src);
@@ -131,6 +133,10 @@ var os = require('os');
             return addHeader(paths.code.index, paths.root);
         });
 
+        gulp.task('add-addons-header', function() {
+            return addHeader(paths.code.addonsAll, paths.code.addons);
+        });
+
         gulp.task('remove-source-header', function() {
             return removeHeader(paths.code.srcAll, paths.code.src);
         });
@@ -141,6 +147,10 @@ var os = require('os');
 
         gulp.task('remove-index-header', function() {
             return removeHeader(paths.code.index, paths.root);
+        });
+
+        gulp.task('remove-addons-header', function() {
+            return removeHeader(paths.code.addonsAll, paths.code.addons);
         });
     }
 

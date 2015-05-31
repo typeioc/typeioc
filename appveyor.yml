@@ -25,6 +25,7 @@ platform:
 install:
   - ps: Install-Product node $env:nodejs_version
   - npm install
+  - npm install typescript -g
   - npm install gulp -g
 
 build: off
@@ -32,4 +33,6 @@ build: off
 test_script:
   - node --version
   - npm --version
+  - cmd: npm run clean
+  - cmd: npm run compile
   - cmd: npm test
