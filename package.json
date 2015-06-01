@@ -25,7 +25,7 @@
     "sinon": "^1.14.1"
   },
   "scripts": {
-    "compile": "gulp --gulpfile build/gulpfile.js",
+    "build": "gulp --gulpfile build/gulpfile.js build",
     "test": "gulp --gulpfile build/gulpfile.js run-js-tests",
     "test-ci": "gulp --gulpfile build/gulpfile.js run-all-tests",
     "coverage": "gulp --gulpfile build/gulpfile.js run-tests-coverage",
