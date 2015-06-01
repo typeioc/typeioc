@@ -4,6 +4,9 @@ node_js:
 before_install:
   - npm install typescript -g
   - npm install gulp -g
+install:
+  - npm install
+  - npm rebuild
 before_script:
   - npm run build
 script:
