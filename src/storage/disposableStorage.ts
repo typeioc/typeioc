@@ -11,11 +11,8 @@
 
 'use strict';
 
-var weak = require('weak');
-
 export class DisposableStorage implements  Typeioc.Internal.IDisposableStorage {
     private _disposables : Typeioc.Internal.IDisposableItem[] = [];
-    private weakRef = weak;
 
     public add(obj : any, disposer : Typeioc.IDisposer<any>) {
 
@@ -25,25 +22,19 @@ export class DisposableStorage implements  Typeioc.Internal.IDisposableStorage {
     }
 
     public disposeItems() {
+
         while(this._disposables.length > 0) {
             var item = this._disposables.pop();
 
-            if(!this.weakRef.isDead(item.weakReference)) {
-                var obj = this.weakRef.get(item.weakReference);
-                item.disposer(obj);
-            }
+            var obj = item.weakReference;
+            item.disposer(obj);
         }
     }
 
     private createDisposableItem(obj : any, disposer : Typeioc.IDisposer<any>) : Typeioc.Internal.IDisposableItem {
 
-        var weakReference = this.weakRef(obj, () => {
-
-            disposer(obj);
-        });
-
         return {
-            weakReference : weakReference,
+            weakReference : obj,    // TODO: change this for ES6 weak-map
             disposer : disposer
         };
     }

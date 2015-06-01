@@ -16,6 +16,7 @@ environment:
   matrix:
     # node.js
     - nodejs_version: "0.10"
+    - nodejs_version: "0.12"
 platform:
   - x86
   - x64
@@ -27,7 +28,6 @@ install:
   - npm install
   - npm install typescript -g
   - npm install gulp -g
-  - npm update
 
 build: off
 
