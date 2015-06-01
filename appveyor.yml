@@ -33,6 +33,5 @@ build: off
 test_script:
   - node --version
   - npm --version
-  - cmd: npm run clean
   - cmd: npm run compile
   - cmd: npm test

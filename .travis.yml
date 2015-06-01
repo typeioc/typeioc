@@ -4,9 +4,9 @@ node_js:
 before_install:
   - npm install typescript -g
   - npm install gulp -g
-after_script:
-  - npm run clean
+before_script:
   - npm run compile
+after_script:
   - npm run coverage
   - npm run coveralls
   - npm run codeclimate
