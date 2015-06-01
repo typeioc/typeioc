@@ -6,7 +6,7 @@ before_install:
   - npm install gulp -g
 install:
   - npm install
-  - npm rebuild
+  - npm update
 before_script:
   - npm run build
 script:

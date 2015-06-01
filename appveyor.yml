@@ -25,9 +25,9 @@ platform:
 install:
   - ps: Install-Product node $env:nodejs_version
   - npm install
-  - npm rebuild
   - npm install typescript -g
   - npm install gulp -g
+  - npm update
 
 build: off
 
