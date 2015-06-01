@@ -7,6 +7,7 @@ var header = require('gulp-header');
 var replace = require('gulp-replace');
 var nodeunit = require('gulp-nodeunit');
 var istanbul = require('gulp-istanbul');
+var runSequence = require('run-sequence');
 var pkg = require('../package.json');
 var fs = require('fs');
 var os = require('os');
@@ -27,6 +28,8 @@ var os = require('os');
         },
         tests : {
             js : '../test/js/**/*.js',
+            jsApi : '../test/js/api/**/*.js',
+            jsInternal : '../test/js/internal/**/*.js',
             tsJs:  '../test/ts/*.js',
             ts: '../test/ts/*.ts',
             map: '../test/ts/*.js.map',
@@ -67,9 +70,16 @@ var os = require('os');
 
     function compileTasks() {
 
-        gulp.task('default', ['build-tests']);
+        gulp.task('build', function(callback) {
+            runSequence('clean',
+                'build-lib',
+                'build-tests',
+                'remove-header',
+                'header',
+                callback);
+        });
 
-        gulp.task('build-tests', ['build-lib'], function(callBack) {
+        gulp.task('build-tests', function(callBack) {
 
             var exec = require('child_process').exec;
 
@@ -86,7 +96,7 @@ var os = require('os');
             });
         });
 
-        gulp.task('build-lib', ['clean'], function(callBack) {
+        gulp.task('build-lib', function(callBack) {
 
             var exec = require('child_process').exec;
 
@@ -158,15 +168,35 @@ var os = require('os');
 
         var testReporter = 'default';
 
-        gulp.task('run-tests', function () {
-            gulp.src(paths.tests.js)
+        gulp.task('run-all-tests', function(callback) {
+            runSequence('run-js-internal-tests',
+                'run-js-api-tests',
+                'run-ts-tests',
+                callback);
+        });
+
+        gulp.task('run-js-tests', function(callback) {
+            runSequence('run-js-internal-tests',
+                'run-js-api-tests',
+                 callback);
+        });
+
+        gulp.task('run-ts-tests', function () {
+            return gulp.src(paths.tests.tsJs)
                 .pipe(nodeunit({
                     reporter: testReporter
                 }));
         });
 
-        gulp.task('run-ts-tests', function () {
-            gulp.src(paths.tests.tsJs)
+        gulp.task('run-js-api-tests', function () {
+            return gulp.src(paths.tests.jsApi)
+                .pipe(nodeunit({
+                    reporter: testReporter
+                }));
+        });
+
+        gulp.task('run-js-internal-tests', function () {
+            return gulp.src(paths.tests.jsInternal)
                 .pipe(nodeunit({
                     reporter: testReporter
                 }));
@@ -178,7 +208,7 @@ var os = require('os');
                 .pipe(istanbul()) // Covering files
                 .pipe(istanbul.hookRequire()) // Force `require` to return covered files
                 .on('finish', function () {
-                    gulp.src([paths.tests.js])
+                    gulp.src([paths.tests.js, paths.tests.tsJs])
                         .pipe(nodeunit({
                             reporter: testReporter
                         }))

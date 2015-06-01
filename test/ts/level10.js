@@ -1,14 +1,14 @@
 'use strict';
 var scaffold = require('./../scaffold');
 var TestData = require('../data/test-data');
-var Level9;
-(function (Level9) {
+var Level10;
+(function (Level10) {
     var containerBuilder;
     function setUp(callback) {
         containerBuilder = scaffold.createBuilder();
         callback();
     }
-    Level9.setUp = setUp;
+    Level10.setUp = setUp;
     function resolveWithResolvesService(test) {
         containerBuilder.register(TestData.Test2Base)
             .as(function () {
@@ -22,7 +22,7 @@ var Level9;
         test.strictEqual(actual.Name, 'test 2');
         test.done();
     }
-    Level9.resolveWithResolvesService = resolveWithResolvesService;
+    Level10.resolveWithResolvesService = resolveWithResolvesService;
     function resolveWithThrowsErrorWhenNotFound(test) {
         containerBuilder.register(TestData.Test2Base)
             .as(function () {
@@ -41,7 +41,7 @@ var Level9;
         test.expect(3);
         test.done();
     }
-    Level9.resolveWithThrowsErrorWhenNotFound = resolveWithThrowsErrorWhenNotFound;
+    Level10.resolveWithThrowsErrorWhenNotFound = resolveWithThrowsErrorWhenNotFound;
     function resolveWithResolvesServiceWithArgs(test) {
         var arg1 = 'arg 1';
         var arg2 = 'arg 2';
@@ -60,7 +60,7 @@ var Level9;
         test.strictEqual(actual.Name, expected);
         test.done();
     }
-    Level9.resolveWithResolvesServiceWithArgs = resolveWithResolvesServiceWithArgs;
+    Level10.resolveWithResolvesServiceWithArgs = resolveWithResolvesServiceWithArgs;
     function resolveWithAttemptsResolvesService(test) {
         containerBuilder.register(TestData.Test2Base)
             .as(function () {
@@ -76,7 +76,7 @@ var Level9;
         test.strictEqual(actual.Name, 'test 2');
         test.done();
     }
-    Level9.resolveWithAttemptsResolvesService = resolveWithAttemptsResolvesService;
+    Level10.resolveWithAttemptsResolvesService = resolveWithAttemptsResolvesService;
     function resolveWithAttemptsFalseService(test) {
         containerBuilder.register(TestData.Test2Base)
             .as(function () {
@@ -90,7 +90,7 @@ var Level9;
         test.ok(actual === null);
         test.done();
     }
-    Level9.resolveWithAttemptsFalseService = resolveWithAttemptsFalseService;
+    Level10.resolveWithAttemptsFalseService = resolveWithAttemptsFalseService;
     function resolveWithResolvesNamedService(test) {
         var testName = 'testName';
         containerBuilder.register(TestData.Test2Base)
@@ -108,7 +108,7 @@ var Level9;
         test.strictEqual(actual.Name, 'test 2');
         test.done();
     }
-    Level9.resolveWithResolvesNamedService = resolveWithResolvesNamedService;
+    Level10.resolveWithResolvesNamedService = resolveWithResolvesNamedService;
     function resolveWithThrowsWhenNoName(test) {
         var testName = 'testName';
         containerBuilder.register(TestData.Test2Base)
@@ -130,7 +130,7 @@ var Level9;
         test.expect(3);
         test.done();
     }
-    Level9.resolveWithThrowsWhenNoName = resolveWithThrowsWhenNoName;
+    Level10.resolveWithThrowsWhenNoName = resolveWithThrowsWhenNoName;
     function resolvesWithResolvesDependency(test) {
         containerBuilder.register(TestData.Test2Base)
             .as(function (c) {
@@ -161,7 +161,7 @@ var Level9;
         test.strictEqual(actual.Name, 'Test 3 name from dependency');
         test.done();
     }
-    Level9.resolvesWithResolvesDependency = resolvesWithResolvesDependency;
+    Level10.resolvesWithResolvesDependency = resolvesWithResolvesDependency;
     function resolveWithMultipleDependenciesSeparatlyArrays(test) {
         containerBuilder.register(TestData.Test2Base)
             .as(function () { return new TestData.Test2(); });
@@ -220,7 +220,7 @@ var Level9;
         test.strictEqual(actual.Name, 'test 1 base test 2 base test 4 base');
         test.done();
     }
-    Level9.resolveWithMultipleDependenciesSeparatlyArrays = resolveWithMultipleDependenciesSeparatlyArrays;
+    Level10.resolveWithMultipleDependenciesSeparatlyArrays = resolveWithMultipleDependenciesSeparatlyArrays;
     function resolveWithMultipleDependenciesSeparatly(test) {
         containerBuilder.register(TestData.Test2Base)
             .as(function (c) { return new TestData.Test2(); });
@@ -279,7 +279,7 @@ var Level9;
         test.strictEqual(actual.Name, 'test 1 base test 2 base test 4 base');
         test.done();
     }
-    Level9.resolveWithMultipleDependenciesSeparatly = resolveWithMultipleDependenciesSeparatly;
+    Level10.resolveWithMultipleDependenciesSeparatly = resolveWithMultipleDependenciesSeparatly;
     function resolveWithResolvesCacheDefault(test) {
         containerBuilder.register(TestData.Test2Base)
             .as(function () {
@@ -299,7 +299,7 @@ var Level9;
         test.strictEqual(actual, actual2);
         test.done();
     }
-    Level9.resolveWithResolvesCacheDefault = resolveWithResolvesCacheDefault;
+    Level10.resolveWithResolvesCacheDefault = resolveWithResolvesCacheDefault;
     function resolveWithResolvesCacheWithName(test) {
         containerBuilder.register(TestData.Test2Base)
             .as(function () {
@@ -316,7 +316,7 @@ var Level9;
         test.strictEqual(actual.Name, 'test 2');
         test.done();
     }
-    Level9.resolveWithResolvesCacheWithName = resolveWithResolvesCacheWithName;
+    Level10.resolveWithResolvesCacheWithName = resolveWithResolvesCacheWithName;
     function resolveWithResolvesCacheWithServiceNamedResolution(test) {
         var named = function AAAAA() { };
         containerBuilder.register(TestData.Test2Base)
@@ -335,7 +335,7 @@ var Level9;
         test.strictEqual(actual.Name, 'test 2');
         test.done();
     }
-    Level9.resolveWithResolvesCacheWithServiceNamedResolution = resolveWithResolvesCacheWithServiceNamedResolution;
+    Level10.resolveWithResolvesCacheWithServiceNamedResolution = resolveWithResolvesCacheWithServiceNamedResolution;
     function resolveWithResolvesCacheWithServiceValueName(test) {
         var name = "AAAAAA";
         containerBuilder.register(name)
@@ -355,7 +355,7 @@ var Level9;
         test.strictEqual(actual, actual2);
         test.done();
     }
-    Level9.resolveWithResolvesCacheWithServiceValueName = resolveWithResolvesCacheWithServiceValueName;
+    Level10.resolveWithResolvesCacheWithServiceValueName = resolveWithResolvesCacheWithServiceValueName;
     function resolveWithCacheThrowsWhenNoName(test) {
         var service = {};
         containerBuilder.register(service)
@@ -376,7 +376,7 @@ var Level9;
         test.expect(3);
         test.done();
     }
-    Level9.resolveWithCacheThrowsWhenNoName = resolveWithCacheThrowsWhenNoName;
+    Level10.resolveWithCacheThrowsWhenNoName = resolveWithCacheThrowsWhenNoName;
     function resolveWithCacheFromChildContainer(test) {
         containerBuilder.register(TestData.Test2Base)
             .as(function () {
@@ -393,7 +393,7 @@ var Level9;
         test.strictEqual(actual.Name, 'test 2');
         test.done();
     }
-    Level9.resolveWithCacheFromChildContainer = resolveWithCacheFromChildContainer;
+    Level10.resolveWithCacheFromChildContainer = resolveWithCacheFromChildContainer;
     function resolveWithArgsAttempt(test) {
         var name = 'AAAAA';
         containerBuilder.register(TestData.Test1Base)
@@ -411,7 +411,7 @@ var Level9;
         test.strictEqual(actual.Name, name);
         test.done();
     }
-    Level9.resolveWithArgsAttempt = resolveWithArgsAttempt;
+    Level10.resolveWithArgsAttempt = resolveWithArgsAttempt;
     function resolveWithArgsAttemptThrows(test) {
         var name = 'AAAAA';
         containerBuilder.register(TestData.Test1Base)
@@ -427,7 +427,7 @@ var Level9;
         test.strictEqual(actual, null);
         test.done();
     }
-    Level9.resolveWithArgsAttemptThrows = resolveWithArgsAttemptThrows;
+    Level10.resolveWithArgsAttemptThrows = resolveWithArgsAttemptThrows;
     function resolveWithArgsNamed(test) {
         var argName = 'AAAAA';
         var resolutionName = 'Test name';
@@ -447,7 +447,7 @@ var Level9;
         test.strictEqual(actual.Name, argName);
         test.done();
     }
-    Level9.resolveWithArgsNamed = resolveWithArgsNamed;
+    Level10.resolveWithArgsNamed = resolveWithArgsNamed;
     function resolveWithArgsDependencies(test) {
         var param = 'Some name';
         containerBuilder.register(TestData.Test2Base)
@@ -484,7 +484,7 @@ var Level9;
         test.strictEqual(actual.Name, 'Test 3 name from dependency Some name');
         test.done();
     }
-    Level9.resolveWithArgsDependencies = resolveWithArgsDependencies;
+    Level10.resolveWithArgsDependencies = resolveWithArgsDependencies;
     function resolveWithArgsParamsDependencies(test) {
         containerBuilder.register(TestData.Test2Base)
             .as(function (_, a, b, d) {
@@ -518,7 +518,7 @@ var Level9;
         test.strictEqual(actual.Name, 'Test 3 4 - 5 - 6');
         test.done();
     }
-    Level9.resolveWithArgsParamsDependencies = resolveWithArgsParamsDependencies;
+    Level10.resolveWithArgsParamsDependencies = resolveWithArgsParamsDependencies;
     function resolveWithArgsParamsDependenciesThrowsWhenWrongArgsCount(test) {
         containerBuilder.register(TestData.Test2Base)
             .as(function (_, a, b, d) {
@@ -558,7 +558,7 @@ var Level9;
         test.expect(3);
         test.done();
     }
-    Level9.resolveWithArgsParamsDependenciesThrowsWhenWrongArgsCount = resolveWithArgsParamsDependenciesThrowsWhenWrongArgsCount;
+    Level10.resolveWithArgsParamsDependenciesThrowsWhenWrongArgsCount = resolveWithArgsParamsDependenciesThrowsWhenWrongArgsCount;
     function resolveWithArgsCacheNoName(test) {
         var argName = 'AAAAA';
         containerBuilder.register(TestData.Test1Base)
@@ -577,7 +577,7 @@ var Level9;
         test.strictEqual(actual.Name, argName);
         test.done();
     }
-    Level9.resolveWithArgsCacheNoName = resolveWithArgsCacheNoName;
+    Level10.resolveWithArgsCacheNoName = resolveWithArgsCacheNoName;
     function resolveWithAttemptWithName(test) {
         var argName = 'AAAAA';
         var resolutionName = 'Test';
@@ -597,7 +597,7 @@ var Level9;
         test.strictEqual(actual.Name, argName);
         test.done();
     }
-    Level9.resolveWithAttemptWithName = resolveWithAttemptWithName;
+    Level10.resolveWithAttemptWithName = resolveWithAttemptWithName;
     function resolveWithAttemptDependencies(test) {
         containerBuilder.register(TestData.Test2Base)
             .as(function (_) {
@@ -631,7 +631,7 @@ var Level9;
         test.strictEqual(actual.Name, 'Test 3 Test2 substitute');
         test.done();
     }
-    Level9.resolveWithAttemptDependencies = resolveWithAttemptDependencies;
+    Level10.resolveWithAttemptDependencies = resolveWithAttemptDependencies;
     function resolveWithAttemptDependenciesMissingResolution(test) {
         containerBuilder.register(TestData.Test2Base)
             .as(function () {
@@ -664,7 +664,7 @@ var Level9;
         test.strictEqual(actual, null);
         test.done();
     }
-    Level9.resolveWithAttemptDependenciesMissingResolution = resolveWithAttemptDependenciesMissingResolution;
+    Level10.resolveWithAttemptDependenciesMissingResolution = resolveWithAttemptDependenciesMissingResolution;
     function resolveWithAttemptDependenciesMissingNonRequiredResolution(test) {
         containerBuilder.register(TestData.Test1Base)
             .as(function (c) {
@@ -692,7 +692,7 @@ var Level9;
         test.strictEqual(actual.Name, 'Test 3 name from dependency');
         test.done();
     }
-    Level9.resolveWithAttemptDependenciesMissingNonRequiredResolution = resolveWithAttemptDependenciesMissingNonRequiredResolution;
+    Level10.resolveWithAttemptDependenciesMissingNonRequiredResolution = resolveWithAttemptDependenciesMissingNonRequiredResolution;
     function resolveWithAttemptPartialMissingNonRequiredDependencies(test) {
         containerBuilder.register(TestData.Test1Base)
             .as(function (c) {
@@ -754,7 +754,7 @@ var Level9;
         test.expect(3);
         test.done();
     }
-    Level9.resolveWithAttemptPartialMissingNonRequiredDependencies = resolveWithAttemptPartialMissingNonRequiredDependencies;
+    Level10.resolveWithAttemptPartialMissingNonRequiredDependencies = resolveWithAttemptPartialMissingNonRequiredDependencies;
     function resolveWithAttemptCache(test) {
         var argName = 'AAAAA';
         containerBuilder.register(TestData.Test1Base)
@@ -773,7 +773,7 @@ var Level9;
         test.strictEqual(actual.Name, argName);
         test.done();
     }
-    Level9.resolveWithAttemptCache = resolveWithAttemptCache;
+    Level10.resolveWithAttemptCache = resolveWithAttemptCache;
     function resolveWithNameDependencies(test) {
         var resolutionName = 'AAAAA';
         containerBuilder.register(TestData.Test2Base)
@@ -809,7 +809,7 @@ var Level9;
         test.strictEqual(actual.Name, 'Test 3 Test2 substitute');
         test.done();
     }
-    Level9.resolveWithNameDependencies = resolveWithNameDependencies;
+    Level10.resolveWithNameDependencies = resolveWithNameDependencies;
     function resolutionWithNameCache(test) {
         var argName = 'ArgName';
         var resolutionName = 'AAAAA';
@@ -830,7 +830,7 @@ var Level9;
         test.strictEqual(actual.Name, argName);
         test.done();
     }
-    Level9.resolutionWithNameCache = resolutionWithNameCache;
+    Level10.resolutionWithNameCache = resolutionWithNameCache;
     function resolveWithDependenciesCache(test) {
         containerBuilder.register(TestData.Test2Base)
             .as(function (_) {
@@ -866,7 +866,7 @@ var Level9;
         test.strictEqual(actual.Name, 'Test 3 Test2 substitute');
         test.done();
     }
-    Level9.resolveWithDependenciesCache = resolveWithDependenciesCache;
+    Level10.resolveWithDependenciesCache = resolveWithDependenciesCache;
     function fluentApiResolveWith(test) {
         var container = containerBuilder.build();
         var registration = container.resolveWith(TestData.Test1Base);
@@ -884,7 +884,7 @@ var Level9;
         test.notEqual(registration['exec'], null);
         test.done();
     }
-    Level9.fluentApiResolveWith = fluentApiResolveWith;
+    Level10.fluentApiResolveWith = fluentApiResolveWith;
     function fluentApiResolveWithArgs(test) {
         var container = containerBuilder.build();
         var registration = container
@@ -903,7 +903,7 @@ var Level9;
         test.notEqual(registration['exec'], null);
         test.done();
     }
-    Level9.fluentApiResolveWithArgs = fluentApiResolveWithArgs;
+    Level10.fluentApiResolveWithArgs = fluentApiResolveWithArgs;
     function fluentApiResolveWithArgsAttempt(test) {
         var container = containerBuilder.build();
         var registration = container
@@ -922,7 +922,7 @@ var Level9;
         test.notEqual(registration['exec'], null);
         test.done();
     }
-    Level9.fluentApiResolveWithArgsAttempt = fluentApiResolveWithArgsAttempt;
+    Level10.fluentApiResolveWithArgsAttempt = fluentApiResolveWithArgsAttempt;
     function fluentApiResolveWithArgsAttemptName(test) {
         var container = containerBuilder.build();
         var registration = container
@@ -941,7 +941,7 @@ var Level9;
         test.notEqual(registration['exec'], null);
         test.done();
     }
-    Level9.fluentApiResolveWithArgsAttemptName = fluentApiResolveWithArgsAttemptName;
+    Level10.fluentApiResolveWithArgsAttemptName = fluentApiResolveWithArgsAttemptName;
     function fluentApiResolveWithArgsAttemptNameDependencies(test) {
         var container = containerBuilder.build();
         var registration = container
@@ -961,7 +961,7 @@ var Level9;
         test.notEqual(registration['exec'], null);
         test.done();
     }
-    Level9.fluentApiResolveWithArgsAttemptNameDependencies = fluentApiResolveWithArgsAttemptNameDependencies;
+    Level10.fluentApiResolveWithArgsAttemptNameDependencies = fluentApiResolveWithArgsAttemptNameDependencies;
     function fluentApiResolveWithArgsAttemptNameDependenciesCache(test) {
         var container = containerBuilder.build();
         var registration = container
@@ -980,6 +980,6 @@ var Level9;
         test.notEqual(registration['exec'], null);
         test.done();
     }
-    Level9.fluentApiResolveWithArgsAttemptNameDependenciesCache = fluentApiResolveWithArgsAttemptNameDependenciesCache;
-})(Level9 = exports.Level9 || (exports.Level9 = {}));
+    Level10.fluentApiResolveWithArgsAttemptNameDependenciesCache = fluentApiResolveWithArgsAttemptNameDependenciesCache;
+})(Level10 = exports.Level10 || (exports.Level10 = {}));
 //# sourceMappingURL=level10.js.map

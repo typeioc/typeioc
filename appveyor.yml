@@ -33,5 +33,5 @@ build: off
 test_script:
   - node --version
   - npm --version
-  - cmd: npm run compile
-  - cmd: npm test
+  - cmd: npm run build
+  - cmd: npm run test-ci
