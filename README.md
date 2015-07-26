@@ -166,7 +166,7 @@ actual.log(1);   // still 0
 - [ ] - Usage with 3d part libraries.
 - [ ] - Full API documentation.
 
-###Running the tests
+###Running tests
 
 ```
 npm test
