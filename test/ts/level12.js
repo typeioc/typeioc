@@ -298,12 +298,12 @@ var Level12;
             var substitute1 = {
                 method: 'foo',
                 wrapper: function (callInfo) {
-                    return 'substitute 1';
+                    return 'substitute 10';
                 }
             };
             var Proto41 = interceptor.intercept(DataInterceptors.Module41.Parent, substitute1);
             var instance41 = new Proto41(1);
-            test.strictEqual(instance41.foo('some value 1'), 'substitute 1');
+            test.strictEqual(instance41.foo(1), 'substitute 10');
             test.done();
         }
     };

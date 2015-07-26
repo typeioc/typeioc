@@ -2,7 +2,8 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "ES5",
-    "sourceMap": true
+    "sourceMap": true,
+    "experimentalDecorators" : true
   },
   "files": [
    "../../test/data/test-data.ts",

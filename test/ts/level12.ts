@@ -428,7 +428,7 @@ export module Level12 {
                 method : 'foo',
                 wrapper : function(callInfo) {
 
-                    return 'substitute 1';
+                    return 'substitute 10';
                 }
             };
 
@@ -436,7 +436,7 @@ export module Level12 {
 
             var instance41 = new Proto41(1);
 
-            test.strictEqual(instance41.foo('some value 1'), 'substitute 1');
+            test.strictEqual(instance41.foo(1), 'substitute 10');
 
             test.done();
         }

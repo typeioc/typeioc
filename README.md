@@ -7,7 +7,6 @@ TypeIOC
 -------------- | ------------
 [![Build Status](https://travis-ci.org/maxgherman/TypeIOC.svg?branch=master)](https://travis-ci.org/maxgherman/TypeIOC)|[![Build status](https://ci.appveyor.com/api/projects/status/0813svinij5s2cg7)](https://ci.appveyor.com/project/maxgherman/typeioc)
 
- [![NPM version](https://badge.fury.io/js/typeioc.svg)](http://badge.fury.io/js/typeioc)
  [![Coverage Status](https://img.shields.io/coveralls/maxgherman/TypeIOC.svg)](https://coveralls.io/r/maxgherman/TypeIOC?branch=master)
  [![Code Climate](https://codeclimate.com/github/maxgherman/TypeIOC.png)](https://codeclimate.com/github/maxgherman/TypeIOC)
  [![Dependency Status](https://gemnasium.com/maxgherman/TypeIOC.svg)](https://gemnasium.com/maxgherman/TypeIOC)
@@ -98,6 +97,51 @@ container
 
 ```
 
+With Add-ons:
+
+Copy typeioc.addons.d.ts definition file from d.ts folder to your project and reference it within ts files.
+
+Interceptors
+
+```
+/// <reference path="typeioc.d.ts" />
+/// <reference path="typeioc.addons.d.ts" />
+
+var typeioc = require('typeioc');
+var addons = require('typeioc/addons');
+
+
+var containerBuilder = typeioc.createBuilder();
+
+containerBuilder.register(Math)
+    .as(c => {
+
+    var interceptor = addons.Interceptors.create();
+
+  	return interceptor.intercept(Math, [{
+            method: 'pow',
+            type: addons.Interceptors.CallInfoType.Method,
+            wrapper: function (callInfo:Addons.Interceptors.ICallInfo) {
+
+                console.log('Before execute : ' + callInfo.args[0] + ' ' + callInfo.args[1]);
+
+                var result = callInfo.invoke(callInfo.args);
+
+                console.log('After execute : ' + result);
+
+                return callInfo.args[0] + callInfo.args[1];
+            }
+        }]);
+    });
+
+var container = containerBuilder.build();
+var actual = container.resolve<Math>(Math);
+actual.pow(2,3); // 5
+actual.log(1);   // still 0
+
+```
+
+
 ###Features
 
 - [x] - Type compliance checking.
@@ -113,16 +157,16 @@ container
 - [x] - Configuration (JS).
 - [x] - Runtime / Dynamic dependencies substitution.
 - [x] - Cached resolution results.
-- [ ] - Interceptors.
+- [x] - Interceptors.
+- [ ] - ES7 decorators style resolution.
+- [ ] - ES6 codebase + weak references.
 - [ ] - Instance lifetime scoping APIs.
-- [ ] - ES6 codebase.
-- [ ] - Remove low level c++ library dependencies for weak references.
 - [ ] - Promises configuration.
 - [ ] - In-browser usage support.
 - [ ] - Usage with 3d part libraries.
 - [ ] - Full API documentation.
 
-###Running the tests
+###Running tests
 
 ```
 npm test

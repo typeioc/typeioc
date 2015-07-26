@@ -3,7 +3,8 @@
     "module": "commonjs",
     "target": "ES5",
     "outDir": "../../lib",
-    "sourceMap": true
+    "sourceMap": true,
+    "experimentalDecorators" : true
   },
   "files": [
     "../../src/scaffold.ts",
