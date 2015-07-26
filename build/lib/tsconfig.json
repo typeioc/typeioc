@@ -8,6 +8,7 @@
   "files": [
     "../../src/scaffold.ts",
     "../../src/scaffoldAddons.ts",
+    "../../src/decorators/index.ts",
     "../../src/types/index.ts"
   ]
 }

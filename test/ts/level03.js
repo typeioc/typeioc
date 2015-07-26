@@ -24,7 +24,7 @@ var Level3;
     }
     Level3.defaultScopingNone = defaultScopingNone;
     function defaultScopingChange(test) {
-        containerBuilder.defaults.scope = 3 /* Hierarchy */;
+        scaffold.Types.Defaults.scope = 3 /* Hierarchy */;
         containerBuilder.register(TestData.Test1Base).as(function () {
             return new TestData.Test4("test 4");
         });

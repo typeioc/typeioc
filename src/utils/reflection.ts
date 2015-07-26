@@ -31,13 +31,19 @@ export function isCompatible(obj1 : Object, obj2 : Object) : boolean {
     return true;
 }
 
-export function construct(constructor, args) {
+export function createPrototype(constructor, args) {
     function F() {
         return constructor.apply(this, args);
     }
 
     F.prototype = constructor.prototype;
-    var k : any = F;
+
+    return F;
+}
+
+export function construct(constructor, args) {
+
+    var k : any = createPrototype(constructor, args);
 
     return new k();
 }

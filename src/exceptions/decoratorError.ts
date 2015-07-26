@@ -6,15 +6,16 @@
  * @license (MIT) - https://github.com/maxgherman/TypeIOC/blob/master/LICENSE
  * --------------------------------------------------------------------------------------------------*/
 
+
 'use strict';
 
-import OwnerModule = require('./owner');
-import ScopeModule = require('./scope');
+import ApplicationErrorModule = require('./applicationError');
 
-export var Owner = OwnerModule.Owner;
-export var Scope = ScopeModule.Scope;
+export class DecoratorError extends ApplicationErrorModule.ApplicationError {
 
-export var Defaults : Typeioc.IDefaults = {
-    scope : Typeioc.Types.Scope.None,
-    owner : Typeioc.Types.Owner.Container
-};
+    constructor (message?: string) {
+        super(message);
+
+        this.name = "DecoratorError";
+    }
+}

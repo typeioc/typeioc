@@ -39,7 +39,7 @@ exports.api = {
 
             containerOwnedInstancesAreDisposedDefaultSetting : function (test) {
 
-                containerBuilder.defaults.owner = scaffold.Types.Owner.Container;
+                scaffold.Types.Defaults.owner = scaffold.Types.Owner.Container;
 
                 containerBuilder.register(testData.Test1Base)
                     .as(function () { return new testData.Test5(); })

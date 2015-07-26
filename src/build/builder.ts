@@ -11,16 +11,13 @@
 'use strict';
 
 import Types = require('../types/index');
+import Utils = require('../utils/index');
 
 
-export class ContainerBuilder implements Typeioc.IContainerBuilder{
+export class ContainerBuilder implements Typeioc.IContainerBuilder {
     private registrations : Typeioc.Internal.IRegistrationBase[];
     private moduleRegistrations : Typeioc.Internal.IModuleRegistration[];
     private _defaults : Typeioc.IDefaults;
-
-    public get defaults() : Typeioc.IDefaults {
-        return this._defaults;
-    }
 
     constructor(private _configRegistrationService : Typeioc.Internal.IConfigRegistrationService,
                 private _registrationBaseService : Typeioc.Internal.IRegistrationBaseService,
@@ -30,10 +27,7 @@ export class ContainerBuilder implements Typeioc.IContainerBuilder{
         this.registrations = [];
         this.moduleRegistrations = [];
 
-        this._defaults = {
-            scope : Typeioc.Types.Scope.None,
-            owner : Typeioc.Types.Owner.Container
-        };
+        this._defaults = Types.Defaults;
     }
 
     public register<R>(service : any) : Typeioc.IRegistration<R> {
@@ -41,8 +35,8 @@ export class ContainerBuilder implements Typeioc.IContainerBuilder{
         var regoBase = this._registrationBaseService.create(service);
         var registration = this._instanceRegistrationService.create<R>(regoBase);
 
-        regoBase.scope = this.defaults.scope;
-        regoBase.owner = this.defaults.owner;
+        regoBase.scope = this._defaults.scope;
+        regoBase.owner = this._defaults.owner;
 
         this.registrations.push(regoBase);
 
@@ -54,8 +48,8 @@ export class ContainerBuilder implements Typeioc.IContainerBuilder{
         var regoBase = this._registrationBaseService.create(serviceModule);
         var moduleRegistration = this._moduleRegistrationService.create(regoBase);
 
-        regoBase.scope = this.defaults.scope;
-        regoBase.owner = this.defaults.owner;
+        regoBase.scope = this._defaults.scope;
+        regoBase.owner = this._defaults.owner;
 
 
         this.moduleRegistrations.push(moduleRegistration);
@@ -66,8 +60,8 @@ export class ContainerBuilder implements Typeioc.IContainerBuilder{
     public registerConfig(config : Typeioc.IConfig) : void {
         var configRego = this._configRegistrationService.create();
         configRego.apply(config);
-        configRego.scope = this.defaults.scope;
-        configRego.owner = this.defaults.owner;
+        configRego.scope = this._defaults.scope;
+        configRego.owner = this._defaults.owner;
 
         this.registrations.push.apply(this.registrations, configRego.registrations);
     }
@@ -84,16 +78,6 @@ export class ContainerBuilder implements Typeioc.IContainerBuilder{
         var container = this._containerService.create();
         container.add(regoes);
 
-        return {
-            cache : container.cache,
-            resolve : container.resolve.bind(container),
-            tryResolve: container.tryResolve.bind(container),
-            resolveNamed : container.resolveNamed.bind(container),
-            tryResolveNamed : container.tryResolveNamed.bind(container),
-            resolveWithDependencies : container.resolveWithDependencies.bind(container),
-            resolveWith : container.resolveWith.bind(container),
-            createChild : container.createChild.bind(container),
-            dispose: container.dispose.bind(container)
-        };
+        return Utils.toPublicContainer(container);
     }
 }

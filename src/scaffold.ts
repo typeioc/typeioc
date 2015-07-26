@@ -21,6 +21,8 @@ import ContainerModule = require('./build/container');
 import BuilderModule = require('./build/builder');
 import ApiContainer = require('./build/containerApi');
 import InternalContainerModule = require('./build/internalContainer');
+import DecoratorModule= require('./decorators/decorator');
+
 
 export class Scaffold {
 
@@ -49,6 +51,24 @@ export class Scaffold {
             instanceRegoService,
             moduleRegoService,
             containerService);
+    }
+
+    public createDecorator() : Typeioc.Decorators.IDecorator {
+
+        var internalRegoStorageService = this.internalStorageService<any, Typeioc.Internal.IIndexedCollection<any>>();
+        var regoStorageService = this.registrationStorageService(internalRegoStorageService);
+        var disposableStorageService = this.disposableStorageService();
+        var baseRegoService = this.registrationBaseService();
+        var containerApiService = this.containerApiService();
+        var internalContainerService = this.internalContainerService(
+            regoStorageService,
+            disposableStorageService,
+            baseRegoService,
+            containerApiService);
+
+        var containerService = this.containerService(internalContainerService);
+
+        return new DecoratorModule.Decorator(this.registrationBaseService(), this.instanceRegistrationService(), containerService.create());
     }
 
     private internalStorageService<K, T>() : Typeioc.Internal.IInternalStorageService<K, T> {
@@ -152,4 +172,5 @@ export class Scaffold {
             }
         }
     }
- }
+
+}

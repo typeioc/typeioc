@@ -33,7 +33,7 @@ export module Level3 {
 
     export function defaultScopingChange(test) {
 
-        containerBuilder.defaults.scope = Typeioc.Types.Scope.Hierarchy;
+        scaffold.Types.Defaults.scope = Typeioc.Types.Scope.Hierarchy;
         containerBuilder.register(TestData.Test1Base).as(function () {
             return new TestData.Test4("test 4");
         });

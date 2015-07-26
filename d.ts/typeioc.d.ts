@@ -22,6 +22,8 @@ declare module Typeioc {
             Container = 1,
             Externals = 2
         }
+
+        export var Defaults :Typeioc.IDefaults;
     }
 
     module Exceptions {
@@ -53,8 +55,26 @@ declare module Typeioc {
         class ProxyError extends ApplicationError { }
     }
 
+    module Decorators {
+
+        function register(service: any, options? : Decorators.IRegistrationOptions, container? : IContainer);
+
+        function resolve(service: any, container? : IContainer);
+
+        interface IDecorator {
+            container : Typeioc.IContainer;
+            register(service : any, options? : IRegistrationOptions, builder? : Typeioc.IContainerBuilder);
+            resolve(service: any, container? : IContainer);
+        }
+
+        interface IRegistrationOptions {
+            initializeBy? : IInitializer<any>,
+            within? : Types.Scope,
+            named? : string
+        }
+    }
+
     interface IContainerBuilder {
-        defaults : IDefaults;
         register<R>(service : any) : IRegistration<R>;
         registerModule(serviceModule : Object) : Typeioc.IAsModuleRegistration;
         registerConfig(config : Typeioc.IConfig) : void;

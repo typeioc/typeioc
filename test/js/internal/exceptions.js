@@ -20,8 +20,9 @@ exports.internal = {
                 test.ok(Exceptions.ConfigurationError);
                 test.ok(Exceptions.NullReferenceError);
                 test.ok(Exceptions.ProxyError);
+                test.ok(Exceptions.DecoratorError);
 
-                test.ok(Object.getOwnPropertyNames(Exceptions).length == 8);
+                test.ok(Object.getOwnPropertyNames(Exceptions).length == 9);
 
                 test.done();
             },

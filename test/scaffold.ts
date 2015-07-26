@@ -28,3 +28,5 @@ export var Mockery = require('sinon');
 export function createBuilder() : Typeioc.IContainerBuilder {
     return <Typeioc.IContainerBuilder>typeioc.createBuilder();
 }
+
+export var Decorators = typeioc.Decorators;

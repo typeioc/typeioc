@@ -9,6 +9,7 @@
     "../../test/data/test-data2.ts",
     "../../test/data/test-data-intercept.ts",
     "../../test/data/config.ts",
+    "../../test/data/decorators.ts",
     "../../test/scaffold.ts",
     "../../test/scaffoldAddons.ts",
     "../../test/ts/level01.ts",
@@ -22,6 +23,7 @@
     "../../test/ts/level09.ts",
     "../../test/ts/level10.ts",
     "../../test/ts/level11.ts",
-    "../../test/ts/level12.ts"
+    "../../test/ts/level12.ts",
+    "../../test/ts/level13.ts"
   ]
 }

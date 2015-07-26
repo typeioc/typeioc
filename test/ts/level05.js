@@ -24,7 +24,7 @@ var Level5;
     }
     Level5.containerOwnedInstancesAreDisposed = containerOwnedInstancesAreDisposed;
     function containerOwnedInstancesAreDisposedDefaultSetting(test) {
-        containerBuilder.defaults.owner = scaffold.Types.Owner.Container;
+        scaffold.Types.Defaults.owner = scaffold.Types.Owner.Container;
         containerBuilder.register(TestData.Test1Base)
             .as(function () { return new TestData.Test5(); })
             .dispose(function (item) { return item.Dispose(); });
