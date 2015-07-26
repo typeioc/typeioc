@@ -1140,7 +1140,44 @@ exports.api = {
                 var proto1 = interceptor.intercept(parent1, substitute1);
                 var instance1 = new proto1(1);
 
-                test.strictEqual(instance1.foo('some value 1'), 'substitute 1');
+                test.strictEqual(instance1.foo(), 'substitute 1');
+
+                test.done();
+            },
+
+            mixed_interception: function(test) {
+
+                var substitute1 = {
+                    method : 'foo',
+                    wrapper : function(callInfo) {
+
+                        return 'substitute 1';
+                    }
+                };
+
+                var parent1 = function(value) {
+                    this.value = value;
+                };
+
+                parent1.prototype.foo = function() {
+                    return this.value;
+                };
+
+                var substitute2 = {
+                    method : 'pow',
+                    wrapper : function(callInfo) {
+
+                        return -1;
+                    }
+                };
+
+                var proto1 = interceptor.intercept(parent1, substitute1);
+                var instance1 = new proto1(1);
+
+                var instance2 = interceptor.intercept(Math, substitute2);
+
+                test.strictEqual(instance1.foo(), 'substitute 1');
+                test.strictEqual(instance2.pow(2,3), -1);
 
                 test.done();
             }
