@@ -124,11 +124,8 @@ containerBuilder.register(Math)
             wrapper: function (callInfo:Addons.Interceptors.ICallInfo) {
 
                 console.log('Before execute : ' + callInfo.args[0] + ' ' + callInfo.args[1]);
-
                 var result = callInfo.invoke(callInfo.args);
-
                 console.log('After execute : ' + result);
-
                 return callInfo.args[0] + callInfo.args[1];
             }
         }]);
@@ -159,9 +156,9 @@ actual.log(1);   // still 0
 - [x] - Cached resolution results.
 - [x] - Interceptors.
 - [ ] - ES7 decorators style resolution.
-- [ ] - ES6 codebase + weak references.
+- [ ] - ES6 codebase + weak references + promises.
 - [ ] - Instance lifetime scoping APIs.
-- [ ] - Promises configuration.
+- [ ] - Group registration.
 - [ ] - In-browser usage support.
 - [ ] - Usage with 3d part libraries.
 - [ ] - Full API documentation.
