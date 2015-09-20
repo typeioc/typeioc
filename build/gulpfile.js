@@ -18,7 +18,7 @@ var os = require('os');
     var paths = {
         root :   '../',
         code :  {
-            srcAll : '../src/**/*',
+            srcTs : '../src/**/*.ts',
             src : '../src',
             definitionsAll : '../d.ts/typeioc*.d.ts',
             definitions : '../d.ts',
@@ -117,10 +117,10 @@ var os = require('os');
     function cleanTasks() {
         gulp.task('clean', function(callBack) {
 
-            del([
-                paths.lib.all,
-                paths.tests.tsJs,
-                paths.tests.map
+            return del([
+               paths.lib.all,
+               paths.tests.tsJs,
+               paths.tests.map
             ], {force : true}, callBack);
         });
     }
@@ -132,7 +132,7 @@ var os = require('os');
             ['remove-source-header', 'remove-definitions-header', 'remove-index-header', 'remove-addons-header']);
 
         gulp.task('add-source-header', function() {
-            return addHeader(paths.code.srcAll, paths.code.src);
+            return addHeader(paths.code.srcTs, paths.code.src);
         });
 
         gulp.task('add-definitions-header', function() {
@@ -148,7 +148,7 @@ var os = require('os');
         });
 
         gulp.task('remove-source-header', function() {
-            return removeHeader(paths.code.srcAll, paths.code.src);
+            return removeHeader(paths.code.srcTs, paths.code.src);
         });
 
         gulp.task('remove-definitions-header', function() {
@@ -231,4 +231,4 @@ var os = require('os');
         }
     };
 })()
-    .build();
+.build();

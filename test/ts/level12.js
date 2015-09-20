@@ -19,8 +19,6 @@ var Level12;
         });
         containerBuilder.register(register2)
             .as(function () { return subject; });
-        var m = container.resolve(register2);
-        var i = m.pow(2, 3);
         var container = containerBuilder.build();
         return container.resolve(register);
     }

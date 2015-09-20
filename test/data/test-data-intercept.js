@@ -2,8 +2,7 @@
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Module1;
 (function (Module1) {
@@ -249,8 +248,6 @@ var Module12;
 })(Module12 = exports.Module12 || (exports.Module12 = {}));
 var Module13;
 (function (Module13) {
-    Module13.getStub;
-    Module13.setStub;
     var Parent = (function () {
         function Parent() {
         }
@@ -310,7 +307,6 @@ var Module15;
 })(Module15 = exports.Module15 || (exports.Module15 = {}));
 var Module16;
 (function (Module16) {
-    Module16.stub;
     var Parent = (function () {
         function Parent() {
         }
@@ -448,7 +444,6 @@ var Module22;
 })(Module22 = exports.Module22 || (exports.Module22 = {}));
 var Module23;
 (function (Module23) {
-    Module23.stub;
     var Parent = (function () {
         function Parent() {
         }
@@ -515,7 +510,6 @@ var Module26;
 })(Module26 = exports.Module26 || (exports.Module26 = {}));
 var Module27;
 (function (Module27) {
-    Module27.stub;
     var Parent = (function () {
         function Parent() {
         }
@@ -569,7 +563,6 @@ var Module29;
 })(Module29 = exports.Module29 || (exports.Module29 = {}));
 var Module30;
 (function (Module30) {
-    Module30.stub;
     var Parent = (function () {
         function Parent() {
         }
@@ -667,8 +660,6 @@ var Module33;
 })(Module33 = exports.Module33 || (exports.Module33 = {}));
 var Module34;
 (function (Module34) {
-    Module34.getStub;
-    Module34.setStub;
     var Parent = (function () {
         function Parent() {
         }
@@ -690,7 +681,6 @@ var Module34;
 })(Module34 = exports.Module34 || (exports.Module34 = {}));
 var Module35;
 (function (Module35) {
-    Module35.getBarStub, Module35.setBarStub, Module35.getFooStub, Module35.setFooStub;
     var Parent = (function () {
         function Parent() {
         }
