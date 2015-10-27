@@ -14,7 +14,7 @@ import Utils = require('../utils/index');
 import Exceptions = require('../exceptions/index');
 
 
-export class Container implements Typeioc.Internal.IContainer {
+export class Container implements Typeioc.IContainer {
 
     private _container : Typeioc.Internal.IContainer;
 
@@ -26,10 +26,6 @@ export class Container implements Typeioc.Internal.IContainer {
 
     public get cache() : any {
         return this._container['cache'];
-    }
-
-    public add(registrations : Typeioc.Internal.IRegistrationBase[]) : void {
-        this._container.add(registrations);
     }
 
     public createChild() : Typeioc.IContainer {

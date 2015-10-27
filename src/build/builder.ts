@@ -23,6 +23,7 @@ export class ContainerBuilder implements Typeioc.IContainerBuilder {
                 private _registrationBaseService : Typeioc.Internal.IRegistrationBaseService,
                 private _instanceRegistrationService : Typeioc.Internal.IInstanceRegistrationService,
                 private _moduleRegistrationService : Typeioc.Internal.IModuleRegistrationService,
+                private _internalContainerService : Typeioc.Internal.IInternalContainerService,
                 private _containerService : Typeioc.Internal.IContainerService) {
         this.registrations = [];
         this.moduleRegistrations = [];
@@ -75,9 +76,20 @@ export class ContainerBuilder implements Typeioc.IContainerBuilder {
             regoes.push.apply(regoes, item.registrations);
         });
 
-        var container = this._containerService.create();
-        container.add(regoes);
+        var internalContainer = this._internalContainerService.create();
+        var container = this._containerService.create(this._internalContainerService, internalContainer);
+        internalContainer.add(regoes);
 
-        return Utils.toPublicContainer(container);
+        return {
+            cache : container.cache,
+            resolve : container.resolve.bind(container),
+            tryResolve: container.tryResolve.bind(container),
+            resolveNamed : container.resolveNamed.bind(container),
+            tryResolveNamed : container.tryResolveNamed.bind(container),
+            resolveWithDependencies : container.resolveWithDependencies.bind(container),
+            resolveWith : container.resolveWith.bind(container),
+            createChild : container.createChild.bind(container),
+            dispose: container.dispose.bind(container)
+        };
     }
 }

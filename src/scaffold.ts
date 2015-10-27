@@ -37,19 +37,21 @@ export class Scaffold {
         var moduleRegoService = this.moduleRegistrationService(moduleStorageService, baseRegoService);
         var configRegoService = this.configRegistrationService(baseRegoService, moduleRegoService);
         var containerApiService = this.containerApiService();
+
         var internalContainerService = this.internalContainerService(
             regoStorageService,
             disposableStorageService,
             baseRegoService,
             containerApiService);
 
-        var containerService = this.containerService(internalContainerService);
+        var containerService = this.containerService();
 
         return new BuilderModule.ContainerBuilder(
             configRegoService,
             baseRegoService,
             instanceRegoService,
             moduleRegoService,
+            internalContainerService,
             containerService);
     }
 
@@ -110,9 +112,10 @@ export class Scaffold {
         };
     }
 
-    private containerService(internalContainerService : Typeioc.Internal.IInternalContainerService) : Typeioc.Internal.IContainerService {
+    private containerService() : Typeioc.Internal.IContainerService {
         return {
-            create : () => new ContainerModule.Container(internalContainerService)
+            create : (internalContainerService : Typeioc.Internal.IInternalContainerService,
+                      container? : Typeioc.Internal.IContainer) => new ContainerModule.Container(internalContainerService, container)
         };
     }
 

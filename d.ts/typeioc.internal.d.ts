@@ -92,7 +92,7 @@ declare module Typeioc.Internal {
     }
 
     interface IContainerService {
-        create() : IContainer;
+        create(internalContainerService : IInternalContainerService, container? : Typeioc.Internal.IContainer) : Typeioc.IContainer;
     }
 
     interface IContainerApiService {

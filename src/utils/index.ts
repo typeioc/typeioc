@@ -34,17 +34,3 @@ export function checkNullArgument(value : any, argument: string,  message?: stri
 export function createImmutable(array : Array<any>) : Typeioc.Internal.IImmutableArray {
     return new ImmutableArrayModule.ImmutableArray(array);
 }
-
-export function toPublicContainer(container : Typeioc.Internal.IContainer) : Typeioc.IContainer {
-    return {
-        cache : container.cache,
-        resolve : container.resolve.bind(container),
-        tryResolve: container.tryResolve.bind(container),
-        resolveNamed : container.resolveNamed.bind(container),
-        tryResolveNamed : container.tryResolveNamed.bind(container),
-        resolveWithDependencies : container.resolveWithDependencies.bind(container),
-        resolveWith : container.resolveWith.bind(container),
-        createChild : container.createChild.bind(container),
-        dispose: container.dispose.bind(container)
-    };
-}
