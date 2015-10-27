@@ -52,9 +52,6 @@
     "email": "german.maxim@gmail.com",
     "url": "https://github.com/maxgherman/TypeIOC/issues"
   },
-  "license": {
-    "type": "MIT",
-    "url": "https://github.com/maxgherman/TypeIOC/blob/master/LICENSE"
-  },
+  "license": "MIT",
   "readmeFilename": "README.md"
 }

@@ -19,9 +19,7 @@ ConfigProvider.TestModule = TestModule;
 ConfigProvider.TestModule2 = TestModule2;
 
 export var Config = ConfigProvider;
-
 export var Utils = require('../lib/utils/index');
-
 export var Mockery = require('sinon');
 
 
@@ -29,4 +27,6 @@ export function createBuilder() : Typeioc.IContainerBuilder {
     return <Typeioc.IContainerBuilder>typeioc.createBuilder();
 }
 
-export var Decorators = typeioc.Decorators;
+export function getDecorator() : Typeioc.Decorators.IDecorator {
+    return <Typeioc.Decorators.IDecorator>typeioc.getDecorator();
+}

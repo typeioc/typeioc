@@ -3,25 +3,33 @@
  * typeioc - Dependency injection container for node typescript
  * @version v1.3.0
  * @link https://github.com/maxgherman/TypeIOC
- * @license (MIT) - https://github.com/maxgherman/TypeIOC/blob/master/LICENSE
+ * @license () - 
  * --------------------------------------------------------------------------------------------------*/
 
 
 var Builder =  require('./lib/scaffold');
-var Decorators = require('./lib/decorators/index');
 var types = require('./lib/types/index');
 var exceptions = require('./lib/exceptions/index');
 
 var scaffold = new Builder.Scaffold();
-Decorators.getDecorator = function(){ return scaffold.createDecorator(); };
+var decorator;
+
 
 module.exports = {
     Types: types,
     Exceptions : exceptions,
-    Decorators : Decorators.Instance,
+    Decorators : scaffold.createDecorator(),
 
     createBuilder: function() {
         return scaffold.createBuilder();
+    },
+
+    getDecorator: function() {
+
+        if(!decorator)
+            decorator = scaffold.createDecorator();
+
+        return  decorator;
     }
 };
 

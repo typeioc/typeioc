@@ -1,4 +1,5 @@
 /// <reference path='../../d.ts/typeioc.d.ts' />
+'use strict';
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -12,8 +13,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
         case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
     }
 };
-//'use strict';   TODO: add this back when the bug fix is released
 var scaffold = require('./../scaffold');
+var decorator = scaffold.getDecorator();
 var Registration;
 (function (Registration) {
     var TestBase = (function () {
@@ -33,126 +34,140 @@ var Registration;
             return 'Test : foo';
         };
         Test = __decorate([
-            scaffold.Decorators.register(Registration.TestBase)
+            decorator.register(Registration.TestBase)
         ], Test);
         return Test;
     })(TestBase);
     Registration.Test = Test;
 })(Registration = exports.Registration || (exports.Registration = {}));
-var InitializeBy;
-(function (InitializeBy) {
-    var TestBase = (function () {
-        function TestBase() {
-        }
-        TestBase.prototype.foo = function () {
-        };
-        return TestBase;
-    })();
-    InitializeBy.TestBase = TestBase;
-    var Test2 = (function (_super) {
-        __extends(Test2, _super);
-        function Test2() {
-            _super.apply(this, arguments);
-        }
-        Test2.prototype.foo = function () {
-            return 'Test : foo' + (Test2.text || '');
-        };
-        Test2.text = null;
-        Test2 = __decorate([
-            scaffold.Decorators.register(InitializeBy.TestBase, { initializeBy: function (_, item) { return item.text = ' test'; } })
-        ], Test2);
-        return Test2;
-    })(TestBase);
-    InitializeBy.Test2 = Test2;
-})(InitializeBy = exports.InitializeBy || (exports.InitializeBy = {}));
-var Scope;
-(function (Scope) {
-    var TestBase = (function () {
-        function TestBase() {
-        }
-        TestBase.prototype.foo = function () {
-        };
-        return TestBase;
-    })();
-    Scope.TestBase = TestBase;
-    var Test = (function (_super) {
-        __extends(Test, _super);
-        function Test() {
-            _super.apply(this, arguments);
-        }
-        Test.prototype.foo = function () {
-            return 'Test : foo' + (Test2.text || '');
-        };
-        Test.text = null;
-        Test = __decorate([
-            scaffold.Decorators.register(TestBase, { initializeBy: function (_, item) { return item.text = ' test'; }, within: 3 /* Hierarchy */ })
-        ], Test);
-        return Test;
-    })(TestBase);
-    Scope.Test = Test;
-    var TestBase2 = (function () {
-        function TestBase2() {
-        }
-        TestBase2.prototype.foo = function () {
-        };
-        return TestBase2;
-    })();
-    Scope.TestBase2 = TestBase2;
-    var Test2 = (function (_super) {
-        __extends(Test2, _super);
-        function Test2() {
-            _super.apply(this, arguments);
-        }
-        Test2.prototype.foo = function () {
-            return 'Test : foo' + (Test2.text || '');
-        };
-        Test2.text = null;
-        Test2 = __decorate([
-            scaffold.Decorators.register(TestBase, { initializeBy: function (_, item) { return item.text = ' test'; }, within: 2 /* Container */ })
-        ], Test2);
-        return Test2;
-    })(TestBase);
-    Scope.Test2 = Test2;
-})(Scope = exports.Scope || (exports.Scope = {}));
-var Named;
-(function (Named) {
-    var TestBase = (function () {
-        function TestBase() {
-        }
-        TestBase.prototype.foo = function () {
-        };
-        return TestBase;
-    })();
-    Named.TestBase = TestBase;
-    var Test = (function (_super) {
-        __extends(Test, _super);
-        function Test() {
-            _super.apply(this, arguments);
-        }
-        Test.prototype.foo = function () {
-            return 'Test : foo' + (Test.text || '');
-        };
-        Test.text = null;
-        Test = __decorate([
-            scaffold.Decorators.register(Named.TestBase, { initializeBy: function (_, item) { return item.text = ' test'; }, named: 'Some name' })
-        ], Test);
-        return Test;
-    })(TestBase);
-    Named.Test = Test;
-    var Test2 = (function (_super) {
-        __extends(Test2, _super);
-        function Test2() {
-            _super.apply(this, arguments);
-        }
-        Test2.prototype.foo = function () {
-            return 'Test2 : foo' + (Test2.text || '');
-        };
-        Test2.text = null;
-        Test2 = __decorate([
-            scaffold.Decorators.register(Named.TestBase, { initializeBy: function (_, item) { return item.text = ' test'; }, named: 'Some name 2' })
-        ], Test2);
-        return Test2;
-    })(TestBase);
-    Named.Test2 = Test2;
-})(Named = exports.Named || (exports.Named = {}));
+//export module InitializeBy {
+//
+//    export class TestBase {
+//        public foo() {
+//        }
+//    }
+//
+//    @decorator.register<InitializeBy.TestBase>(InitializeBy.TestBase, { initializeBy : (_, item : Test2) => item.text = ' test' })
+//    export class Test2 extends TestBase {
+//
+//        public text : string = null;
+//
+//        public foo() {
+//            return 'Test : foo' + (this.text || '');
+//        }
+//    }
+//}
+//
+//export module Scope {
+//
+//    export class TestBase {
+//        public foo() {
+//        }
+//    }
+//
+//    @decorator.register<Scope.TestBase>(Scope.TestBase, { within : Typeioc.Types.Scope.Hierarchy })
+//    export class Test extends TestBase {
+//
+//        public text : string = ' test';
+//
+//        public foo() {
+//            return 'Test : foo' + (this.text || '');
+//        }
+//    }
+//
+//    export class TestBase2 {
+//
+//        public foo() {
+//        }
+//    }
+//
+//    @decorator.register<Scope.TestBase2>(Scope.TestBase2, { within : Typeioc.Types.Scope.Container })
+//    export class Test2 extends TestBase2 {
+//
+//        public text : string = ' test';
+//
+//        public foo() {
+//            return 'Test : foo' + (this.text || '');
+//        }
+//    }
+//}
+//
+//export module Owner {
+//    export class TestBase1 {
+//        public foo() {
+//        }
+//
+//        public dispose() {}
+//    }
+//
+//    @decorator.register<TestBase1>(TestBase1, {
+//        ownedBy: Typeioc.Types.Owner.Container,
+//        dispose: ((item:Test) => { item.dispose(); })
+//    })
+//    export class Test extends TestBase1 {
+//
+//        public text : string = ' test';
+//
+//        public foo() {
+//            return 'Test : foo' + (this.text || '');
+//        }
+//
+//        public dispose() {
+//            this.text = 'disposed';
+//        }
+//    }
+//
+//
+//    export class TestBase2 {
+//        public foo() {
+//        }
+//
+//        public dispose() {}
+//    }
+//
+//    @decorator.register<TestBase2>(TestBase2, {
+//        ownedBy : Typeioc.Types.Owner.Externals,
+//        dispose : ((item: TestBase2) => { item.dispose(); })
+//    })
+//    export class Test2 extends TestBase2 {
+//
+//        public text : string = ' test';
+//
+//        public foo() {
+//            return 'Test : foo' + (this.text || '');
+//        }
+//
+//        public dispose() {
+//            this.text = 'disposed';
+//        }
+//    }
+//}
+//
+//export module Named {
+//
+//    export class TestBase {
+//        public foo() {
+//        }
+//    }
+//
+//    @decorator.register<Named.TestBase>(Named.TestBase, { named : 'Some name' })
+//    export class Test extends TestBase {
+//
+//        public static text : string = ' test';
+//
+//        public foo() {
+//            return 'Test : foo' + (Test.text || '');
+//        }
+//    }
+//
+//    @decorator.register<Named.TestBase>(Named.TestBase, { named : 'Some name 2' })
+//    export class Test2 extends TestBase {
+//
+//        public static text : string = ' test';
+//
+//        public foo() {
+//            return 'Test2 : foo' + (Test2.text || '');
+//        }
+//    }
+//} 
 //# sourceMappingURL=decorators.js.map

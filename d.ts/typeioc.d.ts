@@ -3,13 +3,15 @@
  * typeioc - Dependency injection container for node typescript
  * @version v1.3.0
  * @link https://github.com/maxgherman/TypeIOC
- * @license (MIT) - https://github.com/maxgherman/TypeIOC/blob/master/LICENSE
+ * @license () - 
  * --------------------------------------------------------------------------------------------------*/
 
 
 declare module Typeioc {
 
     function createBuilder() : IContainerBuilder;
+
+    function getDecorator() : Decorators.IDecorator;
 
     module Types {
         const enum Scope  {
@@ -57,20 +59,19 @@ declare module Typeioc {
 
     module Decorators {
 
-        function register(service: any, options? : Decorators.IRegistrationOptions, container? : IContainer);
-
-        function resolve(service: any, container? : IContainer);
-
         interface IDecorator {
-            container : Typeioc.IContainer;
-            register(service : any, options? : IRegistrationOptions, builder? : Typeioc.IContainerBuilder);
-            resolve(service: any, container? : IContainer);
+            build() : Typeioc.IContainer;
+            register<R>(service : any, builder? : Typeioc.IContainerBuilder);
+            //resolve(service: any, container? : IContainer);
         }
 
-        interface IRegistrationOptions {
-            initializeBy? : IInitializer<any>,
+        interface IRegistrationOptions<T> {
+            as: IFactory<T>,
+            initializeBy? : IInitializer<T>,
             within? : Types.Scope,
-            named? : string
+            ownedBy?: Types.Owner,
+            named? : string,
+            dispose? : IDisposer<T>
         }
     }
 

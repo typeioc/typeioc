@@ -3,7 +3,7 @@
  * typeioc - Dependency injection container for node typescript
  * @version v1.3.0
  * @link https://github.com/maxgherman/TypeIOC
- * @license (MIT) - https://github.com/maxgherman/TypeIOC/blob/master/LICENSE
+ * @license () - 
  * --------------------------------------------------------------------------------------------------*/
 
 ///<reference path='../d.ts/typeioc.internal.d.ts' />
@@ -55,20 +55,7 @@ export class Scaffold {
 
     public createDecorator() : Typeioc.Decorators.IDecorator {
 
-        var internalRegoStorageService = this.internalStorageService<any, Typeioc.Internal.IIndexedCollection<any>>();
-        var regoStorageService = this.registrationStorageService(internalRegoStorageService);
-        var disposableStorageService = this.disposableStorageService();
-        var baseRegoService = this.registrationBaseService();
-        var containerApiService = this.containerApiService();
-        var internalContainerService = this.internalContainerService(
-            regoStorageService,
-            disposableStorageService,
-            baseRegoService,
-            containerApiService);
-
-        var containerService = this.containerService(internalContainerService);
-
-        return new DecoratorModule.Decorator(this.registrationBaseService(), this.instanceRegistrationService(), containerService.create());
+        return new DecoratorModule.Decorator(this.createBuilder());
     }
 
     private internalStorageService<K, T>() : Typeioc.Internal.IInternalStorageService<K, T> {
