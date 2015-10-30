@@ -105,7 +105,7 @@ export function getAllPropertyNames(obj) {
     return props;
 }
 
-function getParamNames(func : Function) : string[] {
+export function getParamNames(func : Function) : string[] {
     var funStr = func.toString();
     var result = funStr.slice(funStr.indexOf('(')+1, funStr.indexOf(')')).match(/([^\s,]+)/g);
 

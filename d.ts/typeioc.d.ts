@@ -62,7 +62,7 @@ declare module Typeioc {
         interface IDecorator {
             build() : Typeioc.IContainer;
             register<R>(service : any, builder? : Typeioc.IContainerBuilder);
-            //resolve(service: any, container? : IContainer);
+            resolve();
         }
 
         interface IRegistrationOptions<T> {

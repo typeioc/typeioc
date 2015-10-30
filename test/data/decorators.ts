@@ -22,6 +22,16 @@ export module Registration {
             return 'Test : foo';
         }
     }
+
+    export class Test2 implements TestBase {
+
+        constructor(@decorator.resolve() private _arg1 : string, private _arg2 : string) {}
+
+        public foo() {
+
+            return 'Test : foo';
+        }
+    }
 }
 
 //export module InitializeBy {

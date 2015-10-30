@@ -13,6 +13,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
         case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
     }
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 var scaffold = require('./../scaffold');
 var decorator = scaffold.getDecorator();
 var Registration;
@@ -39,6 +42,20 @@ var Registration;
         return Test;
     })(TestBase);
     Registration.Test = Test;
+    var Test2 = (function () {
+        function Test2(_arg1, _arg2) {
+            this._arg1 = _arg1;
+            this._arg2 = _arg2;
+        }
+        Test2.prototype.foo = function () {
+            return 'Test : foo';
+        };
+        Test2 = __decorate([
+            __param(0, decorator.resolve())
+        ], Test2);
+        return Test2;
+    })();
+    Registration.Test2 = Test2;
 })(Registration = exports.Registration || (exports.Registration = {}));
 //export module InitializeBy {
 //

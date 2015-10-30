@@ -63,18 +63,26 @@ export class Decorator implements Typeioc.Decorators.IDecorator {
         });
     }
 
+    public resolve() {
 
+        var key = 'typeioc';
 
-    //public resolve(service : any, container? : Typeioc.IContainer) {
-    //
-    //    container = container || this._container;
-    //
-    //    return target => {
-    //
-    //        var result = container.resolve(target);
-    //
-    //        var args = []; // TODO: options && options.args ? options.args : [];
-    //        return Utils.Reflection.createPrototype(target, args);
-    //    };
+        return (target: any, key : string, index : number) => {
+            var params = Utils.Reflection.getParamNames(target);
+
+            var bucket = target[key];
+
+            if(!bucket) {
+                bucket = target[key] = {
+                    args : []
+                };
+            }
+
+            bucket.args[index] = { name : params[index] };
+        };
+    }
+
+    //public resolve1(target: any, key : string, index : number) {
+    //    var params = Utils.Reflection.getParamNames(target);
     //}
 }
