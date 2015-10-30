@@ -89,10 +89,10 @@ export class Scaffold {
                                            Typeioc.Internal.IInternalStorageService<any, Typeioc.Internal.IIndexedCollection<any>>)
         : Typeioc.Internal.IRegistrationStorageService {
         return {
-            create : <R>() => {
+            create : () => {
                 var storage = internalStorageService.create();
 
-                return new RegoStorageModule.RegistrationStorage<R>(storage);
+                return new RegoStorageModule.RegistrationStorage(storage);
             }
         };
     }

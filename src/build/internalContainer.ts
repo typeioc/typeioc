@@ -17,7 +17,7 @@ export class InternalContainer implements Typeioc.Internal.IContainer {
     private parent : InternalContainer ;
     private children : InternalContainer [] = [];
     private _disposableStorage : Typeioc.Internal.IDisposableStorage;
-    private _collection : Typeioc.Internal.IRegistrationStorage<Typeioc.Internal.IRegistrationBase>;
+    private _collection : Typeioc.Internal.IRegistrationStorage;
     private _cache : Typeioc.Internal.IIndexedCollection<any>;
     private _dependencyScope = Typeioc.Types.Scope.None;
     private _dependencyOwner = Typeioc.Types.Owner.Externals;
@@ -27,7 +27,7 @@ export class InternalContainer implements Typeioc.Internal.IContainer {
                 private _registrationBaseService : Typeioc.Internal.IRegistrationBaseService,
                 private _containerApiService : Typeioc.Internal.IContainerApiService) {
 
-        this._collection = this._registrationStorageService.create<Typeioc.Internal.IRegistrationBase>();
+        this._collection = this._registrationStorageService.create();
         this._disposableStorage = this._disposableStorageService.create();
         this._cache = {};
     }
@@ -145,7 +145,7 @@ export class InternalContainer implements Typeioc.Internal.IContainer {
 
         registration.container = this;
 
-        this._collection.addEntry(registration, () => registration);
+        this._collection.addEntry(registration);
     }
 
     private resolveBase(registration : Typeioc.Internal.IRegistrationBase, throwIfNotFound : boolean) : any {
@@ -200,7 +200,7 @@ export class InternalContainer implements Typeioc.Internal.IContainer {
 
         if(registration.container !== this) {
             entry = registration.cloneFor(this);
-            this._collection.addEntry(entry, () => entry);
+            this._collection.addEntry(entry);
         } else {
             entry = registration;
         }
