@@ -3,7 +3,7 @@
  * typeioc - Dependency injection container for node typescript
  * @version v1.3.0
  * @link https://github.com/maxgherman/TypeIOC
- * @license () - 
+ * @license MIT
  * --------------------------------------------------------------------------------------------------*/
 
 /// <reference path="../../d.ts/typeioc.internal.d.ts" />
@@ -36,8 +36,7 @@ export class ContainerBuilder implements Typeioc.IContainerBuilder {
         var regoBase = this._registrationBaseService.create(service);
         var registration = this._instanceRegistrationService.create<R>(regoBase);
 
-        regoBase.scope = this._defaults.scope;
-        regoBase.owner = this._defaults.owner;
+        setDefaults(regoBase, this._defaults);
 
         this.registrations.push(regoBase);
 
@@ -49,9 +48,7 @@ export class ContainerBuilder implements Typeioc.IContainerBuilder {
         var regoBase = this._registrationBaseService.create(serviceModule);
         var moduleRegistration = this._moduleRegistrationService.create(regoBase);
 
-        regoBase.scope = this._defaults.scope;
-        regoBase.owner = this._defaults.owner;
-
+        setDefaults(regoBase, this._defaults);
 
         this.moduleRegistrations.push(moduleRegistration);
 
@@ -61,8 +58,8 @@ export class ContainerBuilder implements Typeioc.IContainerBuilder {
     public registerConfig(config : Typeioc.IConfig) : void {
         var configRego = this._configRegistrationService.create();
         configRego.apply(config);
-        configRego.scope = this._defaults.scope;
-        configRego.owner = this._defaults.owner;
+
+        setDefaults(configRego, this._defaults);
 
         this.registrations.push.apply(this.registrations, configRego.registrations);
     }
@@ -92,4 +89,11 @@ export class ContainerBuilder implements Typeioc.IContainerBuilder {
             dispose: container.dispose.bind(container)
         };
     }
+}
+
+function setDefaults(rego : Typeioc.Internal.IRegistrationBase | Typeioc.Internal.IConfigRegistration,
+                     defaults: Typeioc.IDefaults) {
+
+    rego.scope = defaults.scope;
+    rego.owner = defaults.owner;
 }

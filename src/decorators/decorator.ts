@@ -3,86 +3,110 @@
  * typeioc - Dependency injection container for node typescript
  * @version v1.3.0
  * @link https://github.com/maxgherman/TypeIOC
- * @license () - 
+ * @license MIT
  * --------------------------------------------------------------------------------------------------*/
-
 
 ///<reference path="../../d.ts/typeioc.d.ts" />
 ///<reference path="../../d.ts/typeioc.internal.d.ts" />
 
+/// <reference path="../../node_modules/reflect-metadata/reflect-metadata.d.ts"/>
+
+
 'use strict';
+
 
 import Utils = require('../utils/index');
 import Exceptions = require('../exceptions/index');
 import Types = require('../types/index');
+import Decorators = Typeioc.Decorators;
+import Internal = Typeioc.Internal;
 
+export class Decorator implements Decorators.IDecorator {
 
-export class Decorator implements Typeioc.Decorators.IDecorator {
-
-    constructor(private _builder : Typeioc.IContainerBuilder){}
-
+    constructor(private _builder : Typeioc.IContainerBuilder,
+                private _decoratorRegistrationApiSerice : Typeioc.Internal.IDecoratorApiService ) {}
 
     public build() : Typeioc.IContainer {
         return this._builder.build();
     }
 
-    public register<R>(service : any, builder? : Typeioc.IContainerBuilder) {
+    public provide(service: any) : Decorators.Register.INamedReusedOwned {
 
-        return target => {
+        var register = (api : Internal.IDecoratorRegistrationApi)  => {
 
-            if(!Utils.Reflection.isPrototype(target)) {
-                let error = new Exceptions.DecoratorError("Decorator target not supported, not a prototype");
-                error.data = { target : target };
-                throw error;
-            }
+            return (target) => {
 
-            var factory = () => target;
+                if(!Utils.Reflection.isPrototype(target)) {
+                    let error = new Exceptions.DecoratorError("Decorator target not supported, not a prototype");
+                    error.data = { target : target };
+                    throw error;
+                }
 
-            var containerBuilder = builder || this._builder;
+                var containerBuilder = api.builder || this._builder;
 
-            let registration = containerBuilder.register(service);
-            registration.as(factory);
-            //this.addRegistrationOptions(registration, options);
+                let registration = containerBuilder
+                    .register(service)
+                    .asType(target);
 
+                var name = api.name;
+                if(name)
+                    registration.named(name);
 
+                var scope = api.scope || Types.Defaults.scope;
+                registration.within(scope);
 
-            return target;
+                var owner = api.owner || Types.Defaults.owner;
+                registration.ownedBy(owner);
+
+                return target;
+            };
         };
+
+        var api = this._decoratorRegistrationApiSerice.createRegistration(register);
+
+        return api.provide(service);
     }
 
-    private addRegistrationOptions<R>(registration : Typeioc.IRegistration<any>,  options? : Typeioc.Decorators.IRegistrationOptions<R>) {
+    public by(service? : any) : Decorators.Resolve.ITryNamedCache {
 
-        if(!options) return;
+        var resolve = (api: Internal.IDecoratorResolutionApi) => {
 
-        Object.keys(options).forEach(item => {
+            return (target: any, key : string, index : number) => {
 
-            var option = options[item];
+                var key = Utils.Reflection.ReflectionKey;
 
-            registration[item](options[item]);
+                var bucket = <Internal.IDecoratorResolutionCollection>target[key];
 
-        });
+                if(!bucket)
+                    bucket = target[key] = <Internal.IDecoratorResolutionCollection>{ };
+
+                bucket[index] = {
+                    service : api.service,
+                    name : api.name,
+                    attempt: api.attempt,
+                    cache : api.cache,
+                    container : api.container
+                };
+            };
+        };
+
+        var api = this._decoratorRegistrationApiSerice.createResolution(resolve);
+
+        return api.by(service);
     }
 
-    public resolve() {
-
-        var key = 'typeioc';
+    public resolve() : Decorators.Resolve.IDecoratorResolutionResult {
 
         return (target: any, key : string, index : number) => {
-            var params = Utils.Reflection.getParamNames(target);
+
+            var key = Utils.Reflection.ReflectionKey;
 
             var bucket = target[key];
 
-            if(!bucket) {
-                bucket = target[key] = {
-                    args : []
-                };
-            }
+            if(!bucket)
+                bucket = target[key] = <Internal.IDecoratorResolutionCollection>{ };
 
-            bucket.args[index] = { name : params[index] };
+            bucket.args[index] = { };
         };
     }
-
-    //public resolve1(target: any, key : string, index : number) {
-    //    var params = Utils.Reflection.getParamNames(target);
-    //}
 }

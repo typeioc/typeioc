@@ -3,7 +3,7 @@
  * typeioc - Dependency injection container for node typescript
  * @version v1.3.0
  * @link https://github.com/maxgherman/TypeIOC
- * @license () - 
+ * @license MIT
  * --------------------------------------------------------------------------------------------------*/
 
 /// <reference path="../../../d.ts/typeioc.internal.d.ts" />
@@ -16,36 +16,47 @@ export class Registration<T> implements Typeioc.IRegistration<T> {
 
     public as(factory : Typeioc.IFactory<T>) : Typeioc.IInitializedDisposedNamedReusedOwned<T> {
 
-        var self = this;
-        self._base.factory = factory;
+        this._base.factory = factory;
 
         return {
-            initializeBy : self.initializeBy.bind(self),
-            dispose : self.dispose.bind(self),
-            named : self.named.bind(self),
-            within : self.within.bind(self),
-            ownedBy : self.ownedBy.bind(self)
+            initializeBy : this.initializeBy.bind(this),
+            dispose : this.dispose.bind(this),
+            named : this.named.bind(this),
+            within : this.within.bind(this),
+            ownedBy : this.ownedBy.bind(this)
+        };
+    }
+
+    public asType(type: T) : Typeioc.IInitializedDisposedNamedReusedOwned<T> {
+
+        this._base.factory = () => type;
+        this._base.forInstantiation = true;
+
+        return {
+            initializeBy : this.initializeBy.bind(this),
+            dispose : this.dispose.bind(this),
+            named : this.named.bind(this),
+            within : this.within.bind(this),
+            ownedBy : this.ownedBy.bind(this)
         };
     }
 
     public named(value : string) : Typeioc.IReusedOwned {
 
-        var self = this;
-        self._base.name = value;
+        this._base.name = value;
 
         return {
-            within : self.within.bind(self),
-            ownedBy : self.ownedBy.bind(self)
+            within : this.within.bind(this),
+            ownedBy : this.ownedBy.bind(this)
         };
     }
 
     public within(scope: Typeioc.Types.Scope) : Typeioc.IOwned {
 
-        var self = this;
-        self._base.scope = scope;
+        this._base.scope = scope;
 
         return {
-            ownedBy : self.ownedBy.bind(self)
+            ownedBy : this.ownedBy.bind(this)
         };
     }
 
@@ -55,25 +66,23 @@ export class Registration<T> implements Typeioc.IRegistration<T> {
 
     public initializeBy(action : Typeioc.IInitializer<T>) : Typeioc.INamedReusedOwnedDisposed<T> {
 
-        var self = this;
-        self._base.initializer = action;
+        this._base.initializer = action;
 
         return {
-            dispose : self.dispose.bind(self),
-            named : self.named.bind(self),
-            within : self.within.bind(self),
-            ownedBy : self.ownedBy.bind(self)
+            dispose : this.dispose.bind(this),
+            named : this.named.bind(this),
+            within : this.within.bind(this),
+            ownedBy : this.ownedBy.bind(this)
         };
     }
 
     public dispose(action : Typeioc.IDisposer<T>) : Typeioc.INamedReusedOwned {
-        var self = this;
-        self._base.disposer = action;
+        this._base.disposer = action;
 
         return {
-            named : self.named.bind(self),
-            within : self.within.bind(self),
-            ownedBy : self.ownedBy.bind(self)
+            named : this.named.bind(this),
+            within : this.within.bind(this),
+            ownedBy : this.ownedBy.bind(this)
         };
     }
 }

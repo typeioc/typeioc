@@ -3,7 +3,7 @@
  * typeioc - Dependency injection container for node typescript
  * @version v1.3.0
  * @link https://github.com/maxgherman/TypeIOC
- * @license () - 
+ * @license MIT
  * --------------------------------------------------------------------------------------------------*/
 
 
@@ -61,17 +61,63 @@ declare module Typeioc {
 
         interface IDecorator {
             build() : Typeioc.IContainer;
-            register<R>(service : any, builder? : Typeioc.IContainerBuilder);
+            provide(service: any) : Register.INamedReusedOwned;
             resolve();
         }
 
-        interface IRegistrationOptions<T> {
-            as: IFactory<T>,
-            initializeBy? : IInitializer<T>,
-            within? : Types.Scope,
-            ownedBy?: Types.Owner,
-            named? : string,
-            dispose? : IDisposer<T>
+        module Register {
+            interface IDecoratorRegisterResult {
+                (target : any) : any;
+            }
+
+            interface IRegister {
+                register(builder? : IContainerBuilder) : IDecoratorRegisterResult
+            }
+
+            interface IOwned extends Register.IRegister {
+                ownedBy : (owner : Types.Owner) => Register.IRegister;
+            }
+
+            interface IReused extends Register.IRegister {
+                within : (scope: Types.Scope) => Register.IOwned;
+            }
+
+            interface IReusedOwned
+            extends Register.IReused, Register.IOwned, Register.IRegister { }
+
+            interface INamed extends Register.IRegister {
+                named : (name: string) => Register.IReusedOwned;
+            }
+
+            interface INamedReusedOwned
+            extends Register.INamed, Register.IReusedOwned, Register.IRegister {}
+        }
+
+        module Resolve {
+
+            interface IDecoratorResolutionResult {
+                (target: any, key : string, index : number) : void;
+            }
+
+            interface IResolve {
+                resolve(container? : Typeioc.IContainer) : IDecoratorResolutionResult;
+            }
+
+            interface ICache extends Resolve.IResolve {
+                cache(name? : string) : Resolve.IResolve;
+            }
+
+            interface INamed extends Resolve.IResolve {
+                name(value : string) : Resolve.ICache;
+            }
+
+            interface INamedCache extends Resolve.INamed, Resolve.ICache, Resolve.IResolve {}
+
+            interface ITry extends Resolve.IResolve {
+                attempt() : Resolve.INamedCache;
+            }
+
+            interface ITryNamedCache extends Resolve.ITry, Resolve.INamedCache { }
         }
     }
 
@@ -161,10 +207,6 @@ declare module Typeioc {
         initializeBy : (action : IInitializer<T>) => INamedReusedOwnedDisposed<T>;
     }
 
-    interface IInvoker {
-        () : any;
-    }
-
     interface IFactory<T> {
         (c: IContainer, arg1 : any, arg2 : any, arg3 : any, arg4 : any, arg5 : any, arg6 : any, arg7 : any) : T;
     }
@@ -173,6 +215,7 @@ declare module Typeioc {
 
     interface IAs<T> {
         as(factory: IFactory<T>) : IInitializedDisposedNamedReusedOwned<T>;
+        asType(type : T) : IInitializedDisposedNamedReusedOwned<T>;
     }
 
     interface IRegistration<T> extends IAs<T> { }

@@ -3,11 +3,13 @@
  * typeioc - Dependency injection container for node typescript
  * @version v1.3.0
  * @link https://github.com/maxgherman/TypeIOC
- * @license () - 
+ * @license MIT
  * --------------------------------------------------------------------------------------------------*/
 
 
 import Exceptions = require('../exceptions/index');
+
+export var ReflectionKey = 'typeioc';
 
 export function getFactoryArgsCount(factory: Typeioc.IFactory<any>) {
 

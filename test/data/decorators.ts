@@ -15,7 +15,17 @@ export module Registration {
         }
     }
 
-    @decorator.register<Registration.TestBase>(Registration.TestBase)
+    export class TestBase1 {
+        public foo1() {
+        }
+    }
+
+    export class TestBase2 {
+        public foo2() {
+        }
+    }
+
+    @decorator.provide(Registration.TestBase).register()
     export class Test extends TestBase {
 
         public foo() {
@@ -23,13 +33,25 @@ export module Registration {
         }
     }
 
-    export class Test2 implements TestBase {
+    @decorator.provide(Registration.TestBase1).register()
+    export class Test1 implements TestBase1 {
 
-        constructor(@decorator.resolve() private _arg1 : string, private _arg2 : string) {}
+        constructor(private TestBase : TestBase) {}
 
-        public foo() {
+        public foo1() {
 
-            return 'Test : foo';
+            return this.TestBase.foo() + ' : foo1';
+        }
+    }
+
+    @decorator.provide(Registration.TestBase2).register()
+    export class Test2 implements TestBase2 {
+
+        constructor(private testBase : TestBase, private testBase1 : TestBase1) {}
+
+        public foo2() {
+
+            return [this.testBase.foo(), this.testBase1.foo1(), 'foo2'].join(' | ');
         }
     }
 }

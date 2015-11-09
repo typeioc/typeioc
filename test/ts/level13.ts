@@ -6,15 +6,38 @@ import scaffold = require('./../scaffold');
 
 export module Level13 {
 
-    export function embedded_container_resolution(test) {
+    export function embedded_container_plain_instantiation(test) {
 
         var container = scaffold.getDecorator().build();
 
-        var Actual: any = container.resolve<TestData.Registration.TestBase>(TestData.Registration.TestBase);
-        var actual = <TestData.Registration.TestBase>new Actual();
+        var actual = container.resolve<TestData.Registration.TestBase>(TestData.Registration.TestBase);
 
         test.ok(actual);
         test.strictEqual(actual.foo(), 'Test : foo');
+
+        test.done();
+    }
+
+    export function embedded_container_instantiation_with_parameter_resolution(test) {
+
+        var container = scaffold.getDecorator().build();
+
+        var actual = container.resolve<TestData.Registration.TestBase1>(TestData.Registration.TestBase1);
+
+        test.ok(actual);
+        test.strictEqual(actual.foo1(), 'Test : foo : foo1');
+
+        test.done();
+    }
+
+    export function embedded_container_instantiation_with_multi_parameter_resolution(test) {
+
+        var container = scaffold.getDecorator().build();
+
+        var actual = container.resolve<TestData.Registration.TestBase2>(TestData.Registration.TestBase2);
+
+        test.ok(actual);
+        test.strictEqual(actual.foo2(), 'Test : foo | Test : foo : foo1 | foo2');
 
         test.done();
     }

@@ -235,28 +235,7 @@ exports.internal = {
                 test.done();
             },
 
-            has_invoker_property : function(test) {
-
-                var serviceEntry = new RegistrationBaseModule.RegistrationBase(null);
-
-                test.ok('invoker' in serviceEntry);
-
-                test.done();
-            },
-
-            invoker_returns_function : function(test) {
-
-                var serviceEntry = new RegistrationBaseModule.RegistrationBase(null);
-
-                var invoker = serviceEntry.invoker;
-
-                test.ok(invoker);
-                test.ok(typeof(invoker) == 'function');
-
-                test.done();
-            },
-
-            invoker_returns_function_that_invokes_factory : function(test) {
+            invoke_invokes_factory : function(test) {
 
                 var factory = mockery.stub();
 
@@ -264,15 +243,14 @@ exports.internal = {
                 serviceEntry.factory = factory;
                 serviceEntry.container = {};
 
-                var invoker = serviceEntry.invoker;
-                invoker();
+                serviceEntry.invoke();
 
                 test.ok(factory.calledOnce);
 
                 test.done();
             },
 
-            invoker_returns_function_that_invokes_factory_with_container_as_first_parameter : function(test) {
+            invoke_invokes_factory_with_container_as_first_parameter : function(test) {
 
                 var container = {};
                 var firstArg = 1;
@@ -285,14 +263,37 @@ exports.internal = {
                 serviceEntry.container = container;
                 serviceEntry.args = [firstArg, secondArg, thirdArg];
 
-                var invoker = serviceEntry.invoker;
-                invoker();
+                serviceEntry.invoke();
 
                 test.ok(factory.withArgs(container, firstArg, secondArg, thirdArg).calledOnce);
 
                 test.done();
             },
 
+            invoke_does_not_mutate_arguments: function(test) {
+
+                var serviceEntry = new RegistrationBaseModule.RegistrationBase(null);
+                serviceEntry.factory = mockery.stub();
+                serviceEntry.container = {};
+                var args = [1, 2, '3'];
+                serviceEntry.args = args;
+
+                serviceEntry.invoke();
+
+                test.strictEqual(args, serviceEntry.args);
+                test.strictEqual(serviceEntry.args[0], 1);
+                test.strictEqual(serviceEntry.args[1], 2);
+                test.strictEqual(serviceEntry.args[2], '3');
+
+                serviceEntry.invoke();
+
+                test.strictEqual(args, serviceEntry.args);
+                test.strictEqual(serviceEntry.args[0], 1);
+                test.strictEqual(serviceEntry.args[1], 2);
+                test.strictEqual(serviceEntry.args[2], '3');
+
+                test.done();
+            },
 
             cloneFor_clones_factory : function(test) {
 

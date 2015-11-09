@@ -3,7 +3,7 @@
  * typeioc - Dependency injection container for node typescript
  * @version v1.3.0
  * @link https://github.com/maxgherman/TypeIOC
- * @license () - 
+ * @license MIT
  * --------------------------------------------------------------------------------------------------*/
 
 /// <reference path="../../../d.ts/typeioc.internal.d.ts" />
@@ -20,6 +20,7 @@ export class RegistrationBase implements Typeioc.Internal.IRegistrationBase {
     private _args : any[];
     private _container : Typeioc.IContainer;
     private _instance: any = null;
+    private _forInstantiation : boolean = false;
 
     public get name() : string {
         return this._name;
@@ -89,12 +90,12 @@ export class RegistrationBase implements Typeioc.Internal.IRegistrationBase {
         this._instance = value;
     }
 
-    public get invoker() : Typeioc.IInvoker {
-        var self = this;
-        return () => {
-            self.args.splice(0, 0, self.container);
-            return self.factory.apply(self.factory, self.args);
-        };
+    public get forInstantiation() : boolean {
+        return this._forInstantiation;
+    }
+
+    public set forInstantiation(value : boolean) {
+        this._forInstantiation = value;
     }
 
     constructor(private _service: any) {
@@ -118,5 +119,11 @@ export class RegistrationBase implements Typeioc.Internal.IRegistrationBase {
 
     public set factory(value : Typeioc.IFactory<any>){
         this._factory = value;
+    }
+
+    public invoke() : any {
+
+        var args = [this.container].concat(this.args.slice(0));
+        return this.factory.apply(this.factory, args);
     }
 }

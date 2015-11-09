@@ -13,8 +13,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
         case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
     }
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var scaffold = require('./../scaffold');
 var decorator = scaffold.getDecorator();
@@ -28,6 +28,22 @@ var Registration;
         return TestBase;
     })();
     Registration.TestBase = TestBase;
+    var TestBase1 = (function () {
+        function TestBase1() {
+        }
+        TestBase1.prototype.foo1 = function () {
+        };
+        return TestBase1;
+    })();
+    Registration.TestBase1 = TestBase1;
+    var TestBase2 = (function () {
+        function TestBase2() {
+        }
+        TestBase2.prototype.foo2 = function () {
+        };
+        return TestBase2;
+    })();
+    Registration.TestBase2 = TestBase2;
     var Test = (function (_super) {
         __extends(Test, _super);
         function Test() {
@@ -37,21 +53,37 @@ var Registration;
             return 'Test : foo';
         };
         Test = __decorate([
-            decorator.register(Registration.TestBase)
+            decorator.provide(Registration.TestBase).register(), 
+            __metadata('design:paramtypes', [])
         ], Test);
         return Test;
     })(TestBase);
     Registration.Test = Test;
-    var Test2 = (function () {
-        function Test2(_arg1, _arg2) {
-            this._arg1 = _arg1;
-            this._arg2 = _arg2;
+    var Test1 = (function () {
+        function Test1(TestBase) {
+            this.TestBase = TestBase;
         }
-        Test2.prototype.foo = function () {
-            return 'Test : foo';
+        Test1.prototype.foo1 = function () {
+            return this.TestBase.foo() + ' : foo1';
+        };
+        Test1 = __decorate([
+            decorator.provide(Registration.TestBase1).register(), 
+            __metadata('design:paramtypes', [TestBase])
+        ], Test1);
+        return Test1;
+    })();
+    Registration.Test1 = Test1;
+    var Test2 = (function () {
+        function Test2(testBase, testBase1) {
+            this.testBase = testBase;
+            this.testBase1 = testBase1;
+        }
+        Test2.prototype.foo2 = function () {
+            return [this.testBase.foo(), this.testBase1.foo1(), 'foo2'].join(' | ');
         };
         Test2 = __decorate([
-            __param(0, decorator.resolve())
+            decorator.provide(Registration.TestBase2).register(), 
+            __metadata('design:paramtypes', [TestBase, TestBase1])
         ], Test2);
         return Test2;
     })();

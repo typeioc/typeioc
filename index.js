@@ -3,10 +3,10 @@
  * typeioc - Dependency injection container for node typescript
  * @version v1.3.0
  * @link https://github.com/maxgherman/TypeIOC
- * @license () - 
+ * @license MIT
  * --------------------------------------------------------------------------------------------------*/
 
-
+require('reflect-metadata');
 var Builder =  require('./lib/scaffold');
 var types = require('./lib/types/index');
 var exceptions = require('./lib/exceptions/index');

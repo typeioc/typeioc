@@ -3,7 +3,7 @@
  * typeioc - Dependency injection container for node typescript
  * @version v1.3.0
  * @link https://github.com/maxgherman/TypeIOC
- * @license () - 
+ * @license MIT
  * --------------------------------------------------------------------------------------------------*/
 
 
@@ -100,6 +100,9 @@ export class Api<T> implements Typeioc.Internal.IContainerApi<T>{
     }
 
     private name(value : string) : Typeioc.IResolveDepCache<T> {
+
+        Utils.checkNullArgument(value, 'value');
+
         this._name = value;
 
         return {
@@ -111,6 +114,8 @@ export class Api<T> implements Typeioc.Internal.IContainerApi<T>{
 
     private dependencies(data : Typeioc.IDynamicDependency | Array<Typeioc.IDynamicDependency>) : Typeioc.IResolveDepCache<T>
     {
+        Utils.checkNullArgument(data, 'data');
+
         var item : any = data;
 
         if(Array.isArray(item)) {

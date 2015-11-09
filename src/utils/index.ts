@@ -3,7 +3,7 @@
  * typeioc - Dependency injection container for node typescript
  * @version v1.3.0
  * @link https://github.com/maxgherman/TypeIOC
- * @license () - 
+ * @license MIT
  * --------------------------------------------------------------------------------------------------*/
 
 /// <reference path="../../d.ts/typeioc.internal.d.ts" />
@@ -24,7 +24,7 @@ export function concat(array : any[], tailArray : any[]) : any[] {
 }
 
 export function checkNullArgument(value : any, argument: string,  message?: string) {
-    if(!value) {
+    if((value != '') && !value) {
         var exception = new Exceptions.ArgumentNullError(argument, message);
         exception.data = value;
         throw exception;

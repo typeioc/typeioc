@@ -3,7 +3,8 @@
     "module": "commonjs",
     "target": "ES5",
     "sourceMap": true,
-    "experimentalDecorators" : true
+    "experimentalDecorators" : true,
+    "emitDecoratorMetadata" : true
   },
   "files": [
    "../../test/data/test-data.ts",

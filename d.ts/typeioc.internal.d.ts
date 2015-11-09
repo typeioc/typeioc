@@ -3,7 +3,7 @@
  * typeioc - Dependency injection container for node typescript
  * @version v1.3.0
  * @link https://github.com/maxgherman/TypeIOC
- * @license () - 
+ * @license MIT
  * --------------------------------------------------------------------------------------------------*/
 
 ///<reference path='typeioc.d.ts' />
@@ -92,7 +92,8 @@ declare module Typeioc.Internal {
     }
 
     interface IContainerService {
-        create(internalContainerService : IInternalContainerService, container? : Typeioc.Internal.IContainer) : Typeioc.IContainer;
+        create(internalContainerService : IInternalContainerService, container? : Typeioc.Internal.IContainer)
+            : Typeioc.IContainer;
     }
 
     interface IContainerApiService {
@@ -101,6 +102,42 @@ declare module Typeioc.Internal {
 
     interface IInternalContainerService {
         create() : IContainer;
+    }
+
+    interface IDecoratorApiService {
+        createRegistration(register : (api : IDecoratorRegistrationApi) => Decorators.Register.IDecoratorRegisterResult)
+            : IDecoratorRegistrationApi;
+
+        createResolution(register : (api : IDecoratorResolutionApi) => Decorators.Resolve.IDecoratorResolutionResult)
+            : IDecoratorResolutionApi;
+    }
+
+    interface IDecoratorRegistrationApi {
+        service : any;
+        name : string;
+        scope : Types.Scope;
+        owner : Types.Owner
+        builder : Typeioc.IContainerBuilder;
+        provide(service: any) : Decorators.Register.INamedReusedOwned;
+    }
+
+    interface IDecoratorResolutionApi {
+        service : any;
+        attempt : boolean;
+        name? : string;
+        cache : Internal.IApiCache;
+        container : Typeioc.IContainer;
+        by(service? : any) : Decorators.Resolve.ITryNamedCache;
+    }
+
+    interface IDecoratorResolutionCollection extends IIndex<IDecoratorResolutionParams> {}
+
+    interface IDecoratorResolutionParams {
+        service? : any;
+        name? : string;
+        attempt? : boolean;
+        cache? : Internal.IApiCache;
+        container? : Typeioc.IContainer;
     }
 
     interface IContainerApi<T> {
@@ -171,7 +208,8 @@ declare module Typeioc.Internal {
         args : any[];
         container : Typeioc.IContainer;
         instance : any;
-        invoker : Typeioc.IInvoker;
+        forInstantiation : boolean;
+        invoke() : any;
         cloneFor : (container: Typeioc.IContainer) => IRegistrationBase;
     }
 
