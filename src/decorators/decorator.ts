@@ -30,11 +30,11 @@ export class Decorator implements Decorators.IDecorator {
         return this._builder.build();
     }
 
-    public provide(service: any) : Decorators.Register.INamedReusedOwned {
+    public provide<R>(service: any) : Decorators.Register.IInitializedNamedReusedOwned<R> {
 
-        var register = (api : Internal.IDecoratorRegistrationApi)  => {
+        var register = (api : Internal.IDecoratorRegistrationApi<R>)  => {
 
-            return (target) => {
+            return (target : R) => {
 
                 if(!Utils.Reflection.isPrototype(target)) {
                     let error = new Exceptions.DecoratorError("Decorator target not supported, not a prototype");
@@ -47,6 +47,10 @@ export class Decorator implements Decorators.IDecorator {
                 let registration = containerBuilder
                     .register(service)
                     .asType(target);
+
+                var initializer = api.initializedBy;
+                if(initializer)
+                    registration.initializeBy(initializer);
 
                 var name = api.name;
                 if(name)
@@ -62,7 +66,7 @@ export class Decorator implements Decorators.IDecorator {
             };
         };
 
-        var api = this._decoratorRegistrationApiSerice.createRegistration(register);
+        var api = this._decoratorRegistrationApiSerice.createRegistration<R>(register);
 
         return api.provide(service);
     }
@@ -82,8 +86,9 @@ export class Decorator implements Decorators.IDecorator {
 
                 bucket[index] = {
                     service : api.service,
-                    name : api.name,
+                    args: api.args,
                     attempt: api.attempt,
+                    name : api.name,
                     cache : api.cache,
                     container : api.container
                 };
@@ -95,7 +100,7 @@ export class Decorator implements Decorators.IDecorator {
         return api.by(service);
     }
 
-    public resolve() : Decorators.Resolve.IDecoratorResolutionResult {
+    public resolveValue(value: any) : Decorators.Resolve.IDecoratorResolutionResult {
 
         return (target: any, key : string, index : number) => {
 
@@ -106,7 +111,9 @@ export class Decorator implements Decorators.IDecorator {
             if(!bucket)
                 bucket = target[key] = <Internal.IDecoratorResolutionCollection>{ };
 
-            bucket.args[index] = { };
+            bucket.args[index] = {
+                value : value
+            };
         };
     }
 }

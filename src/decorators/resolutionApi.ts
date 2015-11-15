@@ -18,6 +18,7 @@ export class ResolutionApi implements Internal.IDecoratorResolutionApi {
     private _name : string;
     private _attempt : boolean;
     private _service: any;
+    private _args: Array<any> = [];
 
     private _cache : Internal.IApiCache = {
         use: false,
@@ -30,6 +31,10 @@ export class ResolutionApi implements Internal.IDecoratorResolutionApi {
 
     public get service() : any {
         return this._service;
+    }
+
+    public get args() : Array<any> {
+        return this._args;
     }
 
     public get name() : string {
@@ -46,9 +51,21 @@ export class ResolutionApi implements Internal.IDecoratorResolutionApi {
 
     constructor(private _resolve : (api : Internal.IDecoratorResolutionApi ) => Resolve.IDecoratorResolutionResult) { }
 
-    public by(service? : any) : Resolve.ITryNamedCache {
+    public by(service? : any) : Resolve.IArgsTryNamedCache {
 
         this._service = service;
+
+        return {
+            args: this.argsAction.bind(this),
+            attempt : this.attemptAction.bind(this),
+            name: this.nameAction.bind(this),
+            cache: this.cacheAction.bind(this),
+            resolve: this.resolveAction.bind(this)
+        };
+    }
+
+    private argsAction(...value: Array<any>) : Resolve.ITryNamedCache {
+        this._args = value;
 
         return {
             attempt : this.attemptAction.bind(this),
@@ -93,5 +110,4 @@ export class ResolutionApi implements Internal.IDecoratorResolutionApi {
 
         return this._resolve(this);
     }
-
 }

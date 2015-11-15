@@ -61,8 +61,9 @@ declare module Typeioc {
 
         interface IDecorator {
             build() : Typeioc.IContainer;
-            provide(service: any) : Register.INamedReusedOwned;
-            resolve();
+            provide<R>(service: any) : Register.IInitializedNamedReusedOwned<R>;
+            by(service? : any) : Decorators.Resolve.ITryNamedCache;
+            resolveValue(value: any) : Decorators.Resolve.IDecoratorResolutionResult;
         }
 
         module Register {
@@ -82,21 +83,30 @@ declare module Typeioc {
                 within : (scope: Types.Scope) => Register.IOwned;
             }
 
-            interface IReusedOwned
-            extends Register.IReused, Register.IOwned, Register.IRegister { }
+            interface IReusedOwned extends Register.IReused, Register.IOwned { }
 
             interface INamed extends Register.IRegister {
                 named : (name: string) => Register.IReusedOwned;
             }
 
-            interface INamedReusedOwned
-            extends Register.INamed, Register.IReusedOwned, Register.IRegister {}
+            interface INamedReusedOwned extends Register.INamed, Register.IReusedOwned { }
+
+            interface IInitialized<T> {
+                initializeBy : (action : IInitializer<T>) => Register.INamedReusedOwned;
+            }
+
+            interface IInitializedNamedReusedOwned<T>
+                extends Register.IInitialized<T>, Register.INamedReusedOwned { }
         }
 
         module Resolve {
 
             interface IDecoratorResolutionResult {
                 (target: any, key : string, index : number) : void;
+            }
+
+            interface IResolveExact {
+                resolve() : IDecoratorResolutionResult;
             }
 
             interface IResolve {
@@ -118,6 +128,10 @@ declare module Typeioc {
             }
 
             interface ITryNamedCache extends Resolve.ITry, Resolve.INamedCache { }
+
+            interface IArgsTryNamedCache extends Resolve.ITryNamedCache, Resolve.IResolve {
+                args(...value: Array<any>) : Resolve.ITryNamedCache;
+            }
         }
     }
 

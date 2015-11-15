@@ -370,30 +370,31 @@ export class InternalContainer implements Internal.IContainer {
         var params = dependencies
             .map((dependancy, index) => {
 
-                if(args[index])
-                    return args[index];
+                if(!bucket[index])
+                    return this.resolve(dependancy);
 
-                if(bucket[index]) {
+                let depParams = <Internal.IDecoratorResolutionParams>bucket[index];
 
-                    let depParams = <Internal.IDecoratorResolutionParams>bucket[index];
+                if(depParams.value)
+                    return depParams.value;
 
-                    let container = depParams.container || this;
-                    let resolutionItem = depParams.service || dependancy;
-                    let resolution = container.resolveWith(resolutionItem);
+                let container = depParams.container || this;
+                let resolutionItem = depParams.service || dependancy;
+                let resolution = container.resolveWith(resolutionItem);
 
-                    if(depParams.name)
-                        resolution.name(params.name);
+                if(depParams.args.length)
+                    resolution.args(depParams.args);
 
-                    if(depParams.attempt === true)
-                        resolution.attempt();
+                if(depParams.name)
+                    resolution.name(params.name);
 
-                    if(depParams.cache.use === true)
-                        resolution.cache(params.cache.name);
+                if(depParams.attempt === true)
+                    resolution.attempt();
 
-                    return resolution.exec();
-                }
+                if(depParams.cache.use === true)
+                    resolution.cache(params.cache.name);
 
-                return this.resolve(dependancy);
+                return resolution.exec();
             });
 
         return Utils.Reflection.construct(type, params);

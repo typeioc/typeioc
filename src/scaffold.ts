@@ -172,12 +172,12 @@ export class Scaffold {
 
     private decoratorRegistrationApiService() : Internal.IDecoratorApiService {
         return {
-            createRegistration(register : (api : Internal.IDecoratorRegistrationApi) => Decorators.Register.IDecoratorRegisterResult)
-                                : Internal.IDecoratorRegistrationApi {
+            createRegistration<R>(register : (api : Internal.IDecoratorRegistrationApi<R>) => Decorators.Register.IDecoratorRegisterResult)
+                                : Internal.IDecoratorRegistrationApi<R> {
                 return new DecoratorRegistrationApiModule.RegistrationApi(register);
             },
 
-            createResolution (resolve : (api : Internal.IDecoratorResolutionApi) => Decorators.Resolve.IDecoratorResolutionResult)
+            createResolution(resolve : (api : Internal.IDecoratorResolutionApi) => Decorators.Resolve.IDecoratorResolutionResult)
                 : Internal.IDecoratorResolutionApi {
 
                 return new DecoratorResolutionApiModule.ResolutionApi(resolve);

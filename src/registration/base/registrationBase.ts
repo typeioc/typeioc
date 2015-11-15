@@ -109,6 +109,7 @@ export class RegistrationBase implements Typeioc.Internal.IRegistrationBase {
         result.owner = this._owner;
         result.scope = this._scope;
         result.initializer = this._initializer;
+        result.forInstantiation = this._forInstantiation;
 
         return result;
     }

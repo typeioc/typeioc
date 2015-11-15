@@ -105,35 +105,39 @@ declare module Typeioc.Internal {
     }
 
     interface IDecoratorApiService {
-        createRegistration(register : (api : IDecoratorRegistrationApi) => Decorators.Register.IDecoratorRegisterResult)
-            : IDecoratorRegistrationApi;
+        createRegistration<R>(register : (api : IDecoratorRegistrationApi<R>) => Decorators.Register.IDecoratorRegisterResult)
+            : IDecoratorRegistrationApi<R>;
 
         createResolution(register : (api : IDecoratorResolutionApi) => Decorators.Resolve.IDecoratorResolutionResult)
             : IDecoratorResolutionApi;
     }
 
-    interface IDecoratorRegistrationApi {
+    interface IDecoratorRegistrationApi<T> {
         service : any;
+        initializedBy : Typeioc.IInitializer<any>;
         name : string;
         scope : Types.Scope;
         owner : Types.Owner
         builder : Typeioc.IContainerBuilder;
-        provide(service: any) : Decorators.Register.INamedReusedOwned;
+        provide(service: any) : Decorators.Register.IInitializedNamedReusedOwned<T>;
     }
 
     interface IDecoratorResolutionApi {
         service : any;
+        args: Array<any>;
         attempt : boolean;
         name? : string;
         cache : Internal.IApiCache;
         container : Typeioc.IContainer;
-        by(service? : any) : Decorators.Resolve.ITryNamedCache;
+        by(service? : any) : Decorators.Resolve.IArgsTryNamedCache;
     }
 
     interface IDecoratorResolutionCollection extends IIndex<IDecoratorResolutionParams> {}
 
     interface IDecoratorResolutionParams {
+        value? : any;
         service? : any;
+        args: Array<any>;
         name? : string;
         attempt? : boolean;
         cache? : Internal.IApiCache;

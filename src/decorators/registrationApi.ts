@@ -15,13 +15,14 @@ import Decorators = Typeioc.Decorators;
 import Types = Typeioc.Types;
 import Internal = Typeioc.Internal;
 
-export class RegistrationApi implements Internal.IDecoratorRegistrationApi {
+export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T> {
 
     private _service: any;
     private _builder: Typeioc.IContainerBuilder;
     private _name: string;
     private _scope: Types.Scope;
     private _owner : Types.Owner;
+    private _initializedBy : Typeioc.IInitializer<T>;
 
     public get service() : any {
         return this._service;
@@ -39,24 +40,41 @@ export class RegistrationApi implements Internal.IDecoratorRegistrationApi {
         return this._owner;
     }
 
+    public get initializedBy() : Typeioc.IInitializer<T> {
+        return this._initializedBy;
+    }
+
     public get builder() : Typeioc.IContainerBuilder {
         return this._builder;
     }
 
-    constructor(private _register : (api : Internal.IDecoratorRegistrationApi) => Decorators.Register.IDecoratorRegisterResult) { }
+    constructor(private _register : (api : Internal.IDecoratorRegistrationApi<T>) => Decorators.Register.IDecoratorRegisterResult) { }
 
-    public provide(service: any) : Decorators.Register.INamedReusedOwned {
+    public provide(service: any) : Decorators.Register.IInitializedNamedReusedOwned<T> {
 
         Utils.checkNullArgument(service, 'service');
 
         this._service = service;
 
         return {
+            initializeBy : this.initializeBy.bind(this),
             named: this.named.bind(this),
             within: this.within.bind(this),
             ownedBy: this.ownedBy.bind(this),
             register: this.register.bind(this),
-        }
+        };
+    }
+
+    public initializeBy(action : Typeioc.IInitializer<T>) : Decorators.Register.INamedReusedOwned {
+
+        this._initializedBy = action;
+
+        return {
+            named: this.named.bind(this),
+            within: this.within.bind(this),
+            ownedBy: this.ownedBy.bind(this),
+            register: this.register.bind(this),
+        };
     }
 
     public named(name: string) : Decorators.Register.IReusedOwned {
@@ -69,7 +87,7 @@ export class RegistrationApi implements Internal.IDecoratorRegistrationApi {
             within: this.within.bind(this),
             ownedBy: this.ownedBy.bind(this),
             register: this.register.bind(this),
-        }
+        };
     }
 
     public within(scope: Types.Scope) : Decorators.Register.IOwned {
@@ -81,7 +99,7 @@ export class RegistrationApi implements Internal.IDecoratorRegistrationApi {
         return {
             ownedBy: this.ownedBy.bind(this),
             register: this.register.bind(this),
-        }
+        };
     }
 
     public ownedBy(owner : Types.Owner) : Decorators.Register.IRegister {
@@ -92,7 +110,7 @@ export class RegistrationApi implements Internal.IDecoratorRegistrationApi {
 
         return {
             register: this.register.bind(this),
-        }
+        };
     }
 
     public register(builder? : Typeioc.IContainerBuilder) : Decorators.Register.IDecoratorRegisterResult {

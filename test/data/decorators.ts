@@ -56,58 +56,99 @@ export module Registration {
     }
 }
 
-//export module InitializeBy {
-//
-//    export class TestBase {
-//        public foo() {
-//        }
-//    }
-//
-//    @decorator.register<InitializeBy.TestBase>(InitializeBy.TestBase, { initializeBy : (_, item : Test2) => item.text = ' test' })
-//    export class Test2 extends TestBase {
-//
-//        public text : string = null;
-//
-//        public foo() {
-//            return 'Test : foo' + (this.text || '');
-//        }
-//    }
-//}
-//
-//export module Scope {
-//
-//    export class TestBase {
-//        public foo() {
-//        }
-//    }
-//
-//    @decorator.register<Scope.TestBase>(Scope.TestBase, { within : Typeioc.Types.Scope.Hierarchy })
-//    export class Test extends TestBase {
-//
-//        public text : string = ' test';
-//
-//        public foo() {
-//            return 'Test : foo' + (this.text || '');
-//        }
-//    }
-//
-//    export class TestBase2 {
-//
-//        public foo() {
-//        }
-//    }
-//
-//    @decorator.register<Scope.TestBase2>(Scope.TestBase2, { within : Typeioc.Types.Scope.Container })
-//    export class Test2 extends TestBase2 {
-//
-//        public text : string = ' test';
-//
-//        public foo() {
-//            return 'Test : foo' + (this.text || '');
-//        }
-//    }
-//}
-//
+export module InitializeBy {
+    export class TestBase {
+        public foo() {
+        }
+    }
+
+    export class TestBase1 {
+        public foo() {
+        }
+    }
+
+    @decorator.provide(InitializeBy.TestBase)
+               .initializeBy((c, item: InitializeBy.Test2) => { item.text = 'foo 2'; })
+                .register()
+    export class Test2 extends TestBase {
+
+        public text : string = null;
+
+        public foo() {
+            return 'Test : foo ' + this.text;
+        }
+    }
+
+    @decorator.provide<InitializeBy.Test3>(InitializeBy.TestBase1)
+               .initializeBy((c, item) => { item.text = 'foo 3'; })
+                .register()
+    export class Test3 extends TestBase {
+
+        public text : string = null;
+
+        public foo() {
+            return 'Test : foo ' + this.text;
+        }
+    }
+}
+
+
+export module Scope {
+
+    export class TestBase {
+        public foo() {
+        }
+    }
+
+    @decorator.provide<Scope.TestBase>(Scope.TestBase)
+                .within(Typeioc.Types.Scope.None)
+                .register()
+    export class Test extends TestBase {
+
+        public text : string = ' test none';
+
+        public foo() {
+            return 'Test : foo' + this.text;
+        }
+    }
+
+    export class TestBase2 {
+
+        public foo() {
+        }
+    }
+
+    @decorator.provide<Scope.TestBase2>(Scope.TestBase2)
+            .within(Typeioc.Types.Scope.Container)
+            .register()
+    export class Test2 extends TestBase2 {
+
+        public text : string = ' test Container';
+
+        public foo() {
+            return 'Test : foo' + this.text;
+        }
+    }
+
+    export class TestBase3 {
+
+        public foo() {
+        }
+    }
+
+    @decorator.provide<Scope.TestBase3>(Scope.TestBase3)
+            .within(Typeioc.Types.Scope.Hierarchy)
+            .register()
+    export class Test3 extends TestBase3 {
+
+        public text : string = ' test Hierarchy';
+
+        public foo() {
+            return 'Test : foo' + this.text;
+        }
+    }
+}
+
 //export module Owner {
 //    export class TestBase1 {
 //        public foo() {

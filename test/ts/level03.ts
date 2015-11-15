@@ -80,12 +80,15 @@ export module Level3 {
         var container = containerBuilder.build();
         var test1 = container.resolve<TestData.Test4>(TestData.Test1Base);
         test1.Name = "test 1";
-        var test2 = container.resolve<TestData.Test4>(TestData.Test1Base);
+
+        var child = container.createChild();
+        var test2 = child.resolve<TestData.Test4>(TestData.Test1Base);
 
         test.notEqual(test1, null);
         test.strictEqual(test1.Name, "test 1");
         test.notEqual(test2, null);
-        test.strictEqual(test2.Name, "test 1");
+        test.strictEqual(test2.Name, "test 4");
+        test.notStrictEqual(test1, test2);
 
         test.done();
     }
@@ -100,7 +103,10 @@ export module Level3 {
         var container = containerBuilder.build();
         var test1 = container.resolve<TestData.Test1>(TestData.Test1Base);
         test1.Name = "test 1";
-        var test2 = container.resolve<TestData.Test1>(TestData.Test1Base);
+
+        var child = container.createChild();
+
+        var test2 = child.resolve<TestData.Test1>(TestData.Test1Base);
 
         test.notEqual(test1, null);
         test.strictEqual(test1.Name, "test 1");

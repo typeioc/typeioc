@@ -89,58 +89,142 @@ var Registration;
     })();
     Registration.Test2 = Test2;
 })(Registration = exports.Registration || (exports.Registration = {}));
-//export module InitializeBy {
-//
-//    export class TestBase {
-//        public foo() {
-//        }
-//    }
-//
-//    @decorator.register<InitializeBy.TestBase>(InitializeBy.TestBase, { initializeBy : (_, item : Test2) => item.text = ' test' })
-//    export class Test2 extends TestBase {
-//
-//        public text : string = null;
-//
-//        public foo() {
-//            return 'Test : foo' + (this.text || '');
-//        }
-//    }
-//}
-//
-//export module Scope {
-//
-//    export class TestBase {
-//        public foo() {
-//        }
-//    }
-//
-//    @decorator.register<Scope.TestBase>(Scope.TestBase, { within : Typeioc.Types.Scope.Hierarchy })
-//    export class Test extends TestBase {
-//
-//        public text : string = ' test';
-//
-//        public foo() {
-//            return 'Test : foo' + (this.text || '');
-//        }
-//    }
-//
-//    export class TestBase2 {
-//
-//        public foo() {
-//        }
-//    }
-//
-//    @decorator.register<Scope.TestBase2>(Scope.TestBase2, { within : Typeioc.Types.Scope.Container })
-//    export class Test2 extends TestBase2 {
-//
-//        public text : string = ' test';
-//
-//        public foo() {
-//            return 'Test : foo' + (this.text || '');
-//        }
-//    }
-//}
-//
+var InitializeBy;
+(function (InitializeBy) {
+    var TestBase = (function () {
+        function TestBase() {
+        }
+        TestBase.prototype.foo = function () {
+        };
+        return TestBase;
+    })();
+    InitializeBy.TestBase = TestBase;
+    var TestBase1 = (function () {
+        function TestBase1() {
+        }
+        TestBase1.prototype.foo = function () {
+        };
+        return TestBase1;
+    })();
+    InitializeBy.TestBase1 = TestBase1;
+    var Test2 = (function (_super) {
+        __extends(Test2, _super);
+        function Test2() {
+            _super.apply(this, arguments);
+            this.text = null;
+        }
+        Test2.prototype.foo = function () {
+            return 'Test : foo ' + this.text;
+        };
+        Test2 = __decorate([
+            decorator.provide(InitializeBy.TestBase)
+                .initializeBy(function (c, item) { item.text = 'foo 2'; })
+                .register(), 
+            __metadata('design:paramtypes', [])
+        ], Test2);
+        return Test2;
+    })(TestBase);
+    InitializeBy.Test2 = Test2;
+    var Test3 = (function (_super) {
+        __extends(Test3, _super);
+        function Test3() {
+            _super.apply(this, arguments);
+            this.text = null;
+        }
+        Test3.prototype.foo = function () {
+            return 'Test : foo ' + this.text;
+        };
+        Test3 = __decorate([
+            decorator.provide(InitializeBy.TestBase1)
+                .initializeBy(function (c, item) { item.text = 'foo 3'; })
+                .register(), 
+            __metadata('design:paramtypes', [])
+        ], Test3);
+        return Test3;
+    })(TestBase);
+    InitializeBy.Test3 = Test3;
+})(InitializeBy = exports.InitializeBy || (exports.InitializeBy = {}));
+var Scope;
+(function (Scope) {
+    var TestBase = (function () {
+        function TestBase() {
+        }
+        TestBase.prototype.foo = function () {
+        };
+        return TestBase;
+    })();
+    Scope.TestBase = TestBase;
+    var Test = (function (_super) {
+        __extends(Test, _super);
+        function Test() {
+            _super.apply(this, arguments);
+            this.text = ' test none';
+        }
+        Test.prototype.foo = function () {
+            return 'Test : foo' + this.text;
+        };
+        Test = __decorate([
+            decorator.provide(Scope.TestBase)
+                .within(1 /* None */)
+                .register(), 
+            __metadata('design:paramtypes', [])
+        ], Test);
+        return Test;
+    })(TestBase);
+    Scope.Test = Test;
+    var TestBase2 = (function () {
+        function TestBase2() {
+        }
+        TestBase2.prototype.foo = function () {
+        };
+        return TestBase2;
+    })();
+    Scope.TestBase2 = TestBase2;
+    var Test2 = (function (_super) {
+        __extends(Test2, _super);
+        function Test2() {
+            _super.apply(this, arguments);
+            this.text = ' test Container';
+        }
+        Test2.prototype.foo = function () {
+            return 'Test : foo' + this.text;
+        };
+        Test2 = __decorate([
+            decorator.provide(Scope.TestBase2)
+                .within(2 /* Container */)
+                .register(), 
+            __metadata('design:paramtypes', [])
+        ], Test2);
+        return Test2;
+    })(TestBase2);
+    Scope.Test2 = Test2;
+    var TestBase3 = (function () {
+        function TestBase3() {
+        }
+        TestBase3.prototype.foo = function () {
+        };
+        return TestBase3;
+    })();
+    Scope.TestBase3 = TestBase3;
+    var Test3 = (function (_super) {
+        __extends(Test3, _super);
+        function Test3() {
+            _super.apply(this, arguments);
+            this.text = ' test Hierarchy';
+        }
+        Test3.prototype.foo = function () {
+            return 'Test : foo' + this.text;
+        };
+        Test3 = __decorate([
+            decorator.provide(Scope.TestBase3)
+                .within(3 /* Hierarchy */)
+                .register(), 
+            __metadata('design:paramtypes', [])
+        ], Test3);
+        return Test3;
+    })(TestBase3);
+    Scope.Test3 = Test3;
+})(Scope = exports.Scope || (exports.Scope = {}));
 //export module Owner {
 //    export class TestBase1 {
 //        public foo() {
