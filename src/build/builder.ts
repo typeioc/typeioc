@@ -17,7 +17,7 @@ import Utils = require('../utils/index');
 export class ContainerBuilder implements Typeioc.IContainerBuilder {
     private registrations : Typeioc.Internal.IRegistrationBase[];
     private moduleRegistrations : Typeioc.Internal.IModuleRegistration[];
-    private _defaults : Typeioc.IDefaults;
+    private _defaults : Typeioc.Types.IDefaults;
 
     constructor(private _configRegistrationService : Typeioc.Internal.IConfigRegistrationService,
                 private _registrationBaseService : Typeioc.Internal.IRegistrationBaseService,
@@ -92,8 +92,8 @@ export class ContainerBuilder implements Typeioc.IContainerBuilder {
 }
 
 function setDefaults(rego : Typeioc.Internal.IRegistrationBase | Typeioc.Internal.IConfigRegistration,
-                     defaults: Typeioc.IDefaults) {
+                     defaults: Typeioc.Types.IDefaults) {
 
-    rego.scope = defaults.scope;
-    rego.owner = defaults.owner;
+    rego.scope = defaults.Scope;
+    rego.owner = defaults.Owner;
 }

@@ -25,7 +25,10 @@ declare module Typeioc {
             Externals = 2
         }
 
-        export var Defaults :Typeioc.IDefaults;
+        interface IDefaults {
+            Scope : Types.Scope,
+            Owner : Types.Owner
+        }
     }
 
     module Exceptions {
@@ -61,7 +64,7 @@ declare module Typeioc {
 
         interface IDecorator {
             build() : Typeioc.IContainer;
-            provide<R>(service: any) : Register.IInitializedNamedReusedOwned<R>;
+            provide<R>(service: any) : Register.IInitializedDisposedNamedReusedOwned<R>;
             by(service? : any) : Decorators.Resolve.ITryNamedCache;
             resolveValue(value: any) : Decorators.Resolve.IDecoratorResolutionResult;
         }
@@ -91,12 +94,25 @@ declare module Typeioc {
 
             interface INamedReusedOwned extends Register.INamed, Register.IReusedOwned { }
 
-            interface IInitialized<T> {
-                initializeBy : (action : IInitializer<T>) => Register.INamedReusedOwned;
+            interface IDisposable<T> {
+                dispose : (action : IDisposer<T>) =>  Register.INamedReusedOwned;
             }
 
-            interface IInitializedNamedReusedOwned<T>
-                extends Register.IInitialized<T>, Register.INamedReusedOwned { }
+            //interface IInitialized<T> {
+            //    initializeBy : (action : IInitializer<T>) => Register.INamedReusedOwned;
+            //}
+
+            interface INamedReusedOwnedDisposed<T> extends Register.IDisposable<T>, Register.INamedReusedOwned {}
+
+            interface IInitialized<T> {
+                initializeBy : (action : IInitializer<T>) =>  Register.INamedReusedOwnedDisposed<T>;
+            }
+
+            interface IInitializedDisposedNamedReusedOwned<T>
+                extends Register.IInitialized<T>, Register.IDisposable<T>, Register.INamedReusedOwned { }
+
+            //interface IInitializedNamedReusedOwned<T>
+            //    extends Register.IInitialized<T>, Register.INamedReusedOwned { }
         }
 
         module Resolve {
@@ -294,11 +310,6 @@ declare module Typeioc {
     interface IConfig {
         components? : IComponent[];
         modules? : IModule[];
-    }
-
-    interface IDefaults {
-        scope : Types.Scope;
-        owner : Types.Owner;
     }
 }
 

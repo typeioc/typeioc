@@ -114,12 +114,13 @@ declare module Typeioc.Internal {
 
     interface IDecoratorRegistrationApi<T> {
         service : any;
-        initializedBy : Typeioc.IInitializer<any>;
+        initializedBy : Typeioc.IInitializer<T>;
+        disposedBy : Typeioc.IDisposer<T>;
         name : string;
         scope : Types.Scope;
         owner : Types.Owner
         builder : Typeioc.IContainerBuilder;
-        provide(service: any) : Decorators.Register.IInitializedNamedReusedOwned<T>;
+        provide(service: any) : Decorators.Register.IInitializedDisposedNamedReusedOwned<T>;
     }
 
     interface IDecoratorResolutionApi {

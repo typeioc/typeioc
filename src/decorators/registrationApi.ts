@@ -23,6 +23,7 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
     private _scope: Types.Scope;
     private _owner : Types.Owner;
     private _initializedBy : Typeioc.IInitializer<T>;
+    private _disposedBy : Typeioc.IDisposer<T>;
 
     public get service() : any {
         return this._service;
@@ -44,13 +45,17 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
         return this._initializedBy;
     }
 
+    public get disposedBy() : Typeioc.IDisposer<T> {
+        return this._disposedBy;
+    }
+
     public get builder() : Typeioc.IContainerBuilder {
         return this._builder;
     }
 
     constructor(private _register : (api : Internal.IDecoratorRegistrationApi<T>) => Decorators.Register.IDecoratorRegisterResult) { }
 
-    public provide(service: any) : Decorators.Register.IInitializedNamedReusedOwned<T> {
+    public provide(service: any) : Decorators.Register.IInitializedDisposedNamedReusedOwned<T> {
 
         Utils.checkNullArgument(service, 'service');
 
@@ -58,6 +63,22 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
 
         return {
             initializeBy : this.initializeBy.bind(this),
+            dispose : this.dispose.bind(this),
+            named: this.named.bind(this),
+            within: this.within.bind(this),
+            ownedBy: this.ownedBy.bind(this),
+            register: this.register.bind(this)
+        };
+    }
+
+    public initializeBy(action : Typeioc.IInitializer<T>) : Decorators.Register.INamedReusedOwnedDisposed<T> {
+
+        Utils.checkNullArgument(action, 'action');
+
+        this._initializedBy = action;
+
+        return {
+            dispose : this.dispose.bind(this),
             named: this.named.bind(this),
             within: this.within.bind(this),
             ownedBy: this.ownedBy.bind(this),
@@ -65,9 +86,11 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
         };
     }
 
-    public initializeBy(action : Typeioc.IInitializer<T>) : Decorators.Register.INamedReusedOwned {
+    public dispose(action : Typeioc.IDisposer<T>) : Decorators.Register.INamedReusedOwned {
 
-        this._initializedBy = action;
+        Utils.checkNullArgument(action, 'action');
+
+        this._disposedBy = action;
 
         return {
             named: this.named.bind(this),

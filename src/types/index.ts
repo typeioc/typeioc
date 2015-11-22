@@ -14,7 +14,12 @@ import ScopeModule = require('./scope');
 export var Owner = OwnerModule.Owner;
 export var Scope = ScopeModule.Scope;
 
-export var Defaults : Typeioc.IDefaults = {
-    scope : Typeioc.Types.Scope.None,
-    owner : Typeioc.Types.Owner.Container
+export var Defaults : Typeioc.Types.IDefaults = {
+    get Scope() : Typeioc.Types.Scope {
+        return Typeioc.Types.Scope.None;
+    },
+
+    get Owner() : Typeioc.Types.Owner {
+        return Typeioc.Types.Owner.Container;
+    }
 };

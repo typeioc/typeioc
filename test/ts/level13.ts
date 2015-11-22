@@ -82,7 +82,56 @@ export module Level13 {
             test.done();
         },
 
+        scope_hierarchy_can_resolve_same_instance(test) {
+            var actual = container.resolve<TestData.Scope.TestBase3>(TestData.Scope.TestBase3);
 
-        //add scope hierarchy test
+            test.strictEqual(actual.foo(), 'Test : foo test Hierarchy');
+
+            var child = container.createChild();
+
+            var actual2 = child.resolve<TestData.Scope.TestBase3>(TestData.Scope.TestBase3);
+
+            test.strictEqual(actual2.foo(), 'Test : foo test Hierarchy');
+            test.strictEqual(actual, actual2);
+
+            test.done();
+        },
+
+        container_owned_instances_are_disposed(test) {
+
+            var child = container.createChild();
+            var actual = child.resolve<TestData.Owner.TestBase1>(TestData.Owner.TestBase1);
+
+            child.dispose();
+            var result = actual.foo();
+
+            test.strictEqual(result, 'Test : foo disposed');
+
+            test.done();
+        },
+
+        external_owned_instances_are_not_disposed(test) {
+
+            var child = container.createChild();
+            var actual = child.resolve<TestData.Owner.TestBase2>(TestData.Owner.TestBase2);
+
+            child.dispose();
+            var result = actual.foo();
+
+            test.strictEqual(result, 'Test : foo test');
+
+            test.done();
+        },
+
+        named_instances_resolved(test) {
+            var actual1 = container.resolveNamed<TestData.Named.TestBase>(TestData.Named.TestBase, "Some name");
+            var actual2 = container.resolveNamed<TestData.Named.TestBase>(TestData.Named.TestBase, "Some name 2");
+
+            test.notStrictEqual(actual1, actual2);
+            test.strictEqual(actual1.foo(), "Test : foo test");
+            test.strictEqual(actual2.foo(), "Test2 : foo test");
+
+            test.done();
+        }
     }
 }

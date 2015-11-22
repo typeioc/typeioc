@@ -30,7 +30,7 @@ export class Decorator implements Decorators.IDecorator {
         return this._builder.build();
     }
 
-    public provide<R>(service: any) : Decorators.Register.IInitializedNamedReusedOwned<R> {
+    public provide<R>(service: any) : Decorators.Register.IInitializedDisposedNamedReusedOwned<R> {
 
         var register = (api : Internal.IDecoratorRegistrationApi<R>)  => {
 
@@ -52,14 +52,18 @@ export class Decorator implements Decorators.IDecorator {
                 if(initializer)
                     registration.initializeBy(initializer);
 
+                var disposer = api.disposedBy;
+                if(disposer)
+                    registration.dispose(disposer);
+
                 var name = api.name;
                 if(name)
                     registration.named(name);
 
-                var scope = api.scope || Types.Defaults.scope;
+                var scope = api.scope || Types.Defaults.Scope;
                 registration.within(scope);
 
-                var owner = api.owner || Types.Defaults.owner;
+                var owner = api.owner || Types.Defaults.Owner;
                 registration.ownedBy(owner);
 
                 return target;
