@@ -9,9 +9,6 @@
 ///<reference path="../../d.ts/typeioc.d.ts" />
 ///<reference path="../../d.ts/typeioc.internal.d.ts" />
 
-/// <reference path="../../node_modules/reflect-metadata/reflect-metadata.d.ts"/>
-
-
 'use strict';
 
 
@@ -75,18 +72,18 @@ export class Decorator implements Decorators.IDecorator {
         return api.provide(service);
     }
 
-    public by(service? : any) : Decorators.Resolve.ITryNamedCache {
+    public by(service? : any) : Decorators.Resolve.IArgsTryNamedCache {
 
         var resolve = (api: Internal.IDecoratorResolutionApi) => {
 
             return (target: any, key : string, index : number) => {
 
-                var key = Utils.Reflection.ReflectionKey;
+                var reflectionKey = Utils.Reflection.ReflectionKey;
 
-                var bucket = <Internal.IDecoratorResolutionCollection>target[key];
+                var bucket = <Internal.IDecoratorResolutionCollection>target[reflectionKey];
 
                 if(!bucket)
-                    bucket = target[key] = <Internal.IDecoratorResolutionCollection>{ };
+                    bucket = target[reflectionKey] = <Internal.IDecoratorResolutionCollection>{ };
 
                 bucket[index] = {
                     service : api.service,
@@ -108,14 +105,14 @@ export class Decorator implements Decorators.IDecorator {
 
         return (target: any, key : string, index : number) => {
 
-            var key = Utils.Reflection.ReflectionKey;
+            var reflectionKey = Utils.Reflection.ReflectionKey;
 
-            var bucket = target[key];
+            var bucket = target[reflectionKey];
 
             if(!bucket)
-                bucket = target[key] = <Internal.IDecoratorResolutionCollection>{ };
+                bucket = target[reflectionKey] = <Internal.IDecoratorResolutionCollection>{ };
 
-            bucket.args[index] = {
+            bucket[index] = {
                 value : value
             };
         };

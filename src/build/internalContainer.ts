@@ -6,6 +6,7 @@
  * @license MIT
  * --------------------------------------------------------------------------------------------------*/
 
+/// <reference path="../../node_modules/reflect-metadata/reflect-metadata.d.ts"/>
 
 'use strict';
 
@@ -293,7 +294,8 @@ export class InternalContainer implements Internal.IContainer {
         if(items.length !== api.dependenciesValue.length) return [];
 
         return items.map(item => {
-            var baseRegistration = item.dependency.required === false ? this.createRegistration(item.dependency.service)
+            var baseRegistration = item.dependency.required === false ?
+                this.createRegistration(item.dependency.service)
                 : item.implementation.cloneFor(this);
 
             baseRegistration.factory = item.dependency.factory;
@@ -383,7 +385,7 @@ export class InternalContainer implements Internal.IContainer {
                 let resolution = container.resolveWith(resolutionItem);
 
                 if(depParams.args.length)
-                    resolution.args(depParams.args);
+                    resolution.args(...depParams.args);
 
                 if(depParams.name)
                     resolution.name(params.name);

@@ -65,7 +65,7 @@ declare module Typeioc {
         interface IDecorator {
             build() : Typeioc.IContainer;
             provide<R>(service: any) : Register.IInitializedDisposedNamedReusedOwned<R>;
-            by(service? : any) : Decorators.Resolve.ITryNamedCache;
+            by(service? : any) : Decorators.Resolve.IArgsTryNamedCache;
             resolveValue(value: any) : Decorators.Resolve.IDecoratorResolutionResult;
         }
 

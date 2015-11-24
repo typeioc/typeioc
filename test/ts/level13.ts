@@ -132,6 +132,40 @@ export module Level13 {
             test.strictEqual(actual2.foo(), "Test2 : foo test");
 
             test.done();
+        },
+
+        resolveValue_instantiation(test) {
+            var actual = container.resolve<TestData.Resolve.ByValue.TestBase>(TestData.Resolve.ByValue.TestBase);
+
+            test.strictEqual(actual.foo(), "Test1 : decorator value");
+
+            test.done();
+        },
+
+        multiple_resolveValue_instantiation(test) {
+            var actual = container.resolve<TestData.Resolve.ByValue.TestBase1>(TestData.Resolve.ByValue.TestBase1);
+
+            test.strictEqual(actual.foo(), "Test1 : value 1 value 2 value 3");
+
+            test.done();
+        },
+
+        resolve_by_service_instantiation(test) {
+
+            var actual = container.resolve<TestData.Resolve.ByService.TestBase1>(TestData.Resolve.ByService.TestBase1);
+
+            test.strictEqual(actual.foo(), "Test1 : Test Test2 Test");
+
+            test.done();
+        },
+
+        resolve_by_args_instantiation(test) {
+
+            var actual = container.resolve<TestData.Resolve.ByArgs.TestBase1>(TestData.Resolve.ByArgs.TestBase1);
+
+            test.strictEqual(actual.foo(), "Test1 : Test Test2 Test");
+
+            test.done();
         }
     }
 }

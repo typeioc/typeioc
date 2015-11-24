@@ -8,7 +8,7 @@
 
 ///<reference path="../../d.ts/typeioc.internal.d.ts" />
 
-'use strinct';
+'use strict';
 
 import Utils = require('../utils/index');
 import Decorators = Typeioc.Decorators;
@@ -71,7 +71,7 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
         };
     }
 
-    public initializeBy(action : Typeioc.IInitializer<T>) : Decorators.Register.INamedReusedOwnedDisposed<T> {
+    private initializeBy(action : Typeioc.IInitializer<T>) : Decorators.Register.INamedReusedOwnedDisposed<T> {
 
         Utils.checkNullArgument(action, 'action');
 
@@ -86,7 +86,7 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
         };
     }
 
-    public dispose(action : Typeioc.IDisposer<T>) : Decorators.Register.INamedReusedOwned {
+    private dispose(action : Typeioc.IDisposer<T>) : Decorators.Register.INamedReusedOwned {
 
         Utils.checkNullArgument(action, 'action');
 
@@ -100,7 +100,7 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
         };
     }
 
-    public named(name: string) : Decorators.Register.IReusedOwned {
+    private named(name: string) : Decorators.Register.IReusedOwned {
 
         Utils.checkNullArgument(name, 'name');
 
@@ -113,7 +113,7 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
         };
     }
 
-    public within(scope: Types.Scope) : Decorators.Register.IOwned {
+    private within(scope: Types.Scope) : Decorators.Register.IOwned {
 
         Utils.checkNullArgument(scope, 'scope');
 
@@ -125,7 +125,7 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
         };
     }
 
-    public ownedBy(owner : Types.Owner) : Decorators.Register.IRegister {
+    private ownedBy(owner : Types.Owner) : Decorators.Register.IRegister {
 
         Utils.checkNullArgument(owner, 'owner');
 
@@ -136,7 +136,7 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
         };
     }
 
-    public register(builder? : Typeioc.IContainerBuilder) : Decorators.Register.IDecoratorRegisterResult {
+    private register(builder? : Typeioc.IContainerBuilder) : Decorators.Register.IDecoratorRegisterResult {
 
         this._builder = builder;
 

@@ -231,3 +231,122 @@ export module Named {
         }
     }
 }
+
+export module Resolve {
+
+    export module ByValue {
+
+        export class TestBase {
+            public foo() {}
+        }
+
+        @decorator.provide<Resolve.ByValue.TestBase>(Resolve.ByValue.TestBase).register()
+        export class Test1 extends TestBase {
+
+            constructor(@decorator.resolveValue('decorator value')  private value) {
+                super();
+            }
+
+            public foo() {
+                return 'Test1 : ' + this.value;
+            }
+        }
+
+        export class TestBase1 {
+            public foo() {}
+        }
+
+        @decorator.provide<Resolve.ByValue.TestBase1>(Resolve.ByValue.TestBase1).register()
+            export class Test2 extends TestBase1 {
+
+                constructor(@decorator.resolveValue('value 1')  private value1,
+                            @decorator.resolveValue('value 2')  private value2,
+                            @decorator.resolveValue('value 3')  private value3) {
+                super();
+            }
+
+            public foo() {
+                return ['Test1 :', this.value1, this.value2, this.value3].join(' ');
+            }
+        }
+
+    }
+
+    export module ByService {
+        export class TestBase {
+            public foo() {}
+        }
+
+        export class TestBase1 {
+            public foo() {}
+        }
+
+        export class TestBase2 {
+            public foo() {}
+        }
+
+        @decorator.provide<Resolve.ByService.TestBase>(Resolve.ByService.TestBase).register()
+        export class Test extends TestBase {
+
+            public foo() {
+                return 'Test';
+            }
+        }
+
+        @decorator.provide<Resolve.ByService.TestBase2>(Resolve.ByService.TestBase2).register()
+        export class Test2 extends TestBase2 {
+
+            public foo() {
+                return 'Test2';
+            }
+        }
+
+        @decorator.provide<Resolve.ByService.TestBase1>(Resolve.ByService.TestBase1).register()
+            export class Test1 extends TestBase1 {
+
+                constructor(@decorator.by().resolve()  private value111 : Resolve.ByService.TestBase,
+                            @decorator.by(Resolve.ByService.TestBase2).resolve() private value222,
+                            @decorator.by(Resolve.ByService.TestBase).resolve()  private value333) {
+                    super();
+                }
+
+                public foo() {
+                    return ['Test1 :', this.value111.foo(), this.value222.foo(), this.value333.foo()].join(' ');
+                }
+        }
+    }
+
+    export module ByArgs {
+        export class TestBase {
+            public foo() {}
+        }
+
+        export class TestBase1 {
+            public foo() {}
+        }
+
+        @decorator.provide<Resolve.ByArgs.TestBase>(Resolve.ByArgs.TestBase).register()
+        export class Test extends TestBase {
+
+            constructor(private val1: string, private val2 : string) {
+                super();
+            }
+
+            public foo() {
+                return ['Test', this.val1, this.val2].join(' ');
+            }
+        }
+
+        @decorator.provide<Resolve.ByArgs.TestBase1>(Resolve.ByArgs.TestBase1).register()
+        export class Test1 extends TestBase1 {
+
+            constructor(@decorator.by().args('1','7').resolve()  private value : Resolve.ByArgs.TestBase) {
+                super();
+            }
+
+            public foo() {
+                return ['Test1 :', this.value.foo()].join(' ');
+            }
+        }
+    }
+}

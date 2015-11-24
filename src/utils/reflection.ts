@@ -18,6 +18,12 @@ export function getFactoryArgsCount(factory: Typeioc.IFactory<any>) {
     return paramNames.length > 0 ? paramNames.length - 1 : 0;
 }
 
+export function getArgsCount(f: Function) {
+
+    return getParamNames(f).length;
+
+}
+
 export function isCompatible(obj1 : Object, obj2 : Object) : boolean {
 
     for(var key in obj2) {
