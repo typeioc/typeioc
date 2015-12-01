@@ -94,11 +94,18 @@ export class Scaffold {
     private registrationStorageService(internalStorageService :
                                            Internal.IInternalStorageService<any, Internal.IIndexedCollection<any>>)
         : Internal.IRegistrationStorageService {
+
+        var service = {
+            create<R1, R2>() {
+            return new InternalStorageModule.InternalStorage<R1, R2>();
+            }
+        };
+
         return {
             create() {
-                var storage = internalStorageService.create();
+                //var storage = internalStorageService.create();
 
-                return new RegoStorageModule.RegistrationStorage(storage);
+                return new RegoStorageModule.RegistrationStorage(service);
             }
         };
     }

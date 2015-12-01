@@ -11,60 +11,131 @@
 'use strict';
 
 import Utils = require('../utils/index');
+import Internal = Typeioc.Internal;
 
+export class RegistrationStorage implements Internal.IRegistrationStorage {
 
-export class RegistrationStorage implements Typeioc.Internal.IRegistrationStorage {
+    private _internalStorage : Internal.IInternalStorage<any, IStore>;
+    private _addStrategy : Array<(registration : Internal.IRegistrationBase) => void> = [];
+    private _getStrategy : Array<(registration : Internal.IRegistrationBase, storage : IStore) => Internal.IRegistrationBase > = [];
 
-    constructor(private _internalStorage : Typeioc.Internal.IInternalStorage<any, Typeioc.Internal.IIndexedCollection<any>>) {
+    constructor(private storageService : Internal.IInlineInternalStorageService) {
+        this._internalStorage = storageService.create<any, IStore>();
+
+        this._addStrategy[1] = this.addForTypeFactory.bind(this);
+        this._addStrategy[0] = this.addForFactory.bind(this);
+
+        this._getStrategy[StorageType.TypeFactory] = this.getForTypeFactory.bind(this);
+        this._getStrategy[StorageType.Factory] = this.getForFactory.bind(this);
     }
 
-    public addEntry(registration : Typeioc.Internal.IRegistrationBase) : void {
+    public addEntry(registration : Internal.IRegistrationBase) : void {
 
-        var storage = this._internalStorage.register(registration.service, this.emptyBucket);
+        var strategy = this._addStrategy[registration.forInstantiation ? 1 : 0];
 
-        var argsCount = this.getArgumentsCount(registration);
-
-        if(!registration.name) {
-            storage[argsCount] = registration;
-        } else {
-            var argsStorage = storage[registration.name];
-            if(!argsStorage) {
-                argsStorage = this.emptyArgsBucket;
-                storage[registration.name] = argsStorage;
-            }
-
-            argsStorage[argsCount] = registration;
-        }
+        strategy(registration);
     }
 
-    public getEntry(registration : Typeioc.Internal.IRegistrationBase) : Typeioc.Internal.IRegistrationBase {
+    public getEntry(registration : Internal.IRegistrationBase) : Internal.IRegistrationBase {
 
         var storage = this._internalStorage.tryGet(registration.service);
 
         if(!storage) return undefined;
 
+        return this._getStrategy[storage.type](registration, storage);
+    }
+
+    private addForTypeFactory(registration : Internal.IRegistrationBase) {
+
+        var storage = this._internalStorage.register(registration.service, this.emptyTypeFactoryBucket);
+
+        storage.type = StorageType.TypeFactory;
+        storage.typeFactory.registration = registration;
+
+        if(registration.name) {
+            storage.typeFactory.names[registration.name] = registration;
+        }
+    }
+
+    private addForFactory(registration : Internal.IRegistrationBase) {
+
+        var storage = this._internalStorage.register(registration.service, this.emptyFactoryBucket);
+
         var argsCount = this.getArgumentsCount(registration);
 
+        storage.type = StorageType.Factory;
+
         if(!registration.name) {
-            return storage[argsCount]
+            storage.factory.noName[argsCount] = registration;
+        } else {
+            let bucket = storage.factory.names[registration.name];
+
+            if(!bucket)
+                bucket = storage.factory.names[registration.name] = {};
+
+            bucket[argsCount] = registration;
         }
-        var argsStorage = storage[registration.name];
-
-        if(!argsStorage) return null;
-
-        return argsStorage[argsCount];
     }
 
-    private getArgumentsCount(registration : Typeioc.Internal.IRegistrationBase) : number {
-        return registration.factory ? Utils.Reflection.getFactoryArgsCount(registration.factory) : registration.args.length;
+    private getForTypeFactory(registration : Internal.IRegistrationBase, storage : IStore) : Internal.IRegistrationBase {
+
+        return !registration.name ? storage.typeFactory.registration :
+            storage.typeFactory.names[registration.name];
     }
 
-    private emptyBucket() : Typeioc.Internal.IIndexedCollection<any> {
-        return {};
+    private getForFactory(registration : Internal.IRegistrationBase, storage : IStore) : Internal.IRegistrationBase {
+
+        let argsCount = this.getArgumentsCount(registration);
+        let name = storage.factory.names[registration.name];
+
+        return registration.name ?
+            (name ? name[argsCount] : undefined) :
+            storage.factory.noName[argsCount];
     }
 
-    private get emptyArgsBucket() : Typeioc.Internal.IIndex<any> {
-        return {};
+    private getArgumentsCount(registration : Internal.IRegistrationBase) : number {
+        
+        return registration.factory ?
+            Utils.Reflection.getFactoryArgsCount(registration.factory) :
+            registration.args.length;
     }
 
+    private emptyTypeFactoryBucket() : IStore {
+        return <IStore>{
+            typeFactory: {
+                registration: null,
+                names: {}
+            },
+            factory: null
+        };
+    }
+
+    private emptyFactoryBucket() : IStore {
+        return <IStore>{
+            typeFactory: null,
+            factory: {
+                noName: {},
+                names: {}
+            }
+        };
+    }
+}
+
+interface IStore {
+    typeFactory : {
+        registration : Internal.IRegistrationBase,
+        names : Internal.IIndexedCollection<Internal.IRegistrationBase>
+    },
+
+    factory : {
+        noName : Internal.IIndex<Internal.IRegistrationBase>,
+        names : Internal.IIndexedCollection<Internal.IIndex<Internal.IRegistrationBase>>
+    },
+
+    type : StorageType
+}
+
+enum StorageType {
+    Factory,
+    TypeFactory
 }

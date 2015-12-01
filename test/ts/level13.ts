@@ -15,7 +15,7 @@ export module Level13 {
             callback();
         },
 
-        plain_instantiation(test) {
+        plain_instantiation1(test) {
 
             var actual = container.resolve<TestData.Registration.TestBase>(TestData.Registration.TestBase);
 
@@ -163,7 +163,44 @@ export module Level13 {
 
             var actual = container.resolve<TestData.Resolve.ByArgs.TestBase1>(TestData.Resolve.ByArgs.TestBase1);
 
-            test.strictEqual(actual.foo(), "Test1 : Test Test2 Test");
+            test.strictEqual(actual.foo(), "Test1 : Test 1 7");
+
+            test.done();
+        },
+
+        resolve_by_args_directly(test) {
+            var actual = container.resolve<TestData.Resolve.ByArgs.TestBase>(TestData.Resolve.ByArgs.TestBase, 11, 17);
+
+            test.strictEqual(actual.foo(), "Test 11 17");
+
+            test.done();
+        },
+
+        resolve_by_name(test) {
+            var actual = container.resolve<TestData.Resolve.ByName.TestBase1>(TestData.Resolve.ByName.TestBase1);
+
+            test.strictEqual(actual.foo(), "Test1 : Test Test Test");
+
+            test.done();
+        },
+
+        resolve_by_attempt(test) {
+            var actual = container.resolve<TestData.Resolve.ByAttempt.TestBase>(TestData.Resolve.ByAttempt.TestBase);
+
+            test.strictEqual(actual.foo(), "Test no value");
+
+            test.done();
+        },
+
+        resolve_by_cache(test) {
+            var actual = container.resolve<TestData.Resolve.ByCache.TestBase1>(TestData.Resolve.ByCache.TestBase1);
+
+            test.strictEqual(actual.foo(), "Test1 : Test");
+
+            var actual2 = <TestData.Resolve.ByCache.TestBase>container.cache['TestBase'];
+
+            test.ok(actual2);
+            test.strictEqual(actual2.foo(), 'Test');
 
             test.done();
         }

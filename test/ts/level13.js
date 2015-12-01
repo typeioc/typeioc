@@ -9,7 +9,7 @@ var Level13;
             container = scaffold.getDecorator().build();
             callback();
         },
-        plain_instantiation: function (test) {
+        plain_instantiation1: function (test) {
             var actual = container.resolve(TestData.Registration.TestBase);
             test.ok(actual);
             test.strictEqual(actual.foo(), 'Test : foo');
@@ -100,7 +100,30 @@ var Level13;
         },
         resolve_by_args_instantiation: function (test) {
             var actual = container.resolve(TestData.Resolve.ByArgs.TestBase1);
-            test.strictEqual(actual.foo(), "Test1 : Test Test2 Test");
+            test.strictEqual(actual.foo(), "Test1 : Test 1 7");
+            test.done();
+        },
+        resolve_by_args_directly: function (test) {
+            var actual = container.resolve(TestData.Resolve.ByArgs.TestBase, 11, 17);
+            test.strictEqual(actual.foo(), "Test 11 17");
+            test.done();
+        },
+        resolve_by_name: function (test) {
+            var actual = container.resolve(TestData.Resolve.ByName.TestBase1);
+            test.strictEqual(actual.foo(), "Test1 : Test Test Test");
+            test.done();
+        },
+        resolve_by_attempt: function (test) {
+            var actual = container.resolve(TestData.Resolve.ByAttempt.TestBase);
+            test.strictEqual(actual.foo(), "Test no value");
+            test.done();
+        },
+        resolve_by_cache: function (test) {
+            var actual = container.resolve(TestData.Resolve.ByCache.TestBase1);
+            test.strictEqual(actual.foo(), "Test1 : Test");
+            var actual2 = container.cache['TestBase'];
+            test.ok(actual2);
+            test.strictEqual(actual2.foo(), 'Test');
             test.done();
         }
     };

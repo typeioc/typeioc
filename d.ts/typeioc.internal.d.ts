@@ -91,6 +91,10 @@ declare module Typeioc.Internal {
         create() : Typeioc.Internal.IInternalStorage<K, T>;
     }
 
+    interface IInlineInternalStorageService {
+        create<R1, R2>() : Typeioc.Internal.IInternalStorage<R1, R2>;
+    }
+
     interface IContainerService {
         create(internalContainerService : IInternalContainerService, container? : Typeioc.Internal.IContainer)
             : Typeioc.IContainer;
@@ -213,6 +217,7 @@ declare module Typeioc.Internal {
         args : any[];
         container : Typeioc.IContainer;
         instance : any;
+        factoryType : any;
         forInstantiation : boolean;
         invoke() : any;
         cloneFor : (container: Typeioc.IContainer) => IRegistrationBase;

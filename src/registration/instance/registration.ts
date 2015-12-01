@@ -29,10 +29,7 @@ export class Registration<T> implements Typeioc.IRegistration<T> {
 
     public asType(type: T) : Typeioc.IInitializedDisposedNamedReusedOwned<T> {
 
-        this._base.factory = () => type;        // add args count for storage
-        this._base.forInstantiation = true;
-
-
+        this._base.factoryType = type;
 
         return {
             initializeBy : this.initializeBy.bind(this),

@@ -102,7 +102,9 @@ export class ResolutionApi implements Internal.IDecoratorResolutionApi {
             name: name
         };
 
-        return this.resolveAction.bind(this)
+        return {
+            resolve : this.resolveAction.bind(this)
+        };
     }
 
     private resolveAction(container?: Typeioc.IContainer) : Resolve.IDecoratorResolutionResult {

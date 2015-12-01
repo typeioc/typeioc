@@ -20,7 +20,7 @@ export class RegistrationBase implements Typeioc.Internal.IRegistrationBase {
     private _args : any[];
     private _container : Typeioc.IContainer;
     private _instance: any = null;
-    private _forInstantiation : boolean = false;
+    private _factoryType : any = null;
 
     public get name() : string {
         return this._name;
@@ -90,12 +90,16 @@ export class RegistrationBase implements Typeioc.Internal.IRegistrationBase {
         this._instance = value;
     }
 
-    public get forInstantiation() : boolean {
-        return this._forInstantiation;
+    public get factoryType() : any {
+        return this._factoryType;
     }
 
-    public set forInstantiation(value : boolean) {
-        this._forInstantiation = value;
+    public set factoryType(value : any) {
+        this._factoryType = value;
+    }
+
+    public get forInstantiation() : boolean {
+        return this._factoryType && !this._factory;
     }
 
     constructor(private _service: any) {
@@ -109,7 +113,7 @@ export class RegistrationBase implements Typeioc.Internal.IRegistrationBase {
         result.owner = this._owner;
         result.scope = this._scope;
         result.initializer = this._initializer;
-        result.forInstantiation = this._forInstantiation;
+        result.factoryType = this._factoryType;
 
         return result;
     }
@@ -123,6 +127,10 @@ export class RegistrationBase implements Typeioc.Internal.IRegistrationBase {
     }
 
     public invoke() : any {
+
+        if(this._factoryType) {
+            return this._factoryType;
+        }
 
         var args = [this.container].concat(this.args.slice(0));
         return this.factory.apply(this.factory, args);

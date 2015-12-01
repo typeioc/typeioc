@@ -6,22 +6,21 @@
  * @license MIT
  * --------------------------------------------------------------------------------------------------*/
 
+/// <reference path="../../node_modules/reflect-metadata/reflect-metadata.d.ts"/>
 
 import Exceptions = require('../exceptions/index');
 
 export var ReflectionKey = 'typeioc';
+
+export function getMetadata(reflect, type : any) {
+    return reflect.getMetadata("design:paramtypes", type) || [];
+}
 
 export function getFactoryArgsCount(factory: Typeioc.IFactory<any>) {
 
     var paramNames = getParamNames(<Function>factory);
 
     return paramNames.length > 0 ? paramNames.length - 1 : 0;
-}
-
-export function getArgsCount(f: Function) {
-
-    return getParamNames(f).length;
-
 }
 
 export function isCompatible(obj1 : Object, obj2 : Object) : boolean {

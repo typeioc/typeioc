@@ -349,4 +349,86 @@ export module Resolve {
             }
         }
     }
+
+    export module ByName {
+        export class TestBase {
+            public foo() {}
+        }
+
+        export class TestBase1 {
+            public foo() {}
+        }
+
+        @decorator.provide<Resolve.ByName.TestBase>(Resolve.ByName.TestBase).named('Some name 1').register()
+        @decorator.provide<Resolve.ByName.TestBase>(Resolve.ByName.TestBase).named('Some name 2').register()
+        export class Test extends TestBase {
+
+            public foo() {
+                return 'Test';
+            }
+        }
+
+        @decorator.provide<Resolve.ByName.TestBase1>(Resolve.ByName.TestBase1).register()
+        export class Test1 extends TestBase1 {
+
+            constructor(private value1 : Resolve.ByName.TestBase,
+                        @decorator.by().name('Some name 1').resolve()  private value2 : Resolve.ByName.TestBase,
+                        @decorator.by().name('Some name 2').resolve()  private value3 : Resolve.ByName.TestBase) {
+                super();
+            }
+
+            public foo() {
+                return ['Test1 :', this.value1.foo(), this.value2.foo(), this.value3.foo()].join(' ');
+            }
+        }
+    }
+
+    export module ByAttempt {
+
+        export class TestBase {
+            public foo() {}
+        }
+
+        @decorator.provide<Resolve.ByAttempt.TestBase>(Resolve.ByAttempt.TestBase).register()
+        export class Test extends TestBase {
+
+            public foo() {
+                return 'Test' + (this.value1 || ' no value');
+            }
+
+            constructor(@decorator.by().attempt().resolve() private value1) {
+                super();
+            }
+        }
+    }
+
+    export module ByCache {
+        export class TestBase {
+            public foo() {}
+        }
+
+        export class TestBase1 {
+            public foo() {}
+        }
+
+        @decorator.provide<Resolve.ByCache.TestBase>(Resolve.ByCache.TestBase).register()
+        export class Test extends TestBase {
+
+            public foo() {
+                return 'Test';
+            }
+        }
+
+        @decorator.provide<Resolve.ByCache.TestBase1>(Resolve.ByCache.TestBase1).register()
+        export class Test1 extends TestBase1 {
+
+            constructor(@decorator.by().cache().resolve()  private value : Resolve.ByCache.TestBase) {
+                super();
+            }
+
+            public foo() {
+                return ['Test1 :', this.value.foo()].join(' ');
+            }
+        }
+    }
 }

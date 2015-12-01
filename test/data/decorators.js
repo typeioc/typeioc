@@ -523,5 +523,134 @@ var Resolve;
         })(TestBase1);
         ByArgs.Test1 = Test1;
     })(ByArgs = Resolve.ByArgs || (Resolve.ByArgs = {}));
+    var ByName;
+    (function (ByName) {
+        var TestBase = (function () {
+            function TestBase() {
+            }
+            TestBase.prototype.foo = function () { };
+            return TestBase;
+        })();
+        ByName.TestBase = TestBase;
+        var TestBase1 = (function () {
+            function TestBase1() {
+            }
+            TestBase1.prototype.foo = function () { };
+            return TestBase1;
+        })();
+        ByName.TestBase1 = TestBase1;
+        var Test = (function (_super) {
+            __extends(Test, _super);
+            function Test() {
+                _super.apply(this, arguments);
+            }
+            Test.prototype.foo = function () {
+                return 'Test';
+            };
+            Test = __decorate([
+                decorator.provide(Resolve.ByName.TestBase).named('Some name 1').register(),
+                decorator.provide(Resolve.ByName.TestBase).named('Some name 2').register(), 
+                __metadata('design:paramtypes', [])
+            ], Test);
+            return Test;
+        })(TestBase);
+        ByName.Test = Test;
+        var Test1 = (function (_super) {
+            __extends(Test1, _super);
+            function Test1(value1, value2, value3) {
+                _super.call(this);
+                this.value1 = value1;
+                this.value2 = value2;
+                this.value3 = value3;
+            }
+            Test1.prototype.foo = function () {
+                return ['Test1 :', this.value1.foo(), this.value2.foo(), this.value3.foo()].join(' ');
+            };
+            Test1 = __decorate([
+                decorator.provide(Resolve.ByName.TestBase1).register(),
+                __param(1, decorator.by().name('Some name 1').resolve()),
+                __param(2, decorator.by().name('Some name 2').resolve()), 
+                __metadata('design:paramtypes', [Resolve.ByName.TestBase, Resolve.ByName.TestBase, Resolve.ByName.TestBase])
+            ], Test1);
+            return Test1;
+        })(TestBase1);
+        ByName.Test1 = Test1;
+    })(ByName = Resolve.ByName || (Resolve.ByName = {}));
+    var ByAttempt;
+    (function (ByAttempt) {
+        var TestBase = (function () {
+            function TestBase() {
+            }
+            TestBase.prototype.foo = function () { };
+            return TestBase;
+        })();
+        ByAttempt.TestBase = TestBase;
+        var Test = (function (_super) {
+            __extends(Test, _super);
+            function Test(value1) {
+                _super.call(this);
+                this.value1 = value1;
+            }
+            Test.prototype.foo = function () {
+                return 'Test' + (this.value1 || ' no value');
+            };
+            Test = __decorate([
+                decorator.provide(Resolve.ByAttempt.TestBase).register(),
+                __param(0, decorator.by().attempt().resolve()), 
+                __metadata('design:paramtypes', [Object])
+            ], Test);
+            return Test;
+        })(TestBase);
+        ByAttempt.Test = Test;
+    })(ByAttempt = Resolve.ByAttempt || (Resolve.ByAttempt = {}));
+    var ByCache;
+    (function (ByCache) {
+        var TestBase = (function () {
+            function TestBase() {
+            }
+            TestBase.prototype.foo = function () { };
+            return TestBase;
+        })();
+        ByCache.TestBase = TestBase;
+        var TestBase1 = (function () {
+            function TestBase1() {
+            }
+            TestBase1.prototype.foo = function () { };
+            return TestBase1;
+        })();
+        ByCache.TestBase1 = TestBase1;
+        var Test = (function (_super) {
+            __extends(Test, _super);
+            function Test() {
+                _super.apply(this, arguments);
+            }
+            Test.prototype.foo = function () {
+                return 'Test';
+            };
+            Test = __decorate([
+                decorator.provide(Resolve.ByCache.TestBase).register(), 
+                __metadata('design:paramtypes', [])
+            ], Test);
+            return Test;
+        })(TestBase);
+        ByCache.Test = Test;
+        var Test1 = (function (_super) {
+            __extends(Test1, _super);
+            function Test1(value) {
+                _super.call(this);
+                this.value = value;
+            }
+            Test1.prototype.foo = function () {
+                return ['Test1 :', this.value.foo()].join(' ');
+            };
+            Test1 = __decorate([
+                decorator.provide(Resolve.ByCache.TestBase1).register(),
+                __param(0, decorator.by().cache().resolve()), 
+                __metadata('design:paramtypes', [Resolve.ByCache.TestBase])
+            ], Test1);
+            return Test1;
+        })(TestBase1);
+        ByCache.Test1 = Test1;
+    })(ByCache = Resolve.ByCache || (Resolve.ByCache = {}));
 })(Resolve = exports.Resolve || (exports.Resolve = {}));
 //# sourceMappingURL=decorators.js.map

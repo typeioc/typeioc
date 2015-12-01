@@ -50,8 +50,6 @@ export class Decorator implements Typeioc.Internal.Interceptors.IDecorator {
      {
          var result = <IStrategy>{};
 
-         var self = this;
-
          result[Typeioc.Internal.Reflection.PropertyType.Method] = (strategyInfo : IStrategyInfo) => {
 
              var value = strategyInfo.source[strategyInfo.name];
@@ -66,7 +64,7 @@ export class Decorator implements Typeioc.Internal.Interceptors.IDecorator {
          result[Typeioc.Internal.Reflection.PropertyType.Getter] = (strategyInfo : IStrategyInfo) => {
 
              Object.defineProperty(strategyInfo.destination, strategyInfo.name, {
-                 get : self.defineGetter(strategyInfo),
+                 get : this.defineGetter(strategyInfo),
                  configurable : strategyInfo.descriptor.configurable,
                  enumerable : strategyInfo.descriptor.enumerable
              });
@@ -75,7 +73,7 @@ export class Decorator implements Typeioc.Internal.Interceptors.IDecorator {
          result[Typeioc.Internal.Reflection.PropertyType.Setter] = (strategyInfo : IStrategyInfo) => {
 
              Object.defineProperty(strategyInfo.destination, strategyInfo.name, {
-                 set : self.defineSetter(strategyInfo),
+                 set : this.defineSetter(strategyInfo),
                  configurable : strategyInfo.descriptor.configurable,
                  enumerable : strategyInfo.descriptor.enumerable
              });
@@ -84,8 +82,8 @@ export class Decorator implements Typeioc.Internal.Interceptors.IDecorator {
          result[Typeioc.Internal.Reflection.PropertyType.FullProperty] = (strategyInfo : IStrategyInfo) => {
 
              Object.defineProperty(strategyInfo.destination, strategyInfo.name, {
-                 get : self.defineGetter(strategyInfo),
-                 set : self.defineSetter(strategyInfo),
+                 get : this.defineGetter(strategyInfo),
+                 set : this.defineSetter(strategyInfo),
                  configurable : strategyInfo.descriptor.configurable,
                  enumerable : strategyInfo.descriptor.enumerable
               });

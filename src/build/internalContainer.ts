@@ -6,7 +6,6 @@
  * @license MIT
  * --------------------------------------------------------------------------------------------------*/
 
-/// <reference path="../../node_modules/reflect-metadata/reflect-metadata.d.ts"/>
 
 'use strict';
 
@@ -142,7 +141,7 @@ export class InternalContainer implements Internal.IContainer {
 
     private registerImpl(registration : Internal.IRegistrationBase) : void {
 
-        if(!registration.factory){
+        if(!registration.factory && !registration.factoryType){
             var exception = new Exceptions.NullReferenceError("Factory is not defined");
             exception.data = registration.service;
             throw exception;
@@ -360,12 +359,11 @@ export class InternalContainer implements Internal.IContainer {
 
         var key = Utils.Reflection.ReflectionKey;
 
-        var dependencies = Reflect.getMetadata("design:paramtypes", type) || [];
-
-        if((!type[key]) &&
-            dependencies.length <= 0) {
-            return Utils.Reflection.construct(type, args);
-        }
+        var dependencies = Utils.Reflection.getMetadata(Reflect, type);
+        
+        if(args.length  ||
+           (!type[key] && !dependencies.length))
+            return Utils.Reflection.construct(type, args)
 
         var bucket = <Internal.IDecoratorResolutionCollection>(type[key] || {});
 
@@ -388,13 +386,13 @@ export class InternalContainer implements Internal.IContainer {
                     resolution.args(...depParams.args);
 
                 if(depParams.name)
-                    resolution.name(params.name);
+                    resolution.name(depParams.name);
 
                 if(depParams.attempt === true)
                     resolution.attempt();
 
                 if(depParams.cache.use === true)
-                    resolution.cache(params.cache.name);
+                    resolution.cache(depParams.cache.name);
 
                 return resolution.exec();
             });

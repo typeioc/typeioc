@@ -42,7 +42,7 @@ export class Decorator implements Decorators.IDecorator {
                 var containerBuilder = api.builder || this._builder;
 
                 let registration = containerBuilder
-                    .register(service)
+                    .register(api.service)
                     .asType(target);
 
                 var initializer = api.initializedBy;
