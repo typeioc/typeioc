@@ -244,14 +244,14 @@ export class InternalContainer implements Internal.IContainer {
             instance = this.instantiate(instance, registration, throwIfNotFound);
         }
 
+        if(registration.initializer) {
+            instance = registration.initializer(this, instance);
+        }
+
         if(registration.owner === Types.Owner.Container &&
             registration.disposer) {
 
             this._disposableStorage.add(instance, registration.disposer);
-        }
-
-        if(registration.initializer) {
-            instance = registration.initializer(this, instance);
         }
 
         return instance;
