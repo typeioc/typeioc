@@ -17,7 +17,7 @@ export module Level6 {
 
         containerBuilder.register<TestData.Test1Base>(TestData.Test1Base).
             as(() => new TestData.Test5()).
-            initializeBy((c, item) => {}).
+            initializeBy((c, item) => item).
             dispose((item : TestData.Test5) => item.Dispose()).
             named("Some Name").
             within(Typeioc.Types.Scope.Hierarchy).
@@ -50,7 +50,7 @@ export module Level6 {
 
         var registration = containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)
             .as(() => new TestData.Test5())
-            .initializeBy((c, item) => {});
+            .initializeBy((c, item) => item);
 
         test.equal(registration['as'], undefined);
         test.equal(registration['initializeBy'], undefined);

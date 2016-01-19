@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------------------------
- * Copyright (c) 2015 Maxim Gherman
+ * Copyright (c) 2016 Maxim Gherman
  * typeioc - Dependency injection container for node typescript
  * @version v1.3.0
  * @link https://github.com/maxgherman/TypeIOC
@@ -18,7 +18,6 @@ import Internal = Typeioc.Internal;
 export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T> {
 
     private _service: any;
-    private _builder: Typeioc.IContainerBuilder;
     private _name: string;
     private _scope: Types.Scope;
     private _owner : Types.Owner;
@@ -49,11 +48,8 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
         return this._disposedBy;
     }
 
-    public get builder() : Typeioc.IContainerBuilder {
-        return this._builder;
-    }
-
-    constructor(private _register : (api : Internal.IDecoratorRegistrationApi<T>) => Decorators.Register.IDecoratorRegisterResult) { }
+    constructor(private _register : (api : Internal.IDecoratorRegistrationApi<T>) => Decorators.Register.IDecoratorRegisterResult)
+    { }
 
     public provide(service: any) : Decorators.Register.IInitializedDisposedNamedReusedOwned<T> {
 
@@ -82,7 +78,7 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
             named: this.named.bind(this),
             within: this.within.bind(this),
             ownedBy: this.ownedBy.bind(this),
-            register: this.register.bind(this),
+            register: this.register.bind(this)
         };
     }
 
@@ -96,7 +92,7 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
             named: this.named.bind(this),
             within: this.within.bind(this),
             ownedBy: this.ownedBy.bind(this),
-            register: this.register.bind(this),
+            register: this.register.bind(this)
         };
     }
 
@@ -109,7 +105,7 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
         return {
             within: this.within.bind(this),
             ownedBy: this.ownedBy.bind(this),
-            register: this.register.bind(this),
+            register: this.register.bind(this)
         };
     }
 
@@ -121,7 +117,7 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
 
         return {
             ownedBy: this.ownedBy.bind(this),
-            register: this.register.bind(this),
+            register: this.register.bind(this)
         };
     }
 
@@ -132,13 +128,11 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
         this._owner = owner;
 
         return {
-            register: this.register.bind(this),
+            register: this.register.bind(this)
         };
     }
 
-    private register(builder? : Typeioc.IContainerBuilder) : Decorators.Register.IDecoratorRegisterResult {
-
-        this._builder = builder;
+    private register() : Decorators.Register.IDecoratorRegisterResult {
 
         return this._register(this);
     }

@@ -4,12 +4,12 @@ var scaffold = require('./../scaffold');
 var Level13;
 (function (Level13) {
     var container;
-    Level13.embedded_container = {
+    Level13.decorators = {
         setUp: function (callback) {
-            container = scaffold.getDecorator().build();
+            container = TestData.decorator.build();
             callback();
         },
-        plain_instantiation1: function (test) {
+        plain_instantiation: function (test) {
             var actual = container.resolve(TestData.Registration.TestBase);
             test.ok(actual);
             test.strictEqual(actual.foo(), 'Test : foo');
@@ -33,7 +33,7 @@ var Level13;
             test.strictEqual(actual.foo(), 'Test : foo foo 2');
             actual = container.resolve(TestData.InitializeBy.TestBase1);
             test.ok(actual);
-            test.strictEqual(actual.foo(), 'Test : foo foo 3');
+            test.strictEqual(actual.foo(), 'foo 3 interceptor');
             test.done();
         },
         scope_none_can_resolve: function (test) {
@@ -98,6 +98,13 @@ var Level13;
             test.strictEqual(actual.foo(), "Test1 : Test Test2 Test");
             test.done();
         },
+        resolve_by_multiple_service_instantiation: function (test) {
+            var actual1 = container.resolve(TestData.Resolve.ByMultipleService.TestBase1);
+            var actual2 = container.resolve(TestData.Resolve.ByMultipleService.TestBase2);
+            test.strictEqual(actual1.foo(), "Test1 Test 1 2 Test 3 4");
+            test.strictEqual(actual2.foo(), "Test2 Test1 Test 1 2 Test 3 4 Test 5 6");
+            test.done();
+        },
         resolve_by_args_instantiation: function (test) {
             var actual = container.resolve(TestData.Resolve.ByArgs.TestBase1);
             test.strictEqual(actual.foo(), "Test1 : Test 1 7");
@@ -115,7 +122,9 @@ var Level13;
         },
         resolve_by_attempt: function (test) {
             var actual = container.resolve(TestData.Resolve.ByAttempt.TestBase);
-            test.strictEqual(actual.foo(), "Test no value");
+            test.strictEqual(actual.foo(), "Test no value Test1");
+            var actual2 = container.tryResolve(TestData.Resolve.ByAttempt.TestBase);
+            test.strictEqual(actual2.foo(), "Test no value Test1");
             test.done();
         },
         resolve_by_cache: function (test) {
@@ -124,6 +133,132 @@ var Level13;
             var actual2 = container.cache['TestBase'];
             test.ok(actual2);
             test.strictEqual(actual2.foo(), 'Test');
+            test.done();
+        },
+        decorator_target_error: function (test) {
+            var delegate = function () {
+                scaffold.createDecorator().provide('Test').register()('Test');
+            };
+            test.throws(delegate, function (err) {
+                test.strictEqual(err.data.target, 'Test');
+                return (err instanceof scaffold.Exceptions.DecoratorError) &&
+                    /Decorator target not supported, not a prototype/.test(err.message);
+            });
+            test.done();
+        },
+        resolve_full_api: function (test) {
+            var actual = container
+                .resolveWith(TestData.Resolve.FullResolution.TestBase3)
+                .args(1, 2)
+                .name('Some name')
+                .cache()
+                .exec();
+            test.ok(actual);
+            test.strictEqual(actual.foo(), 'Test 1 2');
+            actual = container.cache['Some name'];
+            test.strictEqual(actual.foo(), 'Test 1 2');
+            test.done();
+        },
+        resolve_with_dependency: function (test) {
+            var dependencies = [{
+                    service: TestData.Resolve.FullResolution.TestBase,
+                    factoryType: TestData.Resolve.FullResolution.TestDep
+                }];
+            var actual = container
+                .resolveWith(TestData.Resolve.FullResolution.TestBase1)
+                .dependencies(dependencies)
+                .exec();
+            test.ok(actual);
+            test.strictEqual(actual.foo(), 'Test dependency');
+            test.done();
+        },
+        resolve_with_multiple_dependencies: function (test) {
+            var dependencies = [{
+                    service: TestData.Resolve.FullResolution.TestBase,
+                    factoryType: TestData.Resolve.FullResolution.TestDep
+                },
+                {
+                    service: TestData.Resolve.FullResolution.TestBase1,
+                    factoryType: TestData.Resolve.FullResolution.TestDep1
+                },
+                {
+                    service: TestData.Resolve.FullResolution.TestBase3,
+                    factoryType: TestData.Resolve.FullResolution.TestDep3
+                }];
+            var actual = container
+                .resolveWith(TestData.Resolve.FullResolution.TestBase2)
+                .dependencies(dependencies)
+                .exec();
+            test.ok(actual);
+            test.strictEqual(actual.foo(), 'Test dependency dependency 1 dependency 3');
+            test.done();
+        },
+        resolve_with_multiple_dependencies_with_resolution_value: function (test) {
+            var dependencies = [{
+                    service: TestData.Resolve.FullResolution.TestBase,
+                    factoryType: TestData.Resolve.FullResolution.TestDep
+                },
+                {
+                    service: TestData.Resolve.FullResolution.TestBase1,
+                    factoryType: TestData.Resolve.FullResolution.TestDep1
+                },
+                {
+                    service: TestData.Resolve.FullResolution.TestBase3,
+                    factoryType: TestData.Resolve.FullResolution.TestDep3
+                }];
+            var actual = container
+                .resolveWith(TestData.Resolve.FullResolution.TestBase4)
+                .dependencies(dependencies)
+                .exec();
+            test.ok(actual);
+            test.strictEqual(actual.foo(), 'Test dependency dependency 1 decorator value dependency 3');
+            test.done();
+        },
+        resolve_with_named_dependencies: function (test) {
+            var dependencies = [{
+                    service: TestData.Resolve.DependenciesProperties.TestBase,
+                    factoryType: TestData.Resolve.DependenciesProperties.TestDep,
+                    named: 'Some test name'
+                }];
+            var actual = container
+                .resolveWith(TestData.Resolve.DependenciesProperties.TestBase1)
+                .dependencies(dependencies)
+                .exec();
+            test.ok(actual);
+            test.strictEqual(actual.foo(), 'Test dependency Some test name');
+            test.done();
+        },
+        resolve_with_initialized_dependencies: function (test) {
+            var actual = container
+                .resolveWith('some TestInit')
+                .exec();
+            var actual2 = container
+                .resolveWith('some TestInit')
+                .dependencies({
+                service: TestData.Resolve.DependenciesInit.TestBase,
+                factoryType: TestData.Resolve.DependenciesInit.TestDep,
+                initializer: function (c, item) {
+                    item.foo = function () { return 'Dependency initialized'; };
+                    return item;
+                }
+            })
+                .exec();
+            test.ok(actual);
+            test.strictEqual(actual.foo(), 'Test Initialized');
+            test.strictEqual(actual2.foo(), 'Test Dependency initialized');
+            test.done();
+        },
+        resolve_with_required_dependencies: function (test) {
+            var actual = container
+                .resolveWith(TestData.Resolve.DependenciesNonRequired.TestBase)
+                .dependencies({
+                service: TestData.Resolve.DependenciesNonRequired.TestBase1,
+                factoryType: TestData.Resolve.DependenciesNonRequired.TestDep,
+                required: false
+            })
+                .exec();
+            test.ok(actual);
+            test.strictEqual(actual.foo(), 'Test dependency');
             test.done();
         }
     };

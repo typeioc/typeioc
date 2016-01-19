@@ -12,7 +12,7 @@ var Level6;
     function fluentApiInitializeByDisposedNamedWithinOwnedBy(test) {
         containerBuilder.register(TestData.Test1Base).
             as(function () { return new TestData.Test5(); }).
-            initializeBy(function (c, item) { }).
+            initializeBy(function (c, item) { return item; }).
             dispose(function (item) { return item.Dispose(); }).
             named("Some Name").
             within(3 /* Hierarchy */).
@@ -40,7 +40,7 @@ var Level6;
     function fluentApiInitializeBy(test) {
         var registration = containerBuilder.register(TestData.Test1Base)
             .as(function () { return new TestData.Test5(); })
-            .initializeBy(function (c, item) { });
+            .initializeBy(function (c, item) { return item; });
         test.equal(registration['as'], undefined);
         test.equal(registration['initializeBy'], undefined);
         test.notEqual(registration['dispose'], undefined);

@@ -27,6 +27,19 @@ exports.api = {
                 test.done();
             },
 
+            errorWhenNoServiceProvided : function(test) {
+
+                var delegate = function() {
+                    containerBuilder.register();
+                };
+
+                test.throws(delegate, function(err) {
+                    return (err instanceof scaffold.Exceptions.ArgumentNullError);
+                });
+
+                test.done();
+            },
+
             parameterlessResolution : function(test) {
 
                 containerBuilder.register(testData.Test1Base).as(function() {

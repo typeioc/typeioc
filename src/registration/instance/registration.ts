@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------------------------
- * Copyright (c) 2015 Maxim Gherman
+ * Copyright (c) 2016 Maxim Gherman
  * typeioc - Dependency injection container for node typescript
  * @version v1.3.0
  * @link https://github.com/maxgherman/TypeIOC
@@ -27,9 +27,10 @@ export class Registration<T> implements Typeioc.IRegistration<T> {
         };
     }
 
-    public asType(type: T) : Typeioc.IInitializedDisposedNamedReusedOwned<T> {
+    public asType(type: T, ...params : Array<any>) : Typeioc.IInitializedDisposedNamedReusedOwned<T> {
 
         this._base.factoryType = type;
+        this._base.params = params;
 
         return {
             initializeBy : this.initializeBy.bind(this),

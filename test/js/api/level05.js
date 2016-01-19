@@ -161,6 +161,7 @@ exports.api = {
 
                 var initializer = function(c, item) {
                     item.initialize(className);
+                    return item;
                 };
 
                 containerBuilder.register(testData.Initializable).as(function () {
@@ -185,6 +186,8 @@ exports.api = {
                 var initializer = function(c, item) {
                     item.initialize(className);
                     item.test6 = c.resolve<testData.Test6>(testData.Test6);
+
+                    return item;
                 };
 
                 containerBuilder.register(testData.Test6).as(function (c) {

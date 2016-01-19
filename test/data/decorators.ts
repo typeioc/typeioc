@@ -4,9 +4,12 @@
 'use strict';
 
 import scaffold = require('./../scaffold');
+import ScaffoldAddons = require('./../scaffoldAddons');
 
+var interceptor = ScaffoldAddons.Interceptors.create();
 
-var decorator = scaffold.getDecorator();
+export var decorator = scaffold.createDecorator();
+export var builder = scaffold.createBuilder();
 
 export module Registration {
 
@@ -68,7 +71,7 @@ export module InitializeBy {
     }
 
     @decorator.provide(InitializeBy.TestBase)
-               .initializeBy((c, item: InitializeBy.Test2) => { item.text = 'foo 2'; })
+               .initializeBy((c, item: InitializeBy.Test2) => { item.text = 'foo 2'; return item;})
                 .register()
     export class Test2 extends TestBase {
 
@@ -80,9 +83,16 @@ export module InitializeBy {
     }
 
     @decorator.provide<InitializeBy.Test3>(InitializeBy.TestBase1)
-               .initializeBy((c, item) => { item.text = 'foo 3'; })
+               .initializeBy((c, item) => {
+                    item.text = 'foo 3';
+                    item = interceptor.interceptInstance(item, {
+                            method : 'foo',
+                            wrapper : function(callInfo) { return  this.text +  ' interceptor'; }
+                        });
+                    return item;
+                })
                 .register()
-    export class Test3 extends TestBase {
+    export class Test3 extends TestBase1 {
 
         public text : string = null;
 
@@ -119,8 +129,8 @@ export module Scope {
     }
 
     @decorator.provide<Scope.TestBase2>(Scope.TestBase2)
-            .within(Typeioc.Types.Scope.Container)
-            .register()
+        .within(Typeioc.Types.Scope.Container)
+        .register()
     export class Test2 extends TestBase2 {
 
         public text : string = ' test Container';
@@ -208,8 +218,8 @@ export module Named {
     }
 
     @decorator.provide<Named.TestBase>(Named.TestBase)
-            .named('Some name')
-            .register()
+        .named('Some name')
+        .register()
     export class Test extends TestBase {
 
         public text : string = 'test';
@@ -220,8 +230,8 @@ export module Named {
     }
 
     @decorator.provide<Named.TestBase>(Named.TestBase)
-            .named('Some name 2')
-            .register()
+        .named('Some name 2')
+        .register()
     export class Test2 extends TestBase {
 
         public text : string = 'test';
@@ -257,11 +267,11 @@ export module Resolve {
         }
 
         @decorator.provide<Resolve.ByValue.TestBase1>(Resolve.ByValue.TestBase1).register()
-            export class Test2 extends TestBase1 {
+        export class Test2 extends TestBase1 {
 
-                constructor(@decorator.resolveValue('value 1')  private value1,
-                            @decorator.resolveValue('value 2')  private value2,
-                            @decorator.resolveValue('value 3')  private value3) {
+            constructor(@decorator.resolveValue('value 1')  private value1,
+                        @decorator.resolveValue('value 2')  private value2,
+                        @decorator.resolveValue('value 3')  private value3) {
                 super();
             }
 
@@ -304,7 +314,7 @@ export module Resolve {
         @decorator.provide<Resolve.ByService.TestBase1>(Resolve.ByService.TestBase1).register()
             export class Test1 extends TestBase1 {
 
-                constructor(@decorator.by().resolve()  private value111 : Resolve.ByService.TestBase,
+                constructor(private value111 : Resolve.ByService.TestBase,
                             @decorator.by(Resolve.ByService.TestBase2).resolve() private value222,
                             @decorator.by(Resolve.ByService.TestBase).resolve()  private value333) {
                     super();
@@ -313,6 +323,59 @@ export module Resolve {
                 public foo() {
                     return ['Test1 :', this.value111.foo(), this.value222.foo(), this.value333.foo()].join(' ');
                 }
+        }
+    }
+
+    export module ByMultipleService {
+        export class TestBase {
+            public foo() {}
+        }
+
+        export class TestBase1 {
+            public foo() {}
+        }
+
+        export class TestBase2 {
+            public foo() {}
+        }
+
+
+        @decorator.provide<Resolve.ByMultipleService.TestBase>(Resolve.ByMultipleService.TestBase).register()
+        export class Test extends TestBase {
+
+            constructor(private _value1 : string, private _value2 : string) {
+                super();
+            }
+
+            public foo() {
+                return ['Test', this._value1, this._value2].join(' ') ;
+            }
+        }
+
+        @decorator.provide<Resolve.ByMultipleService.TestBase1>(Resolve.ByMultipleService.TestBase1).register()
+        export class Test1 extends TestBase1 {
+
+            constructor(@decorator.by().args('1', '2').resolve() private _value1 : Resolve.ByMultipleService.TestBase,
+                        @decorator.by(Resolve.ByMultipleService.TestBase).args('3', '4').resolve() private _value2) {
+                super();
+            }
+
+            public foo() {
+                return ['Test1', this._value1.foo(), this._value2.foo()].join(' ');
+            }
+        }
+
+        @decorator.provide<Resolve.ByMultipleService.TestBase2>(Resolve.ByMultipleService.TestBase2).register()
+        export class Test2 extends TestBase2 {
+
+            constructor(@decorator.by(Resolve.ByMultipleService.TestBase1).resolve() private _value1,
+                        @decorator.by(Resolve.ByMultipleService.TestBase).args('5', '6').resolve() private _value2) {
+                super();
+            }
+
+            public foo() {
+                return ['Test2', this._value1.foo(), this._value2.foo()].join(' ');
+            }
         }
     }
 
@@ -359,8 +422,8 @@ export module Resolve {
             public foo() {}
         }
 
-        @decorator.provide<Resolve.ByName.TestBase>(Resolve.ByName.TestBase).named('Some name 1').register()
-        @decorator.provide<Resolve.ByName.TestBase>(Resolve.ByName.TestBase).named('Some name 2').register()
+        @decorator.provide(Resolve.ByName.TestBase).named('Some name 1').register()
+        @decorator.provide(Resolve.ByName.TestBase).named('Some name 2').register()
         export class Test extends TestBase {
 
             public foo() {
@@ -368,7 +431,7 @@ export module Resolve {
             }
         }
 
-        @decorator.provide<Resolve.ByName.TestBase1>(Resolve.ByName.TestBase1).register()
+        @decorator.provide(Resolve.ByName.TestBase1).register()
         export class Test1 extends TestBase1 {
 
             constructor(private value1 : Resolve.ByName.TestBase,
@@ -389,14 +452,26 @@ export module Resolve {
             public foo() {}
         }
 
+        export class TestBase1 {
+            public foo1() {}
+        }
+
+        @decorator.provide(Resolve.ByAttempt.TestBase1).register()
+        export class Test1 extends TestBase1 {
+            public foo1() {
+                return 'Test1';
+            }
+        }
+
         @decorator.provide<Resolve.ByAttempt.TestBase>(Resolve.ByAttempt.TestBase).register()
         export class Test extends TestBase {
 
             public foo() {
-                return 'Test' + (this.value1 || ' no value');
+                return 'Test' + (this.value1 || ' no value ') + this.value2.foo1();
             }
 
-            constructor(@decorator.by().attempt().resolve() private value1) {
+            constructor(@decorator.by().attempt().resolve() private value1,
+                        @decorator.by().attempt().resolve() private value2 : Resolve.ByAttempt.TestBase1) {
                 super();
             }
         }
@@ -428,6 +503,242 @@ export module Resolve {
 
             public foo() {
                 return ['Test1 :', this.value.foo()].join(' ');
+            }
+        }
+    }
+
+    export module FullResolution {
+        export class TestBase {
+            public foo() {}
+        }
+
+        export class TestBase1 {
+            public foo() {}
+        }
+
+        export class TestBase2 {
+            public foo() {}
+        }
+
+        export class TestBase3 {
+            public foo() {}
+        }
+
+        export class TestBase4 {
+            public foo() {}
+        }
+
+        @decorator.provide<Resolve.FullResolution.TestBase3>(Resolve.FullResolution.TestBase3).named('Some name').register()
+        export class Test3 extends TestBase3 {
+
+            constructor(private arg1, private arg2) {
+                super();
+            }
+
+            public foo() {
+                return ['Test', this.arg1, this.arg2].join(' ');
+            }
+        }
+
+        @decorator.provide<Resolve.FullResolution.TestBase>(Resolve.FullResolution.TestBase).register()
+        export class Test extends TestBase {
+
+            constructor(private arg1, private arg2) {
+                super();
+            }
+
+            public foo() {
+                return ['Test', this.arg1, this.arg2].join(' ');
+            }
+        }
+
+        @decorator.provide<Resolve.FullResolution.TestBase1>(Resolve.FullResolution.TestBase1).register()
+        export class Test1 extends TestBase1 {
+
+            constructor(private arg1 : Resolve.FullResolution.TestBase) {
+                super();
+            }
+
+            public foo() {
+                return ['Test', this.arg1.foo()].join(' ');
+            }
+        }
+
+        @decorator.provide<Resolve.FullResolution.TestBase2>(Resolve.FullResolution.TestBase2).register()
+        export class Test2 extends TestBase2 {
+
+            constructor(private arg1 : Resolve.FullResolution.TestBase,
+                        private arg2 : Resolve.FullResolution.TestBase1,
+                        private arg3 : Resolve.FullResolution.TestBase3) {
+                super();
+            }
+
+            public foo() {
+                return ['Test', this.arg1.foo(), this.arg2.foo(), this.arg3.foo()].join(' ');
+            }
+        }
+
+        @decorator.provide<Resolve.FullResolution.TestBase4>(Resolve.FullResolution.TestBase4).register()
+        export class Test4 extends TestBase4 {
+
+            constructor(private arg1 : Resolve.FullResolution.TestBase,
+                        private arg2 : Resolve.FullResolution.TestBase1,
+                        @decorator.resolveValue('decorator value') private arg2_1,
+                        @decorator.by(Resolve.FullResolution.TestBase3).resolve() private arg3) {
+                super();
+            }
+
+            public foo() {
+                return ['Test', this.arg1.foo(), this.arg2.foo(), this.arg2_1, this.arg3.foo()].join(' ');
+            }
+        }
+
+        export class TestDep extends Resolve.FullResolution.TestBase {
+            constructor() {
+                super();
+            }
+
+            public foo() {
+                return 'dependency';
+            }
+        }
+
+        export class TestDep1 extends Resolve.FullResolution.TestBase1 {
+            constructor() {
+                super();
+            }
+
+            public foo() {
+                return 'dependency 1';
+            }
+        }
+
+        export class TestDep3 extends Resolve.FullResolution.TestBase3 {
+            constructor() {
+                super();
+            }
+
+            public foo() {
+                return 'dependency 3';
+            }
+        }
+    }
+
+    export module DependenciesProperties {
+        export class TestBase {
+            public foo() {}
+        }
+
+        export class TestBase1 {
+            public foo() {}
+        }
+
+        @decorator.provide<Resolve.DependenciesProperties.TestBase>(Resolve.DependenciesProperties.TestBase)
+            .named('Some test name').register()
+        export class Test extends TestBase {
+
+            constructor(private arg1, private arg2) {
+                super();
+            }
+
+            public foo() {
+                return ['Test', this.arg1, this.arg2].join(' ');
+            }
+        }
+
+        @decorator.provide<Resolve.DependenciesProperties .TestBase1>(Resolve.DependenciesProperties .TestBase1).register()
+        export class Test1 extends TestBase1 {
+
+            constructor(@decorator.by().name('Some test name').resolve() private arg1 : Resolve.DependenciesProperties.TestBase) {
+                super();
+            }
+
+            public foo() {
+                return ['Test', this.arg1.foo()].join(' ');
+            }
+        }
+
+        export class TestDep extends Resolve.DependenciesProperties.TestBase {
+            constructor() {
+                super();
+            }
+
+            public foo() {
+                return 'dependency Some test name';
+            }
+        }
+    }
+
+    export module DependenciesInit {
+
+        export class TestBase {
+            public foo() {}
+        }
+
+        @decorator.provide<Resolve.DependenciesInit.TestBase>(Resolve.DependenciesInit.TestBase)
+            .initializeBy((c, item) => {
+                            item.foo = function() {return 'Initialized'; };
+                            return item;
+                        })
+            .register()
+        export class Test extends TestBase{
+
+            public foo() {
+                return 'Test';
+            }
+        }
+
+        @decorator.provide('some TestInit').register()
+        export class TestInit {
+
+            constructor(@decorator.by().resolve() private arg1 : Resolve.DependenciesInit.TestBase) {
+
+            }
+
+            public foo() {
+                return ['Test', this.arg1.foo()].join(' ');
+            }
+        }
+
+        export class TestDep extends Resolve.DependenciesInit.TestBase {
+            constructor() {
+                super();
+            }
+
+            public foo() {
+                return 'dependency';
+            }
+        }
+    }
+
+    export module DependenciesNonRequired {
+        export class TestBase {
+            public foo() {}
+        }
+
+        export class TestBase1 {
+            public foo() {}
+        }
+
+        @decorator.provide(Resolve.DependenciesNonRequired.TestBase).register()
+        export class TestInit {
+
+            constructor(@decorator.by(Resolve.DependenciesNonRequired.TestBase1).resolve() private arg1) {
+
+            }
+
+            public foo() {
+                return ['Test', this.arg1.foo()].join(' ');
+            }
+        }
+
+        export class TestDep extends Resolve.DependenciesNonRequired.TestBase1 {
+            constructor() {
+                super();
+            }
+
+            public foo() {
+                return 'dependency';
             }
         }
     }

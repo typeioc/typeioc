@@ -15,6 +15,16 @@ var Level1;
         test.done();
     }
     Level1.containerConstruction = containerConstruction;
+    function errorWhenNoServiceProvided(test) {
+        var delegate = function () {
+            containerBuilder.register(null);
+        };
+        test.throws(delegate, function (err) {
+            return (err instanceof scaffold.Exceptions.ArgumentNullError);
+        });
+        test.done();
+    }
+    Level1.errorWhenNoServiceProvided = errorWhenNoServiceProvided;
     function parameterlessResolution(test) {
         containerBuilder.register(TestData.Test1Base)
             .as(function () { return new TestData.Test1(); });

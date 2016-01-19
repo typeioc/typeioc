@@ -27,6 +27,6 @@ export function createBuilder() : Typeioc.IContainerBuilder {
     return <Typeioc.IContainerBuilder>typeioc.createBuilder();
 }
 
-export function getDecorator() : Typeioc.Decorators.IDecorator {
-    return <Typeioc.Decorators.IDecorator>typeioc.getDecorator();
+export function createDecorator() : Typeioc.Decorators.IDecorator {
+    return <Typeioc.Decorators.IDecorator>typeioc.createDecorator();
 }

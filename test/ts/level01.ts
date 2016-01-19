@@ -16,10 +16,22 @@ export module Level1 {
 
     export function containerConstruction(test) {
 
-
         var container = containerBuilder.build();
 
         test.notEqual(container, null);
+
+        test.done();
+    }
+
+    export function errorWhenNoServiceProvided(test) {
+
+        var delegate = function() {
+            containerBuilder.register(null);
+        };
+
+        test.throws(delegate, function(err) {
+            return (err instanceof scaffold.Exceptions.ArgumentNullError);
+        });
 
         test.done();
     }

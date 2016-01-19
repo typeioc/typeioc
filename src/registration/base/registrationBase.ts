@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------------------------
- * Copyright (c) 2015 Maxim Gherman
+ * Copyright (c) 2016 Maxim Gherman
  * typeioc - Dependency injection container for node typescript
  * @version v1.3.0
  * @link https://github.com/maxgherman/TypeIOC
@@ -18,6 +18,7 @@ export class RegistrationBase implements Typeioc.Internal.IRegistrationBase {
     private _initializer : Typeioc.IInitializer<any> = null;
     private _disposer : Typeioc.IDisposer<any> = null;
     private _args : any[];
+    private _params : any[];
     private _container : Typeioc.IContainer;
     private _instance: any = null;
     private _factoryType : any = null;
@@ -74,6 +75,14 @@ export class RegistrationBase implements Typeioc.Internal.IRegistrationBase {
         this._args = value;
     }
 
+    public get params() : any[] {
+        return this._params;
+    }
+
+    public set params(value : any[]) {
+        this._params = value;
+    }
+
     public get container() : Typeioc.IContainer {
         return this._container;
     }
@@ -104,6 +113,7 @@ export class RegistrationBase implements Typeioc.Internal.IRegistrationBase {
 
     constructor(private _service: any) {
         this.args = [];
+        this.params = [];
     }
 
     public cloneFor(container: Typeioc.IContainer) : Typeioc.Internal.IRegistrationBase {
@@ -114,6 +124,7 @@ export class RegistrationBase implements Typeioc.Internal.IRegistrationBase {
         result.scope = this._scope;
         result.initializer = this._initializer;
         result.factoryType = this._factoryType;
+        result.params = this._params;
 
         return result;
     }

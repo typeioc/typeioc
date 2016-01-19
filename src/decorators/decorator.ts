@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------------------------
- * Copyright (c) 2015 Maxim Gherman
+ * Copyright (c) 2016 Maxim Gherman
  * typeioc - Dependency injection container for node typescript
  * @version v1.3.0
  * @link https://github.com/maxgherman/TypeIOC
@@ -20,99 +20,98 @@ import Internal = Typeioc.Internal;
 
 export class Decorator implements Decorators.IDecorator {
 
-    constructor(private _builder : Typeioc.IContainerBuilder,
-                private _decoratorRegistrationApiSerice : Typeioc.Internal.IDecoratorApiService ) {}
+    private _builder : Typeioc.IContainerBuilder;
+    private _internalStorage : Internal.IInternalStorage<any, Internal.IDecoratorResolutionCollection>;
 
-    public build() : Typeioc.IContainer {
+    constructor(private _builderService : Internal.IContainerBuilderService,
+                private _internalContainerService : Internal.IInternalContainerService,
+                private _decoratorRegistrationApiService : Internal.IDecoratorApiService,
+                private _internalStorageService : Internal.IInternalStorageService<any, Internal.IDecoratorResolutionCollection>) {
+
+        this._internalStorage = this._internalStorageService.create();
+
+        _internalContainerService.resolutionDetails = this._internalStorage;
+
+        this._builder = _builderService.create(_internalContainerService);
+    }
+
+    public build():Typeioc.IContainer {
+
         return this._builder.build();
     }
 
-    public provide<R>(service: any) : Decorators.Register.IInitializedDisposedNamedReusedOwned<R> {
+    public provide<R>(service:any):Decorators.Register.IInitializedDisposedNamedReusedOwned<R> {
 
-        var register = (api : Internal.IDecoratorRegistrationApi<R>)  => {
+        var register = (api:Internal.IDecoratorRegistrationApi<R>)  => (target:R) => {
 
-            return (target : R) => {
+            if (!Utils.Reflection.isPrototype(target)) {
+                let error = new Exceptions.DecoratorError("Decorator target not supported, not a prototype");
+                error.data = {target: target};
+                throw error;
+            }
 
-                if(!Utils.Reflection.isPrototype(target)) {
-                    let error = new Exceptions.DecoratorError("Decorator target not supported, not a prototype");
-                    error.data = { target : target };
-                    throw error;
-                }
+            let registration = this._builder
+                .register(api.service)
+                .asType(target);
 
-                var containerBuilder = api.builder || this._builder;
+            var initializer = api.initializedBy;
+            if (initializer)
+                registration.initializeBy(initializer);
 
-                let registration = containerBuilder
-                    .register(api.service)
-                    .asType(target);
+            var disposer = api.disposedBy;
+            if (disposer)
+                registration.dispose(disposer);
 
-                var initializer = api.initializedBy;
-                if(initializer)
-                    registration.initializeBy(initializer);
+            var name = api.name;
+            if (name)
+                registration.named(name);
 
-                var disposer = api.disposedBy;
-                if(disposer)
-                    registration.dispose(disposer);
+            var scope = api.scope || Types.Defaults.Scope;
+            registration.within(scope);
 
-                var name = api.name;
-                if(name)
-                    registration.named(name);
+            var owner = api.owner || Types.Defaults.Owner;
+            registration.ownedBy(owner);
 
-                var scope = api.scope || Types.Defaults.Scope;
-                registration.within(scope);
-
-                var owner = api.owner || Types.Defaults.Owner;
-                registration.ownedBy(owner);
-
-                return target;
-            };
+            return target;
         };
 
-        var api = this._decoratorRegistrationApiSerice.createRegistration<R>(register);
+        var api = this._decoratorRegistrationApiService.createRegistration<R>(register);
 
         return api.provide(service);
     }
 
-    public by(service? : any) : Decorators.Resolve.IArgsTryNamedCache {
+    public by(service?:any):Decorators.Resolve.IArgsTryNamedCache {
 
-        var resolve = (api: Internal.IDecoratorResolutionApi) => {
+        var resolve = (api:Internal.IDecoratorResolutionApi) => (target:any, key:string, index:number) => {
 
-            return (target: any, key : string, index : number) => {
+            if(!api.service) {
+                var dependencies = Utils.Reflection.getMetadata(Reflect, target);
+                api.service = dependencies[index];
+            }
 
-                var reflectionKey = Utils.Reflection.ReflectionKey;
+            var bucket = this._internalStorage.register(target, () => <Internal.IDecoratorResolutionCollection>{});
 
-                var bucket = <Internal.IDecoratorResolutionCollection>target[reflectionKey];
-
-                if(!bucket)
-                    bucket = target[reflectionKey] = <Internal.IDecoratorResolutionCollection>{ };
-
-                bucket[index] = {
-                    service : api.service,
-                    args: api.args,
-                    attempt: api.attempt,
-                    name : api.name,
-                    cache : api.cache,
-                    container : api.container
-                };
+            bucket[index] = {
+                service: api.service,
+                args: api.args,
+                attempt: api.attempt,
+                name: api.name,
+                cache: api.cache
             };
         };
 
-        var api = this._decoratorRegistrationApiSerice.createResolution(resolve);
+        var api = this._decoratorRegistrationApiService.createResolution(resolve);
 
         return api.by(service);
     }
 
-    public resolveValue(value: any) : Decorators.Resolve.IDecoratorResolutionResult {
+    public resolveValue(value:any):Decorators.Resolve.IDecoratorResolutionResult {
 
-        return (target: any, key : string, index : number) => {
+        return (target:any, key:string, index:number) => {
 
-            var reflectionKey = Utils.Reflection.ReflectionKey;
+            var bucket = this._internalStorage.register(target, () => <Internal.IDecoratorResolutionCollection>{});
 
-            var bucket = target[reflectionKey];
-
-            if(!bucket)
-                bucket = target[reflectionKey] = <Internal.IDecoratorResolutionCollection>{ };
-
-            bucket[index] = {
+            bucket[index] = <Internal.IDecoratorResolutionParams> {
                 value : value
             };
         };

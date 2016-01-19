@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------------------------
- * Copyright (c) 2015 Maxim Gherman
+ * Copyright (c) 2016 Maxim Gherman
  * typeioc - Dependency injection container for node typescript
  * @version v1.3.0
  * @link https://github.com/maxgherman/TypeIOC
@@ -96,8 +96,7 @@ declare module Typeioc.Internal {
     }
 
     interface IContainerService {
-        create(internalContainerService : IInternalContainerService, container? : Typeioc.Internal.IContainer)
-            : Typeioc.IContainer;
+        create(container : Typeioc.Internal.IContainer): Typeioc.IContainer;
     }
 
     interface IContainerApiService {
@@ -105,7 +104,8 @@ declare module Typeioc.Internal {
     }
 
     interface IInternalContainerService {
-        create() : IContainer;
+        resolutionDetails? : Internal.IDecoratorResolutionParamsData;
+        create() : Internal.IContainer;
     }
 
     interface IDecoratorApiService {
@@ -116,6 +116,10 @@ declare module Typeioc.Internal {
             : IDecoratorResolutionApi;
     }
 
+    interface IContainerBuilderService {
+        create(internalContainerService : Internal.IInternalContainerService) : Typeioc.IContainerBuilder;
+    }
+
     interface IDecoratorRegistrationApi<T> {
         service : any;
         initializedBy : Typeioc.IInitializer<T>;
@@ -123,7 +127,6 @@ declare module Typeioc.Internal {
         name : string;
         scope : Types.Scope;
         owner : Types.Owner
-        builder : Typeioc.IContainerBuilder;
         provide(service: any) : Decorators.Register.IInitializedDisposedNamedReusedOwned<T>;
     }
 
@@ -133,7 +136,6 @@ declare module Typeioc.Internal {
         attempt : boolean;
         name? : string;
         cache : Internal.IApiCache;
-        container : Typeioc.IContainer;
         by(service? : any) : Decorators.Resolve.IArgsTryNamedCache;
     }
 
@@ -142,12 +144,14 @@ declare module Typeioc.Internal {
     interface IDecoratorResolutionParams {
         value? : any;
         service? : any;
-        args: Array<any>;
+        args?: Array<any>;
         name? : string;
         attempt? : boolean;
         cache? : Internal.IApiCache;
-        container? : Typeioc.IContainer;
     }
+
+    interface IDecoratorResolutionParamsData
+        extends Internal.IInternalStorage<any, Internal.IDecoratorResolutionCollection> { }
 
     interface IContainerApi<T> {
         serviceValue : T;
@@ -215,6 +219,7 @@ declare module Typeioc.Internal {
         initializer : Typeioc.IInitializer<any>;
         disposer : Typeioc.IDisposer<any>;
         args : any[];
+        params : any[];
         container : Typeioc.IContainer;
         instance : any;
         factoryType : any;

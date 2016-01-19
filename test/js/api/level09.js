@@ -539,7 +539,7 @@ exports.api = {
                 test.done();
             },
 
-            resolvesWithDependencyThrowsWhenNoFactory : function(test) {
+            resolvesWithDependencyThrowsWhenNoFactoryOrFactoryType : function(test) {
 
                 containerBuilder.register(testData.Test2Base)
                     .as(function (c) {
@@ -563,7 +563,7 @@ exports.api = {
                 }
 
                 test.throws(delegate, function(error) {
-                    test.strictEqual(error.message, 'Factory is not defined');
+                    test.strictEqual(error.message, 'Factory or Factory type should be defined');
                     test.strictEqual(error.data, dependencies[0]);
 
                     return error instanceof scaffold.Exceptions.ResolutionError;
@@ -573,6 +573,44 @@ exports.api = {
 
                 test.done();
             },
+
+            resolvesWithDependencyThrowsWhenFactoryAndFactoryType : function(test) {
+
+                containerBuilder.register(testData.Test2Base)
+                    .as(function (c) {
+                        return new testData.Test2();
+                    });
+                containerBuilder.register(testData.Test1Base)
+                    .as(function (c) {
+                        var test2 = c.resolve(testData.Test2Base);
+
+                        return new testData.Test3(test2);
+                    });
+
+                var container = containerBuilder.build();
+
+                var dependencies = [{
+                    service: testData.Test2Base,
+                    factory : function() { return {};},
+                    factoryType : function() {return {}; }
+                }];
+
+                var delegate = function() {
+                    container.resolveWithDependencies(testData.Test1Base, dependencies);
+                }
+
+                test.throws(delegate, function(error) {
+                    test.strictEqual(error.message, 'Factory or Factory type should be defined');
+                    test.strictEqual(error.data, dependencies[0]);
+
+                    return error instanceof scaffold.Exceptions.ResolutionError;
+                });
+
+                test.expect(3);
+
+                test.done();
+            },
+
 
             resolveWithDependencyInitializerIsInvoked : function(test) {
 

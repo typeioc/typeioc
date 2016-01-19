@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------------------------
- * Copyright (c) 2015 Maxim Gherman
+ * Copyright (c) 2016 Maxim Gherman
  * typeioc - Dependency injection container for node typescript
  * @version v1.3.0
  * @link https://github.com/maxgherman/TypeIOC
@@ -12,69 +12,77 @@
 
 import Types = require('../types/index');
 import Utils = require('../utils/index');
+import Internal = Typeioc.Internal;
 
 
 export class ContainerBuilder implements Typeioc.IContainerBuilder {
-    private registrations : Typeioc.Internal.IRegistrationBase[];
-    private moduleRegistrations : Typeioc.Internal.IModuleRegistration[];
+    private _registrations : Internal.IRegistrationBase[];
+    private _moduleRegistrations : Internal.IModuleRegistration[];
     private _defaults : Typeioc.Types.IDefaults;
 
-    constructor(private _configRegistrationService : Typeioc.Internal.IConfigRegistrationService,
-                private _registrationBaseService : Typeioc.Internal.IRegistrationBaseService,
-                private _instanceRegistrationService : Typeioc.Internal.IInstanceRegistrationService,
-                private _moduleRegistrationService : Typeioc.Internal.IModuleRegistrationService,
-                private _internalContainerService : Typeioc.Internal.IInternalContainerService,
-                private _containerService : Typeioc.Internal.IContainerService) {
-        this.registrations = [];
-        this.moduleRegistrations = [];
+    constructor(private _configRegistrationService : Internal.IConfigRegistrationService,
+                private _registrationBaseService : Internal.IRegistrationBaseService,
+                private _instanceRegistrationService : Internal.IInstanceRegistrationService,
+                private _moduleRegistrationService : Internal.IModuleRegistrationService,
+                private _internalContainerService : Internal.IInternalContainerService,
+                private _containerService : Internal.IContainerService) {
+        this._registrations = [];
+        this._moduleRegistrations = [];
 
         this._defaults = Types.Defaults;
     }
 
     public register<R>(service : any) : Typeioc.IRegistration<R> {
 
+        Utils.checkNullArgument(service, 'service');
+
         var regoBase = this._registrationBaseService.create(service);
         var registration = this._instanceRegistrationService.create<R>(regoBase);
 
         setDefaults(regoBase, this._defaults);
 
-        this.registrations.push(regoBase);
+        this._registrations.push(regoBase);
 
         return registration;
     }
 
     public registerModule(serviceModule : Object) : Typeioc.IAsModuleRegistration {
 
+        Utils.checkNullArgument(serviceModule, 'serviceModule');
+
         var regoBase = this._registrationBaseService.create(serviceModule);
         var moduleRegistration = this._moduleRegistrationService.create(regoBase);
 
         setDefaults(regoBase, this._defaults);
 
-        this.moduleRegistrations.push(moduleRegistration);
+        this._moduleRegistrations.push(moduleRegistration);
 
         return moduleRegistration.getAsModuleRegistration();
     }
 
     public registerConfig(config : Typeioc.IConfig) : void {
+
+        Utils.checkNullArgument(config, 'config');
+
         var configRego = this._configRegistrationService.create();
         configRego.apply(config);
 
         setDefaults(configRego, this._defaults);
 
-        this.registrations.push.apply(this.registrations, configRego.registrations);
+        this._registrations.push.apply(this._registrations, configRego.registrations);
     }
 
     public build() : Typeioc.IContainer {
 
-        var regoes = this.registrations.slice(0);
+        var regoes = this._registrations.slice(0);
 
-        this.moduleRegistrations.forEach(item => {
+        this._moduleRegistrations.forEach(item => {
 
             regoes.push.apply(regoes, item.registrations);
         });
 
         var internalContainer = this._internalContainerService.create();
-        var container = this._containerService.create(this._internalContainerService, internalContainer);
+        var container = this._containerService.create(internalContainer);
         internalContainer.add(regoes);
 
         return {
@@ -91,7 +99,7 @@ export class ContainerBuilder implements Typeioc.IContainerBuilder {
     }
 }
 
-function setDefaults(rego : Typeioc.Internal.IRegistrationBase | Typeioc.Internal.IConfigRegistration,
+function setDefaults(rego : Internal.IRegistrationBase | Internal.IConfigRegistration,
                      defaults: Typeioc.Types.IDefaults) {
 
     rego.scope = defaults.Scope;

@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------------------------
- * Copyright (c) 2015 Maxim Gherman
+ * Copyright (c) 2016 Maxim Gherman
  * typeioc - Dependency injection container for node typescript
  * @version v1.3.0
  * @link https://github.com/maxgherman/TypeIOC
@@ -33,37 +33,47 @@ export class Scaffold {
 
     public createBuilder() : Typeioc.IContainerBuilder {
 
-        var moduleStorageService = this.internalStorageService<any, Internal.IModuleItemRegistrationOptions>();
-        var internalRegoStorageService = this.internalStorageService<any, Internal.IIndexedCollection<any>>();
-        var regoStorageService = this.registrationStorageService(internalRegoStorageService);
-        var disposableStorageService = this.disposableStorageService();
-        var baseRegoService = this.registrationBaseService();
-        var instanceRegoService = this.instanceRegistrationService();
-        var moduleRegoService = this.moduleRegistrationService(moduleStorageService, baseRegoService);
-        var configRegoService = this.configRegistrationService(baseRegoService, moduleRegoService);
-        var containerApiService = this.containerApiService();
+        var internalContainerService = this.internalContainerService();
 
-        var internalContainerService = this.internalContainerService(
-            regoStorageService,
-            disposableStorageService,
-            baseRegoService,
-            containerApiService);
-
-        var containerService = this.containerService();
-
-        return new BuilderModule.ContainerBuilder(
-            configRegoService,
-            baseRegoService,
-            instanceRegoService,
-            moduleRegoService,
-            internalContainerService,
-            containerService);
+        return this.builderService().create(internalContainerService);
     }
 
     public createDecorator() : Decorators.IDecorator {
 
-        var decoraorRegistrationService = this.decoratorRegistrationApiService();
-        return new DecoratorModule.Decorator(this.createBuilder(), decoraorRegistrationService);
+        var decoratorRegistrationService = this.decoratorRegistrationApiService();
+        var internalSorageService = this.internalStorageService<any, Internal.IDecoratorResolutionCollection>();
+
+        var internalContainerService = this.internalContainerService();
+
+        return new DecoratorModule.Decorator(
+            this.builderService(),
+            internalContainerService,
+            decoratorRegistrationService,
+            internalSorageService);
+    }
+
+    private builderService() : Internal.IContainerBuilderService {
+
+        return {
+            create : (internalContainerService : Internal.IInternalContainerService) => {
+
+                var moduleStorageService = this.internalStorageService<any, Internal.IModuleItemRegistrationOptions>();
+                var baseRegoService = this.registrationBaseService();
+                var instanceRegoService = this.instanceRegistrationService();
+                var moduleRegoService = this.moduleRegistrationService(moduleStorageService, baseRegoService);
+                var configRegoService = this.configRegistrationService(baseRegoService, moduleRegoService);
+
+                var containerService = this.containerService();
+
+                return new BuilderModule.ContainerBuilder(
+                    configRegoService,
+                    baseRegoService,
+                    instanceRegoService,
+                    moduleRegoService,
+                    internalContainerService,
+                    containerService);
+            }
+        };
     }
 
     private internalStorageService<K, T>() : Internal.IInternalStorageService<K, T> {
@@ -97,14 +107,12 @@ export class Scaffold {
 
         var service = {
             create<R1, R2>() {
-            return new InternalStorageModule.InternalStorage<R1, R2>();
+                return new InternalStorageModule.InternalStorage<R1, R2>();
             }
         };
 
         return {
             create() {
-                //var storage = internalStorageService.create();
-
                 return new RegoStorageModule.RegistrationStorage(service);
             }
         };
@@ -127,8 +135,7 @@ export class Scaffold {
 
     private containerService() : Internal.IContainerService {
         return {
-            create : (internalContainerService : Internal.IInternalContainerService,
-                      container? : Internal.IContainer) => new ContainerModule.Container(internalContainerService, container)
+            create : (container? : Internal.IContainer) => new ContainerModule.Container(container)
         };
     }
 
@@ -160,21 +167,29 @@ export class Scaffold {
         };
     }
 
-    private internalContainerService(registrationStorageService : Internal.IRegistrationStorageService,
-                                     disposableStorageService : Internal.IIDisposableStorageService,
-                                     registrationBaseService : Internal.IRegistrationBaseService,
-                                     containerApiService : Internal.IContainerApiService)
+    private internalContainerService()
             : Internal.IInternalContainerService {
+
+        var that = this;
+
         return {
-            create :() => {
+
+            create() {
+
+                var internalRegoStorageService = that.internalStorageService<any, Internal.IIndexedCollection<any>>();
+                var regoStorageService = that.registrationStorageService(internalRegoStorageService);
+                var disposableStorageService = that.disposableStorageService();
+                var baseRegoService = that.registrationBaseService();
+                var containerApiService = that.containerApiService();
 
                 return new InternalContainerModule.InternalContainer(
-                    registrationStorageService,
+                    regoStorageService ,
                     disposableStorageService,
-                    registrationBaseService,
-                    containerApiService);
+                    baseRegoService,
+                    containerApiService,
+                    this.resolutionDetails);
             }
-        }
+        };
     }
 
     private decoratorRegistrationApiService() : Internal.IDecoratorApiService {

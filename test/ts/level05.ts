@@ -159,7 +159,7 @@ export module Level5 {
 
         containerBuilder.register<TestData.Initializable>(TestData.Initializable)
             .as(() => new TestData.Initializable2()).
-            initializeBy((c, item) => item.initialize(className));
+            initializeBy((c, item) => { item.initialize(className); return item; });
 
         var container = containerBuilder.build();
 
@@ -180,6 +180,7 @@ export module Level5 {
         var initializer = (c : Typeioc.IContainer, item : TestData.Initializable) => {
             item.initialize(className);
             item.test6 = c.resolve<TestData.Test6>(TestData.Test6);
+            return item;
         };
 
         containerBuilder.register(TestData.Test6).as((c) => new TestData.Test6());

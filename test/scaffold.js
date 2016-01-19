@@ -20,8 +20,8 @@ function createBuilder() {
     return typeioc.createBuilder();
 }
 exports.createBuilder = createBuilder;
-function getDecorator() {
-    return typeioc.getDecorator();
+function createDecorator() {
+    return typeioc.createDecorator();
 }
-exports.getDecorator = getDecorator;
+exports.createDecorator = createDecorator;
 //# sourceMappingURL=scaffold.js.map

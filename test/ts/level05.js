@@ -110,7 +110,7 @@ var Level5;
         var className = "item";
         containerBuilder.register(TestData.Initializable)
             .as(function () { return new TestData.Initializable2(); }).
-            initializeBy(function (c, item) { return item.initialize(className); });
+            initializeBy(function (c, item) { item.initialize(className); return item; });
         var container = containerBuilder.build();
         var i1 = container.resolve(TestData.Initializable);
         var i2 = container.resolve(TestData.Initializable);
@@ -125,6 +125,7 @@ var Level5;
         var initializer = function (c, item) {
             item.initialize(className);
             item.test6 = c.resolve(TestData.Test6);
+            return item;
         };
         containerBuilder.register(TestData.Test6).as(function (c) { return new TestData.Test6(); });
         containerBuilder.register(TestData.Initializable).as(function (c) { return new TestData.Initializable(); }).

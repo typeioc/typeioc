@@ -182,7 +182,7 @@ export class Config
                         name : 'Initializable'
                     },
                     factory : () => new testData.Initializable(),
-                    initializeBy : (c, item : testData.Initializable) => { item.initialize(className); }
+                    initializeBy : (c, item : testData.Initializable) => { item.initialize(className); return item; }
                 }
             ]
         };

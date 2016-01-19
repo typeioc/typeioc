@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------------------------
- * Copyright (c) 2015 Maxim Gherman
+ * Copyright (c) 2016 Maxim Gherman
  * typeioc - Dependency injection container for node typescript
  * @version v1.3.0
  * @link https://github.com/maxgherman/TypeIOC
@@ -68,12 +68,9 @@ export class RegistrationStorage implements Internal.IRegistrationStorage {
         if(!registration.name) {
             storage.factory.noName[argsCount] = registration;
         } else {
-            let bucket = storage.factory.names[registration.name];
-
-            if(!bucket)
-                bucket = storage.factory.names[registration.name] = {};
-
+            let bucket = storage.factory.names[registration.name] || {};
             bucket[argsCount] = registration;
+            storage.factory.names[registration.name] = bucket;
         }
     }
 

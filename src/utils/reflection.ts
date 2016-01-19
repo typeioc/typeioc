@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------------------------
- * Copyright (c) 2015 Maxim Gherman
+ * Copyright (c) 2016 Maxim Gherman
  * typeioc - Dependency injection container for node typescript
  * @version v1.3.0
  * @link https://github.com/maxgherman/TypeIOC
@@ -9,8 +9,7 @@
 /// <reference path="../../node_modules/reflect-metadata/reflect-metadata.d.ts"/>
 
 import Exceptions = require('../exceptions/index');
-
-export var ReflectionKey = 'typeioc';
+import Internal = Typeioc.Internal;
 
 export function getMetadata(reflect, type : any) {
     return reflect.getMetadata("design:paramtypes", type) || [];

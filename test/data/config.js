@@ -170,7 +170,7 @@ var Config = (function () {
                         name: 'Initializable'
                     },
                     factory: function () { return new testData.Initializable(); },
-                    initializeBy: function (c, item) { item.initialize(className); }
+                    initializeBy: function (c, item) { item.initialize(className); return item; }
                 }
             ]
         };

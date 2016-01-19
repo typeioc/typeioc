@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------------------------
- * Copyright (c) 2015 Maxim Gherman
+ * Copyright (c) 2016 Maxim Gherman
  * typeioc - Dependency injection container for node typescript
  * @version v1.3.0
  * @link https://github.com/maxgherman/TypeIOC
@@ -29,7 +29,8 @@ export class InternalContainer implements Internal.IContainer {
     constructor(private _registrationStorageService : Internal.IRegistrationStorageService,
                 private _disposableStorageService : Internal.IIDisposableStorageService,
                 private _registrationBaseService : Internal.IRegistrationBaseService,
-                private _containerApiService : Internal.IContainerApiService) {
+                private _containerApiService : Internal.IContainerApiService,
+                private _resolutionDetails? : Internal.IDecoratorResolutionParamsData) {
 
         this._collection = this._registrationStorageService.create();
         this._disposableStorage = this._disposableStorageService.create();
@@ -53,7 +54,8 @@ export class InternalContainer implements Internal.IContainer {
             this._registrationStorageService,
             this._disposableStorageService,
             this._registrationBaseService,
-            this._containerApiService);
+            this._containerApiService,
+            this._resolutionDetails);
         child.parent = this;
         this.children.push(child);
         return child;
@@ -184,11 +186,11 @@ export class InternalContainer implements Internal.IContainer {
 
         switch(registration.scope) {
             case Typeioc.Types.Scope.None:
-                return this.createTrackable(registration);
+                return this.createTrackable(registration, throwIfNotFound);
 
             case Types.Scope.Container:
 
-                return this.resolveContainerScope(registration);
+                return this.resolveContainerScope(registration, throwIfNotFound);
 
             case Types.Scope.Hierarchy :
 
@@ -199,7 +201,7 @@ export class InternalContainer implements Internal.IContainer {
         }
     }
 
-    private resolveContainerScope(registration : Internal.IRegistrationBase) : any {
+    private resolveContainerScope(registration : Internal.IRegistrationBase, throwIfNotFound : boolean) : any {
         var entry : Internal.IRegistrationBase;
 
         if(registration.container !== this) {
@@ -210,7 +212,7 @@ export class InternalContainer implements Internal.IContainer {
         }
 
         if(!entry.instance) {
-            entry.instance = this.createTrackable(entry);
+            entry.instance = this.createTrackable(entry, throwIfNotFound);
         }
 
         return entry.instance;
@@ -227,19 +229,19 @@ export class InternalContainer implements Internal.IContainer {
 
         if(!registration.instance) {
 
-            registration.instance = this.createTrackable(registration);
+            registration.instance = this.createTrackable(registration, throwIfNotFound);
         }
 
         return registration.instance;
     }
 
-    private createTrackable(registration : Internal.IRegistrationBase) : any {
+    private createTrackable(registration : Internal.IRegistrationBase, throwIfNotFound : boolean) : any {
 
         var instance = registration.invoke();
 
         if(registration.forInstantiation === true) {
 
-            instance = this.instantiate(instance, ...registration.args);
+            instance = this.instantiate(instance, registration, throwIfNotFound);
         }
 
         if(registration.owner === Types.Owner.Container &&
@@ -249,7 +251,7 @@ export class InternalContainer implements Internal.IContainer {
         }
 
         if(registration.initializer) {
-            registration.initializer(this, instance);
+            instance = registration.initializer(this, instance);
         }
 
         return instance;
@@ -270,8 +272,9 @@ export class InternalContainer implements Internal.IContainer {
                 throw exception;
             }
 
-            if(!dependency.factory) {
-                var exception = new Exceptions.ResolutionError('Factory is not defined');
+            if((!dependency.factory && !dependency.factoryType) ||
+                (dependency.factory && dependency.factoryType)) {
+                var exception = new Exceptions.ResolutionError('Factory or Factory type should be defined');
                 exception.data = dependency;
                 throw exception;
             }
@@ -297,6 +300,7 @@ export class InternalContainer implements Internal.IContainer {
                 this.createRegistration(item.dependency.service)
                 : item.implementation.cloneFor(this);
 
+            baseRegistration.factoryType = item.dependency.factoryType;
             baseRegistration.factory = item.dependency.factory;
             baseRegistration.name = item.dependency.named;
             baseRegistration.initializer = item.dependency.initializer;
@@ -355,44 +359,45 @@ export class InternalContainer implements Internal.IContainer {
         this._cache[name] = value;
     }
 
-    private instantiate(type : any, ...args: any[]) {
-
-        var key = Utils.Reflection.ReflectionKey;
+    private instantiate(type : any, registration : Internal.IRegistrationBase, throwIfNotFound : boolean) {
 
         var dependencies = Utils.Reflection.getMetadata(Reflect, type);
         
-        if(args.length  ||
-           (!type[key] && !dependencies.length))
-            return Utils.Reflection.construct(type, args)
+        if(registration.args.length)
+            return Utils.Reflection.construct(type, registration.args);
 
-        var bucket = <Internal.IDecoratorResolutionCollection>(type[key] || {});
+        if(registration.params.length) {
+
+            let params = registration.params.map(item => throwIfNotFound === true ? this.resolve(item) : this.tryResolve(item));
+            return Utils.Reflection.construct(type, params);
+        }
 
         var params = dependencies
             .map((dependancy, index) => {
 
-                if(!bucket[index])
+                let depParams = this._resolutionDetails ? this._resolutionDetails.tryGet(type) : null;
+                let depParamsValue = depParams ? depParams[index] : null;
+
+                if(!depParamsValue)
                     return this.resolve(dependancy);
 
-                let depParams = <Internal.IDecoratorResolutionParams>bucket[index];
+                if(depParamsValue.value)
+                    return depParamsValue.value;
 
-                if(depParams.value)
-                    return depParams.value;
+                let resolutionItem = depParamsValue.service || dependancy;
+                let resolution = this.resolveWith(resolutionItem);
 
-                let container = depParams.container || this;
-                let resolutionItem = depParams.service || dependancy;
-                let resolution = container.resolveWith(resolutionItem);
+                if(depParamsValue.args && depParamsValue.args.length)
+                    resolution.args(...depParamsValue.args);
 
-                if(depParams.args.length)
-                    resolution.args(...depParams.args);
+                if(depParamsValue.name)
+                    resolution.name(depParamsValue.name);
 
-                if(depParams.name)
-                    resolution.name(depParams.name);
-
-                if(depParams.attempt === true)
+                if(depParamsValue.attempt === true)
                     resolution.attempt();
 
-                if(depParams.cache.use === true)
-                    resolution.cache(depParams.cache.name);
+                if(depParamsValue.cache && depParamsValue.cache.use === true)
+                    resolution.cache(depParamsValue.cache.name);
 
                 return resolution.exec();
             });

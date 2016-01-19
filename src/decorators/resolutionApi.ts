@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------------------------
- * Copyright (c) 2015 Maxim Gherman
+ * Copyright (c) 2016 Maxim Gherman
  * typeioc - Dependency injection container for node typescript
  * @version v1.3.0
  * @link https://github.com/maxgherman/TypeIOC
@@ -14,7 +14,6 @@ import Internal = Typeioc.Internal;
 import Resolve = Typeioc.Decorators.Resolve;
 
 export class ResolutionApi implements Internal.IDecoratorResolutionApi {
-    private _container : Typeioc.IContainer;
     private _name : string;
     private _attempt : boolean;
     private _service: any;
@@ -25,12 +24,12 @@ export class ResolutionApi implements Internal.IDecoratorResolutionApi {
         name: <string>undefined
     };
 
-    public get container() : Typeioc.IContainer {
-        return this._container;
-    }
-
     public get service() : any {
         return this._service;
+    }
+
+    public set service(value : any) {
+        this._service = value;
     }
 
     public get args() : Array<any> {
@@ -107,8 +106,7 @@ export class ResolutionApi implements Internal.IDecoratorResolutionApi {
         };
     }
 
-    private resolveAction(container?: Typeioc.IContainer) : Resolve.IDecoratorResolutionResult {
-        this._container = container;
+    private resolveAction() : Resolve.IDecoratorResolutionResult {
 
         return this._resolve(this);
     }

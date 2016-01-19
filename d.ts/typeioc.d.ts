@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------------------------
- * Copyright (c) 2015 Maxim Gherman
+ * Copyright (c) 2016 Maxim Gherman
  * typeioc - Dependency injection container for node typescript
  * @version v1.3.0
  * @link https://github.com/maxgherman/TypeIOC
@@ -75,7 +75,7 @@ declare module Typeioc {
             }
 
             interface IRegister {
-                register(builder? : IContainerBuilder) : IDecoratorRegisterResult
+                register() : IDecoratorRegisterResult;
             }
 
             interface IOwned extends Register.IRegister {
@@ -98,10 +98,6 @@ declare module Typeioc {
                 dispose : (action : IDisposer<T>) =>  Register.INamedReusedOwned;
             }
 
-            //interface IInitialized<T> {
-            //    initializeBy : (action : IInitializer<T>) => Register.INamedReusedOwned;
-            //}
-
             interface INamedReusedOwnedDisposed<T> extends Register.IDisposable<T>, Register.INamedReusedOwned {}
 
             interface IInitialized<T> {
@@ -110,9 +106,6 @@ declare module Typeioc {
 
             interface IInitializedDisposedNamedReusedOwned<T>
                 extends Register.IInitialized<T>, Register.IDisposable<T>, Register.INamedReusedOwned { }
-
-            //interface IInitializedNamedReusedOwned<T>
-            //    extends Register.IInitialized<T>, Register.INamedReusedOwned { }
         }
 
         module Resolve {
@@ -126,7 +119,7 @@ declare module Typeioc {
             }
 
             interface IResolve {
-                resolve(container? : Typeioc.IContainer) : IDecoratorResolutionResult;
+                resolve() : IDecoratorResolutionResult;
             }
 
             interface ICache extends Resolve.IResolve {
@@ -204,7 +197,7 @@ declare module Typeioc {
     }
 
     interface IInitializer<T> {
-        (IContainer, item : T) : void;
+        (IContainer, item : T) : T;
     }
 
     interface IDisposer<T> {
@@ -245,7 +238,7 @@ declare module Typeioc {
 
     interface IAs<T> {
         as(factory: IFactory<T>) : IInitializedDisposedNamedReusedOwned<T>;
-        asType(type : T) : IInitializedDisposedNamedReusedOwned<T>;
+        asType(type : T, ...params : Array<any>) : IInitializedDisposedNamedReusedOwned<T>;
     }
 
     interface IRegistration<T> extends IAs<T> { }
@@ -262,7 +255,8 @@ declare module Typeioc {
 
     interface IDynamicDependency {
         service : any;
-        factory: IFactory<any>;
+        factory?: IFactory<any>;
+        factoryType? : any;
         named? : string;
         initializer? : IInitializer<any>;
         required? : boolean;

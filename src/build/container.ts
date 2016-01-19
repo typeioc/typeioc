@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------------------------
- * Copyright (c) 2015 Maxim Gherman
+ * Copyright (c) 2016 Maxim Gherman
  * typeioc - Dependency injection container for node typescript
  * @version v1.3.0
  * @link https://github.com/maxgherman/TypeIOC
@@ -16,22 +16,15 @@ import Exceptions = require('../exceptions/index');
 
 export class Container implements Typeioc.IContainer {
 
-    private _container : Typeioc.Internal.IContainer;
-
-    constructor(private _internalContainerService : Typeioc.Internal.IInternalContainerService,
-                container? : Typeioc.Internal.IContainer) {
-
-        this._container = container || _internalContainerService.create();
-    }
+    constructor(private _container : Typeioc.Internal.IContainer) { }
 
     public get cache() : any {
-        return this._container['cache'];
+        return this._container.cache;
     }
 
     public createChild() : Typeioc.IContainer {
 
-        return new Container(this._internalContainerService,
-            <Typeioc.Internal.IContainer>this._container.createChild());
+        return new Container(<Typeioc.Internal.IContainer>this._container.createChild());
     }
 
     public dispose() : void {
