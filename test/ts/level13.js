@@ -260,6 +260,18 @@ var Level13;
             test.ok(actual);
             test.strictEqual(actual.foo(), 'Test dependency');
             test.done();
+        },
+        resolve_by_object_string: function (test) {
+            var actual = container
+                .resolve(TestData.Resolve.ObjectResolution.TestBase);
+            test.strictEqual(actual.foo(), 'Test Test1');
+            test.done();
+        },
+        resolve_by_object_number: function (test) {
+            var actual = container
+                .resolve(TestData.Resolve.NumberResolution.TestBase);
+            test.strictEqual(actual.foo(), 'Test Test1');
+            test.done();
         }
     };
 })(Level13 = exports.Level13 || (exports.Level13 = {}));

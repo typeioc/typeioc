@@ -1285,6 +1285,82 @@ exports.api = {
                     test.strictEqual(actual.foo(), 'Test dependency');
 
                     test.done();
+                },
+
+                resolve_by_object_string_generated : function(test) {
+
+                    var actual = container
+                            .resolve(TestData.Resolve.ObjectResolution.TestBase);
+
+                    test.strictEqual(actual.foo(), 'Test Test1');
+
+                    test.done();
+                },
+
+                resolve_by_object_string : function(test) {
+
+                    var TestBase = function() {};
+                    TestBase.prototype.foo = function() {};
+
+                    var Test = function(arg1) {
+                        this.arg1 = arg1;
+                    };
+                    Test.prototype.foo = function() {
+                        return ['Test', this.arg1.foo()].join(' ');
+                    };
+
+                    var Test1 = function() { };
+                    Test1.prototype.foo = function() {
+                        return 'Test1';
+                    };
+
+                    builder.register('dependency').asType(Test1);
+                    builder.register(TestBase).asType(Test, 'dependency');
+
+                    var container = builder.build();
+                    var actual = container.resolve(TestBase);
+
+                    test.strictEqual(actual.foo(), 'Test Test1');
+
+                    test.done();
+                },
+
+                resolve_by_object_number_generated : function(test) {
+
+                    var actual = container
+                            .resolve(TestData.Resolve.NumberResolution.TestBase);
+
+                    test.strictEqual(actual.foo(), 'Test Test1');
+
+                    test.done();
+                },
+
+                resolve_by_object_number : function(test) {
+
+                    var TestBase = function() {};
+                    TestBase.prototype.foo = function() {};
+
+                    var Test = function(arg1) {
+                        this.arg1 = arg1;
+                    };
+                    Test.prototype.foo = function() {
+                        return ['Test', this.arg1.foo()].join(' ');
+                    };
+
+                    var Test1 = function() { };
+                    Test1.prototype.foo = function() {
+                        return 'Test1';
+                    };
+
+                    builder.register(123).asType(Test1);
+                    builder.register(TestBase).asType(Test, 123);
+
+                    var container = builder.build();
+                    var actual = container.resolve(TestBase);
+
+                    test.strictEqual(actual.foo(), 'Test Test1');
+
+                    test.done();
                 }
             }
         };

@@ -1084,5 +1084,85 @@ var Resolve;
         })(Resolve.DependenciesNonRequired.TestBase1);
         DependenciesNonRequired.TestDep = TestDep;
     })(DependenciesNonRequired = Resolve.DependenciesNonRequired || (Resolve.DependenciesNonRequired = {}));
+    var ObjectResolution;
+    (function (ObjectResolution) {
+        var TestBase = (function () {
+            function TestBase() {
+            }
+            TestBase.prototype.foo = function () { };
+            return TestBase;
+        })();
+        ObjectResolution.TestBase = TestBase;
+        var Test = (function (_super) {
+            __extends(Test, _super);
+            function Test(_arg1) {
+                _super.call(this);
+                this._arg1 = _arg1;
+            }
+            Test.prototype.foo = function () {
+                return ['Test', this._arg1.foo()].join(' ');
+            };
+            Test = __decorate([
+                exports.decorator.provide(ObjectResolution.TestBase).register(),
+                __param(0, exports.decorator.by('dependency').resolve()), 
+                __metadata('design:paramtypes', [Object])
+            ], Test);
+            return Test;
+        })(TestBase);
+        ObjectResolution.Test = Test;
+        var Test1 = (function () {
+            function Test1() {
+            }
+            Test1.prototype.foo = function () {
+                return 'Test1';
+            };
+            Test1 = __decorate([
+                exports.decorator.provide('dependency').register(), 
+                __metadata('design:paramtypes', [])
+            ], Test1);
+            return Test1;
+        })();
+        ObjectResolution.Test1 = Test1;
+    })(ObjectResolution = Resolve.ObjectResolution || (Resolve.ObjectResolution = {}));
+    var NumberResolution;
+    (function (NumberResolution) {
+        var TestBase = (function () {
+            function TestBase() {
+            }
+            TestBase.prototype.foo = function () { };
+            return TestBase;
+        })();
+        NumberResolution.TestBase = TestBase;
+        var Test = (function (_super) {
+            __extends(Test, _super);
+            function Test(_arg1) {
+                _super.call(this);
+                this._arg1 = _arg1;
+            }
+            Test.prototype.foo = function () {
+                return ['Test', this._arg1.foo()].join(' ');
+            };
+            Test = __decorate([
+                exports.decorator.provide(NumberResolution.TestBase).register(),
+                __param(0, exports.decorator.by(123).resolve()), 
+                __metadata('design:paramtypes', [Object])
+            ], Test);
+            return Test;
+        })(TestBase);
+        NumberResolution.Test = Test;
+        var Test1 = (function () {
+            function Test1() {
+            }
+            Test1.prototype.foo = function () {
+                return 'Test1';
+            };
+            Test1 = __decorate([
+                exports.decorator.provide(123).register(), 
+                __metadata('design:paramtypes', [])
+            ], Test1);
+            return Test1;
+        })();
+        NumberResolution.Test1 = Test1;
+    })(NumberResolution = Resolve.NumberResolution || (Resolve.NumberResolution = {}));
 })(Resolve = exports.Resolve || (exports.Resolve = {}));
 //# sourceMappingURL=decorators.js.map

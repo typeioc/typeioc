@@ -11,7 +11,7 @@ declare module Typeioc {
 
     function createBuilder() : IContainerBuilder;
 
-    function getDecorator() : Decorators.IDecorator;
+    function createDecorator() : Decorators.IDecorator;
 
     module Types {
         const enum Scope  {

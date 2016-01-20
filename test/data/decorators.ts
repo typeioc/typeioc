@@ -742,4 +742,59 @@ export module Resolve {
             }
         }
     }
+
+    export module ObjectResolution {
+
+        export class TestBase {
+            public foo() {}
+        }
+
+        @decorator.provide(ObjectResolution.TestBase).register()
+        export class Test extends TestBase {
+
+            constructor(@decorator.by('dependency').resolve() private _arg1) {
+                super();
+            }
+
+            public foo() {
+                return ['Test', this._arg1.foo()].join(' ');
+            }
+        }
+
+        @decorator.provide('dependency').register()
+        export class Test1 {
+
+            public foo() {
+                return 'Test1';
+            }
+        }
+    }
+
+    export module NumberResolution {
+
+        export class TestBase {
+            public foo() {}
+        }
+
+        @decorator.provide(NumberResolution.TestBase).register()
+        export class Test extends TestBase {
+
+            constructor(@decorator.by(123).resolve() private _arg1) {
+                super();
+            }
+
+            public foo() {
+                return ['Test', this._arg1.foo()].join(' ');
+            }
+        }
+
+        @decorator.provide(123).register()
+        export class Test1 {
+
+            public foo() {
+                return 'Test1';
+            }
+        }
+
+    }
 }
