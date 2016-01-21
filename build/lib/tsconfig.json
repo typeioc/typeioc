@@ -4,8 +4,7 @@
     "target": "ES5",
     "outDir": "../../lib",
     "sourceMap": true,
-    "experimentalDecorators" : true,
-    "emitDecoratorMetadata" : true
+    "experimentalDecorators" : true
   },
   "files": [
     "../../src/scaffold.ts",

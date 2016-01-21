@@ -21,7 +21,7 @@ var scaffold = require('./../scaffold');
 var ScaffoldAddons = require('./../scaffoldAddons');
 var interceptor = ScaffoldAddons.Interceptors.create();
 exports.decorator = scaffold.createDecorator();
-exports.builder = scaffold.createBuilder();
+exports.decorator2 = scaffold.createDecorator();
 var Registration;
 (function (Registration) {
     var TestBase = (function () {
@@ -1164,5 +1164,98 @@ var Resolve;
         })();
         NumberResolution.Test1 = Test1;
     })(NumberResolution = Resolve.NumberResolution || (Resolve.NumberResolution = {}));
+    var MultipleDecorators;
+    (function (MultipleDecorators) {
+        var TestBase = (function () {
+            function TestBase() {
+            }
+            TestBase.prototype.foo = function () { };
+            return TestBase;
+        })();
+        MultipleDecorators.TestBase = TestBase;
+        var TestBase1 = (function () {
+            function TestBase1() {
+            }
+            TestBase1.prototype.foo = function () { };
+            return TestBase1;
+        })();
+        MultipleDecorators.TestBase1 = TestBase1;
+        var TestBase2 = (function () {
+            function TestBase2() {
+            }
+            TestBase2.prototype.foo = function () { };
+            return TestBase2;
+        })();
+        MultipleDecorators.TestBase2 = TestBase2;
+        var Test = (function (_super) {
+            __extends(Test, _super);
+            function Test() {
+                _super.apply(this, arguments);
+            }
+            Test.prototype.foo = function () {
+                return 'Test';
+            };
+            Test = __decorate([
+                exports.decorator.provide(MultipleDecorators.TestBase).register(),
+                exports.decorator2.provide(MultipleDecorators.TestBase).register(), 
+                __metadata('design:paramtypes', [])
+            ], Test);
+            return Test;
+        })(TestBase);
+        MultipleDecorators.Test = Test;
+        var Test1 = (function (_super) {
+            __extends(Test1, _super);
+            function Test1(_arg1, _arg2, _arg3) {
+                _super.call(this);
+                this._arg1 = _arg1;
+                this._arg2 = _arg2;
+                this._arg3 = _arg3;
+            }
+            Test1.prototype.foo = function () {
+                return ['Test 1 ', this._arg1.foo(), this._arg2.foo(), this._arg3.foo()].join(' ');
+            };
+            Test1 = __decorate([
+                exports.decorator.provide(MultipleDecorators.TestBase1).register(),
+                exports.decorator2.provide(MultipleDecorators.TestBase1).register(),
+                __param(0, exports.decorator.by().resolve()),
+                __param(0, exports.decorator2.by().resolve()),
+                __param(1, exports.decorator.by('decorator').resolve()),
+                __param(1, exports.decorator2.by('decorator 2').resolve()), 
+                __metadata('design:paramtypes', [TestBase, Object, TestBase2])
+            ], Test1);
+            return Test1;
+        })(TestBase1);
+        MultipleDecorators.Test1 = Test1;
+        var Test2 = (function () {
+            function Test2() {
+            }
+            Test2.prototype.foo = function () {
+                return 'Test2';
+            };
+            Test2 = __decorate([
+                exports.decorator.provide('decorator').register(),
+                exports.decorator2.provide('decorator 2').register(), 
+                __metadata('design:paramtypes', [])
+            ], Test2);
+            return Test2;
+        })();
+        MultipleDecorators.Test2 = Test2;
+        var Test3 = (function (_super) {
+            __extends(Test3, _super);
+            function Test3() {
+                _super.apply(this, arguments);
+            }
+            Test3.prototype.foo = function () {
+                return 'Test3';
+            };
+            Test3 = __decorate([
+                exports.decorator.provide(MultipleDecorators.TestBase2).register(),
+                exports.decorator2.provide(MultipleDecorators.TestBase2).register(), 
+                __metadata('design:paramtypes', [])
+            ], Test3);
+            return Test3;
+        })(TestBase2);
+        MultipleDecorators.Test3 = Test3;
+    })(MultipleDecorators = Resolve.MultipleDecorators || (Resolve.MultipleDecorators = {}));
 })(Resolve = exports.Resolve || (exports.Resolve = {}));
 //# sourceMappingURL=decorators.js.map

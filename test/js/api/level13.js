@@ -8,17 +8,21 @@ exports.api = {
         var Scaffold = require('./../../scaffold');
         var ScaffoldAddons = require('./../../scaffoldAddons');
         var Types = Scaffold.Types;
-        var decorator = null;
         var container = null;
         var builder = null;
+        var container2 = null;
 
         return {
             decorators : {
 
                 setUp : function(callback) {
-                    decorator = TestData.decorator;
+                    var decorator = TestData.decorator;
                     container = decorator.build();
                     builder = Scaffold.createBuilder();
+
+                    var decorator2 = TestData.decorator2;
+                    container2 = decorator2.build();
+
                     callback();
                 },
 
@@ -1359,6 +1363,21 @@ exports.api = {
                     var actual = container.resolve(TestBase);
 
                     test.strictEqual(actual.foo(), 'Test Test1');
+
+                    test.done();
+                },
+
+                multiple_decorators_generated : function(test) {
+
+                    var actual = container
+                            .resolve(TestData.Resolve.MultipleDecorators.TestBase1);
+
+                    var actual2 = container2
+                            .resolve(TestData.Resolve.MultipleDecorators.TestBase1);
+
+                    test.notStrictEqual(actual, actual2);
+                    test.strictEqual(actual.foo(), 'Test 1  Test Test2 Test3');
+                    test.strictEqual(actual2.foo(), 'Test 1  Test Test2 Test3');
 
                     test.done();
                 }

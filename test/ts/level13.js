@@ -4,9 +4,11 @@ var scaffold = require('./../scaffold');
 var Level13;
 (function (Level13) {
     var container;
+    var container2;
     Level13.decorators = {
         setUp: function (callback) {
             container = TestData.decorator.build();
+            container2 = TestData.decorator2.build();
             callback();
         },
         plain_instantiation: function (test) {
@@ -271,6 +273,16 @@ var Level13;
             var actual = container
                 .resolve(TestData.Resolve.NumberResolution.TestBase);
             test.strictEqual(actual.foo(), 'Test Test1');
+            test.done();
+        },
+        multiple_decorators: function (test) {
+            var actual = container
+                .resolve(TestData.Resolve.MultipleDecorators.TestBase1);
+            var actual2 = container2
+                .resolve(TestData.Resolve.MultipleDecorators.TestBase1);
+            test.notStrictEqual(actual, actual2);
+            test.strictEqual(actual.foo(), 'Test 1  Test Test2 Test3');
+            test.strictEqual(actual2.foo(), 'Test 1  Test Test2 Test3');
             test.done();
         }
     };

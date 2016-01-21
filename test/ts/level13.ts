@@ -7,10 +7,12 @@ import scaffold = require('./../scaffold');
 export module Level13 {
 
     var container : Typeioc.IContainer;
+    var container2 : Typeioc.IContainer;
 
     export var decorators = {
         setUp(callback) {
             container = TestData.decorator.build();
+            container2 = TestData.decorator2.build();
 
             callback();
         },
@@ -403,6 +405,21 @@ export module Level13 {
                 .resolve<TestData.Resolve.NumberResolution.TestBase>(TestData.Resolve.NumberResolution.TestBase);
 
             test.strictEqual(actual.foo(), 'Test Test1');
+
+            test.done();
+        },
+
+        multiple_decorators : function(test) {
+
+            var actual = container
+                .resolve<TestData.Resolve.MultipleDecorators.TestBase1>(TestData.Resolve.MultipleDecorators.TestBase1);
+
+            var actual2 = container2
+                .resolve<TestData.Resolve.MultipleDecorators.TestBase1>(TestData.Resolve.MultipleDecorators.TestBase1);
+
+            test.notStrictEqual(actual, actual2);
+            test.strictEqual(actual.foo(), 'Test 1  Test Test2 Test3');
+            test.strictEqual(actual2.foo(), 'Test 1  Test Test2 Test3');
 
             test.done();
         }
