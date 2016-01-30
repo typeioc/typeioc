@@ -7,6 +7,7 @@ var header = require('gulp-header');
 var replace = require('gulp-replace');
 var nodeunit = require('gulp-nodeunit');
 var istanbul = require('gulp-istanbul');
+var gutil = require('gulp-util');
 var runSequence = require('run-sequence');
 var pkg = require('../package.json');
 var fs = require('fs');
@@ -40,8 +41,30 @@ var os = require('os');
             js:   '../lib/**/*.js'
         },
         build : {
-            sources : 'tsc -p ./lib/',
-            tests :   'tsc -p ./tests/'
+
+            appveyor : 'C:\\Users\\appveyor\\AppData\\Roaming\\npm\\',
+
+            get sources() {
+
+                var path = 'tsc -p ./lib/';
+
+                if(gutil.env.env === paths.env.appveyor)
+                    path = this.appveyor + path;
+
+                return path;
+            },
+            get tests() {
+
+                var path = 'tsc -p ./tests/';
+
+                if(gutil.env.env === paths.env.appveyor)
+                    path = this.appveyor + path;
+
+                return path;
+            },
+        },
+        env : {
+            appveyor : 'appveyor'
         },
         copyright :   '../COPYRIGHT'
     };

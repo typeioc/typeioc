@@ -33,8 +33,6 @@ build: off
 test_script:
   - node --version
   - npm --version
-  - PATH=%PATH%;C:\Users\appveyor\AppData\Roaming\npm\tsc
-  - tsc -help
   - C:\Users\appveyor\AppData\Roaming\npm\tsc -help
-  - cmd: npm run build
+  - cmd: npm run build-appveyor
   - cmd: npm run test-ci
