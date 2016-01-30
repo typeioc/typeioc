@@ -13,45 +13,40 @@ TypeIOC
  [![Stories in Progress](https://badge.waffle.io/maxgherman/TypeIOC.svg?label=In%20Progress&title=In%20Progress)](http://waffle.io/maxgherman/TypeIOC)
 
 
-Dependency injection container for node typescript.
+Dependency injection container for node typescript / javascript.
 
 ###Install
 
-Install typescript globally
-
-```
-npm install typescript -g
-```
-
 Install typeioc
 
-```
+```js
 npm install typeioc
 ```
 
 ###Usage
 
-Load typeioc:
+#####Load typeioc:
 
-```
+```js
 var typeioc = require('typeioc');
 ```
 
 Assuming TestBase class and Test class exist somewhere 
 
-Basic resolution (JS):
-```
+#####Basic resolution (JS):
+
+```js
 var containerBuilder = typeioc.createBuilder();
-containerBuilder.register(TestBase).as(function() {return  new Test() });
+containerBuilder.register(TestBase).as(function() {return  new Test(); });
 var container = containerBuilder.build();
 var actual = container.resolve(TestBase);
 ```
 
-With type checking (TS):
+#####With type checking (TS):
 
 Copy typeioc.d.ts definition file from d.ts folder to your project and reference it within ts files.
 
-```
+```ts
 /// <reference path="typeioc.d.ts" />
 import typeioc = require("typeioc");
 
@@ -62,8 +57,9 @@ var container = containerBuilder.build();
 var actual = container.resolve<TestBase>(TestBase);
 ```
 
-Registering with dependencies:
-```
+#####Registering with dependencies:
+
+```ts
 containerBuilder.register<Test2Base>(Test2Base)
     .as(() => new Test2());
 containerBuilder.register<Test1Base>(Test1Base)
@@ -73,43 +69,147 @@ containerBuilder.register<Test1Base>(Test1Base)
     });
 ```
 
-Fluent API:
+#####Registering as types (JS):
+
+```js
+containerBuilder.register(Test2Base).asType(Test2);
+containerBuilder.register(Tes1tBase).asType(Test3, Test2Base);
 ```
-containerBuilder.register<Test1Base>(Test1Base)           // register component Test1Base
-    .as(() => new Test5())                                // as instance of Test5
-    .initializeBy((c, item) => item.coolMethodHere())     // invoke initialization on resolved instances
-    .dispose((item : testData.Test5)  => item.Dispose())  // invoke disposal when disposing container
-    .named('Some Name')                                   // resolve with specific name
-    .within(typeioc.Types.Scope.Hierarchy)                // specifies instance reusability
-    .ownedBy(typeioc.Types.Owner.Container);              // specifies instance ownership
+
+#####Fluent API:
+
+```ts
+containerBuilder.register<Test1Base>(Test1Base)       // register component Test1Base
+.as(() => new Test5())                                // as instance of Test5
+.initializeBy((c, item) => {                          // invoke initialization on resolved instances
+     item.coolMethodHere();
+     return item;
+})                                                   
+.dispose((item : testData.Test5)  => item.Dispose())  // invoke disposal when disposing container
+.named('Some Name')                                   // resolve with specific name
+.within(typeioc.Types.Scope.Hierarchy)                // specifies instance re-usability
+.ownedBy(typeioc.Types.Owner.Container);              // specifies instance ownership
+
+// `.as(() => new Test5())` could be substituted with `asType(Test5)`.
+// In this case Test5 is instantiated during resolution
+
 
 
 var container = containerBuilder.build();                 // create an instance of container
 
 container
-    .resolveWith<TestData.Test1Base>(Test1Base)           // resolve an instance of Test1Base
-    .args(arg1, arg2)                                     // with arguments
-    .attempt()                                            // try resolve (do not throw if not found)
-    .name(someName)                                       // with name (for named registrations)
-    .dependencies([d1, d2])                               // with dependencies (for things Test1Base depends on)
-    .cache()                                              // with cached resolution value => container.cache.Test1Base
-    .exec();                                              // resolve
-
+.resolveWith<TestData.Test1Base>(Test1Base)    // resolve an instance of Test1Base
+.args(arg1, arg2)                              // with arguments
+.attempt()                                     // try resolve (do not throw if not found)
+.name('someName')                              // with name (for named registrations)
+.dependencies([d1, d2])                        // with dependencies (to substitute things Test1Base depends on)
+.cache()                                       // with cached resolution value => container.cache.Test1Base
+.exec();                                       // resolve
 ```
 
-With Add-ons:
+####Decorators (TS):
+
+Compile ts files with experimentalDecorators and emitDecoratorMetadata flags.
+
+```ts
+var decorator = typeioc.createDecorator();
+
+export class TestBase {
+    public foo() {}
+}
+
+export class TestBase1 {
+    public foo() {}
+}
+
+export class TestBase2 {
+    public foo() {}
+}
+
+@decorator.provide(TestBase).register()
+export class Test extends TestBase {
+
+    public foo() {
+        return 'Test';
+    }
+}
+
+@decorator.provide<TestBase2>(TestBase2).register()
+export class Test2 extends TestBase2 {
+
+    public foo() {
+        return 'Test2';
+    }
+}
+
+@decorator.provide(TestBase1).register()
+export class Test1 extends TestBase1 {
+
+    constructor(private value1 : TestBase,
+                @decorator.by(TestBase2).resolve() private value2) {
+        super();
+    }
+
+    public foo() {
+        return ['Test1 :', this.value1.foo(), this.value2.foo()].join(' ');
+    }
+}
+
+var container = decorator.build();
+var actual = container.resolve<TestBase1>(TestBase1);
+```
+
+#####Decorators Fluent API:
+
+Class level registration
+
+```ts
+@decorator.provide(service)           // also accepts generic parameter: provide<T>(service)
+.initializeBy((c, item) => {
+    item.someCoolMethod();
+    return item;
+})
+.dispose(item => item.dispose())
+.named('Some name')
+.within(typeioc.Types.Scope.None)
+.ownedBy(typeioc.Types.Owner.Container)
+.register()
+class Test {
+    public foo() {}
+}
+```
+
+Constructor parameters resolution
+
+```ts
+
+class Test {
+    
+    constructor(
+       @decorator.by(service)        // service is optional and is not needed if _val type is specified
+       .args(1, 2, 3)
+       .attempt()
+       .name()
+       .cache()
+       .resolve() private _val) {}
+
+    public foo() {}
+}
+```
+
+####Add-ons:
 
 Copy typeioc.addons.d.ts definition file from d.ts folder to your project and reference it within ts files.
 
-Interceptors
 
-```
+#####Interceptors
+
+```ts
 /// <reference path="typeioc.d.ts" />
 /// <reference path="typeioc.addons.d.ts" />
 
 var typeioc = require('typeioc');
 var addons = require('typeioc/addons');
-
 
 var containerBuilder = typeioc.createBuilder();
 
@@ -135,7 +235,6 @@ var container = containerBuilder.build();
 var actual = container.resolve<Math>(Math);
 actual.pow(2,3); // 5
 actual.log(1);   // still 0
-
 ```
 
 
@@ -155,16 +254,11 @@ actual.log(1);   // still 0
 - [x] - Runtime / Dynamic dependencies substitution.
 - [x] - Cached resolution results.
 - [x] - Interceptors.
-- [ ] - ES7 decorators style resolution.
+- [x] - ES7 decorators style resolution.
 - [ ] - ES6 codebase + weak references + promises.
-- [ ] - Instance lifetime scoping APIs.
+- [ ] - Instance lifetime scoping APIs extension.
 - [ ] - Group registration.
+- [ ] - Decorative style interceptors.
 - [ ] - In-browser usage support.
 - [ ] - Usage with 3d part libraries.
 - [ ] - Full API documentation.
-
-###Running tests
-
-```
-npm test
-```
