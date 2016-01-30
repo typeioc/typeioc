@@ -34,5 +34,7 @@ test_script:
   - node --version
   - npm --version
   - tsc -help
+  - PATH
+  - PATH=%PATH%;C:\Users\appveyor\AppData\Roaming\npm\tsc
   - cmd: npm run build
   - cmd: npm run test-ci
