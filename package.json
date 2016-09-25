@@ -25,14 +25,14 @@
     "sinon": "^1.17.6"
   },
   "engines" : { 
-    "node" : ">=4.0" 
+    "node" : ">=4.5.0" 
   },
   "scripts": {
     "compile": "gulp --gulpfile build/gulpfile.js compile",
     "build": "gulp --gulpfile build/gulpfile.js build",
     "build-appveyor": "gulp --env=appveyor --gulpfile build/gulpfile.js build",
-    "test": "node node_modules/.bin/nodeunit test/js/internal/ test/js/api/ test/ts/",
-    "coverage": "NODE_ENV=coverage node node_modules/.bin/istanbul cover node_modules/.bin/nodeunit test/js/internal/ test/js/api/ test/ts/",
+    "test": "node --harmony node_modules/.bin/nodeunit test/js/internal/ test/js/api/ test/ts/",
+    "coverage": "NODE_ENV=coverage node --harmony node_modules/.bin/istanbul cover node_modules/.bin/nodeunit test/js/internal/ test/js/api/ test/ts/",
     "coveralls": "cat test/coverage/lcov.info | coveralls",
     "codeclimate": "cat test/coverage/lcov.info | CODECLIMATE_REPO_TOKEN=4d695ca8fbc1be6c4f20509a918f006eb3ac84c871364cb935ac0f75ec852e01  codeclimate"
   },
