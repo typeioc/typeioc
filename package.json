@@ -24,6 +24,9 @@
     "run-sequence": "^1.1.5",
     "sinon": "^1.17.6"
   },
+  "engines" : { 
+    "node" : ">=4.0" 
+  },
   "scripts": {
     "compile": "gulp --gulpfile build/gulpfile.js compile",
     "build": "gulp --gulpfile build/gulpfile.js build",
