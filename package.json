@@ -1,6 +1,6 @@
 {
   "name": "typeioc",
-  "version": "1.4.0",
+  "version": "2.0.0",
   "description": "Dependency injection container for node typescript / javascript",
   "homepage": "https://github.com/maxgherman/TypeIOC",
   "main": "./index",
