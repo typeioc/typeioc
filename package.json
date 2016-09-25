@@ -8,21 +8,21 @@
     "lib": "./lib"
   },
   "dependencies": {
-    "hashes": "^0.1.3",
-    "reflect-metadata": "^0.1.3"
+    "hashes": "^0.1.4",
+    "reflect-metadata": "^0.1.8"
   },
   "devDependencies": {
     "codeclimate-test-reporter": "^0.3.0",
-    "coveralls": "^2.11.6",
-    "del": "^2.2.0",
+    "coveralls": "^2.11.14",
+    "del": "^2.2.2",
     "gulp": "^3.9.0",
-    "gulp-header": "^1.7.1",
+    "gulp-header": "^1.8.8",
     "gulp-replace": "^0.5.4",
     "gulp-util": "^3.0.6",
     "istanbul": "^0.4.3",
-    "nodeunit": "^0.9.1",
+    "nodeunit": "^0.10.2",
     "run-sequence": "^1.1.5",
-    "sinon": "^1.17.3"
+    "sinon": "^1.17.6"
   },
   "scripts": {
     "compile": "gulp --gulpfile build/gulpfile.js compile",
