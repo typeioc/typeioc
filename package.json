@@ -20,12 +20,12 @@
     "gulp-replace": "^0.5.4",
     "gulp-util": "^3.0.6",
     "istanbul": "^0.4.3",
-    "nodeunit": "^0.10.2",
+    "nodeunit": "^0.9.1",
     "run-sequence": "^1.1.5",
     "sinon": "^1.17.6"
   },
-  "engines" : { 
-    "node" : ">=4.5.0" 
+  "engines": {
+    "node": ">=4.5.0"
   },
   "scripts": {
     "compile": "gulp --gulpfile build/gulpfile.js compile",
