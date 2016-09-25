@@ -35,6 +35,6 @@ build: off
 test_script:
   - node --version
   - npm --version
-  - C:\Users\appveyor\AppData\Roaming\npm\tsc -help
+  - C:\Users\appveyor\AppData\Roaming\npm\tsc -v
   - cmd: npm run build-appveyor
-  - cmd: npm run test
+  - cmd: npm run test-appveyor
