@@ -11,9 +11,9 @@
 
 'use strict';
 
-import Utils = require('../utils/index');
-import Exceptions = require('../exceptions/index');
-import SubstituteStorageModule = require('./substituteStorage');
+import { Reflection, checkNullArgument } from '../utils';
+import { ArgumentError } from '../exceptions';
+import { SubstituteStorage } from './substituteStorage';
 import IStorage = Typeioc.Internal.Interceptors.IStorage;
 import IProxy = Typeioc.Internal.Interceptors.IProxy;
 import ISubstituteInfo = Addons.Interceptors.ISubstituteInfo;
@@ -36,11 +36,11 @@ export class Interceptor implements Addons.Interceptors.IInterceptor {
 
     public intercept<R extends (Function | Object)>(subject : R, substitutes? : ISubstituteInfo | Array<ISubstituteInfo>) : R {
 
-        Utils.checkNullArgument(subject, 'subject');
+        checkNullArgument(subject, 'subject');
 
         var data : any = substitutes;
 
-        if(data && !Utils.Reflection.isArray(data)) {
+        if(data && !Reflection.isArray(data)) {
             data = [ substitutes ];
         }
 
@@ -49,16 +49,16 @@ export class Interceptor implements Addons.Interceptors.IInterceptor {
         var result : any;
         var argument : any = subject;
 
-        if(Utils.Reflection.isPrototype(argument)) {
+        if(Reflection.isPrototype(argument)) {
 
             result = this._proxy.byPrototype(argument, storage);
 
-        }else if(Utils.Reflection.isObject(argument)) {
+        }else if(Reflection.isObject(argument)) {
 
             result = this._proxy.byInstance(argument, storage);
         } else {
 
-            throw new Exceptions.ArgumentError('subject', 'Subject should be a prototype function or an object');
+            throw new ArgumentError('subject', 'Subject should be a prototype function or an object');
         }
 
         return result;
@@ -66,7 +66,7 @@ export class Interceptor implements Addons.Interceptors.IInterceptor {
 
     private transformSubstitutes(substitutes : Array<ISubstituteInfo>) : IStorage {
 
-        var storage = new SubstituteStorageModule.SubstituteStorage();
+        var storage = new SubstituteStorage();
 
         return substitutes.reduce((storage, current) => {
 
@@ -80,7 +80,7 @@ export class Interceptor implements Addons.Interceptors.IInterceptor {
     private createSubstitute(value : ISubstituteInfo) : ISubstitute {
 
         if(!value.wrapper) {
-            var error = new Exceptions.ArgumentError('wrapper', 'Missing interceptor wrapper');
+            var error = new ArgumentError('wrapper', 'Missing interceptor wrapper');
             error.data = value;
             throw error;
         }

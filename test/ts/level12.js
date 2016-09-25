@@ -1,7 +1,7 @@
 /// <reference path='../../d.ts/typeioc.addons.d.ts' />
 'use strict';
-var Scaffold = require('./../scaffold');
-var ScaffoldAddons = require('./../scaffoldAddons');
+const Scaffold = require('./../scaffold');
+const ScaffoldAddons = require('./../scaffoldAddons');
 var DataInterceptors = Scaffold.TestModuleInterceptors;
 var CallInfoType = ScaffoldAddons.Interceptors.CallInfoType;
 var Level12;
@@ -13,12 +13,12 @@ var Level12;
             substitutes = [];
         var register2 = 'test';
         containerBuilder.register(register)
-            .as(function (c) {
+            .as(c => {
             var resolution = c.resolve(register2);
             return interceptor.intercept(resolution, substitutes);
         });
         containerBuilder.register(register2)
-            .as(function () { return subject; });
+            .as(() => subject);
         var container = containerBuilder.build();
         return container.resolve(register);
     }
@@ -27,12 +27,12 @@ var Level12;
             substitutes = [];
         var register2 = 'test';
         containerBuilder.register(register)
-            .as(function (c) {
+            .as(c => {
             var resolution = c.resolve(register2);
             return interceptor.interceptPrototype(resolution, substitutes);
         });
         containerBuilder.register(register2)
-            .as(function () { return subject; });
+            .as(() => subject);
         var container = containerBuilder.build();
         return container.resolve(register);
     }
@@ -41,12 +41,12 @@ var Level12;
             substitutes = [];
         var register2 = 'test';
         containerBuilder.register(register)
-            .as(function (c) {
+            .as(c => {
             var resolution = c.resolve(register2);
             return interceptor.interceptInstance(resolution, substitutes);
         });
         containerBuilder.register(register2)
-            .as(function () { return subject; });
+            .as(() => subject);
         var container = containerBuilder.build();
         return container.resolve(register);
     }

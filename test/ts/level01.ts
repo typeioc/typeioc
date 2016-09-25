@@ -4,7 +4,6 @@
 import scaffold = require('../scaffold');
 import TestData = require('../data/test-data');
 
-
 export module Level1 {
 
     var containerBuilder : Typeioc.IContainerBuilder;

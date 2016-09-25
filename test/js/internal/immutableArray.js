@@ -5,10 +5,10 @@ exports.internal = {
     immutableArray: (function () {
 
         var Scaffold = require('../../scaffold');
-        var ImmutableArrayModule = require('./../../../lib/utils/immutableArray');
+        var ImmutableArray = require('./../../../lib/utils/immutableArray').default;
 
         function createArray(data) {
-            return new ImmutableArrayModule.ImmutableArray(data);
+            return new ImmutableArray(data);
         }
 
 
@@ -166,8 +166,9 @@ exports.internal = {
                 var delegate = function() { lastValue.prop = 7; }
 
                 test.throws(delegate, function(error) {
-                    test.strictEqual('Cannot assign to read only property \'prop\' of #<Object>', error.message);
-                    return (error instanceof Error);
+                    var index = error.message.indexOf('Cannot assign to read only property \'prop\''); 
+                    test.ok(index >= 0);
+                    return (error instanceof TypeError);
                 });
 
                 test.done();

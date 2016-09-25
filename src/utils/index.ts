@@ -10,9 +10,9 @@
 
 'use strict';
 
-import Exceptions = require('../exceptions/index');
-import ReflectionModule = require('./reflection');
-import ImmutableArrayModule = require('./immutableArray');
+import { ArgumentNullError } from '../exceptions';
+import * as ReflectionModule from './reflection';
+import ImmutableArray from './immutableArray';
 
 export var Reflection = ReflectionModule;
 
@@ -25,12 +25,12 @@ export function concat(array : any[], tailArray : any[]) : any[] {
 
 export function checkNullArgument(value : any, argument: string,  message?: string) {
     if((value != '') && !value) {
-        var exception = new Exceptions.ArgumentNullError(argument, message);
+        var exception = new ArgumentNullError(argument, message);
         exception.data = value;
         throw exception;
     }
 }
 
 export function createImmutable(array : Array<any>) : Typeioc.Internal.IImmutableArray {
-    return new ImmutableArrayModule.ImmutableArray(array);
+    return new ImmutableArray(array);
 }

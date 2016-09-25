@@ -4,6 +4,8 @@
 export class Test1Base {
     public get Name() : string { return null; }
 
+    public set Name(value: string) { }
+
     public get Disposed() : boolean {
         return false;
     }
@@ -20,6 +22,10 @@ export class Test1 extends Test1Base {
     public get Name() : string {
         return this.name;
     }
+
+    public set Name(value: string) {
+        this.name = value;
+     }
 }
 
 export class Test2 extends Test2Base {

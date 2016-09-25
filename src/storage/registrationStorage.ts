@@ -10,7 +10,7 @@
 
 'use strict';
 
-import Utils = require('../utils/index');
+import { Reflection } from '../utils';
 import Internal = Typeioc.Internal;
 
 export class RegistrationStorage implements Internal.IRegistrationStorage {
@@ -93,7 +93,7 @@ export class RegistrationStorage implements Internal.IRegistrationStorage {
     private getArgumentsCount(registration : Internal.IRegistrationBase) : number {
         
         return registration.factory ?
-            Utils.Reflection.getFactoryArgsCount(registration.factory) :
+            Reflection.getFactoryArgsCount(registration.factory) :
             registration.args.length;
     }
 

@@ -8,9 +8,9 @@
 
 'use strict';
 
-import BaseApplicationErrorModule = require('./applicationError');
+import ApplicationError from './applicationError';
 
-export class NullReferenceError extends BaseApplicationErrorModule.ApplicationError {
+export default class NullReferenceError extends ApplicationError {
 
     constructor (message?: string) {
         super(message);

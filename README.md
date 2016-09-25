@@ -1,8 +1,6 @@
 TypeIOC
 =======
 
- [![NPM](https://nodei.co/npm/typeioc.png?downloads=true)](https://nodei.co/npm/typeioc/)
-
 ...X           | Windows   
 -------------- | ------------
 [![Build Status](https://travis-ci.org/maxgherman/TypeIOC.svg?branch=master)](https://travis-ci.org/maxgherman/TypeIOC)|[![Build status](https://ci.appveyor.com/api/projects/status/0813svinij5s2cg7)](https://ci.appveyor.com/project/maxgherman/typeioc)
@@ -255,7 +253,7 @@ actual.log(1);   // still 0
 - [x] - Cached resolution results.
 - [x] - Interceptors.
 - [x] - ES7 decorators style resolution.
-- [ ] - ES6 codebase + weak references + promises.
+- [x] - ES6 codebase + promises.
 - [ ] - Instance lifetime scoping APIs extension.
 - [ ] - Group registration.
 - [ ] - Decorative style interceptors.

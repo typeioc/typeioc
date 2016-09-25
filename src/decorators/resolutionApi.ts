@@ -8,7 +8,7 @@
 
 ///<reference path="../../d.ts/typeioc.internal.d.ts" />
 
-'use strinct';
+"use strict";
 
 import Internal = Typeioc.Internal;
 import Resolve = Typeioc.Decorators.Resolve;
@@ -48,7 +48,7 @@ export class ResolutionApi implements Internal.IDecoratorResolutionApi {
         return this._cache;
     }
 
-    constructor(private _resolve : (api : Internal.IDecoratorResolutionApi ) => Resolve.IDecoratorResolutionResult) { }
+    constructor(private _resolve : (api : Internal.IDecoratorResolutionApi ) => ParameterDecorator) { }
 
     public by(service? : any) : Resolve.IArgsTryNamedCache {
 
@@ -106,7 +106,7 @@ export class ResolutionApi implements Internal.IDecoratorResolutionApi {
         };
     }
 
-    private resolveAction() : Resolve.IDecoratorResolutionResult {
+    private resolveAction() : ParameterDecorator {
 
         return this._resolve(this);
     }

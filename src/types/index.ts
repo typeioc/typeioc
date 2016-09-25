@@ -8,11 +8,11 @@
 
 'use strict';
 
-import OwnerModule = require('./owner');
-import ScopeModule = require('./scope');
+import { default as OwnerType } from './owner';
+import { default as ScopeType } from './scope';
 
-export var Owner = OwnerModule.Owner;
-export var Scope = ScopeModule.Scope;
+export var Owner = OwnerType;
+export var Scope = ScopeType;
 
 export var Defaults : Typeioc.Types.IDefaults = {
     get Scope() : Typeioc.Types.Scope {

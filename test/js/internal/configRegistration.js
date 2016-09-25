@@ -23,7 +23,7 @@ exports.internal = {
                 };
 
                 test.throws(delegate, function(error) {
-                    test.strictEqual(error.message, undefined);
+                    test.strictEqual(error.message, '');
                     test.strictEqual(error.argumentName, 'config');
                     return (error instanceof Scaffold.Exceptions.ArgumentNullError);
                 });
@@ -39,7 +39,7 @@ exports.internal = {
                 };
 
                 test.throws(delegate, function(error) {
-                    test.strictEqual(error.message, undefined);
+                    test.strictEqual(error.message, '');
                     test.strictEqual(error.argumentName, 'config');
                     return (error instanceof Scaffold.Exceptions.ArgumentNullError);
                 });

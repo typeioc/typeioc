@@ -11,7 +11,7 @@
 
 'use strict';
 
-import Utils = require('../utils/index');
+import { checkNullArgument } from '../utils';
 
 export class Api<T> implements Typeioc.Internal.IContainerApi<T>{
     private _service: T;
@@ -62,7 +62,7 @@ export class Api<T> implements Typeioc.Internal.IContainerApi<T>{
 
     public service(value : any) : Typeioc.IResolveWith<T> {
 
-        Utils.checkNullArgument(value, 'value');
+        checkNullArgument(value, 'value');
 
         this._service = value;
 
@@ -72,7 +72,8 @@ export class Api<T> implements Typeioc.Internal.IContainerApi<T>{
             name: this.name.bind(this),
             dependencies: this.dependencies.bind(this),
             cache: this.cache.bind(this),
-            exec: this.exec.bind(this)
+            exec: this.exec.bind(this),
+            execAsync : this.execAsync.bind(this)
         }
     }
 
@@ -84,7 +85,8 @@ export class Api<T> implements Typeioc.Internal.IContainerApi<T>{
             name: this.name.bind(this),
             dependencies: this.dependencies.bind(this),
             cache: this.cache.bind(this),
-            exec: this.exec.bind(this)
+            exec: this.exec.bind(this),
+            execAsync : this.execAsync.bind(this)
         };
     }
 
@@ -95,26 +97,28 @@ export class Api<T> implements Typeioc.Internal.IContainerApi<T>{
             name: this.name.bind(this),
             dependencies: this.dependencies.bind(this),
             cache: this.cache.bind(this),
-            exec: this.exec.bind(this)
+            exec: this.exec.bind(this),
+            execAsync : this.execAsync.bind(this)
         };
     }
 
     private name(value : string) : Typeioc.IResolveDepCache<T> {
 
-        Utils.checkNullArgument(value, 'value');
+        checkNullArgument(value, 'value');
 
         this._name = value;
 
         return {
             dependencies: this.dependencies.bind(this),
             cache: this.cache.bind(this),
-            exec: this.exec.bind(this)
+            exec: this.exec.bind(this),
+            execAsync : this.execAsync.bind(this)
         };
     }
 
     private dependencies(data : Typeioc.IDynamicDependency | Array<Typeioc.IDynamicDependency>) : Typeioc.IResolveDepCache<T>
     {
-        Utils.checkNullArgument(data, 'data');
+        checkNullArgument(data, 'data');
 
         var item : any = data;
 
@@ -127,7 +131,8 @@ export class Api<T> implements Typeioc.Internal.IContainerApi<T>{
         return {
             dependencies: this.dependencies.bind(this),
             cache: this.cache.bind(this),
-            exec: this.exec.bind(this)
+            exec: this.exec.bind(this),
+            execAsync : this.execAsync.bind(this)
         };
     }
 
@@ -136,11 +141,19 @@ export class Api<T> implements Typeioc.Internal.IContainerApi<T>{
         this._cache.name = name;
 
         return {
-            exec : this.exec.bind(this)
+            exec : this.exec.bind(this),
+            execAsync : this.execAsync.bind(this)
         };
     }
 
     private exec() : T {
         return this._container.execute(this);
+    }
+    
+    private async execAsync() : Promise<T> {
+        
+        return new Promise<T>(resolve => {
+           resolve(this.exec());
+        });
     }
 }

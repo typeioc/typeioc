@@ -1,8 +1,8 @@
 'use strict';
-var scaffold = require('./../scaffold');
-var TestData = require('../data/test-data');
-var TestData2 = require('../data/test-data');
-var TestDataSecond = require('../data/test-data2');
+const scaffold = require('./../scaffold');
+const TestData = require('../data/test-data');
+const TestData2 = require('../data/test-data');
+const TestDataSecond = require('../data/test-data2');
 var Level7;
 (function (Level7) {
     var containerBuilder;
@@ -13,9 +13,9 @@ var Level7;
     Level7.setUp = setUp;
     function resolveDifferentInstancesFormDifferentModules(test) {
         containerBuilder.register(TestData.TestModule1.Test1)
-            .as(function (c) { return new TestData.TestModule1.Test1("test 1"); });
+            .as((c) => new TestData.TestModule1.Test1("test 1"));
         containerBuilder.register(TestData.TestModule2.Test1)
-            .as(function (c) { return new TestData.TestModule2.Test1("test 2"); });
+            .as((c) => new TestData.TestModule2.Test1("test 2"));
         var container = containerBuilder.build();
         var t1 = container.resolve(TestData.TestModule1.Test1);
         var t2 = container.resolve(TestData.TestModule2.Test1);
@@ -26,10 +26,10 @@ var Level7;
     Level7.resolveDifferentInstancesFormDifferentModules = resolveDifferentInstancesFormDifferentModules;
     function resolveDifferentInstancesFormSameModule(test) {
         containerBuilder.register(TestData.TestModule1.Test1)
-            .as(function (c) { return new TestData.TestModule1.Test1("test 1"); })
+            .as((c) => new TestData.TestModule1.Test1("test 1"))
             .within(2 /* Container */);
         containerBuilder.register(TestData2.TestModule1.Test1)
-            .as(function (c) { return new TestData2.TestModule1.Test1("test 2"); })
+            .as((c) => new TestData2.TestModule1.Test1("test 2"))
             .within(2 /* Container */);
         var container = containerBuilder.build();
         var t1 = container.resolve(TestData.TestModule1.Test1);
@@ -83,7 +83,7 @@ var Level7;
         containerBuilder.registerModule(TestDataSecond.ServiceModule1)
             .as(TestDataSecond.SubstituteModule3);
         var container = containerBuilder.build();
-        var delegate = function () { return container.resolve(TestDataSecond.ServiceModule1.TestBaseClass, 77); };
+        var delegate = () => container.resolve(TestDataSecond.ServiceModule1.TestBaseClass, 77);
         test.throws(delegate, function (err) {
             return (err instanceof scaffold.Exceptions.ResolutionError) &&
                 /Could not resolve service/.test(err.message);
@@ -107,7 +107,7 @@ var Level7;
             .forArgs(TestDataSecond.SubstituteModule3.ConcreteTestClass, 77, "Test");
         containerBuilder.registerModule(TestDataSecond.ServiceModule3)
             .as(TestDataSecond.SubstituteModule6)
-            .forService(TestDataSecond.SubstituteModule6.ConcreteClass1, function (c) {
+            .forService(TestDataSecond.SubstituteModule6.ConcreteClass1, (c) => {
             var dependency = c.resolve(TestDataSecond.ServiceModule1.TestBaseClass);
             return new TestDataSecond.SubstituteModule6.ConcreteClass1(dependency);
         });
@@ -172,7 +172,7 @@ var Level7;
         containerBuilder.registerModule(TestDataSecond.ServiceModule3)
             .as(TestDataSecond.SubstituteModule6).
             named(TestDataSecond.SubstituteModule6.ConcreteClass1, "name1")
-            .forService(TestDataSecond.SubstituteModule6.ConcreteClass1, function (c) {
+            .forService(TestDataSecond.SubstituteModule6.ConcreteClass1, (c) => {
             var dependency = c.resolve(TestDataSecond.ServiceModule1.TestBaseClass);
             return new TestDataSecond.SubstituteModule6.ConcreteClass1(dependency);
         });

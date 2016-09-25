@@ -1,7 +1,7 @@
 'use strict';
-var scaffold = require('./../scaffold');
-var TestData = require('../data/test-data');
-var TestDataSecond = require('../data/test-data2');
+const scaffold = require('./../scaffold');
+const TestData = require('../data/test-data');
+const TestDataSecond = require('../data/test-data2');
 var Config = scaffold.Config;
 var Level8;
 (function (Level8) {

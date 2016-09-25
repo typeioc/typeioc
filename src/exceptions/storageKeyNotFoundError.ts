@@ -9,11 +9,11 @@
 'use strict';
 
 
-import BaseApplicationErrorModule = require('./applicationError');
+import ApplicationError from './applicationError';
 
-export class StorageKeyNotFoundError extends BaseApplicationErrorModule.ApplicationError{
+export default class StorageKeyNotFoundError extends ApplicationError {
 
-    constructor (public message?: string) {
+    constructor (message?: string) {
         super(message);
 
         this.name = "StorageKeyNotFound";

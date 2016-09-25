@@ -8,9 +8,9 @@
 
 ///<reference path="../../d.ts/typeioc.internal.d.ts" />
 
-'use strict';
+"use strict";
 
-import Utils = require('../utils/index');
+import { checkNullArgument } from '../utils';
 import Decorators = Typeioc.Decorators;
 import Types = Typeioc.Types;
 import Internal = Typeioc.Internal;
@@ -48,12 +48,12 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
         return this._disposedBy;
     }
 
-    constructor(private _register : (api : Internal.IDecoratorRegistrationApi<T>) => Decorators.Register.IDecoratorRegisterResult)
+    constructor(private _register : (api : Internal.IDecoratorRegistrationApi<T>) => ClassDecorator)
     { }
 
     public provide(service: any) : Decorators.Register.IInitializedDisposedNamedReusedOwned<T> {
 
-        Utils.checkNullArgument(service, 'service');
+        checkNullArgument(service, 'service');
 
         this._service = service;
 
@@ -69,7 +69,7 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
 
     private initializeBy(action : Typeioc.IInitializer<T>) : Decorators.Register.INamedReusedOwnedDisposed<T> {
 
-        Utils.checkNullArgument(action, 'action');
+        checkNullArgument(action, 'action');
 
         this._initializedBy = action;
 
@@ -84,7 +84,7 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
 
     private dispose(action : Typeioc.IDisposer<T>) : Decorators.Register.INamedReusedOwned {
 
-        Utils.checkNullArgument(action, 'action');
+        checkNullArgument(action, 'action');
 
         this._disposedBy = action;
 
@@ -98,7 +98,7 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
 
     private named(name: string) : Decorators.Register.IReusedOwned {
 
-        Utils.checkNullArgument(name, 'name');
+        checkNullArgument(name, 'name');
 
         this._name = name;
 
@@ -111,7 +111,7 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
 
     private within(scope: Types.Scope) : Decorators.Register.IOwned {
 
-        Utils.checkNullArgument(scope, 'scope');
+        checkNullArgument(scope, 'scope');
 
         this._scope = scope;
 
@@ -123,7 +123,7 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
 
     private ownedBy(owner : Types.Owner) : Decorators.Register.IRegister {
 
-        Utils.checkNullArgument(owner, 'owner');
+        checkNullArgument(owner, 'owner');
 
         this._owner = owner;
 
@@ -132,7 +132,7 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
         };
     }
 
-    private register() : Decorators.Register.IDecoratorRegisterResult {
+    private register() : ClassDecorator {
 
         return this._register(this);
     }

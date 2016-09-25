@@ -12,10 +12,10 @@
 
  'use strict';
 
- import Utils = require('./index');
- import Exceptions = require('../exceptions/index');
+ import { Reflection, checkNullArgument} from './index';
+ import {  ArgumentError } from '../exceptions';
 
- export class ImmutableArray implements Typeioc.Internal.IImmutableArray  {
+ export default class ImmutableArray implements Typeioc.Internal.IImmutableArray  {
 
      private _data : Array<any>;
 
@@ -25,10 +25,10 @@
 
      constructor(data : Array<any>) {
 
-         Utils.checkNullArgument(data, 'data');
+         checkNullArgument(data, 'data');
 
-         if(Utils.Reflection.isArray(data) !== true)
-            throw new Exceptions.ArgumentError('data', 'should represent an array');
+         if(Reflection.isArray(data) !== true)
+            throw new ArgumentError('data', 'should represent an array');
 
          this._data = this.initialize(data);
      }

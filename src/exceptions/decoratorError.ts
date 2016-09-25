@@ -9,9 +9,9 @@
 
 'use strict';
 
-import ApplicationErrorModule = require('./applicationError');
+import ApplicationError from './applicationError';
 
-export class DecoratorError extends ApplicationErrorModule.ApplicationError {
+export default class DecoratorError extends ApplicationError {
 
     constructor (message?: string) {
         super(message);

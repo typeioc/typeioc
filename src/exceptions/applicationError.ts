@@ -8,11 +8,11 @@
 
 'use strict';
 
-import BaseErrorModule = require('./baseError');
+import BaseError from './baseError';
 
-export class ApplicationError extends BaseErrorModule.BaseError {
+export default class ApplicationError extends BaseError {
 
-    constructor (public message?: string) {
+    constructor (message?: string) {
         super(message);
 
         this.name = "ApplicationError";

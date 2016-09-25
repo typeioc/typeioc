@@ -5,8 +5,6 @@ var gulp = require('gulp');
 var del = require('del');
 var header = require('gulp-header');
 var replace = require('gulp-replace');
-var nodeunit = require('gulp-nodeunit');
-var istanbul = require('gulp-istanbul');
 var gutil = require('gulp-util');
 var runSequence = require('run-sequence');
 var pkg = require('../package.json');
@@ -93,10 +91,15 @@ var os = require('os');
 
     function compileTasks() {
 
+        gulp.task('compile', function(callback) {
+            runSequence('clean',
+                [ 'build-lib', 'build-tests'],
+                callback);
+        });    
+
         gulp.task('build', function(callback) {
             runSequence('clean',
-                'build-lib',
-                'build-tests',
+                [ 'build-lib', 'build-tests'],
                 'remove-header',
                 'header',
                 callback);
@@ -187,70 +190,11 @@ var os = require('os');
         });
     }
 
-    function runTests() {
-
-        var testReporter = 'default';
-
-        gulp.task('run-all-tests', function(callback) {
-            runSequence('run-js-internal-tests',
-                'run-js-api-tests',
-                'run-ts-tests',
-                callback);
-        });
-
-        gulp.task('run-js-tests', function(callback) {
-            runSequence('run-js-internal-tests',
-                'run-js-api-tests',
-                 callback);
-        });
-
-        gulp.task('run-ts-tests', function () {
-            return gulp.src(paths.tests.tsJs)
-                .pipe(nodeunit({
-                    reporter: testReporter
-                }));
-        });
-
-        gulp.task('run-js-api-tests', function () {
-            return gulp.src(paths.tests.jsApi)
-                .pipe(nodeunit({
-                    reporter: testReporter
-                }));
-        });
-
-        gulp.task('run-js-internal-tests', function () {
-            return gulp.src(paths.tests.jsInternal)
-                .pipe(nodeunit({
-                    reporter: testReporter
-                }));
-        });
-
-        gulp.task('run-tests-coverage', function (cb) {
-
-            gulp.src([paths.lib.js, paths.code.index])
-                .pipe(istanbul()) // Covering files
-                .pipe(istanbul.hookRequire()) // Force `require` to return covered files
-                .on('finish', function () {
-                    gulp.src([paths.tests.js, paths.tests.tsJs])
-                        .pipe(nodeunit({
-                            reporter: testReporter
-                        }))
-                        .pipe(istanbul.writeReports({
-                            dir: paths.tests.coverage,
-                            reporters: [ 'lcov', 'text', 'text-summary'],
-                            reportOpts: { dir: paths.tests.coverage }
-                        }))
-                        .on('end', cb);
-                });
-        });
-    }
-
     return {
         build: function() {
             compileTasks();
             cleanTasks();
             headerTasks();
-            runTests();
         }
     };
 })()

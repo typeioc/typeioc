@@ -12,7 +12,7 @@ declare module Typeioc {
     function createBuilder() : IContainerBuilder;
 
     function createDecorator() : Decorators.IDecorator;
-
+    
     module Types {
         const enum Scope  {
             None = 1,
@@ -59,23 +59,19 @@ declare module Typeioc {
 
         class ProxyError extends ApplicationError { }
     }
-
+    
     module Decorators {
 
         interface IDecorator {
             build() : Typeioc.IContainer;
             provide<R>(service: any) : Register.IInitializedDisposedNamedReusedOwned<R>;
             by(service? : any) : Decorators.Resolve.IArgsTryNamedCache;
-            resolveValue(value: any) : Decorators.Resolve.IDecoratorResolutionResult;
+            resolveValue(value: any) : ParameterDecorator;
         }
 
         module Register {
-            interface IDecoratorRegisterResult {
-                (target : any) : any;
-            }
-
             interface IRegister {
-                register() : IDecoratorRegisterResult;
+                register() : ClassDecorator;
             }
 
             interface IOwned extends Register.IRegister {
@@ -110,16 +106,12 @@ declare module Typeioc {
 
         module Resolve {
 
-            interface IDecoratorResolutionResult {
-                (target: any, key : string, index : number) : void;
-            }
-
             interface IResolveExact {
-                resolve() : IDecoratorResolutionResult;
+                resolve() : ParameterDecorator;
             }
 
             interface IResolve {
-                resolve() : IDecoratorResolutionResult;
+                resolve() : ParameterDecorator;
             }
 
             interface ICache extends Resolve.IResolve {
@@ -143,7 +135,14 @@ declare module Typeioc {
             }
         }
     }
-
+    
+    module Extensions {
+        
+        interface IPromiseExensions {
+            promiseLike<R, T extends PromiseLike<R>>(execute : () => R) : T;
+        }
+    }
+    
     interface IContainerBuilder {
         register<R>(service : any) : IRegistration<R>;
         registerModule(serviceModule : Object) : Typeioc.IAsModuleRegistration;
@@ -153,15 +152,28 @@ declare module Typeioc {
 
     interface IContainer {
         cache : any;
+        
         resolve<R>(service: any, ...args:any[]) : R;
+        resolveAsync<R>(service: any, ...args:any[]) : Promise<R>;
+        
         tryResolve<R>(service: any, ...args:any[]) : R;
+        tryResolveAsync<R>(service: any, ...args:any[]) : Promise<R>;
+        
         resolveNamed<R>(service: any, name : string, ...args:any[]) : R;
+        resolveNamedAsync<R>(service: any, name : string, ...args:any[]) : Promise<R>;
+        
         tryResolveNamed<R>(service: any, name : string, ...args:any[]): R;
+        tryResolveNamedAsync<R>(service: any, name : string, ...args:any[]) : Promise<R>;
+        
         resolveWithDependencies<R>(service: any, dependencies : IDynamicDependency[]) : R;
+        resolveWithDependenciesAsync<R>(service: any, dependencies : Typeioc.IDynamicDependency[]) : Promise<R>;
+        
         resolveWith<R>(service : any) : IResolveWith<R>;
 
         createChild : () => IContainer;
+        
         dispose: () =>  void;
+        disposeAsync() : Promise<void>;
     }
 
     interface IResolveWith<T>  extends IResolveTryNamedDepCache<T> {
@@ -194,6 +206,7 @@ declare module Typeioc {
 
     interface IResolveReturn<T> {
         exec(): T;
+        execAsync() : Promise<T>;
     }
 
     interface IInitializer<T> {

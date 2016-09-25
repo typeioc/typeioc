@@ -651,16 +651,16 @@ exports.api = {
                     test.done();
                 },
 
-                resolve_by_multiple_service_instantiation_generated_code: function(test) {
+                // resolve_by_multiple_service_instantiation_generated_code: function(test) {
 
-                    var actual1 = container.resolve(TestData.Resolve.ByMultipleService.TestBase1);
-                    var actual2 = container.resolve(TestData.Resolve.ByMultipleService.TestBase2);
+                //     var actual1 = container.resolve(TestData.Resolve.ByMultipleService.TestBase1);
+                //     var actual2 = container.resolve(TestData.Resolve.ByMultipleService.TestBase2);
 
-                    test.strictEqual(actual1.foo(), "Test1 Test 1 2 Test 3 4");
-                    test.strictEqual(actual2.foo(), "Test2 Test1 Test 1 2 Test 3 4 Test 5 6");
+                //     test.strictEqual(actual1.foo(), "Test1 Test 1 2 Test 3 4");
+                //     test.strictEqual(actual2.foo(), "Test2 Test1 Test 1 2 Test 3 4 Test 5 6");
 
-                    test.done();
-                },
+                //     test.done();
+                // },
 
                 resolve_by_args_instantiation: function(test) {
 
@@ -695,15 +695,6 @@ exports.api = {
 
                     var container = builder.build();
                     var actual = container.resolve(TestBase1);
-
-                    test.strictEqual(actual.foo(), "Test1 : Test 1 7");
-
-                    test.done();
-                },
-
-                resolve_by_args_instantiation_generated_code: function(test) {
-
-                    var actual = container.resolve(TestData.Resolve.ByArgs.TestBase1);
 
                     test.strictEqual(actual.foo(), "Test1 : Test 1 7");
 

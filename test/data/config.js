@@ -1,9 +1,8 @@
 ///<reference path='../../d.ts/typeioc.d.ts' />
-var testData = require('./test-data');
-var Config = (function () {
-    function Config() {
-    }
-    Config.parameterlessResolution = function () {
+'use strict';
+const testData = require('./test-data');
+class Config {
+    static parameterlessResolution() {
         return {
             components: [
                 {
@@ -18,8 +17,8 @@ var Config = (function () {
                 }
             ]
         };
-    };
-    Config.factoryResolution = function () {
+    }
+    static factoryResolution() {
         return {
             components: [
                 {
@@ -27,12 +26,12 @@ var Config = (function () {
                         instanceModule: testData,
                         name: 'Test1Base'
                     },
-                    factory: function () { return new testData.Test1(); }
+                    factory: () => new testData.Test1()
                 }
             ]
         };
-    };
-    Config.dependenciesResolution = function () {
+    }
+    static dependenciesResolution() {
         return {
             components: [
                 {
@@ -40,7 +39,7 @@ var Config = (function () {
                         instanceModule: testData,
                         name: 'Test2Base'
                     },
-                    factory: function () { return new testData.Test2(); }
+                    factory: () => new testData.Test2()
                 },
                 {
                     service: {
@@ -63,8 +62,8 @@ var Config = (function () {
                 }
             ]
         };
-    };
-    Config.dependenciesResolutionByCreation = function () {
+    }
+    static dependenciesResolutionByCreation() {
         return {
             components: [
                 {
@@ -88,8 +87,8 @@ var Config = (function () {
                 }
             ]
         };
-    };
-    Config.customParametersResolution = function () {
+    }
+    static customParametersResolution() {
         return {
             components: [
                 {
@@ -97,12 +96,12 @@ var Config = (function () {
                         instanceModule: testData,
                         name: 'Test1Base'
                     },
-                    factory: function (c, name) { return new testData.Test4(name); }
+                    factory: (c, name) => new testData.Test4(name)
                 }
             ]
         };
-    };
-    Config.namedServicesResolution = function () {
+    }
+    static namedServicesResolution() {
         return {
             components: [
                 {
@@ -110,14 +109,14 @@ var Config = (function () {
                         instanceModule: testData,
                         name: 'Test1Base'
                     },
-                    factory: function () { return new testData.Test4("null"); }
+                    factory: () => new testData.Test4("null")
                 },
                 {
                     service: {
                         instanceModule: testData,
                         name: 'Test1Base'
                     },
-                    factory: function () { return new testData.Test4("a"); },
+                    factory: () => new testData.Test4("a"),
                     named: "A"
                 },
                 {
@@ -125,13 +124,13 @@ var Config = (function () {
                         instanceModule: testData,
                         name: 'Test1Base'
                     },
-                    factory: function () { return new testData.Test4("b"); },
+                    factory: () => new testData.Test4("b"),
                     named: "B"
                 }
             ]
         };
-    };
-    Config.noScopingReuse = function () {
+    }
+    static noScopingReuse() {
         return {
             components: [
                 {
@@ -139,13 +138,13 @@ var Config = (function () {
                         instanceModule: testData,
                         name: 'Test1Base'
                     },
-                    factory: function () { return new testData.Test4("test 4"); },
+                    factory: () => new testData.Test4("test 4"),
                     within: 1 /* None */
                 }
             ]
         };
-    };
-    Config.containerOwnedInstancesAreDisposed = function () {
+    }
+    static containerOwnedInstancesAreDisposed() {
         return {
             components: [
                 {
@@ -153,15 +152,15 @@ var Config = (function () {
                         instanceModule: testData,
                         name: 'Test1Base'
                     },
-                    factory: function () { return new testData.Test5(); },
-                    disposer: function (item) { item.Dispose(); },
+                    factory: () => new testData.Test5(),
+                    disposer: (item) => { item.Dispose(); },
                     within: 1 /* None */,
                     ownedBy: 1 /* Container */
                 }
             ]
         };
-    };
-    Config.initializeIsCalledWhenInstanceIsCreated = function (className) {
+    }
+    static initializeIsCalledWhenInstanceIsCreated(className) {
         return {
             components: [
                 {
@@ -169,13 +168,13 @@ var Config = (function () {
                         instanceModule: testData,
                         name: 'Initializable'
                     },
-                    factory: function () { return new testData.Initializable(); },
-                    initializeBy: function (c, item) { item.initialize(className); return item; }
+                    factory: () => new testData.Initializable(),
+                    initializeBy: (c, item) => { item.initialize(className); return item; }
                 }
             ]
         };
-    };
-    Config.registerModuleBasicInheritance = function () {
+    }
+    static registerModuleBasicInheritance() {
         return {
             modules: [
                 {
@@ -184,8 +183,8 @@ var Config = (function () {
                 }
             ]
         };
-    };
-    Config.registerModuleContainerUsage = function () {
+    }
+    static registerModuleContainerUsage() {
         return {
             modules: [
                 {
@@ -196,8 +195,8 @@ var Config = (function () {
                 }
             ]
         };
-    };
-    Config.registerModuleForInstanceEmptyParams = function () {
+    }
+    static registerModuleForInstanceEmptyParams() {
         return {
             modules: [
                 {
@@ -213,8 +212,8 @@ var Config = (function () {
                 }
             ]
         };
-    };
-    Config.registerModuleConstructorWithParams = function () {
+    }
+    static registerModuleConstructorWithParams() {
         return {
             modules: [
                 {
@@ -239,8 +238,8 @@ var Config = (function () {
                 }
             ]
         };
-    };
-    Config.registerModuleConstructorWithDependencies = function () {
+    }
+    static registerModuleConstructorWithDependencies() {
         return {
             modules: [
                 {
@@ -284,8 +283,8 @@ var Config = (function () {
                 }
             ]
         };
-    };
-    Config.registerComponentsWithinModule = function () {
+    }
+    static registerComponentsWithinModule() {
         return {
             modules: [
                 {
@@ -305,8 +304,8 @@ var Config = (function () {
                 }
             ]
         };
-    };
-    Config.registerComponentsWithResolverModule = function () {
+    }
+    static registerComponentsWithResolverModule() {
         return {
             modules: [
                 {
@@ -326,8 +325,7 @@ var Config = (function () {
                 }
             ]
         };
-    };
-    return Config;
-})();
+    }
+}
 exports.Config = Config;
 //# sourceMappingURL=config.js.map

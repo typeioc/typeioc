@@ -133,7 +133,7 @@ export module Level9 {
 
         var delegate = () => container.resolveWithDependencies<TestData.Test3>(TestData.Test1Base, undefined);
 
-        test.throws(delegate, error => {
+        test.throws(delegate, function(error) {
             test.strictEqual(error.message, 'No dependencies provided');
             return (error instanceof scaffold.Exceptions.ResolutionError);
         });
@@ -158,7 +158,7 @@ export module Level9 {
 
         var delegate = () => container.resolveWithDependencies(TestData.Test1Base, null);
 
-        test.throws(delegate, error => {
+        test.throws(delegate, function(error) {
             test.strictEqual(error.message, 'No dependencies provided');
             return (error instanceof scaffold.Exceptions.ResolutionError);
         });
@@ -183,7 +183,7 @@ export module Level9 {
 
         var delegate = () => container.resolveWithDependencies(TestData.Test1Base, []);
 
-        test.throws(delegate, error => {
+        test.throws(delegate, function(error) {
             test.strictEqual(error.message, 'No dependencies provided');
             return (error instanceof scaffold.Exceptions.ResolutionError);
         });
@@ -214,7 +214,7 @@ export module Level9 {
 
         var delegate = () => container.resolveWithDependencies(TestData.Test1Base, dependencies);
 
-        test.throws(delegate, error => {
+        test.throws(delegate, function(error) {
             test.strictEqual(error.message, 'Could not resolve service');
             test.strictEqual(error.data, TestData.Test1Base);
 
@@ -251,7 +251,7 @@ export module Level9 {
 
         var delegate = () => container.resolveWithDependencies(TestData.Test1Base, dependencies);
 
-        test.throws(delegate, error => {
+        test.throws(delegate, function(error) {
             test.strictEqual(error.message, 'Could not resolve service');
             test.strictEqual(error.data, TestData.Test2Base);
 
@@ -463,7 +463,7 @@ export module Level9 {
 
         var delegate = () => container.resolveWithDependencies(TestData.Test1Base, dependencies);
 
-        test.throws(delegate, error => {
+        test.throws(delegate, function(error) {
             test.strictEqual(error.message, 'Could not resolve service');
             test.strictEqual(error.data, TestData.Test1Base);
 
@@ -502,7 +502,7 @@ export module Level9 {
 
         var delegate = () => container.resolveWithDependencies(TestData.Test1Base, dependencies);
 
-        test.throws(delegate, error => {
+        test.throws(delegate, function(error) {
             test.strictEqual(error.message, 'Could not resolve service');
             test.strictEqual(error.data, TestData.Test1Base);
 

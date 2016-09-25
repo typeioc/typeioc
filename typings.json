@@ -1,0 +1,6 @@
+{
+  "dependencies": {},
+  "ambientDependencies": {
+    "bluebird": "registry:dt/bluebird#2.0.0+20160319051630"
+  }
+}

@@ -10,8 +10,8 @@
 
 'use strict';
 
-import Exceptions = require('../../exceptions/index');
-import Utils = require('../../utils/index');
+import { ConfigurationError } from '../../exceptions';
+import { Reflection, checkNullArgument } from '../../utils';
 
 export class ConfigRegistration implements Typeioc.Internal.IConfigRegistration {
 
@@ -50,7 +50,7 @@ export class ConfigRegistration implements Typeioc.Internal.IConfigRegistration 
 
     public apply(config : Typeioc.IConfig) {
 
-        Utils.checkNullArgument(config, 'config');
+        checkNullArgument(config, 'config');
 
         this._config = config;
     }
@@ -177,7 +177,7 @@ export class ConfigRegistration implements Typeioc.Internal.IConfigRegistration 
                          moduleInstance? : Object) {
 
         if(!instanceLocation.name) {
-            var exception = new Exceptions.ConfigurationError('Missing component name');
+            var exception = new ConfigurationError('Missing component name');
             exception.data = instanceLocation;
 
             throw exception;
@@ -189,7 +189,7 @@ export class ConfigRegistration implements Typeioc.Internal.IConfigRegistration 
 
             result = instanceLocation.instanceModule[instanceLocation.name];
 
-            if(!result) throw new Exceptions.ConfigurationError('Component not found within instance location : ' + instanceLocation.name);
+            if(!result) throw new ConfigurationError('Component not found within instance location : ' + instanceLocation.name);
 
             return result;
         }
@@ -198,12 +198,12 @@ export class ConfigRegistration implements Typeioc.Internal.IConfigRegistration 
 
             result = moduleInstance[instanceLocation.name];
 
-            if(!result) throw new Exceptions.ConfigurationError('Component not found within module instance : ' + instanceLocation.name);
+            if(!result) throw new ConfigurationError('Component not found within module instance : ' + instanceLocation.name);
 
             return result;
         }
 
-        throw new Exceptions.ConfigurationError('Unable to load component : ' + instanceLocation.name);
+        throw new ConfigurationError('Unable to load component : ' + instanceLocation.name);
     }
 
     private getInstantiation(resolver : any,
@@ -216,14 +216,14 @@ export class ConfigRegistration implements Typeioc.Internal.IConfigRegistration 
 
                 if(item.instance) return item.instance;
 
-                if(!item.location) throw new Exceptions.ConfigurationError('Missing components location');
+                if(!item.location) throw new ConfigurationError('Missing components location');
 
                 var component = this.getComponent(item.location, moduleInstance);
 
                 return item.isDependency === true ? c.resolve(component) : new component();
             });
 
-            return Utils.Reflection.construct(resolver, instances);
+            return Reflection.construct(resolver, instances);
         };
     }
 }

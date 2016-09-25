@@ -8,25 +8,21 @@
 
 /// <reference path="../../d.ts/node.d.ts" />
 /// <reference path="../../d.ts/typeioc.internal.d.ts" />
+/// <reference path="../../d.ts/hashes.d.ts" />
+
 
 'use strict';
 
-import Exceptions = require('../exceptions/index');
-var hashes = require('hashes');
+import { StorageKeyNotFoundError } from '../exceptions';
+import { HashTable } from 'hashes';
+import Internal = Typeioc.Internal;
 
-interface IHashTable<K, T> {
-    add(key : K, value : T, override : boolean) : void;
-    get(key : K) : { value : T};
-    contains(key : K) : boolean;
-}
+export class InternalStorage<K,T> implements Internal.IInternalStorage<K, T> {
 
-
-export class InternalStorage<K,T> implements Typeioc.Internal.IInternalStorage<K, T> {
-
-    private _collection  : IHashTable<K, T>;
+    private _collection  : hashes.IHashTable<K, T>;
 
     constructor() {
-        this._collection = new hashes.HashTable();
+        this._collection = new HashTable<K, T>();
     }
 
     public add(key : K, value : T) : void {
@@ -36,7 +32,7 @@ export class InternalStorage<K,T> implements Typeioc.Internal.IInternalStorage<K
     public get(key : K) : T {
 
         if(!this.contains(key)) {
-            var error = new Exceptions.StorageKeyNotFoundError();
+            var error = new StorageKeyNotFoundError();
             error.data = {key : key};
             throw error;
         }

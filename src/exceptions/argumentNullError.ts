@@ -8,9 +8,9 @@
 
 'use strict';
 
-import BaseArgumentErrorModule = require('./argumentError');
+import ArgumentError from './argumentError';
 
-export class ArgumentNullError extends BaseArgumentErrorModule.ArgumentError {
+export default class ArgumentNullError extends ArgumentError {
 
     constructor (argumentName, message?: string) {
         super(argumentName, message);

@@ -11,17 +11,17 @@
 
 'use strict';
 
-import DecoratorModule = require('./interceptors/decorator');
-import ProxyModule = require('./interceptors/proxy');
-import InterceptorModule = require('./interceptors/interceptor');
+import { Decorator } from './interceptors/decorator';
+import { Proxy } from './interceptors/proxy';
+import { Interceptor } from './interceptors/interceptor';
 
 export class ScaffoldAddons {
 
     public interceptor() : Addons.Interceptors.IInterceptor {
 
-        var decorator= new DecoratorModule.Decorator();
-        var proxy = new ProxyModule.Proxy(decorator);
+        var decorator = new Decorator();
+        var proxy = new Proxy(decorator);
 
-        return new InterceptorModule.Interceptor(proxy);
+        return new Interceptor(proxy);
     }
 }

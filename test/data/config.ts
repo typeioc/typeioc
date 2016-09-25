@@ -1,5 +1,7 @@
 ///<reference path='../../d.ts/typeioc.d.ts' />
 
+'use strict';
+
 import testData = require('./test-data');
 
 export class Config

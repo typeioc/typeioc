@@ -109,10 +109,10 @@ declare module Typeioc.Internal {
     }
 
     interface IDecoratorApiService {
-        createRegistration<R>(register : (api : IDecoratorRegistrationApi<R>) => Decorators.Register.IDecoratorRegisterResult)
+        createRegistration<R>(register : (api : IDecoratorRegistrationApi<R>) => ClassDecorator)
             : IDecoratorRegistrationApi<R>;
 
-        createResolution(register : (api : IDecoratorResolutionApi) => Decorators.Resolve.IDecoratorResolutionResult)
+        createResolution(register : (api : IDecoratorResolutionApi) => ParameterDecorator)
             : IDecoratorResolutionApi;
     }
 

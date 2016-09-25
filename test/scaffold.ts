@@ -7,10 +7,12 @@ var typeioc = require('../');
 var ConfigModule = require('./data/config');
 var ConfigProvider = ConfigModule.Config;
 
+var BError = require('../lib/exceptions/baseError').default;
+
 export var Exceptions = typeioc.Exceptions;
 export var Types = typeioc.Types;
 export var RegistrationBase = require('../lib/registration/base/registrationBase');
-export var ExceptionBase = require('../lib/exceptions/baseError');
+export var BaseError = BError;
 export var TestModule = require('./data/test-data');
 export var TestModule2 = require('./data/test-data2');
 export var TestModuleInterceptors = require('./data/test-data-intercept');

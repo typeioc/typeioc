@@ -9,9 +9,9 @@
 
 'use strict';
 
-import BaseApplicationErrorModule = require('./applicationError');
+import ApplicationError from './applicationError';
 
-export class ProxyError extends BaseApplicationErrorModule.ApplicationError {
+export default class ProxyError extends ApplicationError {
 
     constructor (message?: string) {
         super(message);

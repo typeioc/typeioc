@@ -1,4 +1,4 @@
-
+/* istanbul ignore next */
 /// <reference path='../../d.ts/typeioc.d.ts' />
 
 'use strict';
@@ -344,20 +344,20 @@ export module Resolve {
         @decorator.provide<Resolve.ByMultipleService.TestBase>(Resolve.ByMultipleService.TestBase).register()
         export class Test extends TestBase {
 
-            constructor(private _value1 : string, private _value2 : string) {
+            constructor() {
                 super();
             }
 
             public foo() {
-                return ['Test', this._value1, this._value2].join(' ') ;
+                return 'Test';
             }
         }
 
         @decorator.provide<Resolve.ByMultipleService.TestBase1>(Resolve.ByMultipleService.TestBase1).register()
         export class Test1 extends TestBase1 {
 
-            constructor(@decorator.by().args('1', '2').resolve() private _value1 : Resolve.ByMultipleService.TestBase,
-                        @decorator.by(Resolve.ByMultipleService.TestBase).args('3', '4').resolve() private _value2) {
+            constructor(private _value1 : Resolve.ByMultipleService.TestBase,
+                        @decorator.by(Resolve.ByMultipleService.TestBase).resolve() private _value2) {
                 super();
             }
 
@@ -370,7 +370,7 @@ export module Resolve {
         export class Test2 extends TestBase2 {
 
             constructor(@decorator.by(Resolve.ByMultipleService.TestBase1).resolve() private _value1,
-                        @decorator.by(Resolve.ByMultipleService.TestBase).args('5', '6').resolve() private _value2) {
+                        @decorator.by(Resolve.ByMultipleService.TestBase).resolve() private _value2) {
                 super();
             }
 

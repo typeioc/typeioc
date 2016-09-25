@@ -1,6 +1,6 @@
 'use strict';
-var scaffold = require('../scaffold');
-var TestData = require('../data/test-data');
+const scaffold = require('../scaffold');
+const TestData = require('../data/test-data');
 var Level1;
 (function (Level1) {
     var containerBuilder;
@@ -27,7 +27,7 @@ var Level1;
     Level1.errorWhenNoServiceProvided = errorWhenNoServiceProvided;
     function parameterlessResolution(test) {
         containerBuilder.register(TestData.Test1Base)
-            .as(function () { return new TestData.Test1(); });
+            .as(() => new TestData.Test1());
         var container = containerBuilder.build();
         var actual = container.resolve(TestData.Test1Base);
         test.notEqual(actual, null);
@@ -36,8 +36,8 @@ var Level1;
     }
     Level1.parameterlessResolution = parameterlessResolution;
     function multipleParameterlessResolutions(test) {
-        containerBuilder.register(TestData.Test1Base).as(function () { return new TestData.Test1(); });
-        containerBuilder.register(TestData.Test2Base).as(function () { return new TestData.Test2(); });
+        containerBuilder.register(TestData.Test1Base).as(() => new TestData.Test1());
+        containerBuilder.register(TestData.Test2Base).as(() => new TestData.Test2());
         var container = containerBuilder.build();
         var actual1 = container.resolve(TestData.Test1Base);
         var actual2 = container.resolve(TestData.Test2Base);
@@ -49,8 +49,8 @@ var Level1;
     }
     Level1.multipleParameterlessResolutions = multipleParameterlessResolutions;
     function overridingResolutions(test) {
-        containerBuilder.register(TestData.Test1Base).as(function () { return new TestData.Test1(); });
-        containerBuilder.register(TestData.Test1Base).as(function () { return new TestData.Test1(); });
+        containerBuilder.register(TestData.Test1Base).as(() => new TestData.Test1());
+        containerBuilder.register(TestData.Test1Base).as(() => new TestData.Test1());
         var container = containerBuilder.build();
         var actual1 = container.resolve(TestData.Test1Base);
         var actual2 = container.resolve(TestData.Test1Base);
@@ -62,8 +62,8 @@ var Level1;
     }
     Level1.overridingResolutions = overridingResolutions;
     function overridingParameterContainerResolutions(test) {
-        containerBuilder.register(TestData.Test1Base).as(function () { return new TestData.Test1(); });
-        containerBuilder.register(TestData.Test1Base).as(function (c) { return new TestData.Test1(); });
+        containerBuilder.register(TestData.Test1Base).as(() => new TestData.Test1());
+        containerBuilder.register(TestData.Test1Base).as((c) => new TestData.Test1());
         var container = containerBuilder.build();
         var actual1 = container.resolve(TestData.Test1Base);
         var actual2 = container.resolve(TestData.Test1Base);
@@ -75,7 +75,7 @@ var Level1;
     }
     Level1.overridingParameterContainerResolutions = overridingParameterContainerResolutions;
     function parameterContainerResolution(test) {
-        containerBuilder.register(TestData.Test1Base).as(function (c) { return new TestData.Test1(); });
+        containerBuilder.register(TestData.Test1Base).as((c) => new TestData.Test1());
         var container = containerBuilder.build();
         var actual1 = container.resolve(TestData.Test1Base);
         test.notEqual(actual1, null);
@@ -85,7 +85,7 @@ var Level1;
     Level1.parameterContainerResolution = parameterContainerResolution;
     function errorNoExistingResolution(test) {
         var container = containerBuilder.build();
-        var delegate = function () { return container.resolve(TestData.Test1Base); };
+        var delegate = () => container.resolve(TestData.Test1Base);
         test.throws(delegate, function (err) {
             return (err instanceof scaffold.Exceptions.ResolutionError) &&
                 /Could not resolve service/.test(err.message);
@@ -108,7 +108,7 @@ var Level1;
     }
     Level1.attemptNamedResolution = attemptNamedResolution;
     function attemptNamedExistingResolution(test) {
-        containerBuilder.register(TestData.Test1Base).as(function () { return new TestData.Test1(); });
+        containerBuilder.register(TestData.Test1Base).as(() => new TestData.Test1());
         var container = containerBuilder.build();
         var actual = container.tryResolveNamed(TestData.Test1Base, "Test Name");
         test.equal(null, actual);
@@ -116,8 +116,8 @@ var Level1;
     }
     Level1.attemptNamedExistingResolution = attemptNamedExistingResolution;
     function dependenciesResolution(test) {
-        containerBuilder.register(TestData.Test2Base).as(function () { return new TestData.Test2(); });
-        containerBuilder.register(TestData.Test1Base).as(function (c) {
+        containerBuilder.register(TestData.Test2Base).as(() => new TestData.Test2());
+        containerBuilder.register(TestData.Test1Base).as((c) => {
             var test2 = c.resolve(TestData.Test2Base);
             var n = test2.Name;
             return new TestData.Test3(test2);

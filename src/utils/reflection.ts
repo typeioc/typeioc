@@ -8,7 +8,6 @@
 
 /// <reference path="../../node_modules/reflect-metadata/reflect-metadata.d.ts"/>
 
-import Exceptions = require('../exceptions/index');
 import Internal = Typeioc.Internal;
 
 export function getMetadata(reflect, type : any) {
@@ -23,35 +22,19 @@ export function getFactoryArgsCount(factory: Typeioc.IFactory<any>) {
 }
 
 export function isCompatible(obj1 : Object, obj2 : Object) : boolean {
-
-    for(var key in obj2) {
-
-        if(!isFunction(obj2[key])) continue;
-
+   
+    return !Object.getOwnPropertyNames(obj2)
+    .filter(key => isFunction(obj2[key]))
+    .some(key => {
+        
         var obj1Val = obj1[key];
-
-        if(!obj1Val ||
-            !isFunction(obj1Val)) return false;
-    }
-
-    return true;
-}
-
-export function createPrototype(constructor, args) {
-    function F() {
-        return constructor.apply(this, args);
-    }
-
-    F.prototype = constructor.prototype;
-
-    return F;
+        return !obj1Val || !isFunction(obj1Val);
+    });
+    
 }
 
 export function construct(constructor, args) {
-
-    var k : any = createPrototype(constructor, args);
-
-    return new k();
+    return args && args.length ? new constructor(...args) : new constructor();
 }
 
 export function isArray(value : any) : boolean {
@@ -71,17 +54,17 @@ export function isObject(o : any) : boolean {
 }
 
 export function getPropertyType(name : string, descriptor : PropertyDescriptor)
-        : Typeioc.Internal.Reflection.PropertyType {
+        : Internal.Reflection.PropertyType {
 
-    if(descriptor.value && isFunction(descriptor.value )) return Typeioc.Internal.Reflection.PropertyType.Method;
+    if(descriptor.value && isFunction(descriptor.value )) return Internal.Reflection.PropertyType.Method;
 
-    if(descriptor.get && !descriptor.set) return Typeioc.Internal.Reflection.PropertyType.Getter;
+    if(descriptor.get && !descriptor.set) return Internal.Reflection.PropertyType.Getter;
 
-    if(!descriptor.get && descriptor.set) return Typeioc.Internal.Reflection.PropertyType.Setter;
+    if(!descriptor.get && descriptor.set) return Internal.Reflection.PropertyType.Setter;
 
-    if(descriptor.get && descriptor.set) return Typeioc.Internal.Reflection.PropertyType.FullProperty;
+    if(descriptor.get && descriptor.set) return Internal.Reflection.PropertyType.FullProperty;
 
-    return Typeioc.Internal.Reflection.PropertyType.Field;
+    return Internal.Reflection.PropertyType.Field;
 }
 
 export function getPropertyDescriptor(object, key) {
@@ -111,9 +94,21 @@ export function getAllPropertyNames(obj) {
     return props;
 }
 
-export function getParamNames(func : Function) : string[] {
-    var funStr = func.toString();
-    var result = funStr.slice(funStr.indexOf('(')+1, funStr.indexOf(')')).match(/([^\s,]+)/g);
-
-    return result || [];
+function getParamNames(func : Function) : string[] {
+    var regexes = [/function\s.*?\(([^)]*)\)/,
+                   /\(?([\w,\s.]+)\)?\s*=>\s*\{[^}]*\}/,
+                   /\(?([\w,\s.]+)\)?\s*=>\s*[^}]*/];
+    
+    var funcStr = func.toString().replace(/\/\*.*\*\//, '');
+    var args = regexes.map(item => {
+            let match = funcStr.match(item);
+            return match ? match[1] : null;
+        })
+        .filter(item => !!item)[0];
+    
+    if(!args) return [];
+    
+    return args.split(',')
+        .map(arg => arg.trim())
+        .filter(arg => !!arg);
 }

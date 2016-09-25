@@ -1,6 +1,6 @@
 'use strict';
-var scaffold = require('./../scaffold');
-var TestData = require('../data/test-data');
+const scaffold = require('./../scaffold');
+const TestData = require('../data/test-data');
 var Level5;
 (function (Level5) {
     var containerBuilder;
@@ -11,8 +11,8 @@ var Level5;
     Level5.setUp = setUp;
     function containerOwnedInstancesAreDisposed(test) {
         containerBuilder.register(TestData.Test1Base)
-            .as(function () { return new TestData.Test5(); })
-            .dispose(function (item) { item.Dispose(); })
+            .as(() => new TestData.Test5())
+            .dispose((item) => { item.Dispose(); })
             .within(1 /* None */)
             .ownedBy(1 /* Container */);
         var container = containerBuilder.build();
@@ -26,8 +26,8 @@ var Level5;
     function containerOwnedInstancesAreDisposedDefaultSetting(test) {
         scaffold.Types.Defaults.owner = scaffold.Types.Owner.Container;
         containerBuilder.register(TestData.Test1Base)
-            .as(function () { return new TestData.Test5(); })
-            .dispose(function (item) { return item.Dispose(); });
+            .as(() => new TestData.Test5())
+            .dispose((item) => item.Dispose());
         var container = containerBuilder.build();
         var test1 = container.resolve(TestData.Test1Base);
         container.dispose();
@@ -38,8 +38,8 @@ var Level5;
     Level5.containerOwnedInstancesAreDisposedDefaultSetting = containerOwnedInstancesAreDisposedDefaultSetting;
     function containerOwnedAndContainerReusedInstancesAreDisposed(test) {
         containerBuilder.register(TestData.Test1Base)
-            .as(function () { return new TestData.Test5(); })
-            .dispose(function (item) { item.Dispose(); })
+            .as(() => new TestData.Test5())
+            .dispose((item) => { item.Dispose(); })
             .within(2 /* Container */)
             .ownedBy(1 /* Container */);
         var container = containerBuilder.build();
@@ -52,8 +52,8 @@ var Level5;
     Level5.containerOwnedAndContainerReusedInstancesAreDisposed = containerOwnedAndContainerReusedInstancesAreDisposed;
     function containerOwnedAndHierarchyReusedInstancesAreDisposed(test) {
         containerBuilder.register(TestData.Test1Base)
-            .as(function () { return new TestData.Test5(); })
-            .dispose(function (item) { item.Dispose(); })
+            .as(() => new TestData.Test5())
+            .dispose((item) => { item.Dispose(); })
             .within(3 /* Hierarchy */)
             .ownedBy(1 /* Container */);
         var container = containerBuilder.build();
@@ -66,7 +66,7 @@ var Level5;
     Level5.containerOwnedAndHierarchyReusedInstancesAreDisposed = containerOwnedAndHierarchyReusedInstancesAreDisposed;
     function childContainerInstanceWithParentRegistrationIsNotDisposed(test) {
         containerBuilder.register(TestData.Test1Base)
-            .as(function () { return new TestData.Test5(); })
+            .as(() => new TestData.Test5())
             .within(3 /* Hierarchy */)
             .ownedBy(1 /* Container */);
         var container = containerBuilder.build();
@@ -80,8 +80,8 @@ var Level5;
     Level5.childContainerInstanceWithParentRegistrationIsNotDisposed = childContainerInstanceWithParentRegistrationIsNotDisposed;
     function disposingParentContainerDisposesChildContainerInstances(test) {
         containerBuilder.register(TestData.Test1Base)
-            .as(function () { return new TestData.Test5(); })
-            .dispose(function (item) { item.Dispose(); })
+            .as(() => new TestData.Test5())
+            .dispose((item) => { item.Dispose(); })
             .within(1 /* None */)
             .ownedBy(1 /* Container */);
         var container = containerBuilder.build();
@@ -94,7 +94,7 @@ var Level5;
     }
     Level5.disposingParentContainerDisposesChildContainerInstances = disposingParentContainerDisposesChildContainerInstances;
     function disposingContainerDoesNotDisposeExternalOwnedInstances(test) {
-        containerBuilder.register(TestData.Test1Base).as(function () { return new TestData.Test5(); }).
+        containerBuilder.register(TestData.Test1Base).as(() => new TestData.Test5()).
             within(3 /* Hierarchy */).
             ownedBy(2 /* Externals */);
         var container = containerBuilder.build();
@@ -109,8 +109,8 @@ var Level5;
     function initializeIsCalledWhenInstanceIsCreated(test) {
         var className = "item";
         containerBuilder.register(TestData.Initializable)
-            .as(function () { return new TestData.Initializable2(); }).
-            initializeBy(function (c, item) { item.initialize(className); return item; });
+            .as(() => new TestData.Initializable2()).
+            initializeBy((c, item) => { item.initialize(className); return item; });
         var container = containerBuilder.build();
         var i1 = container.resolve(TestData.Initializable);
         var i2 = container.resolve(TestData.Initializable);
@@ -122,13 +122,13 @@ var Level5;
     Level5.initializeIsCalledWhenInstanceIsCreated = initializeIsCalledWhenInstanceIsCreated;
     function initializeAndResolveDependencies(test) {
         var className = "item";
-        var initializer = function (c, item) {
+        var initializer = (c, item) => {
             item.initialize(className);
             item.test6 = c.resolve(TestData.Test6);
             return item;
         };
-        containerBuilder.register(TestData.Test6).as(function (c) { return new TestData.Test6(); });
-        containerBuilder.register(TestData.Initializable).as(function (c) { return new TestData.Initializable(); }).
+        containerBuilder.register(TestData.Test6).as((c) => new TestData.Test6());
+        containerBuilder.register(TestData.Initializable).as((c) => new TestData.Initializable()).
             initializeBy(initializer);
         var container = containerBuilder.build();
         var i1 = container.resolve(TestData.Initializable);
@@ -142,13 +142,13 @@ var Level5;
     function instancesFromDifferentContainersDisposedIndependently(test) {
         var secondContainerBuilder = scaffold.createBuilder();
         containerBuilder.register(TestData.Test1Base)
-            .as(function () { return new TestData.Test5(); })
-            .dispose(function (item) { return item.Dispose(); })
+            .as(() => new TestData.Test5())
+            .dispose((item) => item.Dispose())
             .within(1 /* None */)
             .ownedBy(1 /* Container */);
         secondContainerBuilder.register(TestData.Test1Base)
-            .as(function () { return new TestData.Test5(); })
-            .dispose(function (item) { item.Dispose(); })
+            .as(() => new TestData.Test5())
+            .dispose((item) => { item.Dispose(); })
             .within(1 /* None */)
             .ownedBy(1 /* Container */);
         var container = containerBuilder.build();

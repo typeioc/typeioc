@@ -8,11 +8,11 @@
 
 'use strict';
 
-import BaseApplicationErrorModule = require('./applicationError');
+import ApplicationError from './applicationError';
 
-export class ConfigurationError extends BaseApplicationErrorModule.ApplicationError {
+export default class ConfigurationError extends ApplicationError {
 
-    constructor (public message?: string) {
+    constructor (message?: string) {
         super(message);
 
         this.name = "ConfigError";

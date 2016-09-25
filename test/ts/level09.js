@@ -1,6 +1,6 @@
 'use strict';
-var scaffold = require('./../scaffold');
-var TestData = require('../data/test-data');
+const scaffold = require('./../scaffold');
+const TestData = require('../data/test-data');
 var mockery = scaffold.Mockery;
 var Level9;
 (function (Level9) {
@@ -12,16 +12,16 @@ var Level9;
     Level9.setUp = setUp;
     function resolvesWithDependency(test) {
         containerBuilder.register(TestData.Test2Base)
-            .as(function () { return new TestData.Test2(); });
+            .as(() => new TestData.Test2());
         containerBuilder.register(TestData.Test1Base)
-            .as(function (c) {
+            .as(c => {
             var test2 = c.resolve(TestData.Test2Base);
             return new TestData.Test3(test2);
         });
         var container = containerBuilder.build();
         var dependencies = [{
                 service: TestData.Test2Base,
-                factory: function () {
+                factory: () => {
                     return {
                         get Name() {
                             return 'name from dependency';
@@ -36,16 +36,16 @@ var Level9;
     Level9.resolvesWithDependency = resolvesWithDependency;
     function resolveWithDependencyUsesDynamicContainer(test) {
         containerBuilder.register(TestData.Test2Base)
-            .as(function () { return new TestData.Test2(); });
+            .as(() => new TestData.Test2());
         containerBuilder.register(TestData.Test1Base)
-            .as(function (c) {
+            .as(c => {
             var test2 = c.resolve(TestData.Test2Base);
             return new TestData.Test3(test2);
         });
         var container = containerBuilder.build();
         var dependencies = [{
                 service: TestData.Test2Base,
-                factory: function (c) {
+                factory: c => {
                     test.notStrictEqual(container, c);
                     return {
                         get Name() {
@@ -61,9 +61,9 @@ var Level9;
     Level9.resolveWithDependencyUsesDynamicContainer = resolveWithDependencyUsesDynamicContainer;
     function resolvesWithNoDependencyIsTheSame(test) {
         containerBuilder.register(TestData.Test2Base)
-            .as(function () { return new TestData.Test2(); });
+            .as(() => new TestData.Test2());
         containerBuilder.register(TestData.Test1Base)
-            .as(function (c) {
+            .as(c => {
             var test2 = c.resolve(TestData.Test2Base);
             return new TestData.Test3(test2);
         });
@@ -71,7 +71,7 @@ var Level9;
         var actualNative = container.resolve(TestData.Test1Base);
         var dependencies = [{
                 service: TestData.Test2Base,
-                factory: function () {
+                factory: () => {
                     return {
                         get Name() {
                             return 'name from dependency';
@@ -88,14 +88,14 @@ var Level9;
     Level9.resolvesWithNoDependencyIsTheSame = resolvesWithNoDependencyIsTheSame;
     function resolutionErrorWhenUndefinedDependencies(test) {
         containerBuilder.register(TestData.Test2Base)
-            .as(function () { return new TestData.Test2(); });
+            .as(() => new TestData.Test2());
         containerBuilder.register(TestData.Test1Base)
-            .as(function (c) {
+            .as(c => {
             var test2 = c.resolve(TestData.Test2Base);
             return new TestData.Test3(test2);
         });
         var container = containerBuilder.build();
-        var delegate = function () { return container.resolveWithDependencies(TestData.Test1Base, undefined); };
+        var delegate = () => container.resolveWithDependencies(TestData.Test1Base, undefined);
         test.throws(delegate, function (error) {
             test.strictEqual(error.message, 'No dependencies provided');
             return (error instanceof scaffold.Exceptions.ResolutionError);
@@ -106,14 +106,14 @@ var Level9;
     Level9.resolutionErrorWhenUndefinedDependencies = resolutionErrorWhenUndefinedDependencies;
     function resolutionErrorWhenNullDependencies(test) {
         containerBuilder.register(TestData.Test2Base)
-            .as(function () { return new TestData.Test2(); });
+            .as(() => new TestData.Test2());
         containerBuilder.register(TestData.Test1Base)
-            .as(function (c) {
+            .as(c => {
             var test2 = c.resolve(TestData.Test2Base);
             return new TestData.Test3(test2);
         });
         var container = containerBuilder.build();
-        var delegate = function () { return container.resolveWithDependencies(TestData.Test1Base, null); };
+        var delegate = () => container.resolveWithDependencies(TestData.Test1Base, null);
         test.throws(delegate, function (error) {
             test.strictEqual(error.message, 'No dependencies provided');
             return (error instanceof scaffold.Exceptions.ResolutionError);
@@ -124,14 +124,14 @@ var Level9;
     Level9.resolutionErrorWhenNullDependencies = resolutionErrorWhenNullDependencies;
     function resolutionErrorWhenEmptyDependencies(test) {
         containerBuilder.register(TestData.Test2Base)
-            .as(function () { return new TestData.Test2(); });
+            .as(() => new TestData.Test2());
         containerBuilder.register(TestData.Test1Base)
-            .as(function (c) {
+            .as(c => {
             var test2 = c.resolve(TestData.Test2Base);
             return new TestData.Test3(test2);
         });
         var container = containerBuilder.build();
-        var delegate = function () { return container.resolveWithDependencies(TestData.Test1Base, []); };
+        var delegate = () => container.resolveWithDependencies(TestData.Test1Base, []);
         test.throws(delegate, function (error) {
             test.strictEqual(error.message, 'No dependencies provided');
             return (error instanceof scaffold.Exceptions.ResolutionError);
@@ -142,11 +142,11 @@ var Level9;
     Level9.resolutionErrorWhenEmptyDependencies = resolutionErrorWhenEmptyDependencies;
     function resolutionErrorWhenNoRegistrationWithDependencies(test) {
         containerBuilder.register(TestData.Test2Base)
-            .as(function () { return new TestData.Test2(); });
+            .as(() => new TestData.Test2());
         var container = containerBuilder.build();
         var dependencies = [{
                 service: TestData.Test2Base,
-                factory: function () {
+                factory: () => {
                     return {
                         get Name() {
                             return 'name from dependency';
@@ -154,7 +154,7 @@ var Level9;
                     };
                 }
             }];
-        var delegate = function () { return container.resolveWithDependencies(TestData.Test1Base, dependencies); };
+        var delegate = () => container.resolveWithDependencies(TestData.Test1Base, dependencies);
         test.throws(delegate, function (error) {
             test.strictEqual(error.message, 'Could not resolve service');
             test.strictEqual(error.data, TestData.Test1Base);
@@ -166,14 +166,14 @@ var Level9;
     Level9.resolutionErrorWhenNoRegistrationWithDependencies = resolutionErrorWhenNoRegistrationWithDependencies;
     function resolutionErrorWhenNoDependenciesRegistration(test) {
         containerBuilder.register(TestData.Test1Base)
-            .as(function (c) {
+            .as(c => {
             var test2 = c.resolve(TestData.Test2Base);
             return new TestData.Test3(test2);
         });
         var container = containerBuilder.build();
         var dependencies = [{
                 service: TestData.Test2Base,
-                factory: function () {
+                factory: () => {
                     return {
                         get Name() {
                             return 'name from dependency';
@@ -181,7 +181,7 @@ var Level9;
                     };
                 }
             }];
-        var delegate = function () { return container.resolveWithDependencies(TestData.Test1Base, dependencies); };
+        var delegate = () => container.resolveWithDependencies(TestData.Test1Base, dependencies);
         test.throws(delegate, function (error) {
             test.strictEqual(error.message, 'Could not resolve service');
             test.strictEqual(error.data, TestData.Test2Base);
@@ -193,7 +193,7 @@ var Level9;
     Level9.resolutionErrorWhenNoDependenciesRegistration = resolutionErrorWhenNoDependenciesRegistration;
     function resolveWithMissingDependency(test) {
         containerBuilder.register(TestData.Test1Base)
-            .as(function (c) {
+            .as(c => {
             var test2 = c.resolve(TestData.Test2Base);
             return new TestData.Test3(test2);
         });
@@ -201,7 +201,7 @@ var Level9;
         var dependencies = [{
                 service: TestData.Test2Base,
                 required: false,
-                factory: function () {
+                factory: () => {
                     return {
                         get Name() {
                             return 'name from dependency';
@@ -217,16 +217,16 @@ var Level9;
     Level9.resolveWithMissingDependency = resolveWithMissingDependency;
     function resolveWithPartialMissingDependencies(test) {
         containerBuilder.register(TestData.Test1Base)
-            .as(function (c) {
+            .as(c => {
             var test2 = c.resolve(TestData.Test2Base);
             return new TestData.Test3(test2);
         });
         containerBuilder.register(TestData.Test1Base)
-            .as(function () { return new TestData.Test4("test 4"); })
+            .as(() => new TestData.Test4("test 4"))
             .named("Test 4");
         var dynamicService = function () { };
         containerBuilder.register(dynamicService)
-            .as(function (c) {
+            .as(c => {
             var test1 = c.resolve(TestData.Test1Base);
             var test2 = c.resolve(TestData.Test2Base);
             var test4 = c.resolveNamed(TestData.Test1Base, "Test 4");
@@ -235,7 +235,7 @@ var Level9;
         var container = containerBuilder.build();
         var dependencies = [{
                 service: TestData.Test1Base,
-                factory: function () {
+                factory: () => {
                     return {
                         get Name() {
                             return 'test 1 base';
@@ -246,7 +246,7 @@ var Level9;
             {
                 service: TestData.Test2Base,
                 required: false,
-                factory: function (c) {
+                factory: c => {
                     return {
                         get Name() {
                             return 'test 2 base';
@@ -257,7 +257,7 @@ var Level9;
             {
                 service: TestData.Test1Base,
                 named: "Test 4",
-                factory: function () {
+                factory: () => {
                     return {
                         get Name() {
                             return 'test 4 base';
@@ -275,18 +275,18 @@ var Level9;
     Level9.resolveWithPartialMissingDependencies = resolveWithPartialMissingDependencies;
     function resolveWithMultipleDependencies(test) {
         containerBuilder.register(TestData.Test2Base)
-            .as(function () { return new TestData.Test2(); });
+            .as(() => new TestData.Test2());
         containerBuilder.register(TestData.Test1Base)
-            .as(function (c) {
+            .as(c => {
             var test2 = c.resolve(TestData.Test2Base);
             return new TestData.Test3(test2);
         });
         containerBuilder.register(TestData.Test1Base)
-            .as(function () { return new TestData.Test4("test 4"); })
+            .as(() => new TestData.Test4("test 4"))
             .named("Test 4");
         var dynamicService = function () { };
         containerBuilder.register(dynamicService)
-            .as(function (c) {
+            .as(c => {
             var test1 = c.resolve(TestData.Test1Base);
             var test2 = c.resolve(TestData.Test2Base);
             var test4 = c.resolveNamed(TestData.Test1Base, "Test 4");
@@ -295,7 +295,7 @@ var Level9;
         var container = containerBuilder.build();
         var dependencies = [{
                 service: TestData.Test1Base,
-                factory: function () {
+                factory: () => {
                     return {
                         get Name() {
                             return 'test 1 base';
@@ -305,7 +305,7 @@ var Level9;
             },
             {
                 service: TestData.Test2Base,
-                factory: function () {
+                factory: () => {
                     return {
                         get Name() {
                             return 'test 2 base';
@@ -316,7 +316,7 @@ var Level9;
             {
                 service: TestData.Test1Base,
                 named: "Test 4",
-                factory: function (c) {
+                factory: c => {
                     return {
                         get Name() {
                             return 'test 4 base';
@@ -333,16 +333,16 @@ var Level9;
     Level9.resolveWithMultipleDependencies = resolveWithMultipleDependencies;
     function resolveWithDependencyThrowsWhenNamedRegistration(test) {
         containerBuilder.register(TestData.Test2Base)
-            .as(function () { return new TestData.Test2(); });
+            .as(() => new TestData.Test2());
         containerBuilder.register(TestData.Test1Base)
-            .as(function (c) {
+            .as(c => {
             var test2 = c.resolve(TestData.Test2Base);
             return new TestData.Test3(test2);
         }).named('Test');
         var container = containerBuilder.build();
         var dependencies = [{
                 service: TestData.Test2Base,
-                factory: function () {
+                factory: () => {
                     return {
                         get Name() {
                             return 'name from dependency';
@@ -350,7 +350,7 @@ var Level9;
                     };
                 }
             }];
-        var delegate = function () { return container.resolveWithDependencies(TestData.Test1Base, dependencies); };
+        var delegate = () => container.resolveWithDependencies(TestData.Test1Base, dependencies);
         test.throws(delegate, function (error) {
             test.strictEqual(error.message, 'Could not resolve service');
             test.strictEqual(error.data, TestData.Test1Base);
@@ -362,16 +362,16 @@ var Level9;
     Level9.resolveWithDependencyThrowsWhenNamedRegistration = resolveWithDependencyThrowsWhenNamedRegistration;
     function resolveWithDependencyThrowsWhenRegistrationWithParams(test) {
         containerBuilder.register(TestData.Test2Base)
-            .as(function () { return new TestData.Test2(); });
+            .as(() => new TestData.Test2());
         containerBuilder.register(TestData.Test1Base)
-            .as(function (c, _, __, ___) {
+            .as((c, _, __, ___) => {
             var test2 = c.resolve(TestData.Test2Base);
             return new TestData.Test3(test2);
         });
         var container = containerBuilder.build();
         var dependencies = [{
                 service: TestData.Test2Base,
-                factory: function () {
+                factory: () => {
                     return {
                         get Name() {
                             return 'name from dependency';
@@ -379,7 +379,7 @@ var Level9;
                     };
                 }
             }];
-        var delegate = function () { return container.resolveWithDependencies(TestData.Test1Base, dependencies); };
+        var delegate = () => container.resolveWithDependencies(TestData.Test1Base, dependencies);
         test.throws(delegate, function (error) {
             test.strictEqual(error.message, 'Could not resolve service');
             test.strictEqual(error.data, TestData.Test1Base);
@@ -394,9 +394,9 @@ var Level9;
         var dependencyInitializer = mockery.stub();
         var resolveItem = new TestData.Test3(null);
         containerBuilder.register(TestData.Test2Base)
-            .as(function () { return new TestData.Test2(); });
+            .as(() => new TestData.Test2());
         containerBuilder.register(TestData.Test1Base)
-            .as(function (c) {
+            .as(c => {
             c.resolve(TestData.Test2Base);
             return resolveItem;
         })
@@ -409,7 +409,7 @@ var Level9;
         };
         var dependencies = [{
                 service: TestData.Test2Base,
-                factory: function () { return item; },
+                factory: () => item,
                 initializer: dependencyInitializer
             }];
         container.resolveWithDependencies(TestData.Test1Base, dependencies);
@@ -422,18 +422,18 @@ var Level9;
     Level9.resolveWithDependencyInitializerIsInvoked = resolveWithDependencyInitializerIsInvoked;
     function resolveWithPartialUniqueDependencies(test) {
         containerBuilder.register(TestData.Test2Base)
-            .as(function () { return new TestData.Test2(); });
+            .as(() => new TestData.Test2());
         containerBuilder.register(TestData.Test1Base)
-            .as(function (c) {
+            .as(c => {
             var test2 = c.resolve(TestData.Test2Base);
             return new TestData.Test3(test2);
         });
         containerBuilder.register(TestData.Test1Base)
-            .as(function () { return new TestData.Test4("test 4"); })
+            .as(() => new TestData.Test4("test 4"))
             .named("Test 4");
         var dynamicService = function () { };
         containerBuilder.register(dynamicService)
-            .as(function (c) {
+            .as(c => {
             var test1 = c.resolve(TestData.Test1Base);
             var test2 = c.resolve(TestData.Test2Base);
             test.ok(test2 instanceof TestData.Test2);
@@ -443,7 +443,7 @@ var Level9;
         var container = containerBuilder.build();
         var dependencies = [{
                 service: TestData.Test1Base,
-                factory: function () {
+                factory: () => {
                     return {
                         get Name() {
                             return 'test 1 base';
@@ -454,7 +454,7 @@ var Level9;
             {
                 service: TestData.Test1Base,
                 named: "Test 4",
-                factory: function () {
+                factory: () => {
                     return {
                         get Name() {
                             return 'test 4 base';
@@ -472,18 +472,18 @@ var Level9;
     Level9.resolveWithPartialUniqueDependencies = resolveWithPartialUniqueDependencies;
     function resolveWithPartialNonNamedDependencies(test) {
         containerBuilder.register(TestData.Test2Base)
-            .as(function () { return new TestData.Test2(); });
+            .as(() => new TestData.Test2());
         containerBuilder.register(TestData.Test1Base)
-            .as(function (c) {
+            .as(c => {
             var test2 = c.resolve(TestData.Test2Base);
             return new TestData.Test3(test2);
         });
         containerBuilder.register(TestData.Test1Base)
-            .as(function () { return new TestData.Test4("test 4"); })
+            .as(() => new TestData.Test4("test 4"))
             .named("Test 4");
         var dynamicService = function () { };
         containerBuilder.register(dynamicService)
-            .as(function (c) {
+            .as(c => {
             var test1 = c.resolve(TestData.Test1Base);
             test.ok(test1 instanceof TestData.Test3);
             var test2 = c.resolve(TestData.Test2Base);
@@ -493,7 +493,7 @@ var Level9;
         var container = containerBuilder.build();
         var dependencies = [{
                 service: TestData.Test2Base,
-                factory: function () {
+                factory: () => {
                     return {
                         get Name() {
                             return 'test 2 base';
@@ -504,7 +504,7 @@ var Level9;
             {
                 service: TestData.Test1Base,
                 named: "Test 4",
-                factory: function () {
+                factory: () => {
                     return {
                         get Name() {
                             return 'test 4 base';
@@ -522,18 +522,18 @@ var Level9;
     Level9.resolveWithPartialNonNamedDependencies = resolveWithPartialNonNamedDependencies;
     function resolveWithPartialNamedDependencies(test) {
         containerBuilder.register(TestData.Test2Base)
-            .as(function () { return new TestData.Test2(); });
+            .as(() => new TestData.Test2());
         containerBuilder.register(TestData.Test1Base)
-            .as(function (c) {
+            .as(c => {
             var test2 = c.resolve(TestData.Test2Base);
             return new TestData.Test3(test2);
         });
         containerBuilder.register(TestData.Test1Base)
-            .as(function () { return new TestData.Test4("test 4"); })
+            .as(() => new TestData.Test4("test 4"))
             .named("Test 4");
         var dynamicService = function () { };
         containerBuilder.register(dynamicService)
-            .as(function (c) {
+            .as(c => {
             var test1 = c.resolve(TestData.Test1Base);
             var test2 = c.resolve(TestData.Test2Base);
             var test4 = c.resolveNamed(TestData.Test1Base, "Test 4");
@@ -543,7 +543,7 @@ var Level9;
         var container = containerBuilder.build();
         var dependencies = [{
                 service: TestData.Test1Base,
-                factory: function () {
+                factory: () => {
                     return {
                         get Name() {
                             return 'test 1 base';
@@ -553,7 +553,7 @@ var Level9;
             },
             {
                 service: TestData.Test2Base,
-                factory: function () {
+                factory: () => {
                     return {
                         get Name() {
                             return 'test 2 base';

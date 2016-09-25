@@ -6,7 +6,7 @@ exports.internal = {
 
         var Scaffold = require('../../scaffold');
         var Exceptions = Scaffold.Exceptions;
-        var ExceptionBase = Scaffold.ExceptionBase;
+        var BaseError = Scaffold.BaseError;
 
         return {
 
@@ -31,7 +31,7 @@ exports.internal = {
 
                 var expected = "the message";
 
-                var baseError = new ExceptionBase.BaseError(expected);
+                var baseError = new BaseError(expected);
 
                 test.strictEqual(expected, baseError.message);
 
@@ -42,7 +42,7 @@ exports.internal = {
 
                 var expected = "the name";
 
-                var baseError = new ExceptionBase.BaseError();
+                var baseError = new BaseError();
                 baseError.name = expected;
 
                 test.strictEqual(expected, baseError.name);
@@ -52,7 +52,7 @@ exports.internal = {
 
             baseError_has_stack: function(test) {
 
-                var baseError = new ExceptionBase.BaseError();
+                var baseError = new BaseError();
 
                 var stack = baseError.stack;
                 test.ok(stack);
@@ -65,7 +65,7 @@ exports.internal = {
                 var baseError = new Exceptions.ApplicationError();
                 baseError.data = 'test'
 
-                test.ok(baseError instanceof ExceptionBase.BaseError);
+                test.ok(baseError instanceof BaseError);
 
                 test.done();
             },

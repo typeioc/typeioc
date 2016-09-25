@@ -12,8 +12,7 @@ exports.internal = {
         return {
 
             getFactoryArgsCount_returns_params_count_for_factory: function (test) {
-                var factory = function (c, a, b, s) {
-                }
+                var factory = function (c, a, b, s) { };
 
                 var result = Utils.Reflection.getFactoryArgsCount(factory);
 
@@ -21,10 +20,69 @@ exports.internal = {
 
                 test.done();
             },
+            
+            getFactoryArgsCount_returns_params_count_for_lambda: function (test) {
+                var factory = (c, a, b, s) => { };
 
-            getFactoryArgsCount_returns_0_for_factory_container_no_params: function (test) {
-                var factory = function (c) {
-                }
+                var result = Utils.Reflection.getFactoryArgsCount(factory);
+
+                test.equal(result, 3);
+
+                test.done();
+            },
+            
+            getFactoryArgsCount_returns_params_count_for_lambda_no_b: function (test) {
+                var factory = (c, a, b, s) => 1;
+
+                var result = Utils.Reflection.getFactoryArgsCount(factory);
+
+                test.equal(result, 3);
+
+                test.done();
+            },
+            
+            getFactoryArgsCount_returns_0_for_container_no_params: function (test) {
+                var factory = function (c) { };
+
+                var result = Utils.Reflection.getFactoryArgsCount(factory);
+
+                test.equal(result, 0);
+
+                test.done();
+            },
+            
+            getFactoryArgsCount_returns_0_for_lambda_container_no_params: function (test) {
+                var factory = (c) => {};
+
+                var result = Utils.Reflection.getFactoryArgsCount(factory);
+
+                test.equal(result, 0);
+
+                test.done();
+            },
+            
+            getFactoryArgsCount_returns_0_for_lambda_no_b_container_no_params: function (test) {
+                var factory = (c) => 1;
+
+                var result = Utils.Reflection.getFactoryArgsCount(factory);
+
+                test.equal(result, 0);
+
+                test.done();
+            },
+            
+            getFactoryArgsCount_returns_0_for_lambda_no_p_container_no_params: function (test) {
+                var factory = c => {};
+
+                var result = Utils.Reflection.getFactoryArgsCount(factory);
+
+                test.equal(result, 0);
+
+                test.done();
+            },
+            
+            getFactoryArgsCount_returns_0_for_lambda_no_pb_container_no_params: function (test) {
+                var factory = c => 1;
 
                 var result = Utils.Reflection.getFactoryArgsCount(factory);
 
@@ -33,9 +91,28 @@ exports.internal = {
                 test.done();
             },
 
-            getFactoryArgsCount_returns_0_for_factory_no_params: function (test) {
-                var factory = function () {
-                }
+            getFactoryArgsCount_returns_0_for_no_params: function (test) {
+                var factory = function () { };
+
+                var result = Utils.Reflection.getFactoryArgsCount(factory);
+
+                test.equal(result, 0);
+
+                test.done();
+            },
+            
+            getFactoryArgsCount_returns_0_for_lambda_no_params: function (test) {
+                var factory = () => {};
+
+                var result = Utils.Reflection.getFactoryArgsCount(factory);
+
+                test.equal(result, 0);
+
+                test.done();
+            },
+            
+            getFactoryArgsCount_returns_0_for_lambda_no_b_no_params: function (test) {
+                var factory = () => 1;
 
                 var result = Utils.Reflection.getFactoryArgsCount(factory);
 
@@ -124,7 +201,7 @@ exports.internal = {
                 obj2.prototype.d2 = function () {
                 }
 
-                var result = Utils.Reflection.isCompatible(new obj1(), new obj2());
+                var result = Utils.Reflection.isCompatible(obj1.prototype, obj2.prototype);
 
                 test.ok(result === false);
 

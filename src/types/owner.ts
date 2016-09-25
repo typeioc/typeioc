@@ -9,7 +9,7 @@
 
 'use strict';
 
-export class Owner {
+export default class Owner {
     public static Container = 1;
     public static Externals = 2
 }

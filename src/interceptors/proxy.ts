@@ -12,8 +12,8 @@
 
  'use strict';
 
-import Utils = require('../utils/index');
-import Exceptions = require('../exceptions/index');
+import { Reflection } from '../utils';
+import { ProxyError } from '../exceptions';
 import IStorage = Typeioc.Internal.Interceptors.IStorage;
 import IProxy  = Typeioc.Internal.Interceptors.IProxy;
 import ISubstitute = Addons.Interceptors.ISubstitute;
@@ -29,7 +29,7 @@ export class Proxy implements IProxy {
 
     constructor(private _decorator : Typeioc.Internal.Interceptors.IDecorator) {
 
-        this.restrictedProperties = Utils.Reflection.getAllPropertyNames(Function);
+        this.restrictedProperties = Reflection.getAllPropertyNames(Function);
     }
 
     public byPrototype(parent : Function,
@@ -38,7 +38,7 @@ export class Proxy implements IProxy {
         var self = this;
 
         function Proxy() {
-            this._parent = Utils.Reflection.construct(parent, arguments);
+            this._parent = Reflection.construct(parent, arguments);
 
 
             Object.getOwnPropertyNames(this._parent)
@@ -51,7 +51,7 @@ export class Proxy implements IProxy {
         }
 
         var source = parent.prototype;
-        Utils.Reflection.getAllPropertyNames(source)
+        Reflection.getAllPropertyNames(source)
                         .filter(name => name !== 'constructor' && name !== 'prototype')
                         .map(p => self.createStrategyInfo(source, Proxy.prototype, p, '_parent'))
                         .forEach(s => self.decorateProperty(s, storage));
@@ -68,7 +68,7 @@ export class Proxy implements IProxy {
 
         var result = Object.create({});
 
-        Utils.Reflection.getAllPropertyNames(parent)
+        Reflection.getAllPropertyNames(parent)
             .filter(name => name !== 'constructor')
             .map(p => this.createStrategyInfo(parent, result, p))
             .forEach(s => this.decorateProperty(s, storage));
@@ -154,12 +154,12 @@ export class Proxy implements IProxy {
     }
 
     private createStrategyInfo(source : Function | Object,
-                               destination : Function,
+                               destination : Function | Object,
                                name : string,
                                contextName? : string) : IStrategyInfo {
 
-        var descriptor = Utils.Reflection.getPropertyDescriptor(source, name);
-        var propertyType = Utils.Reflection.getPropertyType(name, descriptor);
+        var descriptor = Reflection.getPropertyDescriptor(source, name);
+        var propertyType = Reflection.getPropertyType(name, descriptor);
 
         return {
             type : propertyType,
@@ -186,7 +186,7 @@ export class Proxy implements IProxy {
         var typeName = allTypes[type];
 
         var message = ['Could not match proxy type and property type. Expected: "', nativeTypeName, '", Actual: "', typeName, '"'].join('');
-        var error = new Exceptions.ProxyError(message);
+        var error = new ProxyError(message);
         error.data = { method : propertyName, expected : nativeTypeName, actual : typeName };
         return error;
     }

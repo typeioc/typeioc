@@ -8,12 +8,11 @@
 
 'use strict';
 
-import BaseApplicationErrorModule = require('./applicationError');
+import ApplicationError from './applicationError';
 
+export default class ResolutionError extends ApplicationError {
 
-export class ResolutionError extends BaseApplicationErrorModule.ApplicationError {
-
-    constructor (public message?: string) {
+    constructor (message?: string) {
         super(message);
 
         this.name = "ResolutionError";

@@ -12,7 +12,7 @@
 
 'use strict';
 
-import Utils = require('../utils/index');
+import { Reflection, createImmutable } from '../utils';
 import ISubstitute = Addons.Interceptors.ISubstitute;
 import IImmutableArray = Typeioc.Internal.IImmutableArray;
 import IStrategyInfo = Typeioc.Internal.Interceptors.IStrategyInfo;
@@ -111,7 +111,7 @@ export class Decorator implements Typeioc.Internal.Interceptors.IDecorator {
 
                  var delegate = args => {
 
-                     if(!args || !Utils.Reflection.isArray(args)) {
+                     if(!args || !Reflection.isArray(args)) {
                          args = [ args ];
                      }
 
@@ -119,7 +119,7 @@ export class Decorator implements Typeioc.Internal.Interceptors.IDecorator {
                  };
 
                  return self.createCallChainFromList({
-                         args : Utils.createImmutable(args),
+                         args : createImmutable(args),
                          delegate : delegate,
                          wrapperContext : destination,
                          strategyInfo : strategyInfo
@@ -182,7 +182,7 @@ export class Decorator implements Typeioc.Internal.Interceptors.IDecorator {
              var delegate = self.defineSetter(strategyInfo).bind(this);
 
              return self.createCallChainFromList({
-                 args : Utils.createImmutable([value]),
+                 args : createImmutable([value]),
                  delegate : delegate,
                  wrapperContext : destination,
                  callType : Addons.Interceptors.CallInfoType.Setter,
@@ -201,7 +201,7 @@ export class Decorator implements Typeioc.Internal.Interceptors.IDecorator {
              var delegate = self.defineGetter(strategyInfo).bind(this);
 
              return self.createCallChainFromList({
-                 args : Utils.createImmutable([]),
+                 args : createImmutable([]),
                  delegate : delegate,
                  wrapperContext : destination,
                  callType : Addons.Interceptors.CallInfoType.Getter,

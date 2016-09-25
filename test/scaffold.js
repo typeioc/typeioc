@@ -4,10 +4,11 @@
 var typeioc = require('../');
 var ConfigModule = require('./data/config');
 var ConfigProvider = ConfigModule.Config;
+var BError = require('../lib/exceptions/baseError').default;
 exports.Exceptions = typeioc.Exceptions;
 exports.Types = typeioc.Types;
 exports.RegistrationBase = require('../lib/registration/base/registrationBase');
-exports.ExceptionBase = require('../lib/exceptions/baseError');
+exports.BaseError = BError;
 exports.TestModule = require('./data/test-data');
 exports.TestModule2 = require('./data/test-data2');
 exports.TestModuleInterceptors = require('./data/test-data-intercept');

@@ -8,25 +8,25 @@
 
 ///<reference path='../d.ts/typeioc.internal.d.ts' />
 
-'use strict';
+"use strict";
 
 import Internal = Typeioc.Internal;
 import Decorators = Typeioc.Decorators;
 
-import InternalStorageModule = require('./storage/internalStorage');
-import DisposableStorageModule = require('./storage/disposableStorage');
-import RegoBaseModule = require('./registration/base/registrationBase');
-import RegoStorageModule = require('./storage/registrationStorage');
-import ModuleRego = require('./registration/module/moduleRegistration');
-import InstanceRegoModule = require('./registration/instance/registration');
-import ConfigRegoModule = require('./registration/config/configRegistration');
-import ContainerModule = require('./build/container');
-import BuilderModule = require('./build/builder');
-import ApiContainer = require('./build/containerApi');
-import InternalContainerModule = require('./build/internalContainer');
-import DecoratorModule=  require('./decorators/decorator');
-import DecoratorRegistrationApiModule = require('./decorators/registrationApi');
-import DecoratorResolutionApiModule = require('./decorators/resolutionApi');
+import { InternalStorage } from './storage/internalStorage';
+import { DisposableStorage } from './storage/disposableStorage';
+import { RegistrationBase } from './registration/base/registrationBase';
+import { RegistrationStorage } from './storage/registrationStorage';
+import { ModuleRegistration } from './registration/module/moduleRegistration';
+import { Registration } from './registration/instance/registration';
+import { ConfigRegistration } from './registration/config/configRegistration';
+import { Container } from './build/container';
+import { ContainerBuilder } from './build/builder';
+import { Api as ContainerApi } from './build/containerApi';
+import { InternalContainer } from './build/internalContainer';
+import { Decorator } from './decorators/decorator';
+import { RegistrationApi as DecoratorRegistrationApi } from './decorators/registrationApi';
+import { ResolutionApi as DecoratorResolutionApi } from './decorators/resolutionApi';
 
 
 export class Scaffold {
@@ -45,7 +45,7 @@ export class Scaffold {
 
         var internalContainerService = this.internalContainerService();
 
-        return new DecoratorModule.Decorator(
+        return new Decorator(
             this.builderService(),
             internalContainerService,
             decoratorRegistrationService,
@@ -65,7 +65,7 @@ export class Scaffold {
 
                 var containerService = this.containerService();
 
-                return new BuilderModule.ContainerBuilder(
+                return new ContainerBuilder(
                     configRegoService,
                     baseRegoService,
                     instanceRegoService,
@@ -80,7 +80,7 @@ export class Scaffold {
 
         return {
             create() {
-                return new InternalStorageModule.InternalStorage<K, T>();
+                return new InternalStorage<K, T>();
             }
         };
     }
@@ -88,7 +88,7 @@ export class Scaffold {
     private disposableStorageService() : Internal.IIDisposableStorageService {
         return {
             create() {
-                return new DisposableStorageModule.DisposableStorage();
+                return new DisposableStorage();
             }
         };
     }
@@ -96,7 +96,7 @@ export class Scaffold {
     private registrationBaseService() : Internal.IRegistrationBaseService {
         return {
             create(service : any) {
-                return new RegoBaseModule.RegistrationBase(service);
+                return new RegistrationBase(service);
             }
         };
     }
@@ -107,13 +107,13 @@ export class Scaffold {
 
         var service = {
             create<R1, R2>() {
-                return new InternalStorageModule.InternalStorage<R1, R2>();
+                return new InternalStorage<R1, R2>();
             }
         };
 
         return {
             create() {
-                return new RegoStorageModule.RegistrationStorage(service);
+                return new RegistrationStorage(service);
             }
         };
     }
@@ -128,14 +128,14 @@ export class Scaffold {
             create(baseRegistration : Internal.IRegistrationBase) {
                 var storage = internalStorageService.create();
 
-                return  new ModuleRego.ModuleRegistration(baseRegistration, storage, registrationBaseService);
+                return new ModuleRegistration(baseRegistration, storage, registrationBaseService);
             }
         };
     }
 
     private containerService() : Internal.IContainerService {
         return {
-            create : (container? : Internal.IContainer) => new ContainerModule.Container(container)
+            create : (container? : Internal.IContainer) => new Container(container)
         };
     }
 
@@ -144,7 +144,7 @@ export class Scaffold {
         : Typeioc.Internal.IConfigRegistrationService {
 
         return {
-            create : () => new ConfigRegoModule.ConfigRegistration(
+            create : () => new ConfigRegistration(
                             registrationBaseService,
                             moduleRegistrationService)
         };
@@ -154,7 +154,7 @@ export class Scaffold {
 
         return {
             create : function<R>(container : Internal.IImportApi<R>) {
-                return new ApiContainer.Api(container);
+                return new ContainerApi(container);
             }
         }
     }
@@ -162,7 +162,7 @@ export class Scaffold {
     private instanceRegistrationService() : Internal.IInstanceRegistrationService {
         return {
             create : function<R>(baseRegistration : Internal.IRegistrationBase) : Typeioc.IRegistration<R> {
-                return new InstanceRegoModule.Registration(baseRegistration);
+                return new Registration(baseRegistration);
             }
         };
     }
@@ -182,7 +182,7 @@ export class Scaffold {
                 var baseRegoService = that.registrationBaseService();
                 var containerApiService = that.containerApiService();
 
-                return new InternalContainerModule.InternalContainer(
+                return new InternalContainer(
                     regoStorageService ,
                     disposableStorageService,
                     baseRegoService,
@@ -194,17 +194,16 @@ export class Scaffold {
 
     private decoratorRegistrationApiService() : Internal.IDecoratorApiService {
         return {
-            createRegistration<R>(register : (api : Internal.IDecoratorRegistrationApi<R>) => Decorators.Register.IDecoratorRegisterResult)
+            createRegistration<R>(register : (api : Internal.IDecoratorRegistrationApi<R>) => ClassDecorator)
                                 : Internal.IDecoratorRegistrationApi<R> {
-                return new DecoratorRegistrationApiModule.RegistrationApi(register);
+                return new DecoratorRegistrationApi(register);
             },
 
-            createResolution(resolve : (api : Internal.IDecoratorResolutionApi) => Decorators.Resolve.IDecoratorResolutionResult)
+            createResolution(resolve : (api : Internal.IDecoratorResolutionApi) => ParameterDecorator)
                 : Internal.IDecoratorResolutionApi {
 
-                return new DecoratorResolutionApiModule.ResolutionApi(resolve);
+                return new DecoratorResolutionApi(resolve);
             }
         }
     }
-
 }

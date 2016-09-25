@@ -1,0 +1,10 @@
+verbose: false
+instrumentation:
+    root: ./lib
+reporting:
+    print: summary
+    reports:
+        - lcov
+        - text
+        - text-summary
+    dir: ./test/coverage

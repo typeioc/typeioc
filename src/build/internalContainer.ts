@@ -7,11 +7,11 @@
  * --------------------------------------------------------------------------------------------------*/
 
 
-'use strict';
+"use strict";
 
-import Exceptions = require('../exceptions/index');
-import Utils = require('../utils/index');
-import Types = require('../types/index');
+import { NullReferenceError, ResolutionError } from '../exceptions';
+import { Reflection } from '../utils';
+import { Scope, Owner } from '../types';
 
 import Internal = Typeioc.Internal;
 
@@ -23,8 +23,8 @@ export class InternalContainer implements Internal.IContainer {
     private _disposableStorage : Internal.IDisposableStorage;
     private _collection : Internal.IRegistrationStorage;
     private _cache : Internal.IIndexedCollection<any>;
-    private _dependencyScope = Types.Scope.None;
-    private _dependencyOwner = Types.Owner.Externals;
+    private _dependencyScope = Scope.None;
+    private _dependencyOwner = Owner.Externals;
 
     constructor(private _registrationStorageService : Internal.IRegistrationStorageService,
                 private _disposableStorageService : Internal.IIDisposableStorageService,
@@ -70,6 +70,10 @@ export class InternalContainer implements Internal.IContainer {
             item.dispose();
         }
     }
+    
+    public disposeAsync() : Promise<void> {
+        throw 'Not implemented';
+    }
 
     public resolve<R>(service: any, ...args:any[]) : R {
         var rego = this.createRegistration(service);
@@ -77,14 +81,24 @@ export class InternalContainer implements Internal.IContainer {
 
         return this.resolveBase(rego, true);
     }
-
+    
+    public resolveAsync<R>(service: any, ...args:any[]) : Promise<R> {
+    
+        throw 'Not implemented';
+    }
+    
     public tryResolve<R>(service: any, ...args:any[]) : R {
         var rego = this.createRegistration(service);
         rego.args = args;
 
         return this.resolveBase(rego, false);
     }
-
+    
+    public tryResolveAsync<R>(service: any, ...args:any[]) : Promise<R> {
+        
+        throw 'Not implemented';
+    } 
+    
     public resolveNamed<R>(service: any, name : string, ...args:any[]) : R {
         var rego = this.createRegistration(service);
         rego.name = name;
@@ -92,13 +106,21 @@ export class InternalContainer implements Internal.IContainer {
 
         return this.resolveBase(rego, true);
     }
-
+    
+    public resolveNamedAsync<R>(service: R, name : string, ...args:any[]) : Promise<R> {
+        throw 'Not implemented';
+    }
+    
     public tryResolveNamed<R>(service: any, name : string, ...args:any[]) : R {
         var rego = this.createRegistration(service);
         rego.name = name;
         rego.args = args;
 
         return this.resolveBase(rego, false);
+    }
+    
+    public tryResolveNamedAsync<R>(service: R, name : string, ...args:any[]) : Promise<R> {
+        throw 'Not implemented';
     }
 
     public resolveWithDependencies<R>(service: any, dependencies : Typeioc.IDynamicDependency[]) : R {
@@ -109,7 +131,11 @@ export class InternalContainer implements Internal.IContainer {
 
         return this.resolveWithDepBase<R>(api);
     }
-
+    
+    public resolveWithDependenciesAsync<R>(service: R, dependencies : Typeioc.IDynamicDependency[]) : Promise<R> {
+        throw 'Not implemented';
+    }
+    
     public resolveWith<R>(service : any) : Typeioc.IResolveWith<R> {
 
         var importApi : Internal.IImportApi<R> = {
@@ -144,7 +170,7 @@ export class InternalContainer implements Internal.IContainer {
     private registerImpl(registration : Internal.IRegistrationBase) : void {
 
         if(!registration.factory && !registration.factoryType){
-            var exception = new Exceptions.NullReferenceError("Factory is not defined");
+            var exception = new NullReferenceError("Factory is not defined");
             exception.data = registration.service;
             throw exception;
         }
@@ -158,7 +184,10 @@ export class InternalContainer implements Internal.IContainer {
 
         var entry = this.resolveImpl(registration, throwIfNotFound);
 
-        if(!entry && throwIfNotFound === false) return null;
+        if(!entry && throwIfNotFound === false) {
+            return null;  
+        }
+        
         entry.args = registration.args;
 
         return this.resolveScope(entry, throwIfNotFound);
@@ -173,7 +202,7 @@ export class InternalContainer implements Internal.IContainer {
         }
 
         if(!serviceEntry  && throwIfNotFound === true) {
-            var exception = new Exceptions.ResolutionError('Could not resolve service');
+            var exception = new ResolutionError('Could not resolve service');
             exception.data = registration.service;
             throw exception;
         }
@@ -188,16 +217,16 @@ export class InternalContainer implements Internal.IContainer {
             case Typeioc.Types.Scope.None:
                 return this.createTrackable(registration, throwIfNotFound);
 
-            case Types.Scope.Container:
+            case Scope.Container:
 
                 return this.resolveContainerScope(registration, throwIfNotFound);
 
-            case Types.Scope.Hierarchy :
+            case Scope.Hierarchy :
 
                 return this.resolveHierarchyScope(registration, throwIfNotFound);
 
             default:
-                throw new Exceptions.ResolutionError('Unknown scoping');
+                throw new ResolutionError('Unknown scoping');
         }
     }
 
@@ -248,7 +277,7 @@ export class InternalContainer implements Internal.IContainer {
             instance = registration.initializer(this, instance);
         }
 
-        if(registration.owner === Types.Owner.Container &&
+        if(registration.owner === Owner.Container &&
             registration.disposer) {
 
             this._disposableStorage.add(instance, registration.disposer);
@@ -266,15 +295,16 @@ export class InternalContainer implements Internal.IContainer {
 
         var items = api.dependenciesValue.map(dependency => {
 
+            var exception;
             if(!dependency.service) {
-                var exception = new Exceptions.ResolutionError('Service is not defined');
+                exception = new ResolutionError('Service is not defined');
                 exception.data = dependency;
                 throw exception;
             }
 
             if((!dependency.factory && !dependency.factoryType) ||
                 (dependency.factory && dependency.factoryType)) {
-                var exception = new Exceptions.ResolutionError('Factory or Factory type should be defined');
+                exception = new ResolutionError('Factory or Factory type should be defined');
                 exception.data = dependency;
                 throw exception;
             }
@@ -329,7 +359,9 @@ export class InternalContainer implements Internal.IContainer {
 
         var regoes = this.createDependenciesRegistration(api);
 
-        if(regoes.length <= 0) return null;
+        if(regoes.length <= 0) {
+            return null;
+        }
 
         regoes.push(baseRegistration);
 
@@ -347,29 +379,30 @@ export class InternalContainer implements Internal.IContainer {
         if(api.nameValue) {
             name = api.nameValue;
         } else
-        if(api.serviceValue['name']) {
-            name = api.serviceValue['name'];
+        if((<{name : string}>api.serviceValue).name) {
+            name = (<{name : string}>api.serviceValue).name;
         } else
         if(typeof api.serviceValue === 'string') {
             name = api.serviceValue;
         } else {
-            throw new Exceptions.ResolutionError('Missing cache name');
+            throw new ResolutionError('Missing cache name');
         }
 
         this._cache[name] = value;
     }
 
     private instantiate(type : any, registration : Internal.IRegistrationBase, throwIfNotFound : boolean) {
-
-        var dependencies = Utils.Reflection.getMetadata(Reflect, type);
         
-        if(registration.args.length)
-            return Utils.Reflection.construct(type, registration.args);
+        var dependencies = Reflection.getMetadata(Reflect, type);
+        
+        if(registration.args.length) {
+            return Reflection.construct(type, registration.args);
+        }
 
         if(registration.params.length) {
 
             let params = registration.params.map(item => throwIfNotFound === true ? this.resolve(item) : this.tryResolve(item));
-            return Utils.Reflection.construct(type, params);
+            return Reflection.construct(type, params);
         }
 
         var params = dependencies
@@ -378,11 +411,13 @@ export class InternalContainer implements Internal.IContainer {
                 let depParams = this._resolutionDetails ? this._resolutionDetails.tryGet(type) : null;
                 let depParamsValue = depParams ? depParams[index] : null;
 
-                if(!depParamsValue)
+                if(!depParamsValue) {
                     return this.resolve(dependancy);
+                }
 
-                if(depParamsValue.value)
+                if(depParamsValue.value) {
                     return depParamsValue.value;
+                }
 
                 let resolutionItem = depParamsValue.service || dependancy;
                 let resolution = this.resolveWith(resolutionItem);
@@ -402,6 +437,6 @@ export class InternalContainer implements Internal.IContainer {
                 return resolution.exec();
             });
 
-        return Utils.Reflection.construct(type, params);
+        return Reflection.construct(type, params);
     }
 }

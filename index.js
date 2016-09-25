@@ -15,8 +15,7 @@ var scaffold = new Builder.Scaffold();
 
 module.exports = {
     Types: types,
-    Exceptions : exceptions,
-    Decorators : scaffold.createDecorator(),
+    Exceptions: exceptions,
 
     createBuilder: function() {
         return scaffold.createBuilder();

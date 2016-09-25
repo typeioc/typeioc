@@ -12,9 +12,9 @@
 'use strict';
 
 
-import Utils = require('../utils/index');
-import Exceptions = require('../exceptions/index');
-import Types = require('../types/index');
+import { Reflection } from '../utils';
+import { DecoratorError } from '../exceptions';
+import { Defaults } from '../types';
 import Decorators = Typeioc.Decorators;
 import Internal = Typeioc.Internal;
 
@@ -36,7 +36,7 @@ export class Decorator implements Decorators.IDecorator {
     }
 
     public build():Typeioc.IContainer {
-
+        
         return this._builder.build();
     }
 
@@ -44,8 +44,8 @@ export class Decorator implements Decorators.IDecorator {
 
         var register = (api:Internal.IDecoratorRegistrationApi<R>)  => (target:R) => {
 
-            if (!Utils.Reflection.isPrototype(target)) {
-                let error = new Exceptions.DecoratorError("Decorator target not supported, not a prototype");
+            if (!Reflection.isPrototype(target)) {
+                let error = new DecoratorError("Decorator target not supported, not a prototype");
                 error.data = {target: target};
                 throw error;
             }
@@ -66,10 +66,10 @@ export class Decorator implements Decorators.IDecorator {
             if (name)
                 registration.named(name);
 
-            var scope = api.scope || Types.Defaults.Scope;
+            var scope = api.scope || Defaults.Scope;
             registration.within(scope);
 
-            var owner = api.owner || Types.Defaults.Owner;
+            var owner = api.owner || Defaults.Owner;
             registration.ownedBy(owner);
 
             return target;
@@ -85,7 +85,7 @@ export class Decorator implements Decorators.IDecorator {
         var resolve = (api:Internal.IDecoratorResolutionApi) => (target:any, key:string, index:number) => {
 
             if(!api.service) {
-                var dependencies = Utils.Reflection.getMetadata(Reflect, target);
+                var dependencies = Reflection.getMetadata(Reflect, target);
                 api.service = dependencies[index];
             }
 
@@ -105,7 +105,7 @@ export class Decorator implements Decorators.IDecorator {
         return api.by(service);
     }
 
-    public resolveValue(value:any):Decorators.Resolve.IDecoratorResolutionResult {
+    public resolveValue(value:any) : ParameterDecorator {
 
         return (target:any, key:string, index:number) => {
 
