@@ -35,7 +35,7 @@ Assuming TestBase class and Test class exist somewhere
 
 ```js
 var containerBuilder = typeioc.createBuilder();
-containerBuilder.register(TestBase).as(function() {return  new Test(); });
+containerBuilder.register(TestBase).as(() => new Test());
 var container = containerBuilder.build();
 var actual = container.resolve(TestBase);
 ```
@@ -102,7 +102,34 @@ container
 .name('someName')                              // with name (for named registrations)
 .dependencies([d1, d2])                        // with dependencies (to substitute things Test1Base depends on)
 .cache()                                       // with cached resolution value => container.cache.Test1Base
-.exec();                                       // resolve
+.exec();                                       // resolve, aslo execAsync() available for awaited call
+// OR .execAsync();
+```
+
+#####Shortcuts:
+
+```ts
+container.resolve<TestData.Test1Base>(Test1Base, ...args:any[]);
+container.resolveAsync<TestData.Test1Base>(Test1Base, ...args:any[]);  // awaited call return promise
+
+container.tryResolve<TestData.Test1Base>(Test1Base, ...args:any[]);
+container.tryResolveAsync<TestData.Test1Base>(Test1Base, ...args:any[]);  // awaited call return promise
+
+container.resolveNamed<TestData.Test1Base>(Test1Base, ...args:any[]);
+container.resolveNamedAsync<TestData.Test1Base>(Test1Base, ...args:any[]);  // awaited call return promise
+
+container.tryResolveNamed<TestData.Test1Base>(Test1Base, name : string, ...args:any[]);
+container.tryResolveNamedAsync<TestData.Test1Base>(Test1Base, name : string, ...args:any[]);  // awaited call return promise
+
+container.resolveWithDependencies<TestData.Test1Base>(Test1Base, dependencies : Typeioc.IDynamicDependency[]);
+container.resolveWithDependencies<TestData.Test1Base>(Test1Base, dependencies : Typeioc.IDynamicDependency[]);  // awaited call return promise
+
+// resolveWithDependencies will substitute all the dependencies for the instance being resolved
+
+
+container.dispose();  // dispose all owned instances
+container.disposeAsync(); 
+
 ```
 
 ####Decorators (TS):

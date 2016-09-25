@@ -1,0 +1,49 @@
+[1mdiff --git a/README.md b/README.md[m
+[1mindex 8c8a061..dcf4f52 100644[m
+[1m--- a/README.md[m
+[1m+++ b/README.md[m
+[36m@@ -35,7 +35,7 @@[m [mAssuming TestBase class and Test class exist somewhere[m
+ [m
+ ```js[m
+ var containerBuilder = typeioc.createBuilder();[m
+[31m-containerBuilder.register(TestBase).as(function() {return  new Test(); });[m
+[32m+[m[32mcontainerBuilder.register(TestBase).as(() => new Test());[m
+ var container = containerBuilder.build();[m
+ var actual = container.resolve(TestBase);[m
+ ```[m
+[36m@@ -102,7 +102,34 @@[m [mcontainer[m
+ .name('someName')                              // with name (for named registrations)[m
+ .dependencies([d1, d2])                        // with dependencies (to substitute things Test1Base depends on)[m
+ .cache()                                       // with cached resolution value => container.cache.Test1Base[m
+[31m-.exec();                                       // resolve[m
+[32m+[m[32m.exec();                                       // resolve, aslo execAsync() available for awaited call[m
+[32m+[m[32m// OR .execAsync();[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32m#####Shortcuts:[m
+[32m+[m
+[32m+[m[32m```ts[m
+[32m+[m[32mcontainer.resolve<TestData.Test1Base>(Test1Base, ...args:any[]);[m
+[32m+[m[32mcontainer.resolveAsync<TestData.Test1Base>(Test1Base, ...args:any[]);  // awaited call return promise[m
+[32m+[m
+[32m+[m[32mcontainer.tryResolve<TestData.Test1Base>(Test1Base, ...args:any[]);[m
+[32m+[m[32mcontainer.tryResolveAsync<TestData.Test1Base>(Test1Base, ...args:any[]);  // awaited call return promise[m
+[32m+[m
+[32m+[m[32mcontainer.resolveNamed<TestData.Test1Base>(Test1Base, ...args:any[]);[m
+[32m+[m[32mcontainer.resolveNamedAsync<TestData.Test1Base>(Test1Base, ...args:any[]);  // awaited call return promise[m
+[32m+[m
+[32m+[m[32mcontainer.tryResolveNamed<TestData.Test1Base>(Test1Base, name : string, ...args:any[]);[m
+[32m+[m[32mcontainer.tryResolveNamedAsync<TestData.Test1Base>(Test1Base, name : string, ...args:any[]);  // awaited call return promise[m
+[32m+[m
+[32m+[m[32mcontainer.resolveWithDependencies<TestData.Test1Base>(Test1Base, dependencies : Typeioc.IDynamicDependency[]);[m
+[32m+[m[32mcontainer.resolveWithDependencies<TestData.Test1Base>(Test1Base, dependencies : Typeioc.IDynamicDependency[]);  // awaited call return promise[m
+[32m+[m
+[32m+[m[32m// resolveWithDependencies will substitute all the dependencies for the instance being resolved[m
+[32m+[m
+[32m+[m
+[32m+[m[32mcontainer.dispose();  // dispose all owned instances[m
+[32m+[m[32mcontainer.disposeAsync();[m[41m [m
+[32m+[m
+ ```[m
+ [m
+ ####Decorators (TS):[m
