@@ -110,19 +110,19 @@ container
 
 ```ts
 container.resolve<TestData.Test1Base>(Test1Base, ...args:any[]);
-container.resolveAsync<TestData.Test1Base>(Test1Base, ...args:any[]);  // awaited call return promise
+container.resolveAsync<TestData.Test1Base>(Test1Base, ...args:any[]);  // awaited call returns promise
 
 container.tryResolve<TestData.Test1Base>(Test1Base, ...args:any[]);
-container.tryResolveAsync<TestData.Test1Base>(Test1Base, ...args:any[]);  // awaited call return promise
+container.tryResolveAsync<TestData.Test1Base>(Test1Base, ...args:any[]);  // awaited call returns promise
 
 container.resolveNamed<TestData.Test1Base>(Test1Base, ...args:any[]);
-container.resolveNamedAsync<TestData.Test1Base>(Test1Base, ...args:any[]);  // awaited call return promise
+container.resolveNamedAsync<TestData.Test1Base>(Test1Base, ...args:any[]);  // awaited call returns promise
 
 container.tryResolveNamed<TestData.Test1Base>(Test1Base, name : string, ...args:any[]);
-container.tryResolveNamedAsync<TestData.Test1Base>(Test1Base, name : string, ...args:any[]);  // awaited call return promise
+container.tryResolveNamedAsync<TestData.Test1Base>(Test1Base, name : string, ...args:any[]);  // awaited call returns promise
 
 container.resolveWithDependencies<TestData.Test1Base>(Test1Base, dependencies : Typeioc.IDynamicDependency[]);
-container.resolveWithDependencies<TestData.Test1Base>(Test1Base, dependencies : Typeioc.IDynamicDependency[]);  // awaited call return promise
+container.resolveWithDependencies<TestData.Test1Base>(Test1Base, dependencies : Typeioc.IDynamicDependency[]);  // awaited call returns promise
 
 // resolveWithDependencies will substitute all the dependencies for the instance being resolved
 
