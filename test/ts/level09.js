@@ -1,6 +1,7 @@
 'use strict';
-const scaffold = require('./../scaffold');
-const TestData = require('../data/test-data');
+Object.defineProperty(exports, "__esModule", { value: true });
+const scaffold = require("./../scaffold");
+const TestData = require("../data/test-data");
 var mockery = scaffold.Mockery;
 var Level9;
 (function (Level9) {

@@ -1,4 +1,5 @@
 'use strict';
+Object.defineProperty(exports, "__esModule", { value: true });
 class Test1Base {
     get Name() { return null; }
     set Name(value) { }
@@ -35,10 +36,6 @@ class Test2 extends Test2Base {
 }
 exports.Test2 = Test2;
 class Test3 extends Test1Base {
-    constructor(test2) {
-        super();
-        this.test2 = test2;
-    }
     get Name() {
         var result = 'Test 3 ';
         if (this.test2) {
@@ -46,18 +43,22 @@ class Test3 extends Test1Base {
         }
         return result;
     }
+    constructor(test2) {
+        super();
+        this.test2 = test2;
+    }
 }
 exports.Test3 = Test3;
 class Test4 extends Test1Base {
-    constructor(name) {
-        super();
-        this.name = name;
-    }
     get Name() {
         return this.name;
     }
     set Name(value) {
         this.name = value;
+    }
+    constructor(name) {
+        super();
+        this.name = name;
     }
 }
 exports.Test4 = Test4;

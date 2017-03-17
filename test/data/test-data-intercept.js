@@ -1,4 +1,5 @@
 'use strict';
+Object.defineProperty(exports, "__esModule", { value: true });
 var Module1;
 (function (Module1) {
     class Parent {

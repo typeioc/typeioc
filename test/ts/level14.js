@@ -1,7 +1,8 @@
 /// <reference path="../../typings/main.d.ts" />
 'use strict';
-const scaffold = require('../scaffold');
-const TestData = require('../data/test-data');
+Object.defineProperty(exports, "__esModule", { value: true });
+const scaffold = require("../scaffold");
+const TestData = require("../data/test-data");
 var Level14;
 (function (Level14) {
     var containerBuilder;

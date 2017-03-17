@@ -1,6 +1,7 @@
 /// <reference path='../d.ts/node.d.ts' />
 /// <reference path='../d.ts/typeioc.d.ts' />
 'use strict';
+Object.defineProperty(exports, "__esModule", { value: true });
 var typeioc = require('../');
 var ConfigModule = require('./data/config');
 var ConfigProvider = ConfigModule.Config;

@@ -13,8 +13,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-const scaffold = require('./../scaffold');
-const ScaffoldAddons = require('./../scaffoldAddons');
+Object.defineProperty(exports, "__esModule", { value: true });
+const scaffold = require("./../scaffold");
+const ScaffoldAddons = require("./../scaffoldAddons");
 var interceptor = ScaffoldAddons.Interceptors.create();
 exports.decorator = scaffold.createDecorator();
 exports.decorator2 = scaffold.createDecorator();
@@ -41,8 +42,7 @@ var Registration;
         }
     };
     Test = __decorate([
-        exports.decorator.provide(Registration.TestBase).register(), 
-        __metadata('design:paramtypes', [])
+        exports.decorator.provide(Registration.TestBase).register()
     ], Test);
     Registration.Test = Test;
     let Test1 = class Test1 {
@@ -54,8 +54,8 @@ var Registration;
         }
     };
     Test1 = __decorate([
-        exports.decorator.provide(Registration.TestBase1).register(), 
-        __metadata('design:paramtypes', [TestBase])
+        exports.decorator.provide(Registration.TestBase1).register(),
+        __metadata("design:paramtypes", [TestBase])
     ], Test1);
     Registration.Test1 = Test1;
     let Test2 = class Test2 {
@@ -68,8 +68,8 @@ var Registration;
         }
     };
     Test2 = __decorate([
-        exports.decorator.provide(Registration.TestBase2).register(), 
-        __metadata('design:paramtypes', [TestBase, TestBase1])
+        exports.decorator.provide(Registration.TestBase2).register(),
+        __metadata("design:paramtypes", [TestBase, TestBase1])
     ], Test2);
     Registration.Test2 = Test2;
 })(Registration = exports.Registration || (exports.Registration = {}));
@@ -97,8 +97,7 @@ var InitializeBy;
     Test2 = __decorate([
         exports.decorator.provide(InitializeBy.TestBase)
             .initializeBy((c, item) => { item.text = 'foo 2'; return item; })
-            .register(), 
-        __metadata('design:paramtypes', [])
+            .register()
     ], Test2);
     InitializeBy.Test2 = Test2;
     let Test3 = class Test3 extends TestBase1 {
@@ -120,8 +119,7 @@ var InitializeBy;
             });
             return item;
         })
-            .register(), 
-        __metadata('design:paramtypes', [])
+            .register()
     ], Test3);
     InitializeBy.Test3 = Test3;
 })(InitializeBy = exports.InitializeBy || (exports.InitializeBy = {}));
@@ -144,8 +142,7 @@ var Scope;
     Test = __decorate([
         exports.decorator.provide(Scope.TestBase)
             .within(1 /* None */)
-            .register(), 
-        __metadata('design:paramtypes', [])
+            .register()
     ], Test);
     Scope.Test = Test;
     class TestBase2 {
@@ -165,8 +162,7 @@ var Scope;
     Test2 = __decorate([
         exports.decorator.provide(Scope.TestBase2)
             .within(2 /* Container */)
-            .register(), 
-        __metadata('design:paramtypes', [])
+            .register()
     ], Test2);
     Scope.Test2 = Test2;
     class TestBase3 {
@@ -186,8 +182,7 @@ var Scope;
     Test3 = __decorate([
         exports.decorator.provide(Scope.TestBase3)
             .within(3 /* Hierarchy */)
-            .register(), 
-        __metadata('design:paramtypes', [])
+            .register()
     ], Test3);
     Scope.Test3 = Test3;
 })(Scope = exports.Scope || (exports.Scope = {}));
@@ -215,8 +210,7 @@ var Owner;
         exports.decorator.provide(Owner.TestBase1)
             .dispose((item) => { item.dispose(); })
             .ownedBy(1 /* Container */)
-            .register(), 
-        __metadata('design:paramtypes', [])
+            .register()
     ], Test);
     Owner.Test = Test;
     class TestBase2 {
@@ -241,8 +235,7 @@ var Owner;
         exports.decorator.provide(Owner.TestBase2)
             .dispose((item) => { item.dispose(); })
             .ownedBy(2 /* Externals */)
-            .register(), 
-        __metadata('design:paramtypes', [])
+            .register()
     ], Test2);
     Owner.Test2 = Test2;
 })(Owner = exports.Owner || (exports.Owner = {}));
@@ -265,8 +258,7 @@ var Named;
     Test = __decorate([
         exports.decorator.provide(Named.TestBase)
             .named('Some name')
-            .register(), 
-        __metadata('design:paramtypes', [])
+            .register()
     ], Test);
     Named.Test = Test;
     let Test2 = class Test2 extends TestBase {
@@ -281,8 +273,7 @@ var Named;
     Test2 = __decorate([
         exports.decorator.provide(Named.TestBase)
             .named('Some name 2')
-            .register(), 
-        __metadata('design:paramtypes', [])
+            .register()
     ], Test2);
     Named.Test2 = Test2;
 })(Named = exports.Named || (exports.Named = {}));
@@ -305,8 +296,8 @@ var Resolve;
         };
         Test1 = __decorate([
             exports.decorator.provide(Resolve.ByValue.TestBase).register(),
-            __param(0, exports.decorator.resolveValue('decorator value')), 
-            __metadata('design:paramtypes', [Object])
+            __param(0, exports.decorator.resolveValue('decorator value')),
+            __metadata("design:paramtypes", [Object])
         ], Test1);
         ByValue.Test1 = Test1;
         class TestBase1 {
@@ -328,8 +319,8 @@ var Resolve;
             exports.decorator.provide(Resolve.ByValue.TestBase1).register(),
             __param(0, exports.decorator.resolveValue('value 1')),
             __param(1, exports.decorator.resolveValue('value 2')),
-            __param(2, exports.decorator.resolveValue('value 3')), 
-            __metadata('design:paramtypes', [Object, Object, Object])
+            __param(2, exports.decorator.resolveValue('value 3')),
+            __metadata("design:paramtypes", [Object, Object, Object])
         ], Test2);
         ByValue.Test2 = Test2;
     })(ByValue = Resolve.ByValue || (Resolve.ByValue = {}));
@@ -353,8 +344,7 @@ var Resolve;
             }
         };
         Test = __decorate([
-            exports.decorator.provide(Resolve.ByService.TestBase).register(), 
-            __metadata('design:paramtypes', [])
+            exports.decorator.provide(Resolve.ByService.TestBase).register()
         ], Test);
         ByService.Test = Test;
         let Test2 = class Test2 extends TestBase2 {
@@ -363,8 +353,7 @@ var Resolve;
             }
         };
         Test2 = __decorate([
-            exports.decorator.provide(Resolve.ByService.TestBase2).register(), 
-            __metadata('design:paramtypes', [])
+            exports.decorator.provide(Resolve.ByService.TestBase2).register()
         ], Test2);
         ByService.Test2 = Test2;
         let Test1 = class Test1 extends TestBase1 {
@@ -381,8 +370,8 @@ var Resolve;
         Test1 = __decorate([
             exports.decorator.provide(Resolve.ByService.TestBase1).register(),
             __param(1, exports.decorator.by(Resolve.ByService.TestBase2).resolve()),
-            __param(2, exports.decorator.by(Resolve.ByService.TestBase).resolve()), 
-            __metadata('design:paramtypes', [Resolve.ByService.TestBase, Object, Object])
+            __param(2, exports.decorator.by(Resolve.ByService.TestBase).resolve()),
+            __metadata("design:paramtypes", [Resolve.ByService.TestBase, Object, Object])
         ], Test1);
         ByService.Test1 = Test1;
     })(ByService = Resolve.ByService || (Resolve.ByService = {}));
@@ -409,8 +398,8 @@ var Resolve;
             }
         };
         Test = __decorate([
-            exports.decorator.provide(Resolve.ByMultipleService.TestBase).register(), 
-            __metadata('design:paramtypes', [])
+            exports.decorator.provide(Resolve.ByMultipleService.TestBase).register(),
+            __metadata("design:paramtypes", [])
         ], Test);
         ByMultipleService.Test = Test;
         let Test1 = class Test1 extends TestBase1 {
@@ -425,8 +414,8 @@ var Resolve;
         };
         Test1 = __decorate([
             exports.decorator.provide(Resolve.ByMultipleService.TestBase1).register(),
-            __param(1, exports.decorator.by(Resolve.ByMultipleService.TestBase).resolve()), 
-            __metadata('design:paramtypes', [Resolve.ByMultipleService.TestBase, Object])
+            __param(1, exports.decorator.by(Resolve.ByMultipleService.TestBase).resolve()),
+            __metadata("design:paramtypes", [Resolve.ByMultipleService.TestBase, Object])
         ], Test1);
         ByMultipleService.Test1 = Test1;
         let Test2 = class Test2 extends TestBase2 {
@@ -442,8 +431,8 @@ var Resolve;
         Test2 = __decorate([
             exports.decorator.provide(Resolve.ByMultipleService.TestBase2).register(),
             __param(0, exports.decorator.by(Resolve.ByMultipleService.TestBase1).resolve()),
-            __param(1, exports.decorator.by(Resolve.ByMultipleService.TestBase).resolve()), 
-            __metadata('design:paramtypes', [Object, Object])
+            __param(1, exports.decorator.by(Resolve.ByMultipleService.TestBase).resolve()),
+            __metadata("design:paramtypes", [Object, Object])
         ], Test2);
         ByMultipleService.Test2 = Test2;
     })(ByMultipleService = Resolve.ByMultipleService || (Resolve.ByMultipleService = {}));
@@ -468,8 +457,8 @@ var Resolve;
             }
         };
         Test = __decorate([
-            exports.decorator.provide(Resolve.ByArgs.TestBase).register(), 
-            __metadata('design:paramtypes', [String, String])
+            exports.decorator.provide(Resolve.ByArgs.TestBase).register(),
+            __metadata("design:paramtypes", [String, String])
         ], Test);
         ByArgs.Test = Test;
         let Test1 = class Test1 extends TestBase1 {
@@ -483,8 +472,8 @@ var Resolve;
         };
         Test1 = __decorate([
             exports.decorator.provide(Resolve.ByArgs.TestBase1).register(),
-            __param(0, exports.decorator.by().args('1', '7').resolve()), 
-            __metadata('design:paramtypes', [Resolve.ByArgs.TestBase])
+            __param(0, exports.decorator.by().args('1', '7').resolve()),
+            __metadata("design:paramtypes", [Resolve.ByArgs.TestBase])
         ], Test1);
         ByArgs.Test1 = Test1;
     })(ByArgs = Resolve.ByArgs || (Resolve.ByArgs = {}));
@@ -505,8 +494,7 @@ var Resolve;
         };
         Test = __decorate([
             exports.decorator.provide(Resolve.ByName.TestBase).named('Some name 1').register(),
-            exports.decorator.provide(Resolve.ByName.TestBase).named('Some name 2').register(), 
-            __metadata('design:paramtypes', [])
+            exports.decorator.provide(Resolve.ByName.TestBase).named('Some name 2').register()
         ], Test);
         ByName.Test = Test;
         let Test1 = class Test1 extends TestBase1 {
@@ -523,8 +511,8 @@ var Resolve;
         Test1 = __decorate([
             exports.decorator.provide(Resolve.ByName.TestBase1).register(),
             __param(1, exports.decorator.by().name('Some name 1').resolve()),
-            __param(2, exports.decorator.by().name('Some name 2').resolve()), 
-            __metadata('design:paramtypes', [Resolve.ByName.TestBase, Resolve.ByName.TestBase, Resolve.ByName.TestBase])
+            __param(2, exports.decorator.by().name('Some name 2').resolve()),
+            __metadata("design:paramtypes", [Resolve.ByName.TestBase, Resolve.ByName.TestBase, Resolve.ByName.TestBase])
         ], Test1);
         ByName.Test1 = Test1;
     })(ByName = Resolve.ByName || (Resolve.ByName = {}));
@@ -544,8 +532,7 @@ var Resolve;
             }
         };
         Test1 = __decorate([
-            exports.decorator.provide(Resolve.ByAttempt.TestBase1).register(), 
-            __metadata('design:paramtypes', [])
+            exports.decorator.provide(Resolve.ByAttempt.TestBase1).register()
         ], Test1);
         ByAttempt.Test1 = Test1;
         let Test = class Test extends TestBase {
@@ -561,8 +548,8 @@ var Resolve;
         Test = __decorate([
             exports.decorator.provide(Resolve.ByAttempt.TestBase).register(),
             __param(0, exports.decorator.by().attempt().resolve()),
-            __param(1, exports.decorator.by().attempt().resolve()), 
-            __metadata('design:paramtypes', [Object, Resolve.ByAttempt.TestBase1])
+            __param(1, exports.decorator.by().attempt().resolve()),
+            __metadata("design:paramtypes", [Object, Resolve.ByAttempt.TestBase1])
         ], Test);
         ByAttempt.Test = Test;
     })(ByAttempt = Resolve.ByAttempt || (Resolve.ByAttempt = {}));
@@ -582,8 +569,7 @@ var Resolve;
             }
         };
         Test = __decorate([
-            exports.decorator.provide(Resolve.ByCache.TestBase).register(), 
-            __metadata('design:paramtypes', [])
+            exports.decorator.provide(Resolve.ByCache.TestBase).register()
         ], Test);
         ByCache.Test = Test;
         let Test1 = class Test1 extends TestBase1 {
@@ -597,8 +583,8 @@ var Resolve;
         };
         Test1 = __decorate([
             exports.decorator.provide(Resolve.ByCache.TestBase1).register(),
-            __param(0, exports.decorator.by().cache().resolve()), 
-            __metadata('design:paramtypes', [Resolve.ByCache.TestBase])
+            __param(0, exports.decorator.by().cache().resolve()),
+            __metadata("design:paramtypes", [Resolve.ByCache.TestBase])
         ], Test1);
         ByCache.Test1 = Test1;
     })(ByCache = Resolve.ByCache || (Resolve.ByCache = {}));
@@ -635,8 +621,8 @@ var Resolve;
             }
         };
         Test3 = __decorate([
-            exports.decorator.provide(Resolve.FullResolution.TestBase3).named('Some name').register(), 
-            __metadata('design:paramtypes', [Object, Object])
+            exports.decorator.provide(Resolve.FullResolution.TestBase3).named('Some name').register(),
+            __metadata("design:paramtypes", [Object, Object])
         ], Test3);
         FullResolution.Test3 = Test3;
         let Test = class Test extends TestBase {
@@ -650,8 +636,8 @@ var Resolve;
             }
         };
         Test = __decorate([
-            exports.decorator.provide(Resolve.FullResolution.TestBase).register(), 
-            __metadata('design:paramtypes', [Object, Object])
+            exports.decorator.provide(Resolve.FullResolution.TestBase).register(),
+            __metadata("design:paramtypes", [Object, Object])
         ], Test);
         FullResolution.Test = Test;
         let Test1 = class Test1 extends TestBase1 {
@@ -664,8 +650,8 @@ var Resolve;
             }
         };
         Test1 = __decorate([
-            exports.decorator.provide(Resolve.FullResolution.TestBase1).register(), 
-            __metadata('design:paramtypes', [Resolve.FullResolution.TestBase])
+            exports.decorator.provide(Resolve.FullResolution.TestBase1).register(),
+            __metadata("design:paramtypes", [Resolve.FullResolution.TestBase])
         ], Test1);
         FullResolution.Test1 = Test1;
         let Test2 = class Test2 extends TestBase2 {
@@ -680,8 +666,8 @@ var Resolve;
             }
         };
         Test2 = __decorate([
-            exports.decorator.provide(Resolve.FullResolution.TestBase2).register(), 
-            __metadata('design:paramtypes', [Resolve.FullResolution.TestBase, Resolve.FullResolution.TestBase1, Resolve.FullResolution.TestBase3])
+            exports.decorator.provide(Resolve.FullResolution.TestBase2).register(),
+            __metadata("design:paramtypes", [Resolve.FullResolution.TestBase, Resolve.FullResolution.TestBase1, Resolve.FullResolution.TestBase3])
         ], Test2);
         FullResolution.Test2 = Test2;
         let Test4 = class Test4 extends TestBase4 {
@@ -699,8 +685,8 @@ var Resolve;
         Test4 = __decorate([
             exports.decorator.provide(Resolve.FullResolution.TestBase4).register(),
             __param(2, exports.decorator.resolveValue('decorator value')),
-            __param(3, exports.decorator.by(Resolve.FullResolution.TestBase3).resolve()), 
-            __metadata('design:paramtypes', [Resolve.FullResolution.TestBase, Resolve.FullResolution.TestBase1, Object, Object])
+            __param(3, exports.decorator.by(Resolve.FullResolution.TestBase3).resolve()),
+            __metadata("design:paramtypes", [Resolve.FullResolution.TestBase, Resolve.FullResolution.TestBase1, Object, Object])
         ], Test4);
         FullResolution.Test4 = Test4;
         class TestDep extends Resolve.FullResolution.TestBase {
@@ -753,8 +739,8 @@ var Resolve;
         };
         Test = __decorate([
             exports.decorator.provide(Resolve.DependenciesProperties.TestBase)
-                .named('Some test name').register(), 
-            __metadata('design:paramtypes', [Object, Object])
+                .named('Some test name').register(),
+            __metadata("design:paramtypes", [Object, Object])
         ], Test);
         DependenciesProperties.Test = Test;
         let Test1 = class Test1 extends TestBase1 {
@@ -768,8 +754,8 @@ var Resolve;
         };
         Test1 = __decorate([
             exports.decorator.provide(Resolve.DependenciesProperties.TestBase1).register(),
-            __param(0, exports.decorator.by().name('Some test name').resolve()), 
-            __metadata('design:paramtypes', [Resolve.DependenciesProperties.TestBase])
+            __param(0, exports.decorator.by().name('Some test name').resolve()),
+            __metadata("design:paramtypes", [Resolve.DependenciesProperties.TestBase])
         ], Test1);
         DependenciesProperties.Test1 = Test1;
         class TestDep extends Resolve.DependenciesProperties.TestBase {
@@ -799,8 +785,7 @@ var Resolve;
                 item.foo = function () { return 'Initialized'; };
                 return item;
             })
-                .register(), 
-            __metadata('design:paramtypes', [])
+                .register()
         ], Test);
         DependenciesInit.Test = Test;
         let TestInit = class TestInit {
@@ -813,8 +798,8 @@ var Resolve;
         };
         TestInit = __decorate([
             exports.decorator.provide('some TestInit').register(),
-            __param(0, exports.decorator.by().resolve()), 
-            __metadata('design:paramtypes', [Resolve.DependenciesInit.TestBase])
+            __param(0, exports.decorator.by().resolve()),
+            __metadata("design:paramtypes", [Resolve.DependenciesInit.TestBase])
         ], TestInit);
         DependenciesInit.TestInit = TestInit;
         class TestDep extends Resolve.DependenciesInit.TestBase {
@@ -847,8 +832,8 @@ var Resolve;
         };
         TestInit = __decorate([
             exports.decorator.provide(Resolve.DependenciesNonRequired.TestBase).register(),
-            __param(0, exports.decorator.by(Resolve.DependenciesNonRequired.TestBase1).resolve()), 
-            __metadata('design:paramtypes', [Object])
+            __param(0, exports.decorator.by(Resolve.DependenciesNonRequired.TestBase1).resolve()),
+            __metadata("design:paramtypes", [Object])
         ], TestInit);
         DependenciesNonRequired.TestInit = TestInit;
         class TestDep extends Resolve.DependenciesNonRequired.TestBase1 {
@@ -878,8 +863,8 @@ var Resolve;
         };
         Test = __decorate([
             exports.decorator.provide(ObjectResolution.TestBase).register(),
-            __param(0, exports.decorator.by('dependency').resolve()), 
-            __metadata('design:paramtypes', [Object])
+            __param(0, exports.decorator.by('dependency').resolve()),
+            __metadata("design:paramtypes", [Object])
         ], Test);
         ObjectResolution.Test = Test;
         let Test1 = class Test1 {
@@ -888,8 +873,7 @@ var Resolve;
             }
         };
         Test1 = __decorate([
-            exports.decorator.provide('dependency').register(), 
-            __metadata('design:paramtypes', [])
+            exports.decorator.provide('dependency').register()
         ], Test1);
         ObjectResolution.Test1 = Test1;
     })(ObjectResolution = Resolve.ObjectResolution || (Resolve.ObjectResolution = {}));
@@ -910,8 +894,8 @@ var Resolve;
         };
         Test = __decorate([
             exports.decorator.provide(NumberResolution.TestBase).register(),
-            __param(0, exports.decorator.by(123).resolve()), 
-            __metadata('design:paramtypes', [Object])
+            __param(0, exports.decorator.by(123).resolve()),
+            __metadata("design:paramtypes", [Object])
         ], Test);
         NumberResolution.Test = Test;
         let Test1 = class Test1 {
@@ -920,8 +904,7 @@ var Resolve;
             }
         };
         Test1 = __decorate([
-            exports.decorator.provide(123).register(), 
-            __metadata('design:paramtypes', [])
+            exports.decorator.provide(123).register()
         ], Test1);
         NumberResolution.Test1 = Test1;
     })(NumberResolution = Resolve.NumberResolution || (Resolve.NumberResolution = {}));
@@ -946,8 +929,7 @@ var Resolve;
         };
         Test = __decorate([
             exports.decorator.provide(MultipleDecorators.TestBase).register(),
-            exports.decorator2.provide(MultipleDecorators.TestBase).register(), 
-            __metadata('design:paramtypes', [])
+            exports.decorator2.provide(MultipleDecorators.TestBase).register()
         ], Test);
         MultipleDecorators.Test = Test;
         let Test1 = class Test1 extends TestBase1 {
@@ -964,11 +946,9 @@ var Resolve;
         Test1 = __decorate([
             exports.decorator.provide(MultipleDecorators.TestBase1).register(),
             exports.decorator2.provide(MultipleDecorators.TestBase1).register(),
-            __param(0, exports.decorator.by().resolve()),
-            __param(0, exports.decorator2.by().resolve()),
-            __param(1, exports.decorator.by('decorator').resolve()),
-            __param(1, exports.decorator2.by('decorator 2').resolve()), 
-            __metadata('design:paramtypes', [TestBase, Object, TestBase2])
+            __param(0, exports.decorator.by().resolve()), __param(0, exports.decorator2.by().resolve()),
+            __param(1, exports.decorator.by('decorator').resolve()), __param(1, exports.decorator2.by('decorator 2').resolve()),
+            __metadata("design:paramtypes", [TestBase, Object, TestBase2])
         ], Test1);
         MultipleDecorators.Test1 = Test1;
         let Test2 = class Test2 {
@@ -978,8 +958,7 @@ var Resolve;
         };
         Test2 = __decorate([
             exports.decorator.provide('decorator').register(),
-            exports.decorator2.provide('decorator 2').register(), 
-            __metadata('design:paramtypes', [])
+            exports.decorator2.provide('decorator 2').register()
         ], Test2);
         MultipleDecorators.Test2 = Test2;
         let Test3 = class Test3 extends TestBase2 {
@@ -989,8 +968,7 @@ var Resolve;
         };
         Test3 = __decorate([
             exports.decorator.provide(MultipleDecorators.TestBase2).register(),
-            exports.decorator2.provide(MultipleDecorators.TestBase2).register(), 
-            __metadata('design:paramtypes', [])
+            exports.decorator2.provide(MultipleDecorators.TestBase2).register()
         ], Test3);
         MultipleDecorators.Test3 = Test3;
     })(MultipleDecorators = Resolve.MultipleDecorators || (Resolve.MultipleDecorators = {}));

@@ -1,5 +1,6 @@
 /* istanbul ignore next */
 'use strict';
+Object.defineProperty(exports, "__esModule", { value: true });
 var ServiceModule1;
 (function (ServiceModule1) {
     ServiceModule1.testValue = 999;

@@ -1,6 +1,7 @@
 ///<reference path='../../d.ts/typeioc.d.ts' />
 'use strict';
-const testData = require('./test-data');
+Object.defineProperty(exports, "__esModule", { value: true });
+const testData = require("./test-data");
 class Config {
     static parameterlessResolution() {
         return {

@@ -1,8 +1,9 @@
 'use strict';
-const scaffold = require('./../scaffold');
-const TestData = require('../data/test-data');
-const TestData2 = require('../data/test-data');
-const TestDataSecond = require('../data/test-data2');
+Object.defineProperty(exports, "__esModule", { value: true });
+const scaffold = require("./../scaffold");
+const TestData = require("../data/test-data");
+const TestData2 = require("../data/test-data");
+const TestDataSecond = require("../data/test-data2");
 var Level7;
 (function (Level7) {
     var containerBuilder;

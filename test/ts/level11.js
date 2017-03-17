@@ -1,7 +1,8 @@
 /// <reference path='../../d.ts/typeioc.addons.d.ts' />
 'use strict';
-const Scaffold = require('./../scaffold');
-const ScaffoldAddons = require('./../scaffoldAddons');
+Object.defineProperty(exports, "__esModule", { value: true });
+const Scaffold = require("./../scaffold");
+const ScaffoldAddons = require("./../scaffoldAddons");
 var DataInterceptors = Scaffold.TestModuleInterceptors;
 var CallInfoType = ScaffoldAddons.Interceptors.CallInfoType;
 var Level11;

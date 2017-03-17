@@ -22,8 +22,6 @@ exports.internal = {
                 test.ok(Exceptions.ProxyError);
                 test.ok(Exceptions.DecoratorError);
 
-                test.ok(Object.getOwnPropertyNames(Exceptions).length == 9);
-
                 test.done();
             },
 

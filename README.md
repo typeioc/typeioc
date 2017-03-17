@@ -48,11 +48,11 @@ Copy typeioc.d.ts definition file from d.ts folder to your project and reference
 /// <reference path="typeioc.d.ts" />
 import typeioc = require("typeioc");
 
-var containerBuilder = typeioc.createBuilder();
+const containerBuilder = typeioc.createBuilder();
 containerBuilder.register<TestBase>(TestBase)
     .as(() => new Test());
-var container = containerBuilder.build();
-var actual = container.resolve<TestBase>(TestBase);
+const container = containerBuilder.build();
+let actual = container.resolve<TestBase>(TestBase);
 ```
 
 #####Registering with dependencies:
@@ -62,7 +62,7 @@ containerBuilder.register<Test2Base>(Test2Base)
     .as(() => new Test2());
 containerBuilder.register<Test1Base>(Test1Base)
     .as((c) => {
-        var test2 = c.resolve(Test2Base);
+        let test2 = c.resolve(Test2Base);
         return new Test3(test2);
     });
 ```
@@ -93,7 +93,7 @@ containerBuilder.register<Test1Base>(Test1Base)       // register component Test
 
 
 
-var container = containerBuilder.build();                 // create an instance of container
+const container = containerBuilder.build();                 // create an instance of container
 
 container
 .resolveWith<TestData.Test1Base>(Test1Base)    // resolve an instance of Test1Base
@@ -137,7 +137,7 @@ container.disposeAsync();
 Compile ts files with experimentalDecorators and emitDecoratorMetadata flags.
 
 ```ts
-var decorator = typeioc.createDecorator();
+const decorator = typeioc.createDecorator();
 
 export class TestBase {
     public foo() {}
@@ -180,8 +180,8 @@ export class Test1 extends TestBase1 {
     }
 }
 
-var container = decorator.build();
-var actual = container.resolve<TestBase1>(TestBase1);
+const container = decorator.build();
+let actual = container.resolve<TestBase1>(TestBase1);
 ```
 
 #####Decorators Fluent API:
@@ -233,10 +233,10 @@ Copy typeioc.addons.d.ts definition file from d.ts folder to your project and re
 /// <reference path="typeioc.d.ts" />
 /// <reference path="typeioc.addons.d.ts" />
 
-var typeioc = require('typeioc');
-var addons = require('typeioc/addons');
+const typeioc = require('typeioc');
+const addons = require('typeioc/addons');
 
-var containerBuilder = typeioc.createBuilder();
+const containerBuilder = typeioc.createBuilder();
 
 containerBuilder.register(Math)
     .as(c => {
@@ -249,15 +249,15 @@ containerBuilder.register(Math)
             wrapper: function (callInfo:Addons.Interceptors.ICallInfo) {
 
                 console.log('Before execute : ' + callInfo.args[0] + ' ' + callInfo.args[1]);
-                var result = callInfo.invoke(callInfo.args);
+                const result = callInfo.invoke(callInfo.args);
                 console.log('After execute : ' + result);
                 return callInfo.args[0] + callInfo.args[1];
             }
         }]);
     });
 
-var container = containerBuilder.build();
-var actual = container.resolve<Math>(Math);
+const container = containerBuilder.build();
+const actual = container.resolve<Math>(Math);
 actual.pow(2,3); // 5
 actual.log(1);   // still 0
 ```
