@@ -279,7 +279,7 @@ var Named;
 })(Named = exports.Named || (exports.Named = {}));
 var Resolve;
 (function (Resolve) {
-    var ByValue;
+    let ByValue;
     (function (ByValue) {
         class TestBase {
             foo() { }
@@ -324,7 +324,7 @@ var Resolve;
         ], Test2);
         ByValue.Test2 = Test2;
     })(ByValue = Resolve.ByValue || (Resolve.ByValue = {}));
-    var ByService;
+    let ByService;
     (function (ByService) {
         class TestBase {
             foo() { }
@@ -375,7 +375,7 @@ var Resolve;
         ], Test1);
         ByService.Test1 = Test1;
     })(ByService = Resolve.ByService || (Resolve.ByService = {}));
-    var ByMultipleService;
+    let ByMultipleService;
     (function (ByMultipleService) {
         class TestBase {
             foo() { }
@@ -436,7 +436,7 @@ var Resolve;
         ], Test2);
         ByMultipleService.Test2 = Test2;
     })(ByMultipleService = Resolve.ByMultipleService || (Resolve.ByMultipleService = {}));
-    var ByArgs;
+    let ByArgs;
     (function (ByArgs) {
         class TestBase {
             foo() { }
@@ -477,7 +477,7 @@ var Resolve;
         ], Test1);
         ByArgs.Test1 = Test1;
     })(ByArgs = Resolve.ByArgs || (Resolve.ByArgs = {}));
-    var ByName;
+    let ByName;
     (function (ByName) {
         class TestBase {
             foo() { }
@@ -516,7 +516,7 @@ var Resolve;
         ], Test1);
         ByName.Test1 = Test1;
     })(ByName = Resolve.ByName || (Resolve.ByName = {}));
-    var ByAttempt;
+    let ByAttempt;
     (function (ByAttempt) {
         class TestBase {
             foo() { }
@@ -553,7 +553,7 @@ var Resolve;
         ], Test);
         ByAttempt.Test = Test;
     })(ByAttempt = Resolve.ByAttempt || (Resolve.ByAttempt = {}));
-    var ByCache;
+    let ByCache;
     (function (ByCache) {
         class TestBase {
             foo() { }
@@ -588,7 +588,7 @@ var Resolve;
         ], Test1);
         ByCache.Test1 = Test1;
     })(ByCache = Resolve.ByCache || (Resolve.ByCache = {}));
-    var FullResolution;
+    let FullResolution;
     (function (FullResolution) {
         class TestBase {
             foo() { }
@@ -717,7 +717,7 @@ var Resolve;
         }
         FullResolution.TestDep3 = TestDep3;
     })(FullResolution = Resolve.FullResolution || (Resolve.FullResolution = {}));
-    var DependenciesProperties;
+    let DependenciesProperties;
     (function (DependenciesProperties) {
         class TestBase {
             foo() { }
@@ -768,7 +768,7 @@ var Resolve;
         }
         DependenciesProperties.TestDep = TestDep;
     })(DependenciesProperties = Resolve.DependenciesProperties || (Resolve.DependenciesProperties = {}));
-    var DependenciesInit;
+    let DependenciesInit;
     (function (DependenciesInit) {
         class TestBase {
             foo() { }
@@ -812,7 +812,7 @@ var Resolve;
         }
         DependenciesInit.TestDep = TestDep;
     })(DependenciesInit = Resolve.DependenciesInit || (Resolve.DependenciesInit = {}));
-    var DependenciesNonRequired;
+    let DependenciesNonRequired;
     (function (DependenciesNonRequired) {
         class TestBase {
             foo() { }
@@ -846,7 +846,7 @@ var Resolve;
         }
         DependenciesNonRequired.TestDep = TestDep;
     })(DependenciesNonRequired = Resolve.DependenciesNonRequired || (Resolve.DependenciesNonRequired = {}));
-    var ObjectResolution;
+    let ObjectResolution;
     (function (ObjectResolution) {
         class TestBase {
             foo() { }
@@ -877,7 +877,7 @@ var Resolve;
         ], Test1);
         ObjectResolution.Test1 = Test1;
     })(ObjectResolution = Resolve.ObjectResolution || (Resolve.ObjectResolution = {}));
-    var NumberResolution;
+    let NumberResolution;
     (function (NumberResolution) {
         class TestBase {
             foo() { }
@@ -908,7 +908,7 @@ var Resolve;
         ], Test1);
         NumberResolution.Test1 = Test1;
     })(NumberResolution = Resolve.NumberResolution || (Resolve.NumberResolution = {}));
-    var MultipleDecorators;
+    let MultipleDecorators;
     (function (MultipleDecorators) {
         class TestBase {
             foo() { }

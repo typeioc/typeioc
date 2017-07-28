@@ -35,6 +35,8 @@ export class InternalContainer implements Internal.IContainer {
         this._collection = this._registrationStorageService.create();
         this._disposableStorage = this._disposableStorageService.create();
         this._cache = {};
+
+        this.registerImpl = this.registerImpl.bind(this);
     }
 
     public get cache() : Internal.IIndexedCollection<any> {
@@ -43,9 +45,7 @@ export class InternalContainer implements Internal.IContainer {
 
     public add(registrations : Internal.IRegistrationBase[]) {
 
-        var resolveImplementation = this.registerImpl.bind(this);
-
-        registrations.forEach(resolveImplementation);
+        registrations.forEach(this.registerImpl);
     }
 
     public createChild() : Typeioc.IContainer {
@@ -170,7 +170,7 @@ export class InternalContainer implements Internal.IContainer {
     private registerImpl(registration : Internal.IRegistrationBase) : void {
 
         if(!registration.factory && !registration.factoryType){
-            var exception = new NullReferenceError("Factory is not defined");
+            var exception = new NullReferenceError("Factory/Type is not defined");
             exception.data = registration.service;
             throw exception;
         }
@@ -231,7 +231,7 @@ export class InternalContainer implements Internal.IContainer {
     }
 
     private resolveContainerScope(registration : Internal.IRegistrationBase, throwIfNotFound : boolean) : any {
-        var entry : Internal.IRegistrationBase;
+        let entry : Internal.IRegistrationBase;
 
         if(registration.container !== this) {
             entry = registration.cloneFor(this);
@@ -251,7 +251,7 @@ export class InternalContainer implements Internal.IContainer {
         if(registration.container &&
             registration.container !== this) {
 
-            var container = <InternalContainer>registration.container;
+            const container = <InternalContainer>registration.container;
 
             return container.resolveBase(registration, throwIfNotFound);
         }

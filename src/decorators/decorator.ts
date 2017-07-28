@@ -11,7 +11,6 @@
 
 'use strict';
 
-
 import { Reflection } from '../utils';
 import { DecoratorError } from '../exceptions';
 import { Defaults } from '../types';
@@ -40,56 +39,56 @@ export class Decorator implements Decorators.IDecorator {
         return this._builder.build();
     }
 
-    public provide<R>(service:any):Decorators.Register.IInitializedDisposedNamedReusedOwned<R> {
+    public provide<R>(service:any): Decorators.Register.IInitializedDisposedNamedReusedOwned<R> {
 
-        var register = (api:Internal.IDecoratorRegistrationApi<R>)  => (target:R) => {
+        const register = (api:Internal.IDecoratorRegistrationApi<R>)  => (target) => {
 
             if (!Reflection.isPrototype(target)) {
-                let error = new DecoratorError("Decorator target not supported, not a prototype");
-                error.data = {target: target};
+                const error = new DecoratorError("Decorator target not supported, not a prototype");
+                error.data = { target };
                 throw error;
             }
 
-            let registration = this._builder
+            const registration = this._builder
                 .register(api.service)
                 .asType(target);
 
-            var initializer = api.initializedBy;
+            const initializer = api.initializedBy;
             if (initializer)
                 registration.initializeBy(initializer);
 
-            var disposer = api.disposedBy;
+            const disposer = api.disposedBy;
             if (disposer)
                 registration.dispose(disposer);
 
-            var name = api.name;
+            const name = api.name;
             if (name)
                 registration.named(name);
 
-            var scope = api.scope || Defaults.Scope;
+            const scope = api.scope || Defaults.Scope;
             registration.within(scope);
 
-            var owner = api.owner || Defaults.Owner;
+            const owner = api.owner || Defaults.Owner;
             registration.ownedBy(owner);
 
             return target;
         };
 
-        var api = this._decoratorRegistrationApiService.createRegistration<R>(register);
+        const api = this._decoratorRegistrationApiService.createRegistration<R>(register);
 
         return api.provide(service);
     }
 
-    public by(service?:any):Decorators.Resolve.IArgsTryNamedCache {
+    public by(service?:any): Decorators.Resolve.IArgsTryNamedCache {
 
-        var resolve = (api:Internal.IDecoratorResolutionApi) => (target:any, key:string, index:number) => {
+        const resolve = (api:Internal.IDecoratorResolutionApi) => (target:any, key:string, index:number) => {
 
             if(!api.service) {
                 var dependencies = Reflection.getMetadata(Reflect, target);
                 api.service = dependencies[index];
             }
 
-            var bucket = this._internalStorage.register(target, () => <Internal.IDecoratorResolutionCollection>{});
+            const bucket = this._internalStorage.register(target, () => <Internal.IDecoratorResolutionCollection>{});
 
             bucket[index] = {
                 service: api.service,
@@ -100,7 +99,7 @@ export class Decorator implements Decorators.IDecorator {
             };
         };
 
-        var api = this._decoratorRegistrationApiService.createResolution(resolve);
+        const api = this._decoratorRegistrationApiService.createResolution(resolve);
 
         return api.by(service);
     }
@@ -109,10 +108,10 @@ export class Decorator implements Decorators.IDecorator {
 
         return (target:any, key:string, index:number) => {
 
-            var bucket = this._internalStorage.register(target, () => <Internal.IDecoratorResolutionCollection>{});
+            const bucket = this._internalStorage.register(target, () => <Internal.IDecoratorResolutionCollection>{});
 
             bucket[index] = <Internal.IDecoratorResolutionParams> {
-                value : value
+                value
             };
         };
     }
