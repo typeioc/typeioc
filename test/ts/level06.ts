@@ -128,7 +128,7 @@ export module Level6 {
 
         test.throws(delegate, function(err) {
             return (err instanceof scaffold.Exceptions.NullReferenceError) &&
-                    /Factory is not defined/.test(err.message) &&
+                    /Factory\/Type is not defined/.test(err.message) &&
                     err.data === TestData.Test1Base;
         });
 

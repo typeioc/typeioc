@@ -6,28 +6,10 @@
     "experimentalDecorators" : true,
     "emitDecoratorMetadata" : true
   },
-  "files": [
-   "../../test/data/test-data.ts",
-    "../../test/data/test-data2.ts",
-    "../../test/data/test-data-intercept.ts",
-    "../../test/data/config.ts",
-    "../../test/data/decorators.ts",
+  "include": [
+    "../../test/data/*",
     "../../test/scaffold.ts",
     "../../test/scaffoldAddons.ts",
-    "../../test/ts/level01.ts",
-    "../../test/ts/level02.ts",
-    "../../test/ts/level03.ts",
-    "../../test/ts/level04.ts",
-    "../../test/ts/level05.ts",
-    "../../test/ts/level06.ts",
-    "../../test/ts/level07.ts",
-    "../../test/ts/level08.ts",
-    "../../test/ts/level09.ts",
-    "../../test/ts/level10.ts",
-    "../../test/ts/level11.ts",
-    "../../test/ts/level12.ts",
-    "../../test/ts/level13.ts",
-    "../../test/ts/level14.ts",
-    "../../test/ts/level15.ts"
+    "../../test/ts/*"
   ]
 }

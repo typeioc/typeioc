@@ -1,0 +1,94 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "JS tests",
+			"type": "node",
+			"request": "launch",
+			"program": "${workspaceRoot}/node_modules/.bin/nodeunit",
+			"stopOnEntry": false,
+			"args": ["test/js/internal/", "test/js/api/"],
+			"cwd": "${workspaceRoot}",
+			"preLaunchTask": null,
+			"runtimeExecutable": null,
+			"runtimeArgs": [
+				"--nolazy",
+                "--harmony"
+			],
+			"env": {
+				"NODE_ENV": "development"
+			},
+			"console": "internalConsole",
+			"sourceMaps": false,
+			"outFiles": []
+		},
+		{
+			"name": "TS tests",
+			"type": "node",
+			"request": "launch",
+			"program": "${workspaceRoot}/node_modules/.bin/nodeunit",
+			"stopOnEntry": false,
+			"args": ["test/ts/"],
+			"cwd": "${workspaceRoot}",
+			"preLaunchTask": null,
+			"runtimeExecutable": null,
+			"runtimeArgs": [
+				"--nolazy",
+                "--harmony"
+			],
+			"env": {
+				"NODE_ENV": "development"
+			},
+			"console": "internalConsole",
+			"sourceMaps": false,
+			"outFiles": []
+		},
+        {
+			"name": "All tests",
+			"type": "node",
+			"request": "launch",
+			"program": "${workspaceRoot}/node_modules/.bin/nodeunit",
+			"stopOnEntry": false,
+			"args": ["test/js/internal/", "test/js/api/", "test/ts/"],
+			"cwd": "${workspaceRoot}",
+			"preLaunchTask": null,
+			"runtimeExecutable": null,
+			"runtimeArgs": [
+				"--nolazy",
+                "--harmony"
+			],
+			"env": {
+				"NODE_ENV": "development"
+			},
+			"console": "internalConsole",
+			"sourceMaps": false,
+			"outFiles": []
+		},
+		{
+			"name": "Coverage",
+			"type": "node",
+			"request": "launch",
+			"program": "${workspaceRoot}/node_modules/.bin/istanbul",
+			"stopOnEntry": false,
+			"args": [
+						"cover", 
+						"node_modules/.bin/nodeunit",
+						"test/js/internal/",
+						"test/js/api/",
+						 "test/ts/"
+			],
+			"cwd": "${workspaceRoot}",
+			"preLaunchTask": null,
+			"runtimeExecutable": null,
+			"runtimeArgs": [			
+                "--harmony"
+			],
+			"env": {
+				"NODE_ENV": "coverage"
+			},
+			"console": "internalConsole",
+			"sourceMaps": false,
+			"outFiles": []
+		}
+	]
+}

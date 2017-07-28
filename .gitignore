@@ -1,5 +1,7 @@
 .idea/
-.vscode/
+.vscode/*
+!.vscode/launch.json
+!.vscode/tasks.json
 lib-cov/
 npm-debug.log
 node_modules
