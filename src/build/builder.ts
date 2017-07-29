@@ -20,8 +20,7 @@ export class ContainerBuilder implements Typeioc.IContainerBuilder {
     private _registrations : Internal.IRegistrationBase[];
     private _moduleRegistrations : Internal.IModuleRegistration[];
   
-    constructor(private _configRegistrationService : Internal.IConfigRegistrationService,
-                private _registrationBaseService : Internal.IRegistrationBaseService,
+    constructor(private _registrationBaseService : Internal.IRegistrationBaseService,
                 private _instanceRegistrationService : Internal.IInstanceRegistrationService,
                 private _moduleRegistrationService : Internal.IModuleRegistrationService,
                 private _internalContainerService : Internal.IInternalContainerService,
@@ -59,18 +58,6 @@ export class ContainerBuilder implements Typeioc.IContainerBuilder {
         return moduleRegistration.getAsModuleRegistration();
     }
 
-    public registerConfig(config : Typeioc.IConfig) : void {
-
-        checkNullArgument(config, 'config');
-
-        var configRego = this._configRegistrationService.create();
-        configRego.apply(config);
-
-        setDefaults(configRego);
-
-        this._registrations.push.apply(this._registrations, configRego.registrations);
-    }
-
     public build() : Typeioc.IContainer {
 
         var regoes = this._registrations.slice(0);
@@ -103,7 +90,7 @@ export class ContainerBuilder implements Typeioc.IContainerBuilder {
     }
 }
 
-function setDefaults(rego : Internal.IRegistrationBase | Internal.IConfigRegistration) {
+function setDefaults(rego : Internal.IRegistrationBase) {
 
     rego.scope = Defaults.Scope;
     rego.owner = Defaults.Owner;

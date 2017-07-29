@@ -19,7 +19,6 @@ import { RegistrationBase } from './registration/base/registrationBase';
 import { RegistrationStorage } from './storage/registrationStorage';
 import { ModuleRegistration } from './registration/module/moduleRegistration';
 import { Registration } from './registration/instance/registration';
-import { ConfigRegistration } from './registration/config/configRegistration';
 import { Container } from './build/container';
 import { ContainerBuilder } from './build/builder';
 import { Api as ContainerApi } from './build/containerApi';
@@ -61,12 +60,10 @@ export class Scaffold {
                 var baseRegoService = this.registrationBaseService();
                 var instanceRegoService = this.instanceRegistrationService();
                 var moduleRegoService = this.moduleRegistrationService(moduleStorageService, baseRegoService);
-                var configRegoService = this.configRegistrationService(baseRegoService, moduleRegoService);
-
+              
                 var containerService = this.containerService();
 
                 return new ContainerBuilder(
-                    configRegoService,
                     baseRegoService,
                     instanceRegoService,
                     moduleRegoService,
@@ -136,17 +133,6 @@ export class Scaffold {
     private containerService() : Internal.IContainerService {
         return {
             create : (container? : Internal.IContainer) => new Container(container)
-        };
-    }
-
-    private configRegistrationService(registrationBaseService : Internal.IRegistrationBaseService,
-                                      moduleRegistrationService : Internal.IModuleRegistrationService)
-        : Typeioc.Internal.IConfigRegistrationService {
-
-        return {
-            create : () => new ConfigRegistration(
-                            registrationBaseService,
-                            moduleRegistrationService)
         };
     }
 

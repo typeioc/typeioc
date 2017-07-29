@@ -146,7 +146,6 @@ declare module Typeioc {
     interface IContainerBuilder {
         register<R>(service : any) : IRegistration<R>;
         registerModule(serviceModule : Object) : Typeioc.IAsModuleRegistration;
-        registerConfig(config : Typeioc.IConfig) : void;
         build() : IContainer
     }
 
@@ -273,50 +272,6 @@ declare module Typeioc {
         named? : string;
         initializer? : IInitializer<any>;
         required? : boolean;
-    }
-
-    interface IInstanceLocation {
-        instanceModule? : Object;
-        name : string;
-    }
-
-    interface IInstantiationItem {
-        isDependency? : boolean;
-        location? : IInstanceLocation;
-        instance? : any;
-    }
-
-    interface IComponent {
-        service : IInstanceLocation;
-        resolver? : IInstanceLocation;
-        parameters? : IInstantiationItem[];
-        factory? : IFactory<any>;
-        named? : string;
-        within? : Types.Scope;
-        ownedBy? : Types.Owner;
-        initializeBy? : IInitializer<any>;
-        disposer? : IDisposer<any>;
-    }
-
-    interface IForInstance {
-        resolver : IInstanceLocation;
-        parameters? : IInstantiationItem[];
-        factory? : IFactory<any>;
-    }
-
-    interface IModule {
-        forModule? : boolean;
-        serviceModule? : Object;
-        resolverModule? : Object;
-        within? : Types.Scope;
-        ownedBy? : Types.Owner;
-        forInstances? : IForInstance[];
-        components? : IComponent[];
-    }
-
-    interface IConfig {
-        components? : IComponent[];
-        modules? : IModule[];
     }
 }
 

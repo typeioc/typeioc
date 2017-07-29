@@ -75,10 +75,6 @@ declare module Typeioc.Internal {
         create(baseRegistration : IRegistrationBase) : IModuleRegistration;
     }
 
-    interface IConfigRegistrationService {
-        create() : IConfigRegistration;
-    }
-
     interface IRegistrationStorageService {
         create() : IRegistrationStorage;
     }
@@ -226,13 +222,6 @@ declare module Typeioc.Internal {
         forInstantiation : boolean;
         invoke() : any;
         cloneFor : (container: Typeioc.IContainer) => IRegistrationBase;
-    }
-
-    interface IConfigRegistration {
-        scope : Typeioc.Types.Scope;
-        owner : Typeioc.Types.Owner;
-        registrations : IRegistrationBase[];
-        apply(config : Typeioc.IConfig);
     }
 
     interface IModuleRegistration {
