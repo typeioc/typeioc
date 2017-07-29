@@ -39,6 +39,23 @@ exports.api = {
                         });
                 },
 
+                resolveAsyncFails: function (test) {
+
+                    containerBuilder.register(testData.Test1Base).as(() => {
+                        throw 'Test Error';
+                    });
+
+                    var container = containerBuilder.build();
+                    container.resolveAsync(testData.Test1Base)
+                        .catch(error => {
+                            test.strictEqual(error.message, 'Could not instantiate service');
+                            test.ok(error.data === testData.Test1Base);
+                            test.ok(error.innerError === 'Test Error');
+                            test.ok(error instanceof scaffold.Exceptions.ResolutionError);
+                            test.done();
+                        });
+                },
+
                 resolveAsync_params: function (test) {
 
                     containerBuilder.register(testData.Test1Base)

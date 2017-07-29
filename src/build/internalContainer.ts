@@ -266,24 +266,32 @@ export class InternalContainer implements Internal.IContainer {
 
     private createTrackable(registration : Internal.IRegistrationBase, throwIfNotFound : boolean) : any {
 
-        var instance = registration.invoke();
+        try {
+        
+            let instance = registration.invoke();
 
-        if(registration.forInstantiation === true) {
+            if(registration.forInstantiation === true) {
 
-            instance = this.instantiate(instance, registration, throwIfNotFound);
+                instance = this.instantiate(instance, registration, throwIfNotFound);
+            }
+
+            if(registration.initializer) {
+                instance = registration.initializer(this, instance);
+            }
+
+            if(registration.owner === Owner.Container &&
+                registration.disposer) {
+
+                this._disposableStorage.add(instance, registration.disposer);
+            }
+
+            return instance;
+        } catch (error) {
+            const exception = new ResolutionError('Could not instantiate service');
+            exception.data = registration.service;
+            exception.innerError = error;
+            throw exception;
         }
-
-        if(registration.initializer) {
-            instance = registration.initializer(this, instance);
-        }
-
-        if(registration.owner === Owner.Container &&
-            registration.disposer) {
-
-            this._disposableStorage.add(instance, registration.disposer);
-        }
-
-        return instance;
     }
 
     private createRegistration(service: any) : Internal.IRegistrationBase {

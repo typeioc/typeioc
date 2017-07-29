@@ -30,6 +30,23 @@ export module Level14 {
                     test.done();
                 });
         },
+        
+        resolveAsyncFails: function (test) {
+
+            containerBuilder.register(TestData.Test1Base).as(() => {
+                throw 'Test Error';
+            });
+
+            var container = containerBuilder.build();
+            container.resolveAsync(TestData.Test1Base)
+                .catch(error => {
+                    test.strictEqual(error.message, 'Could not instantiate service');
+                    test.ok(error.data === TestData.Test1Base);
+                    test.ok(error.innerError === 'Test Error');
+                    test.ok(error instanceof scaffold.Exceptions.ResolutionError);
+                    test.done();
+                });
+        },
 
         resolveAsync_params: function (test) {
 

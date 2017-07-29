@@ -438,11 +438,12 @@ exports.api = {
                 };
 
                 test.throws(delegate, function(error) {
-                    test.ok(error.message.indexOf('Missing components location') >= 0);
-                    return (error instanceof scaffold.Exceptions.ConfigurationError);
+                    test.strictEqual(error.message, 'Could not instantiate service');
+                    test.strictEqual(error.innerError.message,  'Missing components location');
+                    return (error instanceof scaffold.Exceptions.ResolutionError);
                 });
 
-                test.expect(2)
+                test.expect(3)
 
                 test.done();
             }
