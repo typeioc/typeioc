@@ -220,6 +220,7 @@ declare module Typeioc.Internal {
         instance : any;
         factoryType : any;
         forInstantiation : boolean;
+        dependenciesValue : Array<Typeioc.IDynamicDependency>;
         invoke() : any;
         cloneFor : (container: Typeioc.IContainer) => IRegistrationBase;
     }

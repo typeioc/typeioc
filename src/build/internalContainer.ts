@@ -183,7 +183,7 @@ export class InternalContainer implements Internal.IContainer {
     private resolveBase(registration : Internal.IRegistrationBase, throwIfNotFound : boolean) : any {
 
         var entry = this.resolveImpl(registration, throwIfNotFound);
-
+      
         if(!entry && throwIfNotFound === false) {
             return null;  
         }
@@ -301,35 +301,36 @@ export class InternalContainer implements Internal.IContainer {
     private createDependenciesRegistration<R>(api : Internal.IContainerApi<R>)
     : Array<Internal.IRegistrationBase> {
 
-        var items = api.dependenciesValue.map(dependency => {
+        const items = api.dependenciesValue.map(dependency => {
 
-            var exception;
             if(!dependency.service) {
-                exception = new ResolutionError('Service is not defined');
+                const exception = new ResolutionError('Service is not defined');
                 exception.data = dependency;
                 throw exception;
             }
 
             if((!dependency.factory && !dependency.factoryType) ||
                 (dependency.factory && dependency.factoryType)) {
-                exception = new ResolutionError('Factory or Factory type should be defined');
+                const exception = new ResolutionError('Factory or Factory type should be defined');
                 exception.data = dependency;
                 throw exception;
             }
 
-            var registration = this.createRegistration(dependency.service);
+            const registration = this.createRegistration(dependency.service);
             registration.factory = dependency.factory;
+            registration.factoryType = dependency.factoryType;
             registration.name = dependency.named;
 
-            var throwOnError = dependency.required !== false &&
+            const throwOnError = dependency.required !== false &&
                                api.throwResolveError === true;
 
             return {
                 implementation : this.resolveImpl(registration, throwOnError),
-                dependency : dependency
+                dependency
             };
         })
-        .filter(item => item.implementation || item.dependency.required === false ? true : false);
+        .filter(item => item.implementation ||
+                        item.dependency.required === false ? true : false);
 
         if(items.length !== api.dependenciesValue.length) return [];
 
@@ -362,6 +363,7 @@ export class InternalContainer implements Internal.IContainer {
         baseRegistration.args = api.argsValue;
         baseRegistration.name = api.nameValue;
         baseRegistration.disposer = undefined;
+        baseRegistration.dependenciesValue = api.dependenciesValue;
         baseRegistration.scope = this._dependencyScope;
         baseRegistration.owner = this._dependencyOwner;
 
@@ -408,8 +410,18 @@ export class InternalContainer implements Internal.IContainer {
         }
 
         if(registration.params.length) {
+            const params = registration.params
+            .map(item => { 
+                const dependancy = registration.dependenciesValue.filter(d => d.service === item)[0];
+                const depName = dependancy ? dependancy.named : null;
 
-            let params = registration.params.map(item => throwIfNotFound === true ? this.resolve(item) : this.tryResolve(item));
+                if(throwIfNotFound === true) {
+                    return !!depName ? this.resolveNamed(item, depName) : this.resolve(item);
+                }
+
+                return !!depName ? this.tryResolveNamed(item, depName) : this.tryResolve(item);
+            });
+
             return Reflection.construct(type, params);
         }
 

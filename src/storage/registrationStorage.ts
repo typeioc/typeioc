@@ -48,11 +48,11 @@ export class RegistrationStorage implements Internal.IRegistrationStorage {
     private addForTypeFactory(registration : Internal.IRegistrationBase) {
 
         var storage = this._internalStorage.register(registration.service, this.emptyTypeFactoryBucket);
-
         storage.type = StorageType.TypeFactory;
-        storage.typeFactory.registration = registration;
 
-        if(registration.name) {
+        if(!registration.name) {
+            storage.typeFactory.noName = registration;
+        } else {
             storage.typeFactory.names[registration.name] = registration;
         }
     }
@@ -76,7 +76,7 @@ export class RegistrationStorage implements Internal.IRegistrationStorage {
 
     private getForTypeFactory(registration : Internal.IRegistrationBase, storage : IStore) : Internal.IRegistrationBase {
 
-        return !registration.name ? storage.typeFactory.registration :
+        return !registration.name ? storage.typeFactory.noName :
             storage.typeFactory.names[registration.name];
     }
 
@@ -100,7 +100,7 @@ export class RegistrationStorage implements Internal.IRegistrationStorage {
     private emptyTypeFactoryBucket() : IStore {
         return <IStore>{
             typeFactory: {
-                registration: null,
+                noName: {},
                 names: {}
             },
             factory: null
@@ -120,7 +120,7 @@ export class RegistrationStorage implements Internal.IRegistrationStorage {
 
 interface IStore {
     typeFactory : {
-        registration : Internal.IRegistrationBase,
+        noName : Internal.IRegistrationBase,
         names : Internal.IIndexedCollection<Internal.IRegistrationBase>
     },
 

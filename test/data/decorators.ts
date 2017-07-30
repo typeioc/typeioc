@@ -423,6 +423,7 @@ export module Resolve {
             public foo() {}
         }
 
+        @decorator.provide(Resolve.ByName.TestBase).register()
         @decorator.provide(Resolve.ByName.TestBase).named('Some name 1').register()
         @decorator.provide(Resolve.ByName.TestBase).named('Some name 2').register()
         export class Test extends TestBase {
@@ -529,7 +530,9 @@ export module Resolve {
             public foo() {}
         }
 
-        @decorator.provide<Resolve.FullResolution.TestBase3>(Resolve.FullResolution.TestBase3).named('Some name').register()
+        @decorator.provide<Resolve.FullResolution.TestBase3>(Resolve.FullResolution.TestBase3)
+        .named('Some name')
+        .register()
         export class Test3 extends TestBase3 {
 
             constructor(private arg1, private arg2) {
@@ -570,7 +573,7 @@ export module Resolve {
 
             constructor(private arg1 : Resolve.FullResolution.TestBase,
                         private arg2 : Resolve.FullResolution.TestBase1,
-                        private arg3 : Resolve.FullResolution.TestBase3) {
+                        @decorator.by().name('Some name').resolve() private arg3 : Resolve.FullResolution.TestBase3) {
                 super();
             }
 
@@ -585,7 +588,7 @@ export module Resolve {
             constructor(private arg1 : Resolve.FullResolution.TestBase,
                         private arg2 : Resolve.FullResolution.TestBase1,
                         @decorator.resolveValue('decorator value') private arg2_1,
-                        @decorator.by(Resolve.FullResolution.TestBase3).resolve() private arg3) {
+                        @decorator.by(Resolve.FullResolution.TestBase3).name('Some name').resolve() private arg3) {
                 super();
             }
 

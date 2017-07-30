@@ -493,6 +493,7 @@ var Resolve;
             }
         };
         Test = __decorate([
+            exports.decorator.provide(Resolve.ByName.TestBase).register(),
             exports.decorator.provide(Resolve.ByName.TestBase).named('Some name 1').register(),
             exports.decorator.provide(Resolve.ByName.TestBase).named('Some name 2').register()
         ], Test);
@@ -621,7 +622,9 @@ var Resolve;
             }
         };
         Test3 = __decorate([
-            exports.decorator.provide(Resolve.FullResolution.TestBase3).named('Some name').register(),
+            exports.decorator.provide(Resolve.FullResolution.TestBase3)
+                .named('Some name')
+                .register(),
             __metadata("design:paramtypes", [Object, Object])
         ], Test3);
         FullResolution.Test3 = Test3;
@@ -667,6 +670,7 @@ var Resolve;
         };
         Test2 = __decorate([
             exports.decorator.provide(Resolve.FullResolution.TestBase2).register(),
+            __param(2, exports.decorator.by().name('Some name').resolve()),
             __metadata("design:paramtypes", [Resolve.FullResolution.TestBase, Resolve.FullResolution.TestBase1, Resolve.FullResolution.TestBase3])
         ], Test2);
         FullResolution.Test2 = Test2;
@@ -685,7 +689,7 @@ var Resolve;
         Test4 = __decorate([
             exports.decorator.provide(Resolve.FullResolution.TestBase4).register(),
             __param(2, exports.decorator.resolveValue('decorator value')),
-            __param(3, exports.decorator.by(Resolve.FullResolution.TestBase3).resolve()),
+            __param(3, exports.decorator.by(Resolve.FullResolution.TestBase3).name('Some name').resolve()),
             __metadata("design:paramtypes", [Resolve.FullResolution.TestBase, Resolve.FullResolution.TestBase1, Object, Object])
         ], Test4);
         FullResolution.Test4 = Test4;

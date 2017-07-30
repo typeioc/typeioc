@@ -18,6 +18,33 @@ var Level13;
             test.strictEqual(actual.foo(), 'Test : foo');
             test.done();
         },
+        plain_instantiation_asTypeClass: function (test) {
+            class TestBase {
+                foo() { }
+            }
+            class TestBase2 {
+                foo() { }
+            }
+            class Test1 {
+                foo() { return 'Test : foo'; }
+            }
+            class Test2 {
+                constructor(test1) {
+                    this.test1 = test1;
+                }
+                foo() { return 'Test2 : foo ' + this.test1.foo(); }
+            }
+            const builder = scaffold.createBuilder();
+            builder.register(TestBase).asType(Test1);
+            builder.register(TestBase).asType(Test2, TestBase).named("A");
+            var container = builder.build();
+            var actual = container.resolve(TestBase);
+            test.ok(actual);
+            test.strictEqual(actual.foo(), 'Test : foo');
+            var actual2 = container.resolveNamed(TestBase, "A");
+            test.strictEqual(actual2.foo(), 'Test2 : foo Test : foo');
+            test.done();
+        },
         instantiation_with_parameter_resolution(test) {
             var actual = container.resolve(TestData.Registration.TestBase1);
             test.ok(actual);
@@ -198,7 +225,8 @@ var Level13;
                 },
                 {
                     service: TestData.Resolve.FullResolution.TestBase3,
-                    factoryType: TestData.Resolve.FullResolution.TestDep3
+                    factoryType: TestData.Resolve.FullResolution.TestDep3,
+                    named: 'Some name'
                 }];
             var actual = container
                 .resolveWith(TestData.Resolve.FullResolution.TestBase2)
@@ -219,7 +247,8 @@ var Level13;
                 },
                 {
                     service: TestData.Resolve.FullResolution.TestBase3,
-                    factoryType: TestData.Resolve.FullResolution.TestDep3
+                    factoryType: TestData.Resolve.FullResolution.TestDep3,
+                    named: 'Some name'
                 }];
             var actual = container
                 .resolveWith(TestData.Resolve.FullResolution.TestBase4)

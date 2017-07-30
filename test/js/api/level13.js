@@ -946,14 +946,15 @@ exports.api = {
                         service: TestData.Resolve.FullResolution.TestBase,
                         factoryType: TestData.Resolve.FullResolution.TestDep
                     },
-                        {
-                            service: TestData.Resolve.FullResolution.TestBase1,
-                            factoryType: TestData.Resolve.FullResolution.TestDep1
-                        },
-                        {
-                            service: TestData.Resolve.FullResolution.TestBase3,
-                            factoryType: TestData.Resolve.FullResolution.TestDep3
-                        }];
+                    {
+                        service: TestData.Resolve.FullResolution.TestBase1,
+                        factoryType: TestData.Resolve.FullResolution.TestDep1
+                    },
+                    {
+                        service: TestData.Resolve.FullResolution.TestBase3,
+                        factoryType: TestData.Resolve.FullResolution.TestDep3,
+                        named: 'Some name'
+                    }];
 
                     var actual = container
                             .resolveWith(TestData.Resolve.FullResolution.TestBase2)
@@ -1026,15 +1027,16 @@ exports.api = {
                     var dependencies = [{
                         service: TestBase,
                         factoryType: TestDep
-                        },
-                        {
-                            service: TestBase1,
-                            factoryType: TestDep1
-                        },
-                        {
-                            service: TestBase3,
-                            factoryType: TestDep3
-                        }];
+                    },
+                    {
+                        service: TestBase1,
+                        factoryType: TestDep1
+                    },
+                    {
+                        service: TestBase3,
+                        factoryType: TestDep3,
+                        named: 'Some name'
+                    }];
 
                     builder.register(TestBase3).asType(Test3).named('Some name');
                     builder.register(TestBase).asType(Test);
@@ -1065,7 +1067,8 @@ exports.api = {
                         },
                         {
                             service: TestData.Resolve.FullResolution.TestBase3,
-                            factoryType: TestData.Resolve.FullResolution.TestDep3
+                            factoryType: TestData.Resolve.FullResolution.TestDep3,
+                            named: 'Some name'
                         }];
 
                     var actual = container
@@ -1100,7 +1103,7 @@ exports.api = {
 
                 resolve_with_named_dependencies : function(test) {
 
-                    var TestBase = function() {};
+                    var TestBase = function() { const testBase = 123; };
                     TestBase.prototype.foo = function() {};
 
                     var TestBase1 = function() {};
@@ -1121,7 +1124,7 @@ exports.api = {
                         return ['Test', this.arg1.foo()].join(' ');
                     };
 
-                    var TestDep = function() { };
+                    var TestDep = function() { const testDep = 123; };
                     TestDep.prototype.foo = function() { return 'dependency Some test name'; };
 
                     var dependencies = [{

@@ -22,6 +22,7 @@ export class RegistrationBase implements Typeioc.Internal.IRegistrationBase {
     private _container : Typeioc.IContainer;
     private _instance: any = null;
     private _factoryType : any = null;
+    private _dependenciesValue : Array<Typeioc.IDynamicDependency> = [];
 
     public get name() : string {
         return this._name;
@@ -109,6 +110,14 @@ export class RegistrationBase implements Typeioc.Internal.IRegistrationBase {
 
     public get forInstantiation() : boolean {
         return this._factoryType && !this._factory;
+    }
+
+    public get dependenciesValue() : Array<Typeioc.IDynamicDependency> {
+        return this._dependenciesValue;
+    }
+
+    public set dependenciesValue(value: Array<Typeioc.IDynamicDependency>) {
+        this._dependenciesValue = value || [];
     }
 
     constructor(private _service: any) {
