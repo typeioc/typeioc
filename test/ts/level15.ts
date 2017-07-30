@@ -158,6 +158,43 @@ export module Level15 {
                     test.done();
                 });
         },
+        
+        resolvesWithResolvesNamedDependency: function (test) {
+
+            containerBuilder.register(TestData.Test2Base)
+                .as(() => new TestData.Test2())
+                .named('A');
+
+            containerBuilder.register(TestData.Test1Base)
+                .as(c => {
+                    var test2 = c.resolveNamed<TestData.Test2>(TestData.Test2Base, 'A');
+                    return new TestData.Test3(test2);
+                });
+
+            var container = containerBuilder.build();
+
+            var dependencies = [{
+                named: 'A',
+                service: TestData.Test2Base,
+                factory: () => ({
+                    get Name() {
+                        return 'name from dependency';
+                    }
+                })
+            }];
+
+            var actual = container
+                .resolveWith<TestData.Test1Base>(TestData.Test1Base)
+                .dependencies(dependencies)
+                .execAsync()
+                .then(actual => {
+                    test.ok(actual);
+                    test.ok(actual instanceof TestData.Test1Base);
+                    test.strictEqual(actual.Name, 'Test 3 name from dependency');
+
+                    test.done();
+                });
+        },
 
         resolveWithResolvesCacheDefault: function (test) {
 

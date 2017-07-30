@@ -252,6 +252,43 @@ exports.api = {
                             test.done();
                         });
                 },
+                
+                resolvesWithResolvesNamedDependency: function (test) {
+
+                    containerBuilder.register(testData.Test2Base)
+                        .as(() => new testData.Test2())
+                        .named('A');
+
+                    containerBuilder.register(testData.Test1Base)
+                        .as(c => {
+                            var test2 = c.resolveNamed(testData.Test2Base, 'A');
+                            return new testData.Test3(test2);
+                        });
+
+                    var container = containerBuilder.build();
+
+                    var dependencies = [{
+                        named: 'A',
+                        service: testData.Test2Base,
+                        factory: () => ({
+                            get Name() {
+                                return 'name from dependency';
+                            }
+                        })
+                    }];
+
+                    var actual = container
+                        .resolveWith(testData.Test1Base)
+                        .dependencies(dependencies)
+                        .execAsync()
+                        .then(actual => {
+                            test.ok(actual);
+                            test.ok(actual instanceof testData.Test1Base);
+                            test.strictEqual(actual.Name, 'Test 3 name from dependency');
+
+                            test.done();
+                        });
+                },
 
                 resolveWithResolvesCacheDefault: function (test) {
 
