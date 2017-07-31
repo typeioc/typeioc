@@ -39,14 +39,14 @@ exports.api = {
                     .register(testData.Test1Base)
                     .as((c, name) => new testData.Test4(name));
             
-                var container = containerBuilder.build();
-                var test1 = container.resolve(testData.Test1Base, "test 4-1")
-                var test2 = container.resolve(testData.Test1Base, "test 4-2");
+                const container = containerBuilder.build();
+                const test1 = container.resolve(testData.Test1Base, "test 4-1")
+                const test2 = container.resolve(testData.Test1Base, "test 4-2");
 
                 test.ok(test1);
                 test.strictEqual(test1.Name, "test 4-1");
                 test.ok(test2);
-                test.strictEqual(test1.Name, "test 4-2");
+                test.strictEqual(test2.Name, "test 4-2");
                 test.ok(test1 !== test2);
 
                 test.done();

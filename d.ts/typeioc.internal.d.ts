@@ -221,7 +221,7 @@ declare module Typeioc.Internal {
         factoryType : any;
         forInstantiation : boolean;
         dependenciesValue : Array<Typeioc.IDynamicDependency>;
-        invoke() : any;
+        invoke(args: Array<any>) : any;
         cloneFor : (container: Typeioc.IContainer) => IRegistrationBase;
     }
 

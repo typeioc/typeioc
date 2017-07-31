@@ -187,9 +187,12 @@ export class InternalContainer implements Internal.IContainer {
         if(!entry && throwIfNotFound === false) {
             return null;  
         }
-        
-        entry.args = registration.args;
 
+        // ------------ with args always returns new instance ...
+        if(registration.args && registration.args.length) {
+            return this.createTrackable(entry, throwIfNotFound, registration.args);
+        }
+        
         return this.resolveScope(entry, throwIfNotFound);
     }
 
@@ -257,22 +260,19 @@ export class InternalContainer implements Internal.IContainer {
         }
 
         if(!registration.instance) {
-
             registration.instance = this.createTrackable(registration, throwIfNotFound);
         }
 
         return registration.instance;
     }
 
-    private createTrackable(registration : Internal.IRegistrationBase, throwIfNotFound : boolean) : any {
-
+    private createTrackable(registration : Internal.IRegistrationBase, throwIfNotFound : boolean, args?: Array<any>) : any {
         try {
         
-            let instance = registration.invoke();
+            let instance = registration.invoke(args);
 
             if(registration.forInstantiation === true) {
-
-                instance = this.instantiate(instance, registration, throwIfNotFound);
+                instance = this.instantiate(instance, registration, throwIfNotFound, args);
             }
 
             if(registration.initializer) {
@@ -281,7 +281,6 @@ export class InternalContainer implements Internal.IContainer {
 
             if(registration.owner === Owner.Container &&
                 registration.disposer) {
-
                 this._disposableStorage.add(instance, registration.disposer);
             }
 
@@ -401,12 +400,16 @@ export class InternalContainer implements Internal.IContainer {
         this._cache[name] = value;
     }
 
-    private instantiate(type : any, registration : Internal.IRegistrationBase, throwIfNotFound : boolean) {
+    private instantiate(
+        type : any,
+        registration : Internal.IRegistrationBase,
+        throwIfNotFound : boolean,
+        args?: Array<any>) {
         
         var dependencies = Reflection.getMetadata(Reflect, type);
         
-        if(registration.args.length) {
-            return Reflection.construct(type, registration.args);
+        if(args && args.length) {
+            return Reflection.construct(type, args);
         }
 
         if(registration.params.length) {

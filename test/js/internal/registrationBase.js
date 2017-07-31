@@ -261,9 +261,8 @@ exports.internal = {
                 var serviceEntry = new RegistrationBaseModule.RegistrationBase(null);
                 serviceEntry.factory = factory;
                 serviceEntry.container = container;
-                serviceEntry.args = [firstArg, secondArg, thirdArg];
-
-                serviceEntry.invoke();
+               
+                serviceEntry.invoke([firstArg, secondArg, thirdArg]);
 
                 test.ok(factory.withArgs(container, firstArg, secondArg, thirdArg).calledOnce);
 

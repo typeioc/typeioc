@@ -146,13 +146,13 @@ export class RegistrationBase implements Typeioc.Internal.IRegistrationBase {
         this._factory = value;
     }
 
-    public invoke() : any {
+    public invoke(args: Array<any> = []) : any {
 
         if(this._factoryType) {
             return this._factoryType;
         }
 
-        var args = [this.container].concat(this.args.slice(0));
+        args = [this.container].concat(args.slice(0));
         return this.factory.apply(this.factory, args);
     }
 }

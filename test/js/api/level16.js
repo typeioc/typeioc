@@ -78,6 +78,13 @@ exports.api = {
             test.strictEqual(actualA.Name, 'test 1');
             test.strictEqual(actualB.Name, 'test 1');
             test.done();
+        },
+
+        asTypeResolvesWithDependancies: (test) => {
+
+            
+
+            test.done();
         }
     }
 }
