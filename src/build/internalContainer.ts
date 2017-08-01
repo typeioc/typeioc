@@ -286,7 +286,13 @@ export class InternalContainer implements Internal.IContainer {
 
             return instance;
         } catch (error) {
-            const exception = new ResolutionError('Could not instantiate service');
+            let message = 'Could not instantiate service';
+
+            if(error instanceof ResolutionError) {
+                message += '. ' + error.message;
+            }
+
+            const exception = new ResolutionError(message);
             exception.data = registration.service;
             exception.innerError = error;
             throw exception;
@@ -358,6 +364,10 @@ export class InternalContainer implements Internal.IContainer {
         registration.name = api.nameValue;
 
         var implementation = this.resolveImpl(registration, api.throwResolveError);
+        if(!implementation && api.throwResolveError === false) {
+            return null;
+        }
+
         var baseRegistration = implementation.cloneFor(child);
         baseRegistration.args = api.argsValue;
         baseRegistration.name = api.nameValue;
@@ -406,8 +416,13 @@ export class InternalContainer implements Internal.IContainer {
         throwIfNotFound : boolean,
         args?: Array<any>) {
         
-        var dependencies = Reflection.getMetadata(Reflect, type);
-        
+        if(args && args.length &&
+            registration.params.length) {
+            const exception = new ResolutionError('Could not instantiate type. Arguments and dependencies are not allowed for simultaneous resolution. Pick dependencies or arguments');
+            exception.data = type;
+            throw exception;
+        }
+
         if(args && args.length) {
             return Reflection.construct(type, args);
         }
@@ -428,7 +443,9 @@ export class InternalContainer implements Internal.IContainer {
             return Reflection.construct(type, params);
         }
 
-        var params = dependencies
+        const dependencies = Reflection.getMetadata(Reflect, type);
+
+        const params = dependencies
             .map((dependancy, index) => {
 
                 let depParams = this._resolutionDetails ? this._resolutionDetails.tryGet(type) : null;

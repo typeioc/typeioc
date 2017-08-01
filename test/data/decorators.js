@@ -398,7 +398,8 @@ var Resolve;
             }
         };
         Test = __decorate([
-            exports.decorator.provide(Resolve.ByMultipleService.TestBase).register(),
+            exports.decorator.provide(Resolve.ByMultipleService.TestBase)
+                .register(),
             __metadata("design:paramtypes", [])
         ], Test);
         ByMultipleService.Test = Test;
@@ -413,8 +414,11 @@ var Resolve;
             }
         };
         Test1 = __decorate([
-            exports.decorator.provide(Resolve.ByMultipleService.TestBase1).register(),
-            __param(1, exports.decorator.by(Resolve.ByMultipleService.TestBase).resolve()),
+            exports.decorator.provide(Resolve.ByMultipleService.TestBase1)
+                .register(),
+            __param(1, exports.decorator
+                .by(Resolve.ByMultipleService.TestBase)
+                .resolve()),
             __metadata("design:paramtypes", [Resolve.ByMultipleService.TestBase, Object])
         ], Test1);
         ByMultipleService.Test1 = Test1;
@@ -429,9 +433,14 @@ var Resolve;
             }
         };
         Test2 = __decorate([
-            exports.decorator.provide(Resolve.ByMultipleService.TestBase2).register(),
-            __param(0, exports.decorator.by(Resolve.ByMultipleService.TestBase1).resolve()),
-            __param(1, exports.decorator.by(Resolve.ByMultipleService.TestBase).resolve()),
+            exports.decorator.provide(Resolve.ByMultipleService.TestBase2)
+                .register(),
+            __param(0, exports.decorator
+                .by(Resolve.ByMultipleService.TestBase1)
+                .resolve()),
+            __param(1, exports.decorator
+                .by(Resolve.ByMultipleService.TestBase)
+                .resolve()),
             __metadata("design:paramtypes", [Object, Object])
         ], Test2);
         ByMultipleService.Test2 = Test2;

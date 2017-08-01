@@ -1,87 +1,87 @@
 'use strict';
 
-const scaffold = require('./../../scaffold');
-const testData = scaffold.TestModule;
-let builder;
+import scaffold = require('./../scaffold');
+import TestData = require('../data/test-data');
 
-exports.api = {
-    level16: {
+export module Level16 {
+    let builder: Typeioc.IContainerBuilder;
+
+    export const asType = {
         setUp: function (callback) {
             builder = scaffold.createBuilder();
             callback();
         },
 
-        asTypeResolvesBasic: (test) => {
-            
-            builder.register(testData.Test1Base).asType(testData.Test1);
+        resolvesBasic: (test) => {
+            builder.register(TestData.Test1Base).asType(TestData.Test1);
             const container = builder.build();
-            const actual = container.resolve(testData.Test1Base);
+            const actual = container.resolve<TestData.Test1Base>(TestData.Test1Base);
 
             test.ok(actual);
             test.strictEqual(actual.Name, 'test 1');
             test.done();
         },
 
-        asTypeTryResolvesBasic: (test) => {
+        tryResolvesBasic: (test) => {
             
             const container = builder.build();
-            const actual = container.tryResolve(testData.Test1Base);
+            const actual = container.tryResolve(TestData.Test1Base);
 
             test.ok(actual === null);
             test.done();
         },
 
-        asTypeResolvesWithParams: (test) => {
+        resolvesWithParams: (test) => {
             
-            builder.register(testData.Test1Base).asType(testData.Test4);
+            builder.register(TestData.Test1Base).asType(TestData.Test4);
             const container = builder.build();
-            const actual = container.resolve(testData.Test1Base, '---');
+            const actual = container.resolve<TestData.Test1Base>(TestData.Test1Base, '---');
 
             test.ok(actual);
             test.strictEqual(actual.Name, '---');
             test.done();
         },
 
-        asTypeResolvesNamed: (test) => {
+        resolvesNamed: (test) => {
             
-            builder.register(testData.Test1Base)
-                    .asType(testData.Test1).named('A');
+            builder.register(TestData.Test1Base)
+                    .asType(TestData.Test1).named('A');
 
             const container = builder.build();
-            const actual = container.resolveNamed(testData.Test1Base, 'A');
+            const actual = container.resolveNamed<TestData.Test1Base>(TestData.Test1Base, 'A');
 
             test.ok(actual);
             test.strictEqual(actual.Name, 'test 1');
             test.done();
         },
 
-        asTypeResolvesNamedWithParams: (test) => {
+        resolvesNamedWithParams: (test) => {
             
-            builder.register(testData.Test1Base)
-                    .asType(testData.Test4)
+            builder.register(TestData.Test1Base)
+                    .asType(TestData.Test4)
                     .named('A');
 
             const container = builder.build();
-            const actual = container.resolveNamed(testData.Test1Base, 'A', '---');
+            const actual = container.resolveNamed<TestData.Test1Base>(TestData.Test1Base, 'A', '---');
 
             test.ok(actual);
             test.strictEqual(actual.Name, '---');
             test.done();
         },
 
-        asTypeResolvesMultipeRegistrations: (test) => {
+        resolvesMultipeRegistrations: (test) => {
             
-            builder.register(testData.Test1Base)
-                    .asType(testData.Test1);
-            builder.register(testData.Test1Base)
-                    .asType(testData.Test1).named('A');
-            builder.register(testData.Test1Base)
-                    .asType(testData.Test1).named('B');
+            builder.register(TestData.Test1Base)
+                    .asType(TestData.Test1);
+            builder.register(TestData.Test1Base)
+                    .asType(TestData.Test1).named('A');
+            builder.register(TestData.Test1Base)
+                    .asType(TestData.Test1).named('B');
 
             const container = builder.build();
-            const actual = container.resolve(testData.Test1Base);
-            const actualA = container.resolveNamed(testData.Test1Base, 'A');
-            const actualB = container.resolveNamed(testData.Test1Base, 'B');
+            const actual = container.resolve<TestData.Test1Base>(TestData.Test1Base);
+            const actualA = container.resolveNamed<TestData.Test1Base>(TestData.Test1Base, 'A');
+            const actualB = container.resolveNamed<TestData.Test1Base>(TestData.Test1Base, 'B');
 
             test.strictEqual(actual.Name, 'test 1');
             test.strictEqual(actualA.Name, 'test 1');
@@ -89,7 +89,7 @@ exports.api = {
             test.done();
         },
 
-        asTypeResolvesWithDependancies: (test) => {
+        resolvesWithDependancies: (test) => {
 
             const test4 = function() {
                 this.Name = 'test 4';
@@ -97,42 +97,42 @@ exports.api = {
 
             const test7 = function() {};
             
-            builder.register(testData.Test1Base).asType(testData.Test1);
-            builder.register(testData.Test2Base).asType(testData.Test2);
+            builder.register(TestData.Test1Base).asType(TestData.Test1);
+            builder.register(TestData.Test2Base).asType(TestData.Test2);
             builder.register(test4).asType(test4);
             builder.register(test7)
-                    .asType(testData.Test7, testData.Test1Base, testData.Test2Base, test4);
+                    .asType(TestData.Test7, TestData.Test1Base, TestData.Test2Base, test4);
             
             const container = builder.build();
-            const actual = container.resolve(test7);
+            const actual = container.resolve<TestData.Test1Base>(test7);
 
             test.ok(actual);
             test.strictEqual(actual.Name, 'test 1 test 2 test 4');
             test.done();
         },
 
-        asTypeResolvesNamedWithDependencies: (test) => {
+        resolvesNamedWithDependencies: (test) => {
 
             const test4 = function() {
                 this.Name = 'test 4';
             }
 
-            builder.register(testData.Test1Base).asType(testData.Test1);
-            builder.register(testData.Test2Base).asType(testData.Test2);
+            builder.register(TestData.Test1Base).asType(TestData.Test1);
+            builder.register(TestData.Test2Base).asType(TestData.Test2);
             builder.register(test4).asType(test4);
-            builder.register(testData.Test1Base)
-                    .asType(testData.Test7, testData.Test1Base, testData.Test2Base, test4)
+            builder.register(TestData.Test1Base)
+                    .asType(TestData.Test7, TestData.Test1Base, TestData.Test2Base, test4)
                     .named('A');
             
             const container = builder.build();
-            const actual = container.resolveNamed(testData.Test1Base, 'A');
+            const actual = container.resolveNamed<TestData.Test1Base>(TestData.Test1Base, 'A');
 
             test.ok(actual);
             test.strictEqual(actual.Name, 'test 1 test 2 test 4');
             test.done();
         },
 
-        asTypeThrowsWhenParamsAndArguments : (test) => {
+        throwsWhenParamsAndArguments : (test) => {
 
             const test1 = function() {
                 this.name = 'test 1';
@@ -158,24 +158,24 @@ exports.api = {
             test.done();
         },
 
-        asTypeResolvesWithDynamicDependencies: (test) => {
+        resolvesWithDynamicDependencies: (test) => {
             const test4 = function() {}
             const test7 = function() {};
             
-            builder.register(testData.Test1Base).asType(testData.Test1);
-            builder.register(testData.Test2Base).asType(testData.Test2);
+            builder.register(TestData.Test1Base).asType(TestData.Test1);
+            builder.register(TestData.Test2Base).asType(TestData.Test2);
             builder.register(test4).asType(test4);
             builder.register(test7)
-                    .asType(testData.Test7, testData.Test1Base, testData.Test2Base, test4);
+                    .asType(TestData.Test7, TestData.Test1Base, TestData.Test2Base, test4);
             
             const container = builder.build();
-            const actual = container.resolveWith(test7).dependencies([{
-                service: testData.Test1Base,
+            const actual = container.resolveWith<TestData.Test1Base>(test7).dependencies([{
+                service: TestData.Test1Base,
                 factoryType: function() {
                     this.Name = 'test dep 1'
                 }
             }, {
-                service: testData.Test2Base,
+                service: TestData.Test2Base,
                 factoryType: function() {
                     this.Name = 'test dep 2'
                 }
@@ -192,31 +192,31 @@ exports.api = {
             test.done();
         },
 
-        asTypeResolvesWithDynamicNamedDependencies: (test) => {
+        resolvesWithDynamicNamedDependencies: (test) => {
             const test4 = function() { }
             const test7 = function() { }
 
-            builder.register(testData.Test1Base)
-                .asType(testData.Test1)
+            builder.register(TestData.Test1Base)
+                .asType(TestData.Test1)
                 .named('Test1');
-            builder.register(testData.Test2Base)
-                .asType(testData.Test2)
+            builder.register(TestData.Test2Base)
+                .asType(TestData.Test2)
                 .named('Test2');
             builder.register(test4).asType(test4)
                 .named('Test4');
             builder.register(test7)
-                    .asType(testData.Test7, testData.Test1Base, testData.Test2Base, test4);
+                    .asType(TestData.Test7, TestData.Test1Base, TestData.Test2Base, test4);
             
             const container = builder.build();
-            const actual = container.resolveWith(test7)
+            const actual = container.resolveWith<TestData.Test1Base>(test7)
             .dependencies([{
-                    service: testData.Test1Base,
+                    service: TestData.Test1Base,
                     factoryType: function() {
                         this.Name = 'test dep 1'
                     },
                     named: 'Test1'
                 }, {
-                    service: testData.Test2Base,
+                    service: TestData.Test2Base,
                     factoryType: function() {
                         this.Name = 'test dep 2'
                     },
@@ -235,17 +235,17 @@ exports.api = {
             test.done();
         },
 
-        asTypeTryResolvesWithDynamicDependencies: (test) => {
+        tryResolvesWithDynamicDependencies: (test) => {
             
-            builder.register(testData.Test1Base)
-                .asType(testData.Test1)
+            builder.register(TestData.Test1Base)
+                .asType(TestData.Test1)
                 .named('A');
             
             const container = builder.build();
-            const actual = container.resolveWith(testData.Test1Base)
+            const actual = container.resolveWith(TestData.Test1Base)
             .attempt()
             .dependencies([{
-                service: testData.Test1Base,
+                service: TestData.Test1Base,
                 factoryType: function() {
                     this.Name = 'test dep 1'
                 }

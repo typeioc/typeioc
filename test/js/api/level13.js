@@ -651,16 +651,16 @@ exports.api = {
                     test.done();
                 },
 
-                // resolve_by_multiple_service_instantiation_generated_code: function(test) {
+                resolve_by_multiple_service_instantiation_generated_code: function(test) {
 
-                //     var actual1 = container.resolve(TestData.Resolve.ByMultipleService.TestBase1);
-                //     var actual2 = container.resolve(TestData.Resolve.ByMultipleService.TestBase2);
+                    var actual1 = container.resolve(TestData.Resolve.ByMultipleService.TestBase1);
+                    var actual2 = container.resolve(TestData.Resolve.ByMultipleService.TestBase2);
 
-                //     test.strictEqual(actual1.foo(), "Test1 Test 1 2 Test 3 4");
-                //     test.strictEqual(actual2.foo(), "Test2 Test1 Test 1 2 Test 3 4 Test 5 6");
+                    test.strictEqual(actual1.foo(), "Test1 Test Test");
+                    test.strictEqual(actual2.foo(), "Test2 Test1 Test Test Test");
 
-                //     test.done();
-                // },
+                    test.done();
+                },
 
                 resolve_by_args_instantiation: function(test) {
 

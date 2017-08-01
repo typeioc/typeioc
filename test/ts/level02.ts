@@ -28,6 +28,25 @@ export module Level2 {
         test.done();
     }
 
+    export function customParametersResolutionDifferentParams(test) {
+
+        containerBuilder
+            .register(TestData.Test1Base)
+            .as((c, name) => new TestData.Test4(name));
+    
+        const container = containerBuilder.build();
+        const test1 = container.resolve<TestData.Test1Base>(TestData.Test1Base, "test 4-1")
+        const test2 = container.resolve<TestData.Test1Base>(TestData.Test1Base, "test 4-2");
+
+        test.ok(test1);
+        test.strictEqual(test1.Name, "test 4-1");
+        test.ok(test2);
+        test.strictEqual(test2.Name, "test 4-2");
+        test.ok(test1 !== test2);
+
+        test.done();
+    }
+
     export function namedServicesResolution(test) {
 
         containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)

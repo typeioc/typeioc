@@ -73,7 +73,6 @@ export module Level3 {
     }
 
     export function hierarchyScoping(test) {
-
          containerBuilder.register(TestData.Test1Base)
              .as(()=> new TestData.Test4("test 4"))
              .within(Typeioc.Types.Scope.Hierarchy);
@@ -95,4 +94,42 @@ export module Level3 {
         test.done();
     }
 
+    export function resolutionWithArgumentsReturnsScopeNoneForHierarchy(test) {
+        containerBuilder.register(TestData.Test1Base)
+            .as((c, data) => new TestData.Test4(data))
+            .within(scaffold.Types.Scope.Hierarchy);
+
+        const container = containerBuilder.build();
+        const child = container.createChild();
+        const test1 = container.resolve<TestData.Test1Base>(TestData.Test1Base, 'A');
+        const test2 = container.resolve<TestData.Test1Base>(TestData.Test1Base, 'B');
+        const test3 = child.resolve<TestData.Test1Base>(TestData.Test1Base, 'A');
+        const test4 = child.resolve<TestData.Test1Base>(TestData.Test1Base, 'B');
+
+        test.ok(test1 !== test2);
+        test.ok(test2 !== test3);
+        test.ok(test3 !== test4);
+        test.strictEqual(test1.Name, 'A');
+        test.strictEqual(test2.Name, 'B');
+        test.strictEqual(test3.Name, 'A');
+        test.strictEqual(test4.Name, 'B');
+
+        test.done();
+    }
+
+    export function resolutionWithArgumentsReturnsScopeNoneForContainer(test) {
+        containerBuilder.register(TestData.Test1Base)
+            .as((c, data) => new TestData.Test4(data))
+            .within(scaffold.Types.Scope.Container);
+
+        const container = containerBuilder.build();
+        const test1 = container.resolve<TestData.Test1Base>(TestData.Test1Base, 'A');
+        const test2 = container.resolve<TestData.Test1Base>(TestData.Test1Base, 'B');
+
+        test.ok(test1 !== test2);
+        test.strictEqual(test1.Name, 'A');
+        test.strictEqual(test2.Name, 'B');
+
+        test.done();
+    }
 }

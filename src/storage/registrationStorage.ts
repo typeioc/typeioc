@@ -100,7 +100,7 @@ export class RegistrationStorage implements Internal.IRegistrationStorage {
     private emptyTypeFactoryBucket() : IStore {
         return <IStore>{
             typeFactory: {
-                noName: {},
+                noName: null,
                 names: {}
             },
             factory: null
