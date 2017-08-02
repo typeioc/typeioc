@@ -200,7 +200,7 @@ export class InternalContainer implements Internal.IContainer {
 
         var serviceEntry = this._collection.getEntry(registration);
 
-        if(!serviceEntry  && this.parent) {
+        if(!serviceEntry && this.parent) {
             return this.parent.resolveImpl(registration, throwIfNotFound);
         }
 

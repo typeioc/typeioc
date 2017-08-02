@@ -444,17 +444,20 @@ exports.internal = {
                 var result = moduleRegistration.asModuleInitializedReusedOwned();
 
                 var methods = Object.getOwnPropertyNames(result);
+                const expectedMethods = [
+                    'within',
+                    'ownedBy',
+                    'ownedInternally',
+                    'ownedExternally',
+                    'forService',
+                    'forArgs',
+                    'named'
+                ];
 
-                var actual = methods.filter(function(item) {
-                    return item != 'within' &&
-                        item != 'ownedBy' &&
-                        item != 'forService' &&
-                        item != 'forArgs' &&
-                        item != 'named';
-                });
+                const expected = methods
+                    .every(method => expectedMethods.includes(method));
 
-                test.strictEqual(actual.length, 0);
-
+                test.ok(expected);
                 test.done();
             },
 

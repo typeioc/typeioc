@@ -24,6 +24,20 @@ var Level5;
         test.done();
     }
     Level5.containerOwnedInstancesAreDisposed = containerOwnedInstancesAreDisposed;
+    function internallyOwnedInstancesAreDisposed(test) {
+        containerBuilder.register(TestData.Test1Base)
+            .as(() => new TestData.Test5())
+            .dispose((item) => { item.Dispose(); })
+            .within(1 /* None */)
+            .ownedInternally();
+        const container = containerBuilder.build();
+        const test1 = container.resolve(TestData.Test1Base);
+        container.dispose();
+        test.notEqual(test1, null);
+        test.strictEqual(test1.Disposed, true);
+        test.done();
+    }
+    Level5.internallyOwnedInstancesAreDisposed = internallyOwnedInstancesAreDisposed;
     function containerOwnedInstancesAreDisposedDefaultSetting(test) {
         scaffold.Types.Defaults.owner = scaffold.Types.Owner.Container;
         containerBuilder.register(TestData.Test1Base)
@@ -107,6 +121,20 @@ var Level5;
         test.done();
     }
     Level5.disposingContainerDoesNotDisposeExternalOwnedInstances = disposingContainerDoesNotDisposeExternalOwnedInstances;
+    function disposingContainerDoesNotDisposeExternallyOwnedInstances(test) {
+        containerBuilder.register(TestData.Test1Base)
+            .as(() => new TestData.Test5())
+            .within(3 /* Hierarchy */)
+            .ownedExternally();
+        const container = containerBuilder.build();
+        const child = container.createChild();
+        const test1 = child.resolve(TestData.Test1Base);
+        container.dispose();
+        test.notEqual(test1, null);
+        test.strictEqual(test1.Disposed, false);
+        test.done();
+    }
+    Level5.disposingContainerDoesNotDisposeExternallyOwnedInstances = disposingContainerDoesNotDisposeExternallyOwnedInstances;
     function initializeIsCalledWhenInstanceIsCreated(test) {
         var className = "item";
         containerBuilder.register(TestData.Initializable)

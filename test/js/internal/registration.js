@@ -26,11 +26,9 @@ exports.internal = {
             as_sets_factory_to_base : function(test) {
 
                 var factory = function(c, item) {};
-
                 instanceRegistration.as(factory);
 
                 test.strictEqual(baseRegistration.factory, factory);
-
                 test.done();
             },
 
@@ -48,7 +46,6 @@ exports.internal = {
 
                 test.ok(initializeBy.bind.calledOnce);
                 test.equal(result.initializeBy, funcResult);
-
                 test.done();
             },
 
@@ -126,20 +123,23 @@ exports.internal = {
 
             as_returns_min_set_of_methods : function(test) {
 
-                var result = instanceRegistration.as(null);
+                const result = instanceRegistration.as(null);
+                const methods = Object.getOwnPropertyNames(result);
 
-                var methods = Object.getOwnPropertyNames(result);
+                const expectedMethods = [
+                    'initializeBy',
+                    'dispose',
+                    'named',
+                    'within',
+                    'ownedBy',
+                    'ownedInternally',
+                    'ownedExternally'
+                ];
 
-                var actual = methods.filter(function(item) {
-                   return item != 'initializeBy' &&
-                          item != 'dispose' &&
-                          item != 'named' &&
-                          item != 'within' &&
-                          item != 'ownedBy';
-                });
+                const expected = methods
+                    .every(method => expectedMethods.includes(method));
 
-                test.strictEqual(actual.length, 0);
-
+                test.ok(expected);
                 test.done();
             },
 
@@ -192,17 +192,20 @@ exports.internal = {
 
             named_returns_min_set_of_methods : function(test) {
 
-                var result = instanceRegistration.named(null);
+                const result = instanceRegistration.named(null);
+                const methods = Object.getOwnPropertyNames(result);
 
-                var methods = Object.getOwnPropertyNames(result);
+                const expectedMethods = [
+                    'within',
+                    'ownedBy',
+                    'ownedInternally',
+                    'ownedExternally'
+                ];
 
-                var actual = methods.filter(function(item) {
-                    return item != 'within' &&
-                           item != 'ownedBy';
-                });
+                const expected = methods
+                    .every(method => expectedMethods.includes(method));
 
-                test.strictEqual(actual.length, 0);
-
+                test.ok(expected);
                 test.done();
             },
 
@@ -237,16 +240,19 @@ exports.internal = {
 
             within_returns_min_set_of_methods : function(test) {
 
-                var result = instanceRegistration.within(null);
+                const result = instanceRegistration.within(null);
+                const methods = Object.getOwnPropertyNames(result);
 
-                var methods = Object.getOwnPropertyNames(result);
+                const expectedMethods = [
+                    'ownedBy',
+                    'ownedInternally',
+                    'ownedExternally'
+                ];
 
-                var actual = methods.filter(function(item) {
-                    return item != 'ownedBy';
-                });
+                const expected = methods
+                    .every(method => expectedMethods.includes(method));
 
-                test.strictEqual(actual.length, 0);
-
+                test.ok(expected);
                 test.done();
             },
 
@@ -346,19 +352,22 @@ exports.internal = {
 
             initializeBy_returns_min_set_of_methods : function(test) {
 
-                var result = instanceRegistration.initializeBy(null);
+                const result = instanceRegistration.initializeBy(null);
+                const methods = Object.getOwnPropertyNames(result);
 
-                var methods = Object.getOwnPropertyNames(result);
+                const expectedMethods = [
+                    'dispose',
+                    'named',
+                    'within',
+                    'ownedBy',
+                    'ownedInternally',
+                    'ownedExternally'
+                ];
 
-                var actual = methods.filter(function(item) {
-                    return item != 'dispose' &&
-                        item != 'named' &&
-                        item != 'within' &&
-                        item != 'ownedBy';
-                });
+                const expected = methods
+                    .every(method => expectedMethods.includes(method));
 
-                test.strictEqual(actual.length, 0);
-
+                test.ok(expected);
                 test.done();
             },
 
@@ -429,18 +438,37 @@ exports.internal = {
 
             dispose_returns_min_set_of_methods : function(test) {
 
-                var result = instanceRegistration.dispose(null);
+                const result = instanceRegistration.dispose(null);
+                const methods = Object.getOwnPropertyNames(result);
 
-                var methods = Object.getOwnPropertyNames(result);
+                const expectedMethods = [
+                    'named',
+                    'within',
+                    'ownedBy',
+                    'ownedInternally',
+                    'ownedExternally'
+                ];
 
-                var actual = methods.filter(function(item) {
-                    return item != 'named' &&
-                        item != 'within' &&
-                        item != 'ownedBy';
-                });
+                const expected = methods
+                    .every(method => expectedMethods.includes(method));
 
-                test.strictEqual(actual.length, 0);
+                test.ok(expected);
+                test.done();
+            },
 
+            ownedInternally_sets_internal_owner: function(test) {
+                baseRegistration.owner = null;
+                instanceRegistration.ownedInternally();
+
+                test.strictEqual(baseRegistration.owner, Scaffold.Types.Owner.Container);
+                test.done();
+            },
+
+            ownedExternally_sets_external_owner: function(test) {
+                baseRegistration.owner = null;
+                instanceRegistration.ownedExternally();
+
+                test.strictEqual(baseRegistration.owner, Scaffold.Types.Owner.Externals);
                 test.done();
             }
         };

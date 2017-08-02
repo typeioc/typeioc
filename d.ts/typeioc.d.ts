@@ -53,8 +53,6 @@ declare module Typeioc {
 
         class StorageKeyNotFoundError extends ApplicationError { }
 
-        class ConfigurationError extends ApplicationError { }
-
         class NullReferenceError extends ApplicationError { }
 
         class ProxyError extends ApplicationError { }
@@ -136,13 +134,6 @@ declare module Typeioc {
         }
     }
     
-    module Extensions {
-        
-        interface IPromiseExensions {
-            promiseLike<R, T extends PromiseLike<R>>(execute : () => R) : T;
-        }
-    }
-    
     interface IContainerBuilder {
         register<R>(service : any) : IRegistration<R>;
         registerModule(serviceModule : Object) : Typeioc.IAsModuleRegistration;
@@ -217,7 +208,9 @@ declare module Typeioc {
     }
 
     interface IOwned {
-        ownedBy : (owner : Types.Owner) => void;
+        ownedBy: (owner : Types.Owner) => void;
+        ownedInternally: () => void;
+        ownedExternally: () => void;
     }
 
     interface IReused {
@@ -243,10 +236,11 @@ declare module Typeioc {
     }
 
     interface IFactory<T> {
-        (c: IContainer, arg1 : any, arg2 : any, arg3 : any, arg4 : any, arg5 : any, arg6 : any, arg7 : any) : T;
+        (c: IContainer, ...args: Array<any>) : T;
     }
 
-    interface IInitializedDisposedNamedReusedOwned<T> extends IInitialized<T>, IDisposable<T>, INamedReusedOwned { }
+    interface IInitializedDisposedNamedReusedOwned<T>
+        extends IInitialized<T>, IDisposable<T>, INamedReusedOwned { }
 
     interface IAs<T> {
         as(factory: IFactory<T>) : IInitializedDisposedNamedReusedOwned<T>;

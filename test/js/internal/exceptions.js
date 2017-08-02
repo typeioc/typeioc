@@ -17,7 +17,6 @@ exports.internal = {
                 test.ok(Exceptions.ArgumentNullError);
                 test.ok(Exceptions.ResolutionError);
                 test.ok(Exceptions.StorageKeyNotFoundError);
-                test.ok(Exceptions.ConfigurationError);
                 test.ok(Exceptions.NullReferenceError);
                 test.ok(Exceptions.ProxyError);
                 test.ok(Exceptions.DecoratorError);
@@ -89,24 +88,6 @@ exports.internal = {
             argumentNullError_derives_ApplicationError: function(test) {
 
                 var baseError = new Exceptions.ArgumentNullError();
-
-                test.ok(baseError instanceof Exceptions.ApplicationError);
-
-                test.done();
-            },
-
-            configRegistrationError_has_default_name_as_ConfigError: function(test) {
-
-                var baseError = new Exceptions.ConfigurationError();
-
-                test.strictEqual(baseError.name, "ConfigError");
-
-                test.done();
-            },
-
-            configRegistrationError_derives_ApplicationError: function(test) {
-
-                var baseError = new Exceptions.ConfigurationError();
 
                 test.ok(baseError instanceof Exceptions.ApplicationError);
 

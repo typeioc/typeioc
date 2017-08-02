@@ -33,6 +33,26 @@ export module Level5 {
         test.done();
     }
 
+    export function internallyOwnedInstancesAreDisposed(test) {
+
+        containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)
+            .as(() => new TestData.Test5())
+            .dispose((item : TestData.Test5)  => { item.Dispose() })
+            .within(Typeioc.Types.Scope.None)
+            .ownedInternally();
+
+        const container = containerBuilder.build();
+
+        const test1 = container.resolve<TestData.Test5>(TestData.Test1Base);
+
+        container.dispose();
+
+        test.notEqual(test1, null);
+        test.strictEqual(test1.Disposed, true);
+
+        test.done();
+    }
+
     export function containerOwnedInstancesAreDisposedDefaultSetting(test) {
 
         scaffold.Types.Defaults.owner = scaffold.Types.Owner.Container;
@@ -144,6 +164,26 @@ export module Level5 {
         var child = container.createChild();
 
         var test1 = child.resolve<TestData.Test5>(TestData.Test1Base);
+
+        container.dispose();
+
+        test.notEqual(test1, null);
+        test.strictEqual(test1.Disposed, false);
+
+        test.done();
+    }
+
+    export function disposingContainerDoesNotDisposeExternallyOwnedInstances(test) {
+
+        containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)
+            .as(() => new TestData.Test5())
+            .within(Typeioc.Types.Scope.Hierarchy)
+            .ownedExternally();
+      
+        const container = containerBuilder.build();
+        const child = container.createChild();
+
+        const test1 = child.resolve<TestData.Test5>(TestData.Test1Base);
 
         container.dispose();
 

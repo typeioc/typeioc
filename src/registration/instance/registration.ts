@@ -23,7 +23,9 @@ export class Registration<T> implements Typeioc.IRegistration<T> {
             dispose : this.dispose.bind(this),
             named : this.named.bind(this),
             within : this.within.bind(this),
-            ownedBy : this.ownedBy.bind(this)
+            ownedBy : this.ownedBy.bind(this),
+            ownedInternally: this.ownedInternally.bind(this),
+            ownedExternally: this.ownedExternally.bind(this)
         };
     }
 
@@ -37,7 +39,9 @@ export class Registration<T> implements Typeioc.IRegistration<T> {
             dispose : this.dispose.bind(this),
             named : this.named.bind(this),
             within : this.within.bind(this),
-            ownedBy : this.ownedBy.bind(this)
+            ownedBy : this.ownedBy.bind(this),
+            ownedInternally: this.ownedInternally.bind(this),
+            ownedExternally: this.ownedExternally.bind(this)
         };
     }
 
@@ -47,7 +51,9 @@ export class Registration<T> implements Typeioc.IRegistration<T> {
 
         return {
             within : this.within.bind(this),
-            ownedBy : this.ownedBy.bind(this)
+            ownedBy : this.ownedBy.bind(this),
+            ownedInternally: this.ownedInternally.bind(this),
+            ownedExternally: this.ownedExternally.bind(this)
         };
     }
 
@@ -56,12 +62,22 @@ export class Registration<T> implements Typeioc.IRegistration<T> {
         this._base.scope = scope;
 
         return {
-            ownedBy : this.ownedBy.bind(this)
+            ownedBy : this.ownedBy.bind(this),
+            ownedInternally: this.ownedInternally.bind(this),
+            ownedExternally: this.ownedExternally.bind(this)
         };
     }
 
     public ownedBy(owner : Typeioc.Types.Owner) : void {
         this._base.owner = owner;
+    }
+
+    public ownedInternally() {
+        this.ownedBy(Typeioc.Types.Owner.Container);
+    }
+
+    public ownedExternally() {
+        this.ownedBy(Typeioc.Types.Owner.Externals);
     }
 
     public initializeBy(action : Typeioc.IInitializer<T>) : Typeioc.INamedReusedOwnedDisposed<T> {
@@ -72,7 +88,9 @@ export class Registration<T> implements Typeioc.IRegistration<T> {
             dispose : this.dispose.bind(this),
             named : this.named.bind(this),
             within : this.within.bind(this),
-            ownedBy : this.ownedBy.bind(this)
+            ownedBy : this.ownedBy.bind(this),
+            ownedInternally: this.ownedInternally.bind(this),
+            ownedExternally: this.ownedExternally.bind(this)
         };
     }
 
@@ -82,7 +100,9 @@ export class Registration<T> implements Typeioc.IRegistration<T> {
         return {
             named : this.named.bind(this),
             within : this.within.bind(this),
-            ownedBy : this.ownedBy.bind(this)
+            ownedBy : this.ownedBy.bind(this),
+            ownedInternally: this.ownedInternally.bind(this),
+            ownedExternally: this.ownedExternally.bind(this)
         };
     }
 }

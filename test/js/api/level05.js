@@ -37,6 +37,26 @@ exports.api = {
                 test.done();
             },
 
+            internallyOwnedInstancesAreDisposed : function (test) {
+
+                containerBuilder.register(testData.Test1Base)
+                    .as(function () { return new testData.Test5(); })
+                    .dispose(function (item) { item.Dispose(); })
+                    .within(scaffold.Types.Scope.None)
+                    .ownedInternally();
+
+                var container = containerBuilder.build();
+
+                var test1 = container.resolve(testData.Test1Base);
+
+                container.dispose();
+
+                test.notEqual(test1, null);
+                test.strictEqual(test1.Disposed, true);
+
+                test.done();
+            },
+
             containerOwnedInstancesAreDisposedDefaultSetting : function (test) {
 
                 scaffold.Types.Defaults.owner = scaffold.Types.Owner.Container;
@@ -99,9 +119,12 @@ exports.api = {
 
             childContainerInstanceWithParentRegistrationIsNotDisposed : function (test) {
 
-                containerBuilder.register(testData.Test1Base).as(function () {
+                containerBuilder.register(testData.Test1Base)
+                .as(function () {
                     return new testData.Test5();
-                }).within(scaffold.Types.Scope.Hierarchy).ownedBy(scaffold.Types.Owner.Container);
+                })
+                .within(scaffold.Types.Scope.Hierarchy)
+                .ownedBy(scaffold.Types.Owner.Container);
 
                 var container = containerBuilder.build();
                 var child = container.createChild();
@@ -139,9 +162,34 @@ exports.api = {
 
             disposingContainerDoesNotDisposeExternalOwnedInstances : function (test) {
 
-                containerBuilder.register(testData.Test1Base).as(function () {
+                containerBuilder.register(testData.Test1Base)
+                .as(function () {
                     return new testData.Test5();
-                }).within(scaffold.Types.Scope.Hierarchy).ownedBy(scaffold.Types.Owner.Externals);
+                })
+                .within(scaffold.Types.Scope.Hierarchy)
+                .ownedBy(scaffold.Types.Owner.Externals);
+
+                var container = containerBuilder.build();
+                var child = container.createChild();
+
+                var test1 = child.resolve(testData.Test1Base);
+
+                container.dispose();
+
+                test.notEqual(test1, null);
+                test.strictEqual(test1.Disposed, false);
+
+                test.done();
+            },
+
+            disposingContainerDoesNotDisposeExternallyOwnedInstances : function (test) {
+
+                containerBuilder.register(testData.Test1Base)
+                .as(function () {
+                    return new testData.Test5();
+                })
+                .within(scaffold.Types.Scope.Hierarchy)
+                .ownedExternally();
 
                 var container = containerBuilder.build();
                 var child = container.createChild();
@@ -164,9 +212,11 @@ exports.api = {
                     return item;
                 };
 
-                containerBuilder.register(testData.Initializable).as(function () {
+                containerBuilder.register(testData.Initializable)
+                .as(function () {
                     return new testData.Initializable2();
-                }).initializeBy(initializer);
+                })
+                .initializeBy(initializer);
 
                 var container = containerBuilder.build();
 
@@ -185,17 +235,20 @@ exports.api = {
 
                 var initializer = function(c, item) {
                     item.initialize(className);
-                    item.test6 = c.resolve<testData.Test6>(testData.Test6);
-
+                    item.test6 = c.resolve(testData.Test6);
                     return item;
                 };
 
-                containerBuilder.register(testData.Test6).as(function (c) {
+                containerBuilder.register(testData.Test6)
+                .as(function (c) {
                     return new testData.Test6();
                 });
-                containerBuilder.register(testData.Initializable).as(function (c) {
+
+                containerBuilder.register(testData.Initializable)
+                .as(function (c) {
                     return new testData.Initializable();
-                }).initializeBy(initializer);
+                })
+                .initializeBy(initializer);
 
                 var container = containerBuilder.build();
 
@@ -213,16 +266,16 @@ exports.api = {
                 var secondContainerBuilder = scaffold.createBuilder();
 
                 containerBuilder.register(testData.Test1Base)
-                    .as(function () {  return new testData.Test5();  })
-                    .dispose(function (item) { item.Dispose(); })
-                    .within(scaffold.Types.Scope.None)
-                    .ownedBy(scaffold.Types.Owner.Container);
+                .as(function () {  return new testData.Test5();  })
+                .dispose(function (item) { item.Dispose(); })
+                .within(scaffold.Types.Scope.None)
+                .ownedBy(scaffold.Types.Owner.Container);
 
                 secondContainerBuilder.register(testData.Test1Base)
-                    .as(function () { return new testData.Test5(); })
-                    .dispose(function (item) { item.Dispose(); })
-                    .within(scaffold.Types.Scope.None)
-                    .ownedBy(scaffold.Types.Owner.Container);
+                .as(function () { return new testData.Test5(); })
+                .dispose(function (item) { item.Dispose(); })
+                .within(scaffold.Types.Scope.None)
+                .ownedBy(scaffold.Types.Owner.Container);
 
                 var container = containerBuilder.build();
                 var secondContainer = secondContainerBuilder.build();

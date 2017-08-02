@@ -74,12 +74,22 @@ export class ModuleRegistration implements Typeioc.Internal.IModuleRegistration{
         self._base.scope = scope;
 
         return {
-            ownedBy : self.ownedBy.bind(self)
+            ownedBy : self.ownedBy.bind(self),
+            ownedInternally: this.ownedInternally.bind(this),
+            ownedExternally: this.ownedExternally.bind(this)
         };
     }
 
     private ownedBy(owner : Typeioc.Types.Owner) : void {
         this._base.owner = owner;
+    }
+
+    private ownedInternally() {
+        this.ownedBy(Typeioc.Types.Owner.Container)
+    }
+
+    private ownedExternally() {
+        this.ownedBy(Typeioc.Types.Owner.Externals);
     }
 
     private forService<R>(service: any, factory : Typeioc.IFactory<R>) : Typeioc.IModuleReusedOwned {
@@ -133,7 +143,9 @@ export class ModuleRegistration implements Typeioc.Internal.IModuleRegistration{
             ownedBy : self.ownedBy.bind(self),
             forService : self.forService.bind(self),
             forArgs : self.forArgs.bind(self),
-            named : self.named.bind(self)
+            named : self.named.bind(self),
+            ownedInternally: self.ownedInternally.bind(self),
+            ownedExternally: self.ownedExternally.bind(self)
         };
     }
 

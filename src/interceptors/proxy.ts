@@ -40,7 +40,6 @@ export class Proxy implements IProxy {
         function Proxy() {
             this._parent = Reflection.construct(parent, arguments);
 
-
             Object.getOwnPropertyNames(this._parent)
                 .filter(name => name !== 'constructor' &&
                                 name !== 'prototype' &&
