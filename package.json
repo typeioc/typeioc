@@ -8,6 +8,7 @@
     "lib": "./lib"
   },
   "dependencies": {
+    "@types/node": "^8.0.19",
     "hashes": "0.1.4",
     "reflect-metadata": "0.1.10"
   },

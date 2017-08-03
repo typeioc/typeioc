@@ -1,4 +1,3 @@
-/// <reference path='../d.ts/node.d.ts' />
 /// <reference path='../d.ts/typeioc.d.ts' />
 
 'use strict';

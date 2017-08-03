@@ -1,1 +1,1 @@
-{"version":3,"file":"scaffoldAddons.js","sourceRoot":"","sources":["scaffoldAddons.ts"],"names":[],"mappings":"AAAA,0CAA0C;AAC1C,oDAAoD;AAGpD,YAAY,CAAC;;AAEb,IAAI,MAAM,GAAG,OAAO,CAAC,iBAAiB,CAAC,CAAC;AAE7B,QAAA,YAAY,GAAG,MAAM,CAAC,YAAY,CAAC"}
+{"version":3,"file":"scaffoldAddons.js","sourceRoot":"","sources":["scaffoldAddons.ts"],"names":[],"mappings":"AAAA,oDAAoD;AAEpD,YAAY,CAAC;;AAEb,IAAI,MAAM,GAAG,OAAO,CAAC,iBAAiB,CAAC,CAAC;AAE7B,QAAA,YAAY,GAAG,MAAM,CAAC,YAAY,CAAC"}

@@ -6,7 +6,6 @@
  * @license MIT
  * --------------------------------------------------------------------------------------------------*/
 
-/// <reference path="../../d.ts/node.d.ts" />
 /// <reference path="../../d.ts/typeioc.internal.d.ts" />
 /// <reference path="../../d.ts/hashes.d.ts" />
 
