@@ -6,8 +6,6 @@
  * @license MIT
  * --------------------------------------------------------------------------------------------------*/
 
-/// <reference path="../../node_modules/reflect-metadata/reflect-metadata.d.ts"/>
-
 import Internal = Typeioc.Internal;
 
 export function getMetadata(reflect, type : any) {

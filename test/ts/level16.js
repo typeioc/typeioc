@@ -18,12 +18,6 @@ var Level16;
             test.strictEqual(actual.Name, 'test 1');
             test.done();
         },
-        tryResolvesBasic: (test) => {
-            const container = builder.build();
-            const actual = container.tryResolve(TestData.Test1Base);
-            test.ok(actual === null);
-            test.done();
-        },
         resolvesWithParams: (test) => {
             builder.register(TestData.Test1Base).asType(TestData.Test4);
             const container = builder.build();
@@ -67,7 +61,7 @@ var Level16;
             test.strictEqual(actualB.Name, 'test 1');
             test.done();
         },
-        resolvesWithDependancies: (test) => {
+        resolvesWithDependencies: (test) => {
             const test4 = function () {
                 this.Name = 'test 4';
             };

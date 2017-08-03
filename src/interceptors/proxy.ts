@@ -6,10 +6,6 @@
  * @license MIT
  * --------------------------------------------------------------------------------------------------*/
 
-
-/// <reference path="../../d.ts/typeioc.internal.d.ts" />
-/// <reference path="../../d.ts/typeioc.addons.d.ts" />
-
  'use strict';
 
 import { Reflection } from '../utils';

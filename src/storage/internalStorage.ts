@@ -6,10 +6,6 @@
  * @license MIT
  * --------------------------------------------------------------------------------------------------*/
 
-/// <reference path="../../d.ts/typeioc.internal.d.ts" />
-/// <reference path="../../d.ts/hashes.d.ts" />
-
-
 'use strict';
 
 import { StorageKeyNotFoundError } from '../exceptions';

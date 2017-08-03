@@ -13,21 +13,14 @@ exports.api = {
 
         asTypeResolvesBasic: (test) => {
             
-            builder.register(testData.Test1Base).asType(testData.Test1);
+            builder.register(testData.Test1Base)
+                .asType(testData.Test1);
+            
             const container = builder.build();
             const actual = container.resolve(testData.Test1Base);
 
             test.ok(actual);
             test.strictEqual(actual.Name, 'test 1');
-            test.done();
-        },
-
-        asTypeTryResolvesBasic: (test) => {
-            
-            const container = builder.build();
-            const actual = container.tryResolve(testData.Test1Base);
-
-            test.ok(actual === null);
             test.done();
         },
 
@@ -89,7 +82,7 @@ exports.api = {
             test.done();
         },
 
-        asTypeResolvesWithDependancies: (test) => {
+        asTypeResolvesWithDependencies: (test) => {
 
             const test4 = function() {
                 this.Name = 'test 4';

@@ -426,7 +426,6 @@ exports.internal = {
                 };
                 ownedBy.bind.withArgs(instanceRegistration).returns(funcResult);
 
-
                 instanceRegistration.ownedBy = ownedBy;
                 var result = instanceRegistration.dispose(null);
 
@@ -469,6 +468,16 @@ exports.internal = {
                 instanceRegistration.ownedExternally();
 
                 test.strictEqual(baseRegistration.owner, Scaffold.Types.Owner.Externals);
+                test.done();
+            },
+
+            asSelf_sets_params: function(test) {
+                baseRegistration.service = function() {};
+                instanceRegistration.asType = mockery.stub();
+
+                instanceRegistration.asSelf('one', 2);
+
+                test.ok(instanceRegistration.asType.withArgs(baseRegistration.service, 'one', 2).calledOnce);
                 test.done();
             }
         };

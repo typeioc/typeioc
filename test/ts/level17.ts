@@ -1,22 +1,23 @@
 'use strict';
 
-const scaffold = require('./../../scaffold');
-const testData = scaffold.TestModule;
-let builder;
+import scaffold = require('./../scaffold');
+import TestData = require('../data/test-data');
 
-exports.api = {
-    level17: {
+export module Level17 {
+    let builder: Typeioc.IContainerBuilder;
+
+    export const asSelf = {
         setUp: function (callback) {
             builder = scaffold.createBuilder();
             callback();
         },
 
-        asSelfResolvesBasic: (test) => {
+        resolvesBasic: (test) => {
             
-            builder.register(testData.Test1).asSelf();
+            builder.register(TestData.Test1).asSelf();
             
             const container = builder.build();
-            const actual = container.resolve(testData.Test1);
+            const actual = container.resolve<TestData.Test1>(TestData.Test1);
 
             test.ok(actual);
             test.strictEqual(actual.Name, 'test 1');
@@ -25,9 +26,9 @@ exports.api = {
 
         asSelfResolvesWithParams: (test) => {
             
-            builder.register(testData.Test4).asSelf();
+            builder.register(TestData.Test4).asSelf();
             const container = builder.build();
-            const actual = container.resolve(testData.Test4, '---');
+            const actual = container.resolve<TestData.Test4>(TestData.Test4, '---');
 
             test.ok(actual);
             test.strictEqual(actual.Name, '---');
@@ -42,7 +43,7 @@ exports.api = {
 
             builder.register(service).asSelf();
             const container = builder.build();
-            const actual = container.resolve(service, 1, 2, 3);
+            const actual = container.resolve<{name: string}>(service, 1, 2, 3);
 
             test.ok(actual);
             test.strictEqual(actual.name, '1 2 3');
@@ -59,14 +60,14 @@ exports.api = {
                 this.Name = `${arg1.Name} ${arg2.Name} ${arg3.Name}`;
             };
             
-            builder.register(testData.Test1).asSelf();
-            builder.register(testData.Test2Base).asType(testData.Test2);
+            builder.register(TestData.Test1).asSelf();
+            builder.register(TestData.Test2Base).asType(TestData.Test2);
             builder.register(test4).asSelf();
             builder.register(test7)
-                    .asSelf(testData.Test1, testData.Test2Base, test4);
+                    .asSelf(TestData.Test1, TestData.Test2Base, test4);
             
             const container = builder.build();
-            const actual = container.resolve(test7);
+            const actual = container.resolve<{Name: string}>(test7);
 
             test.ok(actual);
             test.strictEqual(actual.Name, 'test 1 test 2 test 4');

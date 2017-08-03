@@ -6,10 +6,6 @@
  * @license MIT
  * --------------------------------------------------------------------------------------------------*/
 
-
-/// <reference path="../../d.ts/typeioc.internal.d.ts" />
-
-
  'use strict';
 
  import { Reflection, checkNullArgument} from './index';

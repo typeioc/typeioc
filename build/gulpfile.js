@@ -44,7 +44,7 @@ var os = require('os');
 
             get sources() {
 
-                var path = 'tsc -p ./lib/';
+                var path = 'tsc -p ../';
 
                 if(gutil.env.env === paths.env.appveyor)
                     path = this.appveyor + path;
@@ -53,7 +53,7 @@ var os = require('os');
             },
             get tests() {
 
-                var path = 'tsc -p ./tests/';
+                var path = 'tsc -p ../tsconfig.tests.json';
 
                 if(gutil.env.env === paths.env.appveyor)
                     path = this.appveyor + path;

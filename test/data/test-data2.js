@@ -111,11 +111,11 @@ var SubstituteModule5;
 var SubstituteModule6;
 (function (SubstituteModule6) {
     class ConcreteClass1 {
-        constructor(dependancy) {
-            this._dependancy = dependancy;
+        constructor(dependency) {
+            this._dependency = dependency;
         }
         name() {
-            return 'Module6 - Class 1 - ' + this._dependancy.name();
+            return 'Module6 - Class 1 - ' + this._dependency.name();
         }
     }
     SubstituteModule6.ConcreteClass1 = ConcreteClass1;

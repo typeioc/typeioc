@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2015",
+    "outDir": "./lib",
+    "sourceMap": true,
+    "experimentalDecorators" : true
+  },
+  "files": [
+    "./d.ts/hashes.d.ts",
+    "./d.ts/typeioc.internal.d.ts",
+    "./d.ts/typeioc.addons.d.ts",
+    "./src/scaffold.ts",
+    "./src/scaffoldAddons.ts",
+    "./src/types/index.ts"
+  ]
+}

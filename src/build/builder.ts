@@ -6,10 +6,7 @@
  * @license MIT
  * --------------------------------------------------------------------------------------------------*/
 
-/// <reference path="../../d.ts/typeioc.internal.d.ts" />
-
 'use strict';
-
 
 import { Defaults } from '../types';
 import { checkNullArgument }  from '../utils';

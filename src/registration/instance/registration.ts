@@ -6,15 +6,13 @@
  * @license MIT
  * --------------------------------------------------------------------------------------------------*/
 
-/// <reference path="../../../d.ts/typeioc.internal.d.ts" />
-
 'use strict';
 
 export class Registration<T> implements Typeioc.IRegistration<T> {
 
     constructor(private _base : Typeioc.Internal.IRegistrationBase) {}
 
-    public as(factory : Typeioc.IFactory<T>) : Typeioc.IInitializedDisposedNamedReusedOwned<T> {
+    public as(factory : Typeioc.IFactory<T>): Typeioc.IInitializedDisposedNamedReusedOwned<T> {
 
         this._base.factory = factory;
 
@@ -29,7 +27,7 @@ export class Registration<T> implements Typeioc.IRegistration<T> {
         };
     }
 
-    public asType(type: T, ...params : Array<any>) : Typeioc.IInitializedDisposedNamedReusedOwned<T> {
+    public asType(type: T, ...params : Array<any>): Typeioc.IInitializedDisposedNamedReusedOwned<T> {
 
         this._base.factoryType = type;
         this._base.params = params;
@@ -43,6 +41,10 @@ export class Registration<T> implements Typeioc.IRegistration<T> {
             ownedInternally: this.ownedInternally.bind(this),
             ownedExternally: this.ownedExternally.bind(this)
         };
+    }
+
+    public asSelf(...params : Array<any>): Typeioc.IInitializedDisposedNamedReusedOwned<T> {
+        return this.asType(this._base.service, ...params);
     }
 
     public named(value : string) : Typeioc.IReusedOwned {

@@ -122,14 +122,14 @@ export module SubstituteModule5 {
 
 export module SubstituteModule6 {
     export class ConcreteClass1 {
-        private _dependancy : SubstituteModule3.ConcreteTestClass;
+        private _dependency : SubstituteModule3.ConcreteTestClass;
 
-        constructor(dependancy : SubstituteModule3.ConcreteTestClass) {
-            this._dependancy = dependancy;
+        constructor(dependency : SubstituteModule3.ConcreteTestClass) {
+            this._dependency = dependency;
         }
 
         public name() {
-            return 'Module6 - Class 1 - ' + this._dependancy.name();
+            return 'Module6 - Class 1 - ' + this._dependency.name();
         }
     }
 }

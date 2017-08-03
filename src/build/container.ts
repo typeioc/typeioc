@@ -6,8 +6,6 @@
  * @license MIT
  * --------------------------------------------------------------------------------------------------*/
 
-/// <reference path="../../d.ts/typeioc.internal.d.ts" />
-
 'use strict';
 
 import { checkNullArgument, concat} from '../utils';

@@ -6,7 +6,6 @@
  * @license MIT
  * --------------------------------------------------------------------------------------------------*/
 
-
 "use strict";
 
 import { NullReferenceError, ResolutionError } from '../exceptions';
@@ -430,8 +429,8 @@ export class InternalContainer implements Internal.IContainer {
         if(registration.params.length) {
             const params = registration.params
             .map(item => { 
-                const dependancy = registration.dependenciesValue.filter(d => d.service === item)[0];
-                const depName = dependancy ? dependancy.named : null;
+                const dependency = registration.dependenciesValue.filter(d => d.service === item)[0];
+                const depName = dependency ? dependency.named : null;
 
                 if(throwIfNotFound === true) {
                     return !!depName ? this.resolveNamed(item, depName) : this.resolve(item);
@@ -446,20 +445,20 @@ export class InternalContainer implements Internal.IContainer {
         const dependencies = Reflection.getMetadata(Reflect, type);
 
         const params = dependencies
-            .map((dependancy, index) => {
+            .map((dependency, index) => {
 
                 let depParams = this._resolutionDetails ? this._resolutionDetails.tryGet(type) : null;
                 let depParamsValue = depParams ? depParams[index] : null;
 
                 if(!depParamsValue) {
-                    return this.resolve(dependancy);
+                    return this.resolve(dependency);
                 }
 
                 if(depParamsValue.value) {
                     return depParamsValue.value;
                 }
 
-                let resolutionItem = depParamsValue.service || dependancy;
+                let resolutionItem = depParamsValue.service || dependency;
                 let resolution = this.resolveWith(resolutionItem);
 
                 if(depParamsValue.args && depParamsValue.args.length)

@@ -243,8 +243,9 @@ declare module Typeioc {
         extends IInitialized<T>, IDisposable<T>, INamedReusedOwned { }
 
     interface IAs<T> {
-        as(factory: IFactory<T>) : IInitializedDisposedNamedReusedOwned<T>;
-        asType(type : T, ...params : Array<any>) : IInitializedDisposedNamedReusedOwned<T>;
+        as(factory: IFactory<T>): IInitializedDisposedNamedReusedOwned<T>;
+        asType(type : T, ...params : Array<any>): IInitializedDisposedNamedReusedOwned<T>;
+        asSelf(...params : Array<any>): IInitializedDisposedNamedReusedOwned<T>;
     }
 
     interface IRegistration<T> extends IAs<T> { }

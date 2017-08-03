@@ -1,5 +1,4 @@
 /* istanbul ignore next */
-/// <reference path='../../d.ts/typeioc.d.ts' />
 
 'use strict';
 
