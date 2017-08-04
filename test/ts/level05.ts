@@ -194,42 +194,67 @@ export module Level5 {
     }
 
     export function disposingContainerRemovesAllRegistrations(test) {
-                containerBuilder.register(TestData.Test1Base)
-                .as(() => new TestData.Test1())
-                .named('A');
+        containerBuilder.register(TestData.Test1Base)
+        .as(() => new TestData.Test1())
+        .named('A');
 
-                containerBuilder.register(TestData.Test1Base)
-                .as(() => new TestData.Test5())
-                .within(scaffold.Types.Scope.Hierarchy)
-                .ownedExternally();
+        containerBuilder.register(TestData.Test1Base)
+        .as(() => new TestData.Test5())
+        .within(scaffold.Types.Scope.Hierarchy)
+        .ownedInternally();
 
-                const container = containerBuilder.build();
-                const first = container.resolveNamed<TestData.Test1Base>(TestData.Test1Base, 'A');
-                const second = container.resolve<TestData.Test1Base>(TestData.Test1Base);
-               
-                container.dispose();
+        const container = containerBuilder.build();
+        const first = container.resolveNamed<TestData.Test1Base>(TestData.Test1Base, 'A');
+        const second = container.resolve<TestData.Test1Base>(TestData.Test1Base);
+        
+        container.dispose();
 
-                const first2 = container.tryResolveNamed<TestData.Test1Base>(TestData.Test1Base, 'A');
-                const second2 = container.tryResolve<TestData.Test1Base>(TestData.Test1Base);
-               
-                const delegate1 = () => container.resolveNamed(TestData.Test1Base, 'A');
-                const delegate2 = () => container.resolve(TestData.Test1Base);
+        const first2 = container.tryResolveNamed<TestData.Test1Base>(TestData.Test1Base, 'A');
+        const second2 = container.tryResolve<TestData.Test1Base>(TestData.Test1Base);
+        
+        const delegate1 = () => container.resolveNamed(TestData.Test1Base, 'A');
+        const delegate2 = () => container.resolve(TestData.Test1Base);
 
-                test.ok(first);
-                test.ok(second);
-                test.strictEqual(first2, null);
-                test.strictEqual(second2, null);
+        test.ok(first);
+        test.ok(second);
+        test.strictEqual(first2, null);
+        test.strictEqual(second2, null);
 
-                test.throws(delegate1, function(err) {
-                    return (err instanceof scaffold.Exceptions.ResolutionError);
-                });
+        test.throws(delegate1, function(err) {
+            return (err instanceof scaffold.Exceptions.ResolutionError);
+        });
 
-                test.throws(delegate2, function(err) {
-                    return (err instanceof scaffold.Exceptions.ResolutionError);
-                });
+        test.throws(delegate2, function(err) {
+            return (err instanceof scaffold.Exceptions.ResolutionError);
+        });
 
-                test.done();
-            }
+        test.done();
+    }
+
+    export function disposingContainerRemovesAllChildRegistrations(test) {
+
+        containerBuilder.register<TestData.Test1Base>(TestData.Test1Base)
+            .as(() => new TestData.Test5())
+            .within(Typeioc.Types.Scope.Container)
+            .ownedInternally();
+      
+        const container = containerBuilder.build();
+        const child = container.createChild();
+
+        const first = child.resolve(TestData.Test1Base);
+
+        container.dispose();
+
+        const delegate1 = () => child.resolve(TestData.Test1Base);
+       
+        test.ok(first);
+
+        test.throws(delegate1, function(err) {
+            return (err instanceof scaffold.Exceptions.ResolutionError);
+        });
+        
+        test.done();
+    }
 
     export function initializeIsCalledWhenInstanceIsCreated(test) {
 

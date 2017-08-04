@@ -246,6 +246,31 @@ exports.api = {
                 test.done();
             },
 
+            disposingContainerRemovesAllChildRegistrations: (test) => {
+
+                containerBuilder.register(testData.Test1Base)
+                    .as(() => new testData.Test5())
+                    .within(scaffold.Types.Scope.Container)
+                    .ownedInternally();
+            
+                const container = containerBuilder.build();
+                const child = container.createChild();
+
+                const first = child.resolve(testData.Test1Base);
+
+                container.dispose();
+
+                const delegate1 = () => child.resolve(testData.Test1Base);
+            
+                test.ok(first);
+
+                test.throws(delegate1, function(err) {
+                    return (err instanceof scaffold.Exceptions.ResolutionError);
+                });
+                
+                test.done();
+            },
+
             initializeIsCalledWhenInstanceIsCreated : function (test) {
                 var className = "item";
 
