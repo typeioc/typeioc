@@ -135,6 +135,35 @@ var Level5;
         test.done();
     }
     Level5.disposingContainerDoesNotDisposeExternallyOwnedInstances = disposingContainerDoesNotDisposeExternallyOwnedInstances;
+    function disposingContainerRemovesAllRegistrations(test) {
+        containerBuilder.register(TestData.Test1Base)
+            .as(() => new TestData.Test1())
+            .named('A');
+        containerBuilder.register(TestData.Test1Base)
+            .as(() => new TestData.Test5())
+            .within(scaffold.Types.Scope.Hierarchy)
+            .ownedExternally();
+        const container = containerBuilder.build();
+        const first = container.resolveNamed(TestData.Test1Base, 'A');
+        const second = container.resolve(TestData.Test1Base);
+        container.dispose();
+        const first2 = container.tryResolveNamed(TestData.Test1Base, 'A');
+        const second2 = container.tryResolve(TestData.Test1Base);
+        const delegate1 = () => container.resolveNamed(TestData.Test1Base, 'A');
+        const delegate2 = () => container.resolve(TestData.Test1Base);
+        test.ok(first);
+        test.ok(second);
+        test.strictEqual(first2, null);
+        test.strictEqual(second2, null);
+        test.throws(delegate1, function (err) {
+            return (err instanceof scaffold.Exceptions.ResolutionError);
+        });
+        test.throws(delegate2, function (err) {
+            return (err instanceof scaffold.Exceptions.ResolutionError);
+        });
+        test.done();
+    }
+    Level5.disposingContainerRemovesAllRegistrations = disposingContainerRemovesAllRegistrations;
     function initializeIsCalledWhenInstanceIsCreated(test) {
         var className = "item";
         containerBuilder.register(TestData.Initializable)

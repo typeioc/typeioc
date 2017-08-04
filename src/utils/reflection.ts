@@ -14,8 +14,7 @@ export function getMetadata(reflect, type : any) {
 
 export function getFactoryArgsCount(factory: Typeioc.IFactory<any>) {
 
-    var paramNames = getParamNames(<Function>factory);
-
+    const paramNames = getParamNames(<Function>factory);
     return paramNames.length > 0 ? paramNames.length - 1 : 0;
 }
 
@@ -24,8 +23,7 @@ export function isCompatible(obj1 : Object, obj2 : Object) : boolean {
     return !Object.getOwnPropertyNames(obj2)
     .filter(key => isFunction(obj2[key]))
     .some(key => {
-        
-        var obj1Val = obj1[key];
+        const obj1Val = obj1[key];
         return !obj1Val || !isFunction(obj1Val);
     });
     
@@ -48,7 +46,7 @@ export function isPrototype(f : any) : boolean {
 }
 
 export function isObject(o : any) : boolean {
-    return typeof o === 'object';
+    return o === Object(o);
 }
 
 export function getPropertyType(name : string, descriptor : PropertyDescriptor)
@@ -66,9 +64,10 @@ export function getPropertyType(name : string, descriptor : PropertyDescriptor)
 }
 
 export function getPropertyDescriptor(object, key) {
+    let descriptor;
+    
     do {
-
-        var descriptor = Object.getOwnPropertyDescriptor(object, key);
+        descriptor = Object.getOwnPropertyDescriptor(object, key);
     } while(!descriptor && (object = Object.getPrototypeOf(object)));
 
     if (descriptor) {
@@ -79,7 +78,7 @@ export function getPropertyDescriptor(object, key) {
 }
 
 export function getAllPropertyNames(obj) {
-    var props = [];
+    const props = [];
 
     do {
         Object.getOwnPropertyNames(obj).forEach(function ( prop ) {
@@ -93,13 +92,13 @@ export function getAllPropertyNames(obj) {
 }
 
 function getParamNames(func : Function) : string[] {
-    var regexes = [/function\s.*?\(([^)]*)\)/,
+    const regexes = [/function\s.*?\(([^)]*)\)/,
                    /\(?([\w,\s.]+)\)?\s*=>\s*\{[^}]*\}/,
                    /\(?([\w,\s.]+)\)?\s*=>\s*[^}]*/];
     
-    var funcStr = func.toString().replace(/\/\*.*\*\//, '');
-    var args = regexes.map(item => {
-            let match = funcStr.match(item);
+    const funcStr = func.toString().replace(/\/\*.*\*\//, '');
+    const args = regexes.map(item => {
+            const match = funcStr.match(item);
             return match ? match[1] : null;
         })
         .filter(item => !!item)[0];

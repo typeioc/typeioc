@@ -204,6 +204,48 @@ exports.api = {
                 test.done();
             },
 
+            disposingContainerRemovesAllRegistrations: function(test) {
+                containerBuilder.register(testData.Test1Base)
+                .as(function () {
+                    return new testData.Test1();
+                })
+                .named('A');
+
+                containerBuilder.register(testData.Test1Base)
+                .as(function () {
+                    return new testData.Test5();
+                })
+                .within(scaffold.Types.Scope.Hierarchy)
+                .ownedExternally();
+
+                const container = containerBuilder.build();
+                const first = container.resolveNamed(testData.Test1Base, 'A');
+                const second = container.resolve(testData.Test1Base);
+               
+                container.dispose();
+
+                const first2 = container.tryResolveNamed(testData.Test1Base, 'A');
+                const second2 = container.tryResolve(testData.Test1Base);
+               
+                const delegate1 = () => container.resolveNamed(testData.Test1Base, 'A');
+                const delegate2 = () => container.resolve(testData.Test1Base);
+
+                test.ok(first);
+                test.ok(second);
+                test.strictEqual(first2, null);
+                test.strictEqual(second2, null);
+
+                test.throws(delegate1, function(err) {
+                    return (err instanceof scaffold.Exceptions.ResolutionError);
+                });
+
+                test.throws(delegate2, function(err) {
+                    return (err instanceof scaffold.Exceptions.ResolutionError);
+                });
+
+                test.done();
+            },
+
             initializeIsCalledWhenInstanceIsCreated : function (test) {
                 var className = "item";
 

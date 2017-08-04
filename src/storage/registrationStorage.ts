@@ -43,6 +43,10 @@ export class RegistrationStorage implements Internal.IRegistrationStorage {
         return this._getStrategy[storage.type](registration, storage);
     }
 
+    public clear() {
+        this._internalStorage.clear();
+    }
+
     private addForTypeFactory(registration : Internal.IRegistrationBase) {
 
         var storage = this._internalStorage.register(registration.service, this.emptyTypeFactoryBucket);

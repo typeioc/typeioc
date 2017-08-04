@@ -53,4 +53,8 @@ export class InternalStorage<K,T> implements Internal.IInternalStorage<K, T> {
     public contains (key : K) : boolean {
         return this._collection.contains(key);
     }
+
+    public clear() {
+        this._collection.clear();
+    }
 }

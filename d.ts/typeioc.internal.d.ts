@@ -189,6 +189,7 @@ declare module Typeioc.Internal {
         tryGet(key : K) : T;
         register(key: K, defaultValue: () => T) : T;
         contains (key : K) : boolean;
+        clear(): void;
     }
 
     interface IDisposableItem {
@@ -204,6 +205,7 @@ declare module Typeioc.Internal {
     interface IRegistrationStorage {
         addEntry(registration : IRegistrationBase) : void;
         getEntry(registration : IRegistrationBase) : IRegistrationBase;
+        clear(): void;
     }
 
     interface IRegistrationBase {

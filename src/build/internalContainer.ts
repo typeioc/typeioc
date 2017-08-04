@@ -17,7 +17,7 @@ import Internal = Typeioc.Internal;
 
 export class InternalContainer implements Internal.IContainer {
 
-    private parent : InternalContainer ;
+    private parent : InternalContainer;
     private children : InternalContainer [] = [];
     private _disposableStorage : Internal.IDisposableStorage;
     private _collection : Internal.IRegistrationStorage;
@@ -68,6 +68,8 @@ export class InternalContainer implements Internal.IContainer {
             var item = this.children.pop();
             item.dispose();
         }
+
+        this._collection.clear();
     }
     
     public disposeAsync() : Promise<void> {
