@@ -214,7 +214,10 @@ declare module Typeioc {
     }
 
     interface IReused {
-        within : (scope: Types.Scope) => IOwned;
+        within: (scope: Types.Scope) => IOwned;
+        transient: () => IOwned;
+        singleton: () => IOwned;
+        instancePerContainer: () => IOwned;
     }
 
     interface IReusedOwned extends IReused, IOwned { }

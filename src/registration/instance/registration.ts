@@ -10,20 +10,34 @@
 
 export class Registration<T> implements Typeioc.IRegistration<T> {
 
-    constructor(private _base : Typeioc.Internal.IRegistrationBase) {}
+    constructor(private _base : Typeioc.Internal.IRegistrationBase) {
+        this.initializeBy = this.initializeBy.bind(this),
+        this.dispose = this.dispose.bind(this),
+        this.named = this.named.bind(this),
+        this.within = this.within.bind(this),
+        this.ownedBy = this.ownedBy.bind(this),
+        this.ownedInternally = this.ownedInternally.bind(this),
+        this.ownedExternally = this.ownedExternally.bind(this),
+        this.transient = this.transient.bind(this),
+        this.singleton = this.singleton.bind(this),
+        this.instancePerContainer = this.instancePerContainer.bind(this) 
+    }
 
     public as(factory : Typeioc.IFactory<T>): Typeioc.IInitializedDisposedNamedReusedOwned<T> {
 
         this._base.factory = factory;
 
         return {
-            initializeBy : this.initializeBy.bind(this),
-            dispose : this.dispose.bind(this),
-            named : this.named.bind(this),
-            within : this.within.bind(this),
-            ownedBy : this.ownedBy.bind(this),
-            ownedInternally: this.ownedInternally.bind(this),
-            ownedExternally: this.ownedExternally.bind(this)
+            initializeBy : this.initializeBy,
+            dispose : this.dispose,
+            named : this.named,
+            within : this.within,
+            ownedBy : this.ownedBy,
+            ownedInternally: this.ownedInternally,
+            ownedExternally: this.ownedExternally,
+            transient: this.transient,
+            singleton: this.singleton,
+            instancePerContainer: this.instancePerContainer 
         };
     }
 
@@ -33,13 +47,16 @@ export class Registration<T> implements Typeioc.IRegistration<T> {
         this._base.params = params;
 
         return {
-            initializeBy : this.initializeBy.bind(this),
-            dispose : this.dispose.bind(this),
-            named : this.named.bind(this),
-            within : this.within.bind(this),
-            ownedBy : this.ownedBy.bind(this),
-            ownedInternally: this.ownedInternally.bind(this),
-            ownedExternally: this.ownedExternally.bind(this)
+            initializeBy : this.initializeBy,
+            dispose : this.dispose,
+            named : this.named,
+            within : this.within,
+            ownedBy : this.ownedBy,
+            ownedInternally: this.ownedInternally,
+            ownedExternally: this.ownedExternally,
+            transient: this.transient,
+            singleton: this.singleton,
+            instancePerContainer: this.instancePerContainer
         };
     }
 
@@ -52,10 +69,13 @@ export class Registration<T> implements Typeioc.IRegistration<T> {
         this._base.name = value;
 
         return {
-            within : this.within.bind(this),
-            ownedBy : this.ownedBy.bind(this),
-            ownedInternally: this.ownedInternally.bind(this),
-            ownedExternally: this.ownedExternally.bind(this)
+            within : this.within,
+            ownedBy : this.ownedBy,
+            ownedInternally: this.ownedInternally,
+            ownedExternally: this.ownedExternally,
+            transient: this.transient,
+            singleton: this.singleton,
+            instancePerContainer: this.instancePerContainer
         };
     }
 
@@ -64,10 +84,22 @@ export class Registration<T> implements Typeioc.IRegistration<T> {
         this._base.scope = scope;
 
         return {
-            ownedBy : this.ownedBy.bind(this),
-            ownedInternally: this.ownedInternally.bind(this),
-            ownedExternally: this.ownedExternally.bind(this)
+            ownedBy : this.ownedBy,
+            ownedInternally: this.ownedInternally,
+            ownedExternally: this.ownedExternally
         };
+    }
+
+    public transient() : Typeioc.IOwned {
+        return this.within(Typeioc.Types.Scope.None);
+    }
+    
+    public singleton() : Typeioc.IOwned {
+        return this.within(Typeioc.Types.Scope.Hierarchy);
+    }
+    
+    public instancePerContainer() : Typeioc.IOwned {
+        return this.within(Typeioc.Types.Scope.Container);
     }
 
     public ownedBy(owner : Typeioc.Types.Owner) : void {
@@ -87,12 +119,15 @@ export class Registration<T> implements Typeioc.IRegistration<T> {
         this._base.initializer = action;
 
         return {
-            dispose : this.dispose.bind(this),
-            named : this.named.bind(this),
-            within : this.within.bind(this),
-            ownedBy : this.ownedBy.bind(this),
-            ownedInternally: this.ownedInternally.bind(this),
-            ownedExternally: this.ownedExternally.bind(this)
+            dispose : this.dispose,
+            named : this.named,
+            within : this.within,
+            ownedBy : this.ownedBy,
+            ownedInternally: this.ownedInternally,
+            ownedExternally: this.ownedExternally,
+            transient: this.transient,
+            singleton: this.singleton,
+            instancePerContainer: this.instancePerContainer
         };
     }
 
@@ -100,11 +135,14 @@ export class Registration<T> implements Typeioc.IRegistration<T> {
         this._base.disposer = action;
 
         return {
-            named : this.named.bind(this),
-            within : this.within.bind(this),
-            ownedBy : this.ownedBy.bind(this),
-            ownedInternally: this.ownedInternally.bind(this),
-            ownedExternally: this.ownedExternally.bind(this)
+            named : this.named,
+            within : this.within,
+            ownedBy : this.ownedBy,
+            ownedInternally: this.ownedInternally,
+            ownedExternally: this.ownedExternally,
+            transient: this.transient,
+            singleton: this.singleton,
+            instancePerContainer: this.instancePerContainer
         };
     }
 }

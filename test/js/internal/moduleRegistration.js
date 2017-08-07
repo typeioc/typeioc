@@ -451,7 +451,10 @@ exports.internal = {
                     'ownedExternally',
                     'forService',
                     'forArgs',
-                    'named'
+                    'named',
+                    'transient',
+                    'singleton',
+                    'instancePerContainer' 
                 ];
 
                 const expected = methods

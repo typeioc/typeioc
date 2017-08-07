@@ -39,6 +39,30 @@ var Level3;
         test.done();
     }
     Level3.noScopingReuse = noScopingReuse;
+    function transientReturnsNewInstance(test) {
+        containerBuilder.register(TestData.Test1Base)
+            .as(() => new TestData.Test4("test 4"))
+            .transient();
+        const container = containerBuilder.build();
+        const child1 = container.createChild();
+        const child2 = child1.createChild();
+        const actual1 = container.resolve(TestData.Test1Base);
+        const actual2 = container.resolve(TestData.Test1Base);
+        const actual3 = child1.resolve(TestData.Test1Base);
+        const actual4 = child2.resolve(TestData.Test1Base);
+        test.strictEqual(actual1.Name, "test 4");
+        test.strictEqual(actual2.Name, "test 4");
+        test.strictEqual(actual3.Name, "test 4");
+        test.strictEqual(actual4.Name, "test 4");
+        test.ok(actual1 !== actual2);
+        test.ok(actual1 !== actual3);
+        test.ok(actual1 !== actual4);
+        test.ok(actual2 !== actual3);
+        test.ok(actual2 !== actual4);
+        test.ok(actual3 !== actual4);
+        test.done();
+    }
+    Level3.transientReturnsNewInstance = transientReturnsNewInstance;
     function containerScopingDifferentContainer(test) {
         containerBuilder.register(TestData.Test1Base)
             .as(() => new TestData.Test4("test 4"))
@@ -56,6 +80,25 @@ var Level3;
         test.done();
     }
     Level3.containerScopingDifferentContainer = containerScopingDifferentContainer;
+    function instancePerContainerReturnsInstancePerContainer(test) {
+        containerBuilder.register(TestData.Test1Base)
+            .as(() => new TestData.Test4("test 4"))
+            .instancePerContainer();
+        const container = containerBuilder.build();
+        const child = container.createChild();
+        const actual11 = container.resolve(TestData.Test1Base);
+        const actual12 = container.resolve(TestData.Test1Base);
+        const actual21 = child.resolve(TestData.Test1Base);
+        const actual22 = child.resolve(TestData.Test1Base);
+        test.strictEqual(actual11, actual12);
+        test.strictEqual(actual21, actual22);
+        test.ok(actual11 !== actual21);
+        test.ok(actual11 !== actual22);
+        test.ok(actual12 !== actual21);
+        test.ok(actual12 !== actual22);
+        test.done();
+    }
+    Level3.instancePerContainerReturnsInstancePerContainer = instancePerContainerReturnsInstancePerContainer;
     function hierarchyScoping(test) {
         containerBuilder.register(TestData.Test1Base)
             .as(() => new TestData.Test4("test 4"))
@@ -73,6 +116,27 @@ var Level3;
         test.done();
     }
     Level3.hierarchyScoping = hierarchyScoping;
+    function singletonReturnsSameInstance(test) {
+        containerBuilder.register(TestData.Test1Base)
+            .as(() => new TestData.Test4("test 4"))
+            .singleton();
+        const container = containerBuilder.build();
+        const child1 = container.createChild();
+        const child2 = child1.createChild();
+        const actual1 = container.resolve(TestData.Test1Base);
+        const actual2 = container.resolve(TestData.Test1Base);
+        const actual3 = child1.resolve(TestData.Test1Base);
+        const actual4 = child2.resolve(TestData.Test1Base);
+        test.strictEqual(actual1.Name, "test 4");
+        test.strictEqual(actual1, actual2);
+        test.strictEqual(actual1, actual3);
+        test.strictEqual(actual1, actual4);
+        test.strictEqual(actual2, actual3);
+        test.strictEqual(actual2, actual4);
+        test.strictEqual(actual3, actual4);
+        test.done();
+    }
+    Level3.singletonReturnsSameInstance = singletonReturnsSameInstance;
     function resolutionWithArgumentsReturnsScopeNoneForHierarchy(test) {
         containerBuilder.register(TestData.Test1Base)
             .as((c, data) => new TestData.Test4(data))

@@ -14,28 +14,29 @@ export class ModuleRegistration implements Typeioc.Internal.IModuleRegistration{
 
     private _asModule : Object;
 
+    constructor(private _base : Typeioc.Internal.IRegistrationBase,
+                private _internalStorage : Typeioc.Internal.IInternalStorage<any, Typeioc.Internal.IModuleItemRegistrationOptions>,
+                private _registrationBaseService : Typeioc.Internal.IRegistrationBaseService) {
+    }
+    
     public get registrations() : Typeioc.Internal.IRegistrationBase[] {
 
-        var self = this;
         var result : Typeioc.Internal.IRegistrationBase[] = [];
-
         var serviceModule = this._base.service;
         var asModule = this._asModule;
 
-        Object.getOwnPropertyNames(asModule).forEach(function(asPrperty) {
+        const moduleValues = Object.getOwnPropertyNames(asModule)
+            .map(key => asModule[key])
+            .filter(value => value instanceof Function);
 
-            var asValue = asModule[asPrperty];
+        const serviceModuleValues = Object.getOwnPropertyNames(serviceModule)
+            .map(key => serviceModule[key])
+            .filter(value => value instanceof Function);
 
-            if(!(asValue instanceof Function)) return;
-
-            Object.getOwnPropertyNames(serviceModule).forEach(function(srProperty) {
-
-                var srValue = serviceModule[srProperty];
-
-                if(!(srValue instanceof Function)) return;
-
+        moduleValues.forEach(asValue => {
+            serviceModuleValues.forEach(srValue => {
                 if(Reflection.isCompatible(asValue.prototype, srValue.prototype)) {
-                    var rego = self.createRegistration({
+                    var rego = this.createRegistration({
                         service : srValue,
                         substitute : asValue});
 
@@ -45,11 +46,6 @@ export class ModuleRegistration implements Typeioc.Internal.IModuleRegistration{
         });
 
         return result;
-    }
-
-    constructor(private _base : Typeioc.Internal.IRegistrationBase,
-                private _internalStorage : Typeioc.Internal.IInternalStorage<any, Typeioc.Internal.IModuleItemRegistrationOptions>,
-                private _registrationBaseService : Typeioc.Internal.IRegistrationBaseService) {
     }
 
     public getAsModuleRegistration() : Typeioc.IAsModuleRegistration {
@@ -76,6 +72,18 @@ export class ModuleRegistration implements Typeioc.Internal.IModuleRegistration{
             ownedInternally: this.ownedInternally.bind(this),
             ownedExternally: this.ownedExternally.bind(this)
         };
+    }
+
+    public transient() : Typeioc.IOwned {
+        return this.within(Typeioc.Types.Scope.None);
+    }
+    
+    public singleton() : Typeioc.IOwned {
+        return this.within(Typeioc.Types.Scope.Hierarchy);
+    }
+    
+    public instancePerContainer() : Typeioc.IOwned {
+        return this.within(Typeioc.Types.Scope.Container);
     }
 
     private ownedBy(owner : Typeioc.Types.Owner) : void {
@@ -143,7 +151,10 @@ export class ModuleRegistration implements Typeioc.Internal.IModuleRegistration{
             forArgs : self.forArgs.bind(self),
             named : self.named.bind(self),
             ownedInternally: self.ownedInternally.bind(self),
-            ownedExternally: self.ownedExternally.bind(self)
+            ownedExternally: self.ownedExternally.bind(self),
+            transient: self.transient.bind(self),
+            singleton: self.singleton.bind(this),
+            instancePerContainer: self.instancePerContainer.bind(self) 
         };
     }
 
