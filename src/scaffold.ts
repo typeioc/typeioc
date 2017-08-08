@@ -24,7 +24,7 @@ import { InternalContainer } from './build/internalContainer';
 import { Decorator } from './decorators/decorator';
 import { RegistrationApi as DecoratorRegistrationApi } from './decorators/registrationApi';
 import { ResolutionApi as DecoratorResolutionApi } from './decorators/resolutionApi';
-
+import { Invoker } from './build/invoker';
 
 export class Scaffold {
 
@@ -165,15 +165,25 @@ export class Scaffold {
                 var disposableStorageService = that.disposableStorageService();
                 var baseRegoService = that.registrationBaseService();
                 var containerApiService = that.containerApiService();
+                const invokerService = that.invokerService();
 
                 return new InternalContainer(
                     regoStorageService ,
                     disposableStorageService,
                     baseRegoService,
                     containerApiService,
+                    invokerService,
                     this.resolutionDetails);
             }
         };
+    }
+
+    private invokerService() : Internal.IInvokerService {
+        return {
+            create(container: Internal.IContainer, resolutionDetails: Internal.IDecoratorResolutionParamsData): Internal.IInvoker {
+                return new Invoker(container, resolutionDetails);
+            }
+        }
     }
 
     private decoratorRegistrationApiService() : Internal.IDecoratorApiService {

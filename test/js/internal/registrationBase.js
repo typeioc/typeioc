@@ -235,62 +235,41 @@ exports.internal = {
                 test.done();
             },
 
-            invoke_invokes_factory : function(test) {
+            registrationType_returns_factory: function(test) {
+                const serviceEntry = new RegistrationBaseModule.RegistrationBase(null);
+                serviceEntry.factory = function() {};
 
-                var factory = mockery.stub();
-
-                var serviceEntry = new RegistrationBaseModule.RegistrationBase(null);
-                serviceEntry.factory = factory;
-                serviceEntry.container = {};
-
-                serviceEntry.invoke();
-
-                test.ok(factory.calledOnce);
+                test.strictEqual(serviceEntry.registrationType, 0);
 
                 test.done();
             },
 
-            invoke_invokes_factory_with_container_as_first_parameter : function(test) {
+            registrationType_returns_factoryType: function(test) {
+                const serviceEntry = new RegistrationBaseModule.RegistrationBase(null);
+                serviceEntry.factoryType = function() {};
 
-                var container = {};
-                var firstArg = 1;
-                var secondArg = 'a';
-                var thirdArg = 'test';
-                var factory = mockery.stub();
-
-                var serviceEntry = new RegistrationBaseModule.RegistrationBase(null);
-                serviceEntry.factory = factory;
-                serviceEntry.container = container;
-               
-                serviceEntry.invoke([firstArg, secondArg, thirdArg]);
-
-                test.ok(factory.withArgs(container, firstArg, secondArg, thirdArg).calledOnce);
+                test.strictEqual(serviceEntry.registrationType, 1);
 
                 test.done();
             },
 
-            invoke_does_not_mutate_arguments: function(test) {
+            registrationType_throws_when_unknown_type: function(test) {
+                const serviceEntry = new RegistrationBaseModule.RegistrationBase(null);
+                const delegate = () => serviceEntry.registrationType;
+                
+                test.throws(delegate, function(err) {
+                    return (err instanceof Scaffold.Exceptions.ApplicationError);
+                });
 
-                var serviceEntry = new RegistrationBaseModule.RegistrationBase(null);
-                serviceEntry.factory = mockery.stub();
-                serviceEntry.container = {};
-                var args = [1, 2, '3'];
-                serviceEntry.args = args;
+                test.done();
+            },
 
-                serviceEntry.invoke();
+            dependenciesValue_sets_empty_array_when_no_value: function(test) {
+                const serviceEntry = new RegistrationBaseModule.RegistrationBase(null);
+                serviceEntry.dependenciesValue = null;
 
-                test.strictEqual(args, serviceEntry.args);
-                test.strictEqual(serviceEntry.args[0], 1);
-                test.strictEqual(serviceEntry.args[1], 2);
-                test.strictEqual(serviceEntry.args[2], '3');
-
-                serviceEntry.invoke();
-
-                test.strictEqual(args, serviceEntry.args);
-                test.strictEqual(serviceEntry.args[0], 1);
-                test.strictEqual(serviceEntry.args[1], 2);
-                test.strictEqual(serviceEntry.args[2], '3');
-
+                test.ok(Array.isArray(serviceEntry.dependenciesValue));
+                test.strictEqual(serviceEntry.dependenciesValue.length, 0);
                 test.done();
             },
 

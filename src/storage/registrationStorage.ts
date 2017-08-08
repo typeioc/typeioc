@@ -20,8 +20,8 @@ export class RegistrationStorage implements Internal.IRegistrationStorage {
     constructor(private storageService : Internal.IInlineInternalStorageService) {
         this._internalStorage = storageService.create<any, IStore>();
 
-        this._addStrategy[1] = this.addForTypeFactory.bind(this);
-        this._addStrategy[0] = this.addForFactory.bind(this);
+        this._addStrategy[Internal.RegistrationType.factoryType] = this.addForTypeFactory.bind(this);
+        this._addStrategy[Internal.RegistrationType.factory] = this.addForFactory.bind(this);
 
         this._getStrategy[StorageType.TypeFactory] = this.getForTypeFactory.bind(this);
         this._getStrategy[StorageType.Factory] = this.getForFactory.bind(this);
@@ -29,8 +29,7 @@ export class RegistrationStorage implements Internal.IRegistrationStorage {
 
     public addEntry(registration : Internal.IRegistrationBase) : void {
 
-        var strategy = this._addStrategy[registration.forInstantiation ? 1 : 0];
-
+        var strategy = this._addStrategy[registration.registrationType];
         strategy(registration);
     }
 

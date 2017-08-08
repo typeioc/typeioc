@@ -9,11 +9,9 @@
 "use strict";
 
 import { NullReferenceError, ResolutionError } from '../exceptions';
-import { Reflection } from '../utils';
 import { Scope, Owner } from '../types';
 
 import Internal = Typeioc.Internal;
-
 
 export class InternalContainer implements Internal.IContainer {
 
@@ -22,6 +20,7 @@ export class InternalContainer implements Internal.IContainer {
     private _disposableStorage : Internal.IDisposableStorage;
     private _collection : Internal.IRegistrationStorage;
     private _cache : Internal.IIndexedCollection<any>;
+    private _invoker : Internal.IInvoker;
     private _dependencyScope = Scope.None;
     private _dependencyOwner = Owner.Externals;
 
@@ -29,10 +28,12 @@ export class InternalContainer implements Internal.IContainer {
                 private _disposableStorageService : Internal.IIDisposableStorageService,
                 private _registrationBaseService : Internal.IRegistrationBaseService,
                 private _containerApiService : Internal.IContainerApiService,
+                private _invokerService : Internal.IInvokerService,
                 private _resolutionDetails? : Internal.IDecoratorResolutionParamsData) {
 
         this._collection = this._registrationStorageService.create();
         this._disposableStorage = this._disposableStorageService.create();
+        this._invoker = this._invokerService.create(this, _resolutionDetails);
         this._cache = {};
 
         this.registerImpl = this.registerImpl.bind(this);
@@ -54,6 +55,7 @@ export class InternalContainer implements Internal.IContainer {
             this._disposableStorageService,
             this._registrationBaseService,
             this._containerApiService,
+            this._invokerService,
             this._resolutionDetails);
         child.parent = this;
         this.children.push(child);
@@ -269,12 +271,7 @@ export class InternalContainer implements Internal.IContainer {
 
     private createTrackable(registration : Internal.IRegistrationBase, throwIfNotFound : boolean, args?: Array<any>) : any {
         try {
-        
-            let instance = registration.invoke(args);
-
-            if(registration.forInstantiation === true) {
-                instance = this.instantiate(instance, registration, throwIfNotFound, args);
-            }
+            let instance = this._invoker.invoke(registration, throwIfNotFound, args);
 
             if(registration.initializer) {
                 instance = registration.initializer(this, instance);
@@ -409,75 +406,5 @@ export class InternalContainer implements Internal.IContainer {
         }
 
         this._cache[name] = value;
-    }
-
-    private instantiate(
-        type : any,
-        registration : Internal.IRegistrationBase,
-        throwIfNotFound : boolean,
-        args?: Array<any>) {
-        
-        if(args && args.length &&
-            registration.params.length) {
-            const exception = new ResolutionError('Could not instantiate type. Arguments and dependencies are not allowed for simultaneous resolution. Pick dependencies or arguments');
-            exception.data = type;
-            throw exception;
-        }
-
-        if(args && args.length) {
-            return Reflection.construct(type, args);
-        }
-
-        if(registration.params.length) {
-            const params = registration.params
-            .map(item => { 
-                const dependency = registration.dependenciesValue.filter(d => d.service === item)[0];
-                const depName = dependency ? dependency.named : null;
-
-                if(throwIfNotFound === true) {
-                    return !!depName ? this.resolveNamed(item, depName) : this.resolve(item);
-                }
-
-                return !!depName ? this.tryResolveNamed(item, depName) : this.tryResolve(item);
-            });
-
-            return Reflection.construct(type, params);
-        }
-
-        const dependencies = Reflection.getMetadata(Reflect, type);
-
-        const params = dependencies
-            .map((dependency, index) => {
-
-                let depParams = this._resolutionDetails ? this._resolutionDetails.tryGet(type) : null;
-                let depParamsValue = depParams ? depParams[index] : null;
-
-                if(!depParamsValue) {
-                    return this.resolve(dependency);
-                }
-
-                if(depParamsValue.value) {
-                    return depParamsValue.value;
-                }
-
-                let resolutionItem = depParamsValue.service || dependency;
-                let resolution = this.resolveWith(resolutionItem);
-
-                if(depParamsValue.args && depParamsValue.args.length)
-                    resolution.args(...depParamsValue.args);
-
-                if(depParamsValue.name)
-                    resolution.name(depParamsValue.name);
-
-                if(depParamsValue.attempt === true)
-                    resolution.attempt();
-
-                if(depParamsValue.cache && depParamsValue.cache.use === true)
-                    resolution.cache(depParamsValue.cache.name);
-
-                return resolution.exec();
-            });
-
-        return Reflection.construct(type, params);
     }
 }

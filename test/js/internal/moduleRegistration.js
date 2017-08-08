@@ -548,6 +548,51 @@ exports.internal = {
                 test.strictEqual(0, regoes.length);
 
                 test.done();
+            },
+
+            transient_set_scope_to_none: function(test) {
+                registrationBase.scope = null;
+                moduleRegistration.transient();
+
+                test.strictEqual(registrationBase.scope, Scaffold.Types.Scope.None);
+
+                test.done();
+            },
+            
+            singleton_set_scope_to_hierarchy: function(test) {
+                registrationBase.scope = null;
+                moduleRegistration.singleton();
+
+                test.strictEqual(registrationBase.scope, Scaffold.Types.Scope.Hierarchy);
+
+                test.done();
+            },
+
+            instancePerContainer_set_scope_to_container: function(test) {
+                registrationBase.scope = null;
+                moduleRegistration.instancePerContainer();
+
+                test.strictEqual(registrationBase.scope, Scaffold.Types.Scope.Container);
+
+                test.done();
+            },
+
+            ownedInternally_sets_owner_to_container: function(test) {
+                registrationBase.owner = null;
+                moduleRegistration.ownedInternally();
+
+                test.strictEqual(registrationBase.owner, Scaffold.Types.Owner.Container);
+
+                test.done();
+            },
+
+            ownedExternally_sets_owner_to_externals: function(test) {
+                registrationBase.owner = null;
+                moduleRegistration.ownedExternally();
+
+                test.strictEqual(registrationBase.owner, Scaffold.Types.Owner.Externals);
+
+                test.done();
             }
         };
     })()

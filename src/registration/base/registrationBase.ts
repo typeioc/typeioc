@@ -8,7 +8,10 @@
 
 'use strict';
 
-export class RegistrationBase implements Typeioc.Internal.IRegistrationBase {
+import { ApplicationError } from '../../exceptions';
+import Internal = Typeioc.Internal;
+
+export class RegistrationBase implements Internal.IRegistrationBase {
     private _factory : Typeioc.IFactory<any> = null;
     private _name : string = null;
     private _scope : Typeioc.Types.Scope;
@@ -106,8 +109,16 @@ export class RegistrationBase implements Typeioc.Internal.IRegistrationBase {
         this._factoryType = value;
     }
 
-    public get forInstantiation() : boolean {
-        return this._factoryType && !this._factory;
+    public get registrationType() : Internal.RegistrationType {
+        if(!!this._factoryType && !this._factory) {
+            return Internal.RegistrationType.factoryType;
+        }
+
+        if(!this._factoryType && !!this._factory) {
+            return Internal.RegistrationType.factory;
+        }
+
+        throw new ApplicationError('Unknow registration type')
     }
 
     public get dependenciesValue() : Array<Typeioc.IDynamicDependency> {
@@ -123,7 +134,7 @@ export class RegistrationBase implements Typeioc.Internal.IRegistrationBase {
         this.params = [];
     }
 
-    public cloneFor(container: Typeioc.IContainer) : Typeioc.Internal.IRegistrationBase {
+    public cloneFor(container: Typeioc.IContainer) : Internal.IRegistrationBase {
         var result = new RegistrationBase(this._service);
         result.factory = this._factory;
         result.container = container;
@@ -140,17 +151,7 @@ export class RegistrationBase implements Typeioc.Internal.IRegistrationBase {
         return this._factory;
     }
 
-    public set factory(value : Typeioc.IFactory<any>){
+    public set factory(value : Typeioc.IFactory<any>) {
         this._factory = value;
-    }
-
-    public invoke(args: Array<any> = []) : any {
-
-        if(this._factoryType) {
-            return this._factoryType;
-        }
-
-        args = [this.container].concat(args.slice(0));
-        return this.factory.apply(this.factory, args);
     }
 }

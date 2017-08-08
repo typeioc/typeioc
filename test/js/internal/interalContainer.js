@@ -16,8 +16,10 @@ exports.internal = {
 
                 var regoStorage = { create: () => { }, };
                 var disposeStorage = { create: () => { }, };
+                var invokerService = { create: () => { }, };
 
-                internalContainer = new InternalContainerModule.InternalContainer(regoStorage, disposeStorage);
+                internalContainer = new InternalContainerModule
+                    .InternalContainer(regoStorage, disposeStorage, null, null, invokerService);
                 callback();
             },
 

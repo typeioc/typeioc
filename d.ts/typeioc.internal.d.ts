@@ -11,6 +11,11 @@
 
 declare module Typeioc.Internal {
 
+    const enum RegistrationType {
+        factory = 0,
+        factoryType = 1
+    }
+    
     module Reflection {
 
         const enum PropertyType {
@@ -114,6 +119,10 @@ declare module Typeioc.Internal {
 
     interface IContainerBuilderService {
         create(internalContainerService : Internal.IInternalContainerService) : Typeioc.IContainerBuilder;
+    }
+
+    interface IInvokerService {
+        create(container: IContainer, resolutionDetails: IDecoratorResolutionParamsData): IInvoker;
     }
 
     interface IDecoratorRegistrationApi<T> {
@@ -221,10 +230,15 @@ declare module Typeioc.Internal {
         container : Typeioc.IContainer;
         instance : any;
         factoryType : any;
-        forInstantiation : boolean;
+        registrationType : RegistrationType;
         dependenciesValue : Array<Typeioc.IDynamicDependency>;
-        invoke(args: Array<any>) : any;
         cloneFor : (container: Typeioc.IContainer) => IRegistrationBase;
+    }
+
+    interface IInvoker {
+        invoke<R>(registration : Internal.IRegistrationBase,
+            throwIfNotFound : boolean,
+            args?: Array<any>) : R;
     }
 
     interface IModuleRegistration {
