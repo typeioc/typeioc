@@ -222,6 +222,10 @@ declare module Typeioc {
 
     interface IReusedOwned extends IReused, IOwned { }
 
+    interface IName {
+        named : (name: string) => void;
+    }
+    
     interface INamed {
         named : (name: string) => IReusedOwned;
     }
@@ -247,8 +251,9 @@ declare module Typeioc {
 
     interface IAs<T> {
         as(factory: IFactory<T>): IInitializedDisposedNamedReusedOwned<T>;
-        asType(type : T, ...params : Array<any>): IInitializedDisposedNamedReusedOwned<T>;
+        asType(type: T, ...params : Array<any>): IInitializedDisposedNamedReusedOwned<T>;
         asSelf(...params : Array<any>): IInitializedDisposedNamedReusedOwned<T>;
+        asValue(value): IName;
     }
 
     interface IRegistration<T> extends IAs<T> { }
@@ -267,6 +272,7 @@ declare module Typeioc {
         service : any;
         factory?: IFactory<any>;
         factoryType? : any;
+        factoryValue? : any;
         named? : string;
         initializer? : IInitializer<any>;
         required? : boolean;

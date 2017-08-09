@@ -13,7 +13,8 @@ declare module Typeioc.Internal {
 
     const enum RegistrationType {
         factory = 0,
-        factoryType = 1
+        factoryType = 1,
+        factoryValue = 2
     }
     
     module Reflection {
@@ -220,6 +221,8 @@ declare module Typeioc.Internal {
     interface IRegistrationBase {
         service : any;
         factory : Typeioc.IFactory<any>;
+        factoryType : any;
+        factoryValue : any;
         name : string;
         scope : Typeioc.Types.Scope;
         owner : Typeioc.Types.Owner;
@@ -229,7 +232,6 @@ declare module Typeioc.Internal {
         params : any[];
         container : Typeioc.IContainer;
         instance : any;
-        factoryType : any;
         registrationType : RegistrationType;
         dependenciesValue : Array<Typeioc.IDynamicDependency>;
         cloneFor : (container: Typeioc.IContainer) => IRegistrationBase;

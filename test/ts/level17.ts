@@ -12,7 +12,7 @@ export module Level17 {
             callback();
         },
 
-        resolvesBasic: (test) => {
+        asSelfResolvesBasic: (test) => {
             
             builder.register(TestData.Test1).asSelf();
             

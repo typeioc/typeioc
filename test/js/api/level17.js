@@ -11,7 +11,7 @@ exports.api = {
             callback();
         },
 
-        asSelfResolvesBasic: (test) => {
+        asSelf_resolves_basic: (test) => {
             
             builder.register(testData.Test1).asSelf();
             
@@ -23,7 +23,7 @@ exports.api = {
             test.done();
         },
 
-        asSelfResolvesWithParams: (test) => {
+        asSelf_resolves_with_params: (test) => {
             
             builder.register(testData.Test4).asSelf();
             const container = builder.build();
@@ -34,7 +34,7 @@ exports.api = {
             test.done();
         },
         
-        asSelfResolvesWithMultipleParams: (test) => {
+        asSelf_resolves_with_multiple_params: (test) => {
             
             const service = function(arg1, arg2, arg3) {
                 this.name = `${arg1} ${arg2} ${arg3}`;
@@ -49,7 +49,7 @@ exports.api = {
             test.done();
         },
 
-        asSelfResolvesWithDependencies: (test) => {
+        asSelf_resolves_with_dependencies: (test) => {
 
             const test4 = function() {
                 this.Name = 'test 4';

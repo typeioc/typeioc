@@ -13,6 +13,8 @@ import Internal = Typeioc.Internal;
 
 export class RegistrationBase implements Internal.IRegistrationBase {
     private _factory : Typeioc.IFactory<any> = null;
+    private _factoryType : any = null;
+    private _factoryValue: any = null;
     private _name : string = null;
     private _scope : Typeioc.Types.Scope;
     private _owner : Typeioc.Types.Owner;
@@ -22,7 +24,6 @@ export class RegistrationBase implements Internal.IRegistrationBase {
     private _params : any[];
     private _container : Typeioc.IContainer;
     private _instance: any = null;
-    private _factoryType : any = null;
     private _dependenciesValue : Array<Typeioc.IDynamicDependency> = [];
 
     public get name() : string {
@@ -110,12 +111,16 @@ export class RegistrationBase implements Internal.IRegistrationBase {
     }
 
     public get registrationType() : Internal.RegistrationType {
-        if(!!this._factoryType && !this._factory) {
+        if(!!this._factoryType && !this._factory && !this._factoryValue) {
             return Internal.RegistrationType.factoryType;
         }
 
-        if(!this._factoryType && !!this._factory) {
+        if(!this._factoryType && !!this._factory && !this._factoryValue) {
             return Internal.RegistrationType.factory;
+        }
+
+        if(!this._factoryType && !this._factory && !!this._factoryValue) {
+            return Internal.RegistrationType.factoryValue;
         }
 
         throw new ApplicationError('Unknow registration type')
@@ -137,11 +142,12 @@ export class RegistrationBase implements Internal.IRegistrationBase {
     public cloneFor(container: Typeioc.IContainer) : Internal.IRegistrationBase {
         var result = new RegistrationBase(this._service);
         result.factory = this._factory;
+        result.factoryType = this._factoryType;
+        result.factoryValue = this._factoryValue;
         result.container = container;
         result.owner = this._owner;
         result.scope = this._scope;
         result.initializer = this._initializer;
-        result.factoryType = this._factoryType;
         result.params = this._params;
 
         return result;
@@ -153,5 +159,13 @@ export class RegistrationBase implements Internal.IRegistrationBase {
 
     public set factory(value : Typeioc.IFactory<any>) {
         this._factory = value;
+    }
+
+    public get factoryValue() : any {
+        return this._factoryValue;
+    }
+
+    public set factoryValue(value) {
+        this._factoryValue = value;
     }
 }

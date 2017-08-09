@@ -15,11 +15,17 @@ export class Invoker implements Internal.IInvoker {
         throwIfNotFound : boolean,
         args?: Array<any>) : R {
 
-        if(registration.factoryType) {
-            return this.instantiate(registration.factoryType, registration, throwIfNotFound, args);
-        }    
+        switch(registration.registrationType) {
+            case Internal.RegistrationType.factoryType:
+                return this.instantiate(registration.factoryType, registration, throwIfNotFound, args);
 
-        return this.createByFactory(registration, args);
+            case Internal.RegistrationType.factoryValue:
+                return registration.factoryValue;
+
+            case Internal.RegistrationType.factory:
+            default:
+               return this.createByFactory(registration, args); 
+        }
     }
 
     private createByFactory<R>(

@@ -172,8 +172,10 @@ export class InternalContainer implements Internal.IContainer {
 
     private registerImpl(registration : Internal.IRegistrationBase) : void {
 
-        if(!registration.factory && !registration.factoryType){
-            var exception = new NullReferenceError("Factory/Type is not defined");
+        if(!registration.factory &&
+            !registration.factoryType &&
+            !registration.factoryValue) {
+            var exception = new NullReferenceError("Factory/Type/Value is not defined");
             exception.data = registration.service;
             throw exception;
         }
@@ -224,11 +226,9 @@ export class InternalContainer implements Internal.IContainer {
                 return this.createTrackable(registration, throwIfNotFound);
 
             case Scope.Container:
-
                 return this.resolveContainerScope(registration, throwIfNotFound);
 
             case Scope.Hierarchy :
-
                 return this.resolveHierarchyScope(registration, throwIfNotFound);
 
             default:
@@ -312,9 +312,11 @@ export class InternalContainer implements Internal.IContainer {
                 throw exception;
             }
 
-            if((!dependency.factory && !dependency.factoryType) ||
-                (dependency.factory && dependency.factoryType)) {
-                const exception = new ResolutionError('Factory or Factory type should be defined');
+            if(!dependency.factory &&
+                !dependency.factoryType &&
+                !dependency.factoryValue) {
+                
+                const exception = new ResolutionError('Factory/Type/Value should be defined');
                 exception.data = dependency;
                 throw exception;
             }
@@ -322,6 +324,7 @@ export class InternalContainer implements Internal.IContainer {
             const registration = this.createRegistration(dependency.service);
             registration.factory = dependency.factory;
             registration.factoryType = dependency.factoryType;
+            registration.factoryValue = dependency.factoryValue;
             registration.name = dependency.named;
 
             const throwOnError = dependency.required !== false &&
@@ -344,6 +347,7 @@ export class InternalContainer implements Internal.IContainer {
 
             baseRegistration.factoryType = item.dependency.factoryType;
             baseRegistration.factory = item.dependency.factory;
+            baseRegistration.factoryValue = item.dependency.factoryValue;
             baseRegistration.name = item.dependency.named;
             baseRegistration.initializer = item.dependency.initializer;
             baseRegistration.disposer = undefined;

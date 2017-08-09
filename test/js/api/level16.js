@@ -11,7 +11,7 @@ exports.api = {
             callback();
         },
 
-        asTypeResolvesBasic: (test) => {
+        asType_resolves_basic: (test) => {
             
             builder.register(testData.Test1Base)
                 .asType(testData.Test1);
@@ -24,7 +24,7 @@ exports.api = {
             test.done();
         },
 
-        asTypeResolvesWithParams: (test) => {
+        asType_resolves_with_params: (test) => {
             
             builder.register(testData.Test1Base).asType(testData.Test4);
             const container = builder.build();
@@ -35,7 +35,7 @@ exports.api = {
             test.done();
         },
 
-        asTypeResolvesNamed: (test) => {
+        asType_resolves_named: (test) => {
             
             builder.register(testData.Test1Base)
                     .asType(testData.Test1).named('A');
@@ -48,7 +48,7 @@ exports.api = {
             test.done();
         },
 
-        asTypeResolvesNamedWithParams: (test) => {
+        asType_resolves_named_with_params: (test) => {
             
             builder.register(testData.Test1Base)
                     .asType(testData.Test4)
@@ -62,7 +62,7 @@ exports.api = {
             test.done();
         },
 
-        asTypeResolvesMultipeRegistrations: (test) => {
+        asType_resolves_multiple_registrations: (test) => {
             
             builder.register(testData.Test1Base)
                     .asType(testData.Test1);
@@ -82,7 +82,7 @@ exports.api = {
             test.done();
         },
 
-        asTypeResolvesWithDependencies: (test) => {
+        asType_resolves_with_dependencies: (test) => {
 
             const test4 = function() {
                 this.Name = 'test 4';
@@ -104,7 +104,7 @@ exports.api = {
             test.done();
         },
 
-        asTypeResolvesNamedWithDependencies: (test) => {
+        asType_resolves_named_with_dependencies: (test) => {
 
             const test4 = function() {
                 this.Name = 'test 4';
@@ -125,7 +125,7 @@ exports.api = {
             test.done();
         },
 
-        asTypeThrowsWhenParamsAndArguments : (test) => {
+        asType_throws_when_params_and_arguments : (test) => {
 
             const test1 = function() {
                 this.name = 'test 1';
@@ -151,7 +151,7 @@ exports.api = {
             test.done();
         },
 
-        asTypeResolvesWithDynamicDependencies: (test) => {
+        asType_resolves_with_dynamic_dependencies: (test) => {
             const test4 = function() {}
             const test7 = function() {};
             
@@ -185,7 +185,7 @@ exports.api = {
             test.done();
         },
 
-        asTypeResolvesWithDynamicNamedDependencies: (test) => {
+        asType_resolves_with_dynamic_named_dependencies: (test) => {
             const test4 = function() { }
             const test7 = function() { }
 
@@ -228,7 +228,7 @@ exports.api = {
             test.done();
         },
 
-        asTypeTryResolvesWithDynamicDependencies: (test) => {
+        asType_try_resolves_with_dynamic_dependencies: (test) => {
             
             builder.register(testData.Test1Base)
                 .asType(testData.Test1)

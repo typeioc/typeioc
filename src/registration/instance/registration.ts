@@ -14,6 +14,7 @@ export class Registration<T> implements Typeioc.IRegistration<T> {
         this.initializeBy = this.initializeBy.bind(this),
         this.dispose = this.dispose.bind(this),
         this.named = this.named.bind(this),
+        this.name = this.name.bind(this),
         this.within = this.within.bind(this),
         this.ownedBy = this.ownedBy.bind(this),
         this.ownedInternally = this.ownedInternally.bind(this),
@@ -62,6 +63,20 @@ export class Registration<T> implements Typeioc.IRegistration<T> {
 
     public asSelf(...params : Array<any>): Typeioc.IInitializedDisposedNamedReusedOwned<T> {
         return this.asType(this._base.service, ...params);
+    }
+
+    public asValue(value): Typeioc.IName {
+        this._base.factoryValue = value;
+        this._base.owner = Typeioc.Types.Owner.Externals;
+        this._base.scope = Typeioc.Types.Scope.None;
+
+        return {
+            named: this.name
+        };
+    }
+
+    public name(value : string) : void {
+        this.named(value);
     }
 
     public named(value : string) : Typeioc.IReusedOwned {

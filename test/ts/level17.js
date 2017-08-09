@@ -10,7 +10,7 @@ var Level17;
             builder = scaffold.createBuilder();
             callback();
         },
-        resolvesBasic: (test) => {
+        asSelfResolvesBasic: (test) => {
             builder.register(TestData.Test1).asSelf();
             const container = builder.build();
             const actual = container.resolve(TestData.Test1);

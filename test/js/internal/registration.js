@@ -248,6 +248,21 @@ exports.internal = {
 
                 test.ok(instanceRegistration.asType.withArgs(baseRegistration.service, 'one', 2).calledOnce);
                 test.done();
+            },
+
+            asValue_returns_min_set_of_methods : function(test) {
+                const result = instanceRegistration.asValue(null);
+                const methods = Object.getOwnPropertyNames(result);
+
+                const expectedMethods = [
+                    'named'
+                ];
+
+                const expected = methods
+                    .every(method => expectedMethods.includes(method));
+
+                test.ok(expected);
+                test.done();
             }
         };
     })()

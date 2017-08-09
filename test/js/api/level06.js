@@ -135,16 +135,15 @@ exports.api = {
                     return containerBuilder.build();
                 };
 
-                test.expect(2);
-
                 test.throws(delegate, function (err) {
 
                     test.strictEqual(err.data, testData.Test1Base);
 
                     return (err instanceof scaffold.Exceptions.NullReferenceError) &&
-                            /Factory\/Type is not defined/.test(err.message);
+                            /Factory\/Type\/Value is not defined/.test(err.message);
                 });
 
+                test.expect(2);
                 test.done();
             }
         }

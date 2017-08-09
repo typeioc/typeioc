@@ -22,9 +22,11 @@ export class RegistrationStorage implements Internal.IRegistrationStorage {
 
         this._addStrategy[Internal.RegistrationType.factoryType] = this.addForTypeFactory.bind(this);
         this._addStrategy[Internal.RegistrationType.factory] = this.addForFactory.bind(this);
+        this._addStrategy[Internal.RegistrationType.factoryValue] = this.addForValueFactory.bind(this);
 
         this._getStrategy[StorageType.TypeFactory] = this.getForTypeFactory.bind(this);
         this._getStrategy[StorageType.Factory] = this.getForFactory.bind(this);
+        this._getStrategy[StorageType.ValueFactory] = this.getForValueFactory.bind(this);
     }
 
     public addEntry(registration : Internal.IRegistrationBase) : void {
@@ -75,6 +77,17 @@ export class RegistrationStorage implements Internal.IRegistrationStorage {
         }
     }
 
+    private addForValueFactory(registration : Internal.IRegistrationBase) {
+        var storage = this._internalStorage.register(registration.service, this.emptyValueFactoryBucket);
+        storage.type = StorageType.ValueFactory;
+
+        if(!registration.name) {
+            storage.valueFactory.noName = registration;
+        } else {
+            storage.valueFactory.names[registration.name] = registration;
+        }
+    }
+
     private getForTypeFactory(registration : Internal.IRegistrationBase, storage : IStore) : Internal.IRegistrationBase {
 
         return !registration.name ? storage.typeFactory.noName :
@@ -91,6 +104,12 @@ export class RegistrationStorage implements Internal.IRegistrationStorage {
             storage.factory.noName[argsCount];
     }
 
+    private getForValueFactory(registration : Internal.IRegistrationBase, storage : IStore) : Internal.IRegistrationBase {
+
+        return !registration.name ? storage.valueFactory.noName :
+            storage.valueFactory.names[registration.name];
+    }
+
     private getArgumentsCount(registration : Internal.IRegistrationBase) : number {
         
         return registration.factory ?
@@ -104,6 +123,18 @@ export class RegistrationStorage implements Internal.IRegistrationStorage {
                 noName: null,
                 names: {}
             },
+            valueFactory: null,
+            factory: null
+        };
+    }
+
+    private emptyValueFactoryBucket() : IStore {
+        return <IStore>{
+            typeFactory: null,
+            valueFactory: {
+                noName: null,
+                names: {}
+            },
             factory: null
         };
     }
@@ -111,6 +142,7 @@ export class RegistrationStorage implements Internal.IRegistrationStorage {
     private emptyFactoryBucket() : IStore {
         return <IStore>{
             typeFactory: null,
+            valueFactory: null,
             factory: {
                 noName: {},
                 names: {}
@@ -125,6 +157,11 @@ interface IStore {
         names : Internal.IIndexedCollection<Internal.IRegistrationBase>
     },
 
+    valueFactory: {
+        noName : Internal.IRegistrationBase,
+        names : Internal.IIndexedCollection<Internal.IRegistrationBase>
+    },
+
     factory : {
         noName : Internal.IIndex<Internal.IRegistrationBase>,
         names : Internal.IIndexedCollection<Internal.IIndex<Internal.IRegistrationBase>>
@@ -135,5 +172,6 @@ interface IStore {
 
 enum StorageType {
     Factory,
-    TypeFactory
+    TypeFactory,
+    ValueFactory
 }

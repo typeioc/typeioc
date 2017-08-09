@@ -122,12 +122,8 @@ export class Initializable {
     }
 }
 
-export class Initializable2 extends Initializable {
-
-
-}
-
-
+export class Initializable2 extends Initializable { }
+ 
 export module TestModule1 {
     export class Test1 {
         public name = 'test 1';
