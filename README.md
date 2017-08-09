@@ -67,12 +67,60 @@ containerBuilder.register<Test1Base>(Test1Base)
     });
 ```
 
-#####Registering as types (JS):
+#####Registering as types (JS/TS):
+Applies to anything that could/should be constructed (class, function)
 
 ```js
 containerBuilder.register(Test2Base).asType(Test2);
 containerBuilder.register(Tes1tBase).asType(Test3, Test2Base);
 ```
+
+#####Registering as self (JS/TS):
+Applies to anything that could/should be constructed (class, function)
+
+```js
+containerBuilder.register(Test2).asSelf();
+containerBuilder.register(Test3).asSelf(Test2);
+```
+
+#####Registering as value (JS/TS):
+Applies to any value
+
+```js
+containerBuilder.register('some value service').asValue(123);
+containerBuilder.register('some value service').asValue(123).named('val2');
+```
+
+#####Instance lifetime scoping (JS/TS):
+
+```js
+containerBuilder.register(Test2Base)
+    .asType(Test2)
+    .transient();   // returns new instance for every resolution call
+
+containerBuilder.register(Test2Base)
+    .asType(Test2)
+    .singleton();   // returns same instance for every resolution call
+
+containerBuilder.register(Test2Base)
+    .asType(Test2)
+    .instancePerContainer();    // returns same instance for every resolution call
+                                // per container
+```
+
+#####Instance ownership (JS/TS):
+
+```js
+containerBuilder.register(Test2Base)
+    .asType(Test2)
+    .ownedInternally();   // ownership is maintained by container (affects disposal)
+
+containerBuilder.register(Test2Base)
+    .asType(Test2)
+    .ownedExternally();   // ownership is maintained by external code
+
+```
+
 
 #####Fluent API:
 
@@ -176,7 +224,7 @@ export class Test1 extends TestBase1 {
     }
 
     public foo() {
-        return ['Test1 :', this.value1.foo(), this.value2.foo()].join(' ');
+        return `Test1 : ${this.value1.foo()}  ${this.value2.foo()}`;
     }
 }
 
@@ -281,7 +329,7 @@ actual.log(1);   // still 0
 - [x] - Interceptors.
 - [x] - ES7 decorators style resolution.
 - [x] - ES6 codebase + promises.
-- [ ] - Instance lifetime scoping APIs extension.
+- [x] - Instance lifetime scoping APIs extension.
 - [ ] - Group registration.
 - [ ] - Decorative style interceptors.
 - [ ] - In-browser usage support.
