@@ -1,5 +1,7 @@
 .idea/
 .vscode/
+_book/
+docs/
 lib-cov/
 lib-js/
 lib/**/*.js.map

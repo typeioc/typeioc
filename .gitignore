@@ -2,6 +2,7 @@
 .vscode/*
 !.vscode/launch.json
 !.vscode/tasks.json
+_book/
 lib-cov/
 npm-debug.log
 node_modules

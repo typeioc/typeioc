@@ -1,0 +1,20 @@
+{
+  "gitbook": "3.2.3",
+  "title": "TypeIOC",
+  "root": "./docs",
+  "structure": {
+    "readme": "README.md",   
+    "summary": "SUMMARY.md" 
+  },
+  "plugins": ["prism", "-highlight", "github", "anchorjs"],
+  "pluginsConfig": {
+    "github": {
+      "url": "https://github.com/maxgherman/TypeIOC/"
+    },
+    "theme-default": {
+      "styles": {
+        "website": "styles/gitbook.css"
+      }
+    }
+  }
+}

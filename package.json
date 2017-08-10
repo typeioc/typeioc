@@ -16,6 +16,7 @@
     "codeclimate-test-reporter": "0.5.0",
     "coveralls": "2.13.1",
     "del": "3.0.0",
+    "gitbook-cli": "^2.3.2",
     "gulp": "3.9.1",
     "gulp-header": "1.8.9",
     "gulp-replace": "0.6.1",
@@ -23,7 +24,10 @@
     "istanbul": "0.4.5",
     "nodeunit": "0.11.1",
     "run-sequence": "2.1.0",
-    "sinon": "^3.1.0"
+    "sinon": "^3.1.0",
+    "gitbook-plugin-anchorjs": "^1.1.1",
+    "gitbook-plugin-github": "^2.0.0",
+    "gitbook-plugin-prism": "^2.2.1"
   },
   "engines": {
     "node": ">=4.5.0"
@@ -35,7 +39,10 @@
     "test": "node --harmony ./node_modules/nodeunit/bin/nodeunit test/js/internal/ test/js/api/ test/ts/",
     "coverage": "NODE_ENV=coverage node --harmony node_modules/.bin/istanbul cover node_modules/.bin/nodeunit test/js/internal/ test/js/api/ test/ts/",
     "coveralls": "cat test/coverage/lcov.info | coveralls",
-    "codeclimate": "cat test/coverage/lcov.info | CODECLIMATE_REPO_TOKEN=4d695ca8fbc1be6c4f20509a918f006eb3ac84c871364cb935ac0f75ec852e01  codeclimate"
+    "codeclimate": "cat test/coverage/lcov.info | CODECLIMATE_REPO_TOKEN=4d695ca8fbc1be6c4f20509a918f006eb3ac84c871364cb935ac0f75ec852e01  codeclimate",
+    "docs:prepare": "gitbook install",
+    "docs:watch": "npm run docs:prepare && gitbook serve",
+    "docs:publish": "npm run docs:build && cd _book && git init && git commit --allow-empty -m 'Update docs' && git checkout -b gh-pages && git add . && git commit -am 'Update docs' && git push git@github.com:<username>/<repo> gh-pages --force"
   },
   "keywords": [
     "typescript",
