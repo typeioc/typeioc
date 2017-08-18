@@ -239,7 +239,7 @@ exports.internal = {
                 const serviceEntry = new RegistrationBaseModule.RegistrationBase(null);
                 serviceEntry.factory = function() {};
 
-                test.strictEqual(serviceEntry.registrationType, 0);
+                test.strictEqual(serviceEntry.registrationType, 1);
 
                 test.done();
             },
@@ -248,7 +248,16 @@ exports.internal = {
                 const serviceEntry = new RegistrationBaseModule.RegistrationBase(null);
                 serviceEntry.factoryType = function() {};
 
-                test.strictEqual(serviceEntry.registrationType, 1);
+                test.strictEqual(serviceEntry.registrationType, 2);
+
+                test.done();
+            },
+
+            registrationType_returns_factoryValue: function(test) {
+                const serviceEntry = new RegistrationBaseModule.RegistrationBase(null);
+                serviceEntry.factoryValue = function() {};
+
+                test.strictEqual(serviceEntry.registrationType, 3);
 
                 test.done();
             },

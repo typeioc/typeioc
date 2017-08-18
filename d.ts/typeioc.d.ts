@@ -196,11 +196,11 @@ declare module Typeioc {
 
     interface IResolveReturn<T> {
         exec(): T;
-        execAsync() : Promise<T>;
+        execAsync(): Promise<T>;
     }
 
     interface IInitializer<T> {
-        (IContainer, item : T) : T;
+        (c:IContainer, item: T) : T;
     }
 
     interface IDisposer<T> {

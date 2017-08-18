@@ -19,10 +19,12 @@ pre[class*="language-"] {
   text-shadow: none;
 }
 
-.color-theme-2 .token.keyword {
-  color: #3ac;
-}
-
 .token.operator {
   background: none;
 }
+
+iframe.example {
+  width: 100%;
+  height: 400px;
+}
+

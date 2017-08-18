@@ -12,9 +12,9 @@
 declare module Typeioc.Internal {
 
     const enum RegistrationType {
-        factory = 0,
-        factoryType = 1,
-        factoryValue = 2
+        factory = 1,
+        factoryType = 2,
+        factoryValue = 3
     }
     
     module Reflection {

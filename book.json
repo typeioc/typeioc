@@ -6,10 +6,13 @@
     "readme": "README.md",   
     "summary": "SUMMARY.md" 
   },
-  "plugins": ["prism", "-highlight", "github", "anchorjs"],
+  "plugins": ["prism", "-highlight", "github", "anchorjs", "sectionx"],
   "pluginsConfig": {
     "github": {
       "url": "https://github.com/maxgherman/TypeIOC/"
+    },
+    "sectionx": {
+      "tag": "h5"
     },
     "theme-default": {
       "styles": {

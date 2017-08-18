@@ -75,11 +75,11 @@ export class Registration<T> implements Typeioc.IRegistration<T> {
         };
     }
 
-    public name(value : string) : void {
+    private name(value : string) : void {
         this.named(value);
     }
 
-    public named(value : string) : Typeioc.IReusedOwned {
+    private named(value : string) : Typeioc.IReusedOwned {
 
         this._base.name = value;
 
@@ -94,7 +94,7 @@ export class Registration<T> implements Typeioc.IRegistration<T> {
         };
     }
 
-    public within(scope: Typeioc.Types.Scope) : Typeioc.IOwned {
+    private within(scope: Typeioc.Types.Scope) : Typeioc.IOwned {
 
         this._base.scope = scope;
 
@@ -105,31 +105,31 @@ export class Registration<T> implements Typeioc.IRegistration<T> {
         };
     }
 
-    public transient() : Typeioc.IOwned {
+    private transient() : Typeioc.IOwned {
         return this.within(Typeioc.Types.Scope.None);
     }
     
-    public singleton() : Typeioc.IOwned {
+    private singleton() : Typeioc.IOwned {
         return this.within(Typeioc.Types.Scope.Hierarchy);
     }
     
-    public instancePerContainer() : Typeioc.IOwned {
+    private instancePerContainer() : Typeioc.IOwned {
         return this.within(Typeioc.Types.Scope.Container);
     }
 
-    public ownedBy(owner : Typeioc.Types.Owner) : void {
+    private ownedBy(owner : Typeioc.Types.Owner) : void {
         this._base.owner = owner;
     }
 
-    public ownedInternally() {
+    private ownedInternally() {
         this.ownedBy(Typeioc.Types.Owner.Container);
     }
 
-    public ownedExternally() {
+    private ownedExternally() {
         this.ownedBy(Typeioc.Types.Owner.Externals);
     }
 
-    public initializeBy(action : Typeioc.IInitializer<T>) : Typeioc.INamedReusedOwnedDisposed<T> {
+    private initializeBy(action : Typeioc.IInitializer<T>) : Typeioc.INamedReusedOwnedDisposed<T> {
 
         this._base.initializer = action;
 
@@ -146,7 +146,7 @@ export class Registration<T> implements Typeioc.IRegistration<T> {
         };
     }
 
-    public dispose(action : Typeioc.IDisposer<T>) : Typeioc.INamedReusedOwned {
+    private dispose(action : Typeioc.IDisposer<T>) : Typeioc.INamedReusedOwned {
         this._base.disposer = action;
 
         return {

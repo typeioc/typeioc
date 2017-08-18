@@ -13,3 +13,5 @@ d.ts/hashes.d.ts
 test/coverage/
 COPYRIGHT
 *.yml
+tsconfig.json
+tsconfig.test.json

@@ -25,6 +25,7 @@ export class RegistrationBase implements Internal.IRegistrationBase {
     private _container : Typeioc.IContainer;
     private _instance: any = null;
     private _dependenciesValue : Array<Typeioc.IDynamicDependency> = [];
+    private _registrationType : Internal.RegistrationType;
 
     public get name() : string {
         return this._name;
@@ -111,19 +112,21 @@ export class RegistrationBase implements Internal.IRegistrationBase {
     }
 
     public get registrationType() : Internal.RegistrationType {
-        if(!!this._factoryType && !this._factory && !this._factoryValue) {
-            return Internal.RegistrationType.factoryType;
+        if(!this._registrationType) {
+            if(!!this._factoryType && !this._factory && !this._factoryValue) {
+                this._registrationType = Internal.RegistrationType.factoryType;
+            } else
+            if(!this._factoryType && !!this._factory && !this._factoryValue) {
+                this._registrationType = Internal.RegistrationType.factory;
+            } else
+            if(!this._factoryType && !this._factory && !!this._factoryValue) {
+                this._registrationType = Internal.RegistrationType.factoryValue;
+            } else {
+                throw new ApplicationError('Unknow registration type');
+            }
         }
-
-        if(!this._factoryType && !!this._factory && !this._factoryValue) {
-            return Internal.RegistrationType.factory;
-        }
-
-        if(!this._factoryType && !this._factory && !!this._factoryValue) {
-            return Internal.RegistrationType.factoryValue;
-        }
-
-        throw new ApplicationError('Unknow registration type')
+        
+        return this._registrationType;
     }
 
     public get dependenciesValue() : Array<Typeioc.IDynamicDependency> {

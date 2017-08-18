@@ -32,7 +32,6 @@ export class Decorator implements Decorators.IDecorator {
     }
 
     public build():Typeioc.IContainer {
-        
         return this._builder.build();
     }
 
