@@ -1,1 +1,0 @@
-{"version":3,"file":"argumentError.js","sourceRoot":"","sources":["../../src/exceptions/argumentError.ts"],"names":[],"mappings":"AAAA;;;;;;uGAMuG;AAEvG,YAAY,CAAC;;AAEb,yDAAkD;AAElD,mBAAmC,SAAQ,0BAAgB;IAEvD,YAAoB,YAAqB,EAAE,OAAgB;QACvD,KAAK,CAAC,OAAO,CAAC,CAAC;QADC,iBAAY,GAAZ,YAAY,CAAS;QAGrC,IAAI,CAAC,IAAI,GAAG,eAAe,CAAC;IAChC,CAAC;CACJ;AAPD,gCAOC"}
