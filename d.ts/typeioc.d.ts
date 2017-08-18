@@ -74,10 +74,15 @@ declare module Typeioc {
 
             interface IOwned extends Register.IRegister {
                 ownedBy : (owner : Types.Owner) => Register.IRegister;
+                ownedInternally: () => Register.IRegister;
+                ownedExternally: () => Register.IRegister;
             }
 
             interface IReused extends Register.IRegister {
                 within : (scope: Types.Scope) => Register.IOwned;
+                transient: () => Register.IOwned;
+                singleton: () => Register.IOwned;
+                instancePerContainer: () => Register.IOwned;
             }
 
             interface IReusedOwned extends Register.IReused, Register.IOwned { }

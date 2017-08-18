@@ -122,6 +122,18 @@ export module Scope {
         }
     }
 
+    @decorator.provide<Scope.TestBase>('None')
+    .transient()
+    .register()
+    export class TestNone extends TestBase {
+
+        public text : string = ' test none';
+
+        public foo() {
+            return 'Test : foo' + this.text;
+        }
+    }
+
     export class TestBase2 {
 
         public foo() {
@@ -132,6 +144,18 @@ export module Scope {
         .within(Typeioc.Types.Scope.Container)
         .register()
     export class Test2 extends TestBase2 {
+
+        public text : string = ' test Container';
+
+        public foo() {
+            return 'Test : foo' + this.text;
+        }
+    }
+
+    @decorator.provide<Scope.TestBase2>('Container')
+    .instancePerContainer()
+    .register()
+    export class Test2Container extends TestBase2 {
 
         public text : string = ' test Container';
 
@@ -151,6 +175,18 @@ export module Scope {
             .register()
     export class Test3 extends TestBase3 {
 
+        public text : string = ' test Hierarchy';
+
+        public foo() {
+            return 'Test : foo' + this.text;
+        }
+    }
+
+    @decorator.provide<Scope.TestBase2>('Single')
+    .singleton()
+    .register()
+    export class Test3Single extends TestBase3 {
+        
         public text : string = ' test Hierarchy';
 
         public foo() {
@@ -184,7 +220,6 @@ export module Owner {
         }
     }
 
-
     export class TestBase2 {
         public foo() {
         }
@@ -195,6 +230,56 @@ export module Owner {
     @decorator.provide<Owner.TestBase2>(Owner.TestBase2)
         .dispose((item:TestBase2) => { item.dispose(); })
         .ownedBy(Typeioc.Types.Owner.Externals)
+        .register()
+    export class Test2 extends TestBase2 {
+
+        public text : string = 'test';
+
+        public foo() {
+            return 'Test : foo ' + this.text;
+        }
+
+        public dispose() {
+            this.text = 'disposed';
+        }
+    }
+}
+
+export module OwnerApi {
+    export class TestBase1 {
+        public foo() {
+        }
+
+        public dispose() {}
+    }
+
+    @decorator.provide<OwnerApi.TestBase1>(OwnerApi.TestBase1)
+        .dispose((item:Test) => { item.dispose(); })
+        .ownedInternally()
+        .register()
+    export class Test extends TestBase1 {
+
+        public text : string = 'test';
+
+        public foo() {
+            return 'Test : foo ' + this.text;
+        }
+
+        public dispose() {
+            this.text = 'disposed';
+        }
+    }
+
+    export class TestBase2 {
+        public foo() {
+        }
+
+        public dispose() {}
+    }
+
+    @decorator.provide<OwnerApi.TestBase2>(OwnerApi.TestBase2)
+        .dispose((item:TestBase2) => { item.dispose(); })
+        .ownedExternally()
         .register()
     export class Test2 extends TestBase2 {
 

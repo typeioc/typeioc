@@ -67,42 +67,66 @@ var Level13;
             test.done();
         },
         scope_none_can_resolve(test) {
-            var actual = container.resolve(TestData.Scope.TestBase);
-            test.strictEqual(actual.foo(), 'Test : foo test none');
+            const actual1 = container.resolve(TestData.Scope.TestBase);
+            const actual2 = container.resolve(TestData.Scope.TestBase);
+            const actual3 = container.resolve('None');
+            const actual4 = container.resolve('None');
+            test.ok(actual1 !== actual2);
+            test.strictEqual(actual1.foo(), 'Test : foo test none');
+            test.strictEqual(actual2.foo(), 'Test : foo test none');
+            test.ok(actual3 !== actual4);
+            test.strictEqual(actual3.foo(), 'Test : foo test none');
+            test.strictEqual(actual4.foo(), 'Test : foo test none');
             test.done();
         },
         scope_container_can_resolve_clone(test) {
-            var actual = container.resolve(TestData.Scope.TestBase2);
-            test.strictEqual(actual.foo(), 'Test : foo test Container');
-            var child = container.createChild();
-            var actual2 = child.resolve(TestData.Scope.TestBase2);
+            const actual1 = container.resolve(TestData.Scope.TestBase2);
+            const actual11 = container.resolve('Container');
+            const child = container.createChild();
+            const actual2 = child.resolve(TestData.Scope.TestBase2);
+            const actual21 = child.resolve('Container');
+            test.strictEqual(actual1.foo(), 'Test : foo test Container');
             test.strictEqual(actual2.foo(), 'Test : foo test Container');
-            test.notStrictEqual(actual, actual2);
+            test.notStrictEqual(actual1, actual2);
+            test.strictEqual(actual11.foo(), 'Test : foo test Container');
+            test.strictEqual(actual21.foo(), 'Test : foo test Container');
+            test.notStrictEqual(actual11, actual21);
             test.done();
         },
         scope_hierarchy_can_resolve_same_instance(test) {
-            var actual = container.resolve(TestData.Scope.TestBase3);
-            test.strictEqual(actual.foo(), 'Test : foo test Hierarchy');
-            var child = container.createChild();
-            var actual2 = child.resolve(TestData.Scope.TestBase3);
+            const actual1 = container.resolve(TestData.Scope.TestBase3);
+            const actual11 = container.resolve('Single');
+            const child = container.createChild();
+            const actual2 = child.resolve(TestData.Scope.TestBase3);
+            const actual21 = child.resolve('Single');
+            test.strictEqual(actual1.foo(), 'Test : foo test Hierarchy');
             test.strictEqual(actual2.foo(), 'Test : foo test Hierarchy');
-            test.strictEqual(actual, actual2);
+            test.strictEqual(actual1, actual2);
+            test.strictEqual(actual11.foo(), 'Test : foo test Hierarchy');
+            test.strictEqual(actual21.foo(), 'Test : foo test Hierarchy');
+            test.strictEqual(actual11, actual21);
             test.done();
         },
         container_owned_instances_are_disposed(test) {
             var child = container.createChild();
-            var actual = child.resolve(TestData.Owner.TestBase1);
+            const actual1 = child.resolve(TestData.Owner.TestBase1);
+            const actual2 = child.resolve(TestData.OwnerApi.TestBase1);
             child.dispose();
-            var result = actual.foo();
-            test.strictEqual(result, 'Test : foo disposed');
+            const result1 = actual1.foo();
+            const result2 = actual2.foo();
+            test.strictEqual(result1, 'Test : foo disposed');
+            test.strictEqual(result2, 'Test : foo disposed');
             test.done();
         },
         external_owned_instances_are_not_disposed(test) {
             var child = container.createChild();
-            var actual = child.resolve(TestData.Owner.TestBase2);
+            const actual1 = child.resolve(TestData.Owner.TestBase2);
+            const actual2 = child.resolve(TestData.OwnerApi.TestBase2);
             child.dispose();
-            var result = actual.foo();
-            test.strictEqual(result, 'Test : foo test');
+            const result1 = actual1.foo();
+            const result2 = actual2.foo();
+            test.strictEqual(result1, 'Test : foo test');
+            test.strictEqual(result2, 'Test : foo test');
             test.done();
         },
         named_instances_resolved(test) {

@@ -46,8 +46,19 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
         return this._disposedBy;
     }
 
-    constructor(private _register : (api : Internal.IDecoratorRegistrationApi<T>) => ClassDecorator)
-    { }
+    constructor(private _register : (api : Internal.IDecoratorRegistrationApi<T>) => ClassDecorator) {
+        this.initializeBy = this.initializeBy.bind(this);
+        this.dispose = this.dispose.bind(this);
+        this.named = this.named.bind(this);
+        this.within = this.within.bind(this);
+        this.transient = this.transient.bind(this);
+        this.singleton = this.singleton.bind(this);
+        this.instancePerContainer =this.instancePerContainer.bind(this);
+        this.ownedBy = this.ownedBy.bind(this);
+        this.ownedInternally = this.ownedInternally.bind(this);
+        this.ownedExternally = this.ownedExternally.bind(this);
+        this.register = this.register.bind(this);
+    }
 
     public provide(service: any) : Decorators.Register.IInitializedDisposedNamedReusedOwned<T> {
 
@@ -56,12 +67,17 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
         this._service = service;
 
         return {
-            initializeBy : this.initializeBy.bind(this),
-            dispose : this.dispose.bind(this),
-            named: this.named.bind(this),
-            within: this.within.bind(this),
-            ownedBy: this.ownedBy.bind(this),
-            register: this.register.bind(this)
+            initializeBy : this.initializeBy,
+            dispose : this.dispose,
+            named: this.named,
+            within: this.within,
+            transient: this.transient,
+            singleton: this.singleton,
+            instancePerContainer: this.instancePerContainer,
+            ownedBy: this.ownedBy,
+            ownedInternally: this.ownedInternally,
+            ownedExternally: this.ownedExternally,
+            register: this.register
         };
     }
 
@@ -72,11 +88,16 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
         this._initializedBy = action;
 
         return {
-            dispose : this.dispose.bind(this),
-            named: this.named.bind(this),
-            within: this.within.bind(this),
-            ownedBy: this.ownedBy.bind(this),
-            register: this.register.bind(this)
+            dispose : this.dispose,
+            named: this.named,
+            within: this.within,
+            transient: this.transient,
+            singleton: this.singleton,
+            instancePerContainer: this.instancePerContainer,
+            ownedBy: this.ownedBy,
+            ownedInternally: this.ownedInternally,
+            ownedExternally: this.ownedExternally,
+            register: this.register
         };
     }
 
@@ -87,10 +108,15 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
         this._disposedBy = action;
 
         return {
-            named: this.named.bind(this),
-            within: this.within.bind(this),
-            ownedBy: this.ownedBy.bind(this),
-            register: this.register.bind(this)
+            named: this.named,
+            within: this.within,
+            transient: this.transient,
+            singleton: this.singleton,
+            instancePerContainer: this.instancePerContainer,
+            ownedBy: this.ownedBy,
+            ownedInternally: this.ownedInternally,
+            ownedExternally: this.ownedExternally,
+            register: this.register
         };
     }
 
@@ -101,9 +127,14 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
         this._name = name;
 
         return {
-            within: this.within.bind(this),
-            ownedBy: this.ownedBy.bind(this),
-            register: this.register.bind(this)
+            within: this.within,
+            transient: this.transient,
+            singleton: this.singleton,
+            instancePerContainer: this.instancePerContainer,
+            ownedBy: this.ownedBy,
+            ownedInternally: this.ownedInternally,
+            ownedExternally: this.ownedExternally,
+            register: this.register
         };
     }
 
@@ -114,11 +145,25 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
         this._scope = scope;
 
         return {
-            ownedBy: this.ownedBy.bind(this),
-            register: this.register.bind(this)
+            ownedBy: this.ownedBy,
+            ownedInternally: this.ownedInternally,
+            ownedExternally: this.ownedExternally,
+            register: this.register
         };
     }
 
+    private transient() : Decorators.Register.IOwned {
+        return this.within(Types.Scope.None);
+    }
+
+    private singleton() : Decorators.Register.IOwned {
+        return this.within(Types.Scope.Hierarchy);
+    }
+    
+    private instancePerContainer() : Decorators.Register.IOwned {
+        return this.within(Types.Scope.Container);
+    }
+    
     private ownedBy(owner : Types.Owner) : Decorators.Register.IRegister {
 
         checkNullArgument(owner, 'owner');
@@ -126,12 +171,19 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
         this._owner = owner;
 
         return {
-            register: this.register.bind(this)
+            register: this.register
         };
     }
 
-    private register() : ClassDecorator {
+    private ownedInternally(): Decorators.Register.IRegister {
+        return this.ownedBy(Types.Owner.Container);
+    }
+    
+    private ownedExternally(): Decorators.Register.IRegister {
+        return this.ownedBy(Types.Owner.Externals);
+    }
 
+    private register() : ClassDecorator {
         return this._register(this);
     }
 }

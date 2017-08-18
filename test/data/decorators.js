@@ -144,6 +144,21 @@ var Scope;
             .register()
     ], Test);
     Scope.Test = Test;
+    let TestNone = class TestNone extends TestBase {
+        constructor() {
+            super(...arguments);
+            this.text = ' test none';
+        }
+        foo() {
+            return 'Test : foo' + this.text;
+        }
+    };
+    TestNone = __decorate([
+        exports.decorator.provide('None')
+            .transient()
+            .register()
+    ], TestNone);
+    Scope.TestNone = TestNone;
     class TestBase2 {
         foo() {
         }
@@ -164,6 +179,21 @@ var Scope;
             .register()
     ], Test2);
     Scope.Test2 = Test2;
+    let Test2Container = class Test2Container extends TestBase2 {
+        constructor() {
+            super(...arguments);
+            this.text = ' test Container';
+        }
+        foo() {
+            return 'Test : foo' + this.text;
+        }
+    };
+    Test2Container = __decorate([
+        exports.decorator.provide('Container')
+            .instancePerContainer()
+            .register()
+    ], Test2Container);
+    Scope.Test2Container = Test2Container;
     class TestBase3 {
         foo() {
         }
@@ -184,6 +214,21 @@ var Scope;
             .register()
     ], Test3);
     Scope.Test3 = Test3;
+    let Test3Single = class Test3Single extends TestBase3 {
+        constructor() {
+            super(...arguments);
+            this.text = ' test Hierarchy';
+        }
+        foo() {
+            return 'Test : foo' + this.text;
+        }
+    };
+    Test3Single = __decorate([
+        exports.decorator.provide('Single')
+            .singleton()
+            .register()
+    ], Test3Single);
+    Scope.Test3Single = Test3Single;
 })(Scope = exports.Scope || (exports.Scope = {}));
 var Owner;
 (function (Owner) {
@@ -238,6 +283,59 @@ var Owner;
     ], Test2);
     Owner.Test2 = Test2;
 })(Owner = exports.Owner || (exports.Owner = {}));
+var OwnerApi;
+(function (OwnerApi) {
+    class TestBase1 {
+        foo() {
+        }
+        dispose() { }
+    }
+    OwnerApi.TestBase1 = TestBase1;
+    let Test = class Test extends TestBase1 {
+        constructor() {
+            super(...arguments);
+            this.text = 'test';
+        }
+        foo() {
+            return 'Test : foo ' + this.text;
+        }
+        dispose() {
+            this.text = 'disposed';
+        }
+    };
+    Test = __decorate([
+        exports.decorator.provide(OwnerApi.TestBase1)
+            .dispose((item) => { item.dispose(); })
+            .ownedInternally()
+            .register()
+    ], Test);
+    OwnerApi.Test = Test;
+    class TestBase2 {
+        foo() {
+        }
+        dispose() { }
+    }
+    OwnerApi.TestBase2 = TestBase2;
+    let Test2 = class Test2 extends TestBase2 {
+        constructor() {
+            super(...arguments);
+            this.text = 'test';
+        }
+        foo() {
+            return 'Test : foo ' + this.text;
+        }
+        dispose() {
+            this.text = 'disposed';
+        }
+    };
+    Test2 = __decorate([
+        exports.decorator.provide(OwnerApi.TestBase2)
+            .dispose((item) => { item.dispose(); })
+            .ownedExternally()
+            .register()
+    ], Test2);
+    OwnerApi.Test2 = Test2;
+})(OwnerApi = exports.OwnerApi || (exports.OwnerApi = {}));
 var Named;
 (function (Named) {
     class TestBase {
