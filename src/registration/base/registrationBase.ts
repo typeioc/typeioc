@@ -103,27 +103,9 @@ export class RegistrationBase implements Internal.IRegistrationBase {
         this._instance = value;
     }
 
-    public get factoryType() : any {
-        return this._factoryType;
-    }
-
-    public set factoryType(value : any) {
-        this._factoryType = value;
-    }
-
     public get registrationType() : Internal.RegistrationType {
         if(!this._registrationType) {
-            if(!!this._factoryType && !this._factory && !this._factoryValue) {
-                this._registrationType = Internal.RegistrationType.factoryType;
-            } else
-            if(!this._factoryType && !!this._factory && !this._factoryValue) {
-                this._registrationType = Internal.RegistrationType.factory;
-            } else
-            if(!this._factoryType && !this._factory && !!this._factoryValue) {
-                this._registrationType = Internal.RegistrationType.factoryValue;
-            } else {
-                throw new ApplicationError('Unknow registration type');
-            }
+            throw new ApplicationError('Unknown registration type');
         }
         
         return this._registrationType;
@@ -136,6 +118,32 @@ export class RegistrationBase implements Internal.IRegistrationBase {
     public set dependenciesValue(value: Array<Typeioc.IDynamicDependency>) {
         this._dependenciesValue = value || [];
     }
+    public get factory() : Typeioc.IFactory<any> {
+        return this._factory;
+    }
+
+    public set factory(value : Typeioc.IFactory<any>) {
+        this._factory = value;
+        this._registrationType = Internal.RegistrationType.Factory;
+    }
+
+    public get factoryType() : any {
+        return this._factoryType;
+    }
+
+    public set factoryType(value : any) {
+        this._factoryType = value;
+        this._registrationType = Internal.RegistrationType.FactoryType;
+    }
+
+    public get factoryValue() : any {
+        return this._factoryValue;
+    }
+
+    public set factoryValue(value) {
+        this._factoryValue = value;
+        this._registrationType = Internal.RegistrationType.FactoryValue;
+    }
 
     constructor(private _service: any) {
         this.args = [];
@@ -144,9 +152,10 @@ export class RegistrationBase implements Internal.IRegistrationBase {
 
     public cloneFor(container: Typeioc.IContainer) : Internal.IRegistrationBase {
         var result = new RegistrationBase(this._service);
-        result.factory = this._factory;
-        result.factoryType = this._factoryType;
-        result.factoryValue = this._factoryValue;
+        result._factory = this._factory;
+        result._factoryType = this._factoryType;
+        result._factoryValue = this._factoryValue;
+        result._registrationType = this._registrationType;
         result.container = container;
         result.owner = this._owner;
         result.scope = this._scope;
@@ -156,19 +165,23 @@ export class RegistrationBase implements Internal.IRegistrationBase {
         return result;
     }
 
-    public get factory() : Typeioc.IFactory<any> {
-        return this._factory;
+    public copyDependency(dependency: Typeioc.IDynamicDependency) {
+        this.name = dependency.named;
+        this.initializer = dependency.initializer;
+        
+        if(dependency.factory) {
+            this.factory = dependency.factory;
+        } else
+        if(dependency.factoryType) {
+            this.factoryType = dependency.factoryType;
+        } else
+        if('factoryValue' in dependency) {
+            this.factoryValue = dependency.factoryValue;
+        }
     }
 
-    public set factory(value : Typeioc.IFactory<any>) {
-        this._factory = value;
-    }
-
-    public get factoryValue() : any {
-        return this._factoryValue;
-    }
-
-    public set factoryValue(value) {
-        this._factoryValue = value;
+    public checkRegistrationType() {
+        /// throws exception when no type
+        const regoType = this.registrationType;
     }
 }

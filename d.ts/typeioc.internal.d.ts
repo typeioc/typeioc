@@ -12,9 +12,9 @@
 declare module Typeioc.Internal {
 
     const enum RegistrationType {
-        factory = 1,
-        factoryType = 2,
-        factoryValue = 3
+        Factory = 1,
+        FactoryType = 2,
+        FactoryValue = 3
     }
     
     module Reflection {
@@ -235,6 +235,8 @@ declare module Typeioc.Internal {
         registrationType : RegistrationType;
         dependenciesValue : Array<Typeioc.IDynamicDependency>;
         cloneFor : (container: Typeioc.IContainer) => IRegistrationBase;
+        copyDependency : (dependency: Typeioc.IDynamicDependency) => void;
+        checkRegistrationType: () => void;
     }
 
     interface IInvoker {

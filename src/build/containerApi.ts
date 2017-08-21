@@ -8,7 +8,7 @@
 
 'use strict';
 
-import { checkNullArgument } from '../utils';
+import { checkNullArgument, checkDependency } from '../utils';
 
 export class Api<T> implements Typeioc.Internal.IContainerApi<T>{
     private _service: T;
@@ -117,12 +117,14 @@ export class Api<T> implements Typeioc.Internal.IContainerApi<T>{
     {
         checkNullArgument(data, 'data');
 
-        var item : any = data;
+        if(Array.isArray(data)) {
+            (<Array<Typeioc.IDynamicDependency>>data)
+            .forEach(item => checkDependency(item));
 
-        if(Array.isArray(item)) {
-            this._dependencies.push.apply(this._dependencies, item);
+            this._dependencies.push.apply(this._dependencies, data);
         } else {
-            this._dependencies.push(item);
+            checkDependency(data);
+            this._dependencies.push(data);
         }
 
         return {

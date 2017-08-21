@@ -17,7 +17,6 @@ exports.internal = {
                 test.ok(Exceptions.ArgumentNullError);
                 test.ok(Exceptions.ResolutionError);
                 test.ok(Exceptions.StorageKeyNotFoundError);
-                test.ok(Exceptions.NullReferenceError);
                 test.ok(Exceptions.ProxyError);
                 test.ok(Exceptions.DecoratorError);
 

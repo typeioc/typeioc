@@ -127,9 +127,8 @@ export module Level6 {
         var delegate = () => containerBuilder.build();
 
         test.throws(delegate, function(err) {
-            return (err instanceof scaffold.Exceptions.NullReferenceError) &&
-                    /Factory\/Type\/Value is not defined/.test(err.message) &&
-                    err.data === TestData.Test1Base;
+            return (err instanceof scaffold.Exceptions.ApplicationError) &&
+                    /Unknown registration type/.test(err.message);
         });
 
         test.done();

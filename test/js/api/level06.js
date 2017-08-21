@@ -137,13 +137,11 @@ exports.api = {
 
                 test.throws(delegate, function (err) {
 
-                    test.strictEqual(err.data, testData.Test1Base);
-
-                    return (err instanceof scaffold.Exceptions.NullReferenceError) &&
-                            /Factory\/Type\/Value is not defined/.test(err.message);
+                    return (err instanceof scaffold.Exceptions.ApplicationError) &&
+                            /Unknown registration type/.test(err.message);
                 });
 
-                test.expect(2);
+                test.expect(1);
                 test.done();
             }
         }

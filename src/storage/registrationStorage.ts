@@ -20,13 +20,13 @@ export class RegistrationStorage implements Internal.IRegistrationStorage {
     constructor(private storageService : Internal.IInlineInternalStorageService) {
         this._internalStorage = storageService.create<any, IStore>();
 
-        this._addStrategy[Internal.RegistrationType.factoryType] = this.addForTypeFactory.bind(this);
-        this._addStrategy[Internal.RegistrationType.factory] = this.addForFactory.bind(this);
-        this._addStrategy[Internal.RegistrationType.factoryValue] = this.addForValueFactory.bind(this);
+        this._addStrategy[Internal.RegistrationType.FactoryType] = this.addForFactoryType.bind(this);
+        this._addStrategy[Internal.RegistrationType.Factory] = this.addForFactory.bind(this);
+        this._addStrategy[Internal.RegistrationType.FactoryValue] = this.addForFactoryValue.bind(this);
 
-        this._getStrategy[StorageType.TypeFactory] = this.getForTypeFactory.bind(this);
-        this._getStrategy[StorageType.Factory] = this.getForFactory.bind(this);
-        this._getStrategy[StorageType.ValueFactory] = this.getForValueFactory.bind(this);
+        this._getStrategy[Internal.RegistrationType.FactoryType] = this.getForFactoryType.bind(this);
+        this._getStrategy[Internal.RegistrationType.Factory] = this.getForFactory.bind(this);
+        this._getStrategy[Internal.RegistrationType.FactoryValue] = this.getForFactoryValue.bind(this);
     }
 
     public addEntry(registration : Internal.IRegistrationBase) : void {
@@ -48,10 +48,10 @@ export class RegistrationStorage implements Internal.IRegistrationStorage {
         this._internalStorage.clear();
     }
 
-    private addForTypeFactory(registration : Internal.IRegistrationBase) {
+    private addForFactoryType(registration : Internal.IRegistrationBase) {
 
-        var storage = this._internalStorage.register(registration.service, this.emptyTypeFactoryBucket);
-        storage.type = StorageType.TypeFactory;
+        const storage = this._internalStorage.register(registration.service, this.emptyTypeFactoryBucket);
+        storage.type = Internal.RegistrationType.FactoryType;
 
         if(!registration.name) {
             storage.typeFactory.noName = registration;
@@ -62,11 +62,10 @@ export class RegistrationStorage implements Internal.IRegistrationStorage {
 
     private addForFactory(registration : Internal.IRegistrationBase) {
 
-        var storage = this._internalStorage.register(registration.service, this.emptyFactoryBucket);
+        const storage = this._internalStorage.register(registration.service, this.emptyFactoryBucket);
+        storage.type = Internal.RegistrationType.Factory;
 
-        var argsCount = this.getArgumentsCount(registration);
-
-        storage.type = StorageType.Factory;
+        const argsCount = this.getArgumentsCount(registration);
 
         if(!registration.name) {
             storage.factory.noName[argsCount] = registration;
@@ -77,9 +76,9 @@ export class RegistrationStorage implements Internal.IRegistrationStorage {
         }
     }
 
-    private addForValueFactory(registration : Internal.IRegistrationBase) {
-        var storage = this._internalStorage.register(registration.service, this.emptyValueFactoryBucket);
-        storage.type = StorageType.ValueFactory;
+    private addForFactoryValue(registration : Internal.IRegistrationBase) {
+        const storage = this._internalStorage.register(registration.service, this.emptyValueFactoryBucket);
+        storage.type = Internal.RegistrationType.FactoryValue;
 
         if(!registration.name) {
             storage.valueFactory.noName = registration;
@@ -88,7 +87,7 @@ export class RegistrationStorage implements Internal.IRegistrationStorage {
         }
     }
 
-    private getForTypeFactory(registration : Internal.IRegistrationBase, storage : IStore) : Internal.IRegistrationBase {
+    private getForFactoryType(registration : Internal.IRegistrationBase, storage : IStore) : Internal.IRegistrationBase {
 
         return !registration.name ? storage.typeFactory.noName :
             storage.typeFactory.names[registration.name];
@@ -104,7 +103,7 @@ export class RegistrationStorage implements Internal.IRegistrationStorage {
             storage.factory.noName[argsCount];
     }
 
-    private getForValueFactory(registration : Internal.IRegistrationBase, storage : IStore) : Internal.IRegistrationBase {
+    private getForFactoryValue(registration : Internal.IRegistrationBase, storage : IStore) : Internal.IRegistrationBase {
 
         return !registration.name ? storage.valueFactory.noName :
             storage.valueFactory.names[registration.name];
@@ -167,11 +166,5 @@ interface IStore {
         names : Internal.IIndexedCollection<Internal.IIndex<Internal.IRegistrationBase>>
     },
 
-    type : StorageType
-}
-
-enum StorageType {
-    Factory,
-    TypeFactory,
-    ValueFactory
+    type : Internal.RegistrationType
 }

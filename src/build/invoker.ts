@@ -24,13 +24,13 @@ export class Invoker implements Internal.IInvoker {
         args?: Array<any>) : R {
 
         switch(registration.registrationType) {
-            case Internal.RegistrationType.factoryType:
+            case Internal.RegistrationType.FactoryType:
                 return this.instantiate(registration.factoryType, registration, throwIfNotFound, args);
 
-            case Internal.RegistrationType.factoryValue:
+            case Internal.RegistrationType.FactoryValue:
                 return registration.factoryValue;
 
-            case Internal.RegistrationType.factory:
+            case Internal.RegistrationType.Factory:
             default:
                return this.createByFactory(registration, args); 
         }

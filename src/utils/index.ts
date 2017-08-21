@@ -8,7 +8,7 @@
 
 'use strict';
 
-import { ArgumentNullError } from '../exceptions';
+import { ArgumentNullError, ApplicationError } from '../exceptions';
 import * as ReflectionModule from './reflection';
 import ImmutableArray from './immutableArray';
 
@@ -27,6 +27,17 @@ export function checkNullArgument(value : any, argument: string,  message?: stri
         exception.data = value;
         throw exception;
     }
+}
+
+export function checkDependency(dependency: Typeioc.IDynamicDependency) : void {
+    
+const factoryValueKey = 'factoryValue';
+
+    if((dependency.factory && dependency.factoryType) ||
+        (dependency.factory && factoryValueKey in dependency) ||
+        (dependency.factoryType && factoryValueKey in dependency)) {
+            throw new ApplicationError('Unknown registration type');
+        }
 }
 
 export function createImmutable(array : Array<any>) : Typeioc.Internal.IImmutableArray {

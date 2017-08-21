@@ -8,9 +8,8 @@
 
 'use strict';
 
-import { checkNullArgument, concat} from '../utils';
+import { checkNullArgument, checkDependency, concat} from '../utils';
 import { ResolutionError } from '../exceptions';
-
 
 export class Container implements Typeioc.IContainer {
 
@@ -107,6 +106,8 @@ export class Container implements Typeioc.IContainer {
 
         if(!dependencies || dependencies.length <= 0)
             throw new ResolutionError('No dependencies provided');
+
+        dependencies.forEach((item) => checkDependency(item));
 
         return this._container.resolveWithDependencies<R>(service, dependencies);
     }

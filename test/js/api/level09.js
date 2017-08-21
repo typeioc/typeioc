@@ -563,13 +563,11 @@ exports.api = {
                 }
 
                 test.throws(delegate, function(error) {
-                    test.strictEqual(error.message, 'Factory/Type/Value should be defined');
-                    test.strictEqual(error.data, dependencies[0]);
-
-                    return error instanceof scaffold.Exceptions.ResolutionError;
+                    test.strictEqual(error.message, 'Unknown registration type');
+                    return error instanceof scaffold.Exceptions.ApplicationError;
                 });
 
-                test.expect(3);
+                test.expect(2);
 
                 test.done();
             },
@@ -600,7 +598,7 @@ exports.api = {
                 }
 
                 test.throws(delegate, function(error) {
-                    test.strictEqual(error.message, 'Unknow registration type');
+                    test.strictEqual(error.message, 'Unknown registration type');
                     return error instanceof scaffold.Exceptions.ApplicationError;
                 });
 
@@ -633,8 +631,7 @@ exports.api = {
                 }
 
                 test.throws(delegate, function(error) {
-                    test.strictEqual(error.message, 'Unknow registration type');
-                   
+                    test.strictEqual(error.message, 'Unknown registration type');
                     return error instanceof scaffold.Exceptions.ApplicationError;
                 });
 

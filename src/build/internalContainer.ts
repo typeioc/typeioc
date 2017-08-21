@@ -8,7 +8,7 @@
 
 "use strict";
 
-import { NullReferenceError, ResolutionError } from '../exceptions';
+import { ResolutionError } from '../exceptions';
 import { Scope, Owner } from '../types';
 
 import Internal = Typeioc.Internal;
@@ -172,14 +172,7 @@ export class InternalContainer implements Internal.IContainer {
 
     private registerImpl(registration : Internal.IRegistrationBase) : void {
 
-        if(!registration.factory &&
-            !registration.factoryType &&
-            !registration.factoryValue) {
-            var exception = new NullReferenceError("Factory/Type/Value is not defined");
-            exception.data = registration.service;
-            throw exception;
-        }
-
+        registration.checkRegistrationType();
         registration.container = this;
 
         this._collection.addEntry(registration);
@@ -312,21 +305,10 @@ export class InternalContainer implements Internal.IContainer {
                 throw exception;
             }
 
-            if(!dependency.factory &&
-                !dependency.factoryType &&
-                !dependency.factoryValue) {
-                
-                const exception = new ResolutionError('Factory/Type/Value should be defined');
-                exception.data = dependency;
-                throw exception;
-            }
-
             const registration = this.createRegistration(dependency.service);
-            registration.factory = dependency.factory;
-            registration.factoryType = dependency.factoryType;
-            registration.factoryValue = dependency.factoryValue;
-            registration.name = dependency.named;
-
+            registration.copyDependency(dependency);
+            registration.checkRegistrationType();
+            
             const throwOnError = dependency.required !== false &&
                                api.throwResolveError === true;
 
@@ -345,11 +327,7 @@ export class InternalContainer implements Internal.IContainer {
                 this.createRegistration(item.dependency.service)
                 : item.implementation.cloneFor(this);
 
-            baseRegistration.factoryType = item.dependency.factoryType;
-            baseRegistration.factory = item.dependency.factory;
-            baseRegistration.factoryValue = item.dependency.factoryValue;
-            baseRegistration.name = item.dependency.named;
-            baseRegistration.initializer = item.dependency.initializer;
+            baseRegistration.copyDependency(item.dependency);
             baseRegistration.disposer = undefined;
             baseRegistration.scope = this._dependencyScope;
             baseRegistration.owner = this._dependencyOwner;
