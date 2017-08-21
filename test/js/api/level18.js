@@ -23,14 +23,34 @@ exports.api = {
             test.done();
         },
 
-        asValue_resolves_zero: (test) => {
-            const value = 0;
-            builder.register(testData.Test1).asValue(value);
+        asValue_resolves_falsy: (test) => {
+            const zero = 0;
+            const f = false;
+            const empty = '';
+            const nl = null;
+            const undef = undefined;
+          
+            builder.register('zero').asValue(zero);
+            builder.register('false').asValue(f);
+            builder.register('empty').asValue(empty);
+            builder.register('null').asValue(nl);
+            builder.register('undefined').asValue(undef);
+            builder.register('NaN').asValue(NaN);
             
             const container = builder.build();
-            const actual = container.resolve(testData.Test1);
+            const actualZero = container.resolve('zero');
+            const actualFalse = container.resolve('false');
+            const actualEmpty = container.resolve('empty');
+            const actualNull = container.resolve('null');
+            const actualUndefined = container.resolve('undefined');
+            const actualNaN = container.resolve('NaN');
             
-            test.strictEqual(actual, value);
+            test.strictEqual(actualZero, zero);
+            test.strictEqual(actualFalse, f);
+            test.strictEqual(actualEmpty, empty);
+            test.strictEqual(actualNull, nl);
+            test.strictEqual(actualUndefined, undef);
+            test.strictEqual(isNaN(actualNaN), true);
             test.done();
         },
 
