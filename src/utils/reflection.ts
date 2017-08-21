@@ -12,10 +12,10 @@ export function getMetadata(reflect, type : any) {
     return reflect.getMetadata("design:paramtypes", type) || [];
 }
 
-export function getFactoryArgsCount(factory: Typeioc.IFactory<any>) {
+export function getFactoryArgsCount(factory: Typeioc.IFactory<any>): number {
 
-    const paramNames = getParamNames(<Function>factory);
-    return paramNames.length > 0 ? paramNames.length - 1 : 0;
+    const paramsCount = (<Function>factory).length;
+    return Math.max(paramsCount - 1, 0);
 }
 
 export function isCompatible(obj1 : Object, obj2 : Object) : boolean {
@@ -26,7 +26,6 @@ export function isCompatible(obj1 : Object, obj2 : Object) : boolean {
         const obj1Val = obj1[key];
         return !obj1Val || !isFunction(obj1Val);
     });
-    
 }
 
 export function construct(constructor, args) {
@@ -89,23 +88,4 @@ export function getAllPropertyNames(obj) {
     } while(obj = Object.getPrototypeOf(obj));
 
     return props;
-}
-
-function getParamNames(func : Function) : string[] {
-    const regexes = [/function\s.*?\(([^)]*)\)/,
-                   /\(?([\w,\s.]+)\)?\s*=>\s*\{[^}]*\}/,
-                   /\(?([\w,\s.]+)\)?\s*=>\s*[^}]*/];
-    
-    const funcStr = func.toString().replace(/\/\*.*\*\//, '');
-    const args = regexes.map(item => {
-            const match = funcStr.match(item);
-            return match ? match[1] : null;
-        })
-        .filter(item => !!item)[0];
-    
-    if(!args) return [];
-    
-    return args.split(',')
-        .map(arg => arg.trim())
-        .filter(arg => !!arg);
 }

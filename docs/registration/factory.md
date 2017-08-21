@@ -8,14 +8,14 @@ interface IFactory<T> {
     * Lambda expression for service instanciation
     * @param {IContainer} c - container instance
     * @param {Array<any>} ...args - array of rest arguments passed during resolution
-    * @returns {T} - instance of a service
+    * @returns {T} - service instance
     */
     (c: IContainer, ...args: Array<any>) : T;
 }
 
 /**
 * Service registration using factory function
-* @param {any} factory - lambda expression for service instanciation
+* @param {any} factory - lambda expression for service instantiation
 * @returns {object} - registration metadata specification instance
 */
 as(factory: IFactory)

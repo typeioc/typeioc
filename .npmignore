@@ -7,11 +7,10 @@ lib-js/
 lib/**/*.js.map
 build/
 src/
-d.ts/node.d.ts
 d.ts/typeioc.internal.d.ts
 d.ts/hashes.d.ts
 test/coverage/
 COPYRIGHT
 *.yml
 tsconfig.json
-tsconfig.test.json
+tsconfig.tests.json

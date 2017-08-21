@@ -23,6 +23,17 @@ exports.api = {
             test.done();
         },
 
+        asValue_resolves_zero: (test) => {
+            const value = 0;
+            builder.register(testData.Test1).asValue(value);
+            
+            const container = builder.build();
+            const actual = container.resolve(testData.Test1);
+            
+            test.strictEqual(actual, value);
+            test.done();
+        },
+
         asValue_resolves_with_args: (test) => {
             
             const value = 123;
