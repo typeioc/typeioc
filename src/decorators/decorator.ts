@@ -86,12 +86,13 @@ export class Decorator implements Decorators.IDecorator {
 
             const bucket = this._internalStorage.register(target, () => <Internal.IDecoratorResolutionCollection>{});
 
-            bucket[index] = {
+            bucket[index] = <Internal.IDecoratorResolutionParams> {
                 service: api.service,
                 args: api.args,
                 attempt: api.attempt,
                 name: api.name,
-                cache: api.cache
+                cache: api.cache,
+                type: Internal.DecoratorResolutionParameterType.Service
             };
         };
 
@@ -107,7 +108,8 @@ export class Decorator implements Decorators.IDecorator {
             const bucket = this._internalStorage.register(target, () => <Internal.IDecoratorResolutionCollection>{});
 
             bucket[index] = <Internal.IDecoratorResolutionParams> {
-                value
+                value,
+                type: Internal.DecoratorResolutionParameterType.Value
             };
         };
     }

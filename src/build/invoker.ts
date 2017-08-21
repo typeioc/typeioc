@@ -88,7 +88,7 @@ export class Invoker implements Internal.IInvoker {
                     return this._container.resolve(dependency);
                 }
 
-                if(depParamsValue.value) {
+                if(depParamsValue.type === Internal.DecoratorResolutionParameterType.Value) {
                     return depParamsValue.value;
                 }
 

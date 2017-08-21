@@ -144,7 +144,7 @@ var Level13;
         },
         multiple_resolveValue_instantiation(test) {
             var actual = container.resolve(TestData.Resolve.ByValue.TestBase1);
-            test.strictEqual(actual.foo(), "Test1 : value 1 value 2 value 3");
+            test.strictEqual(actual.foo(), 'Test1 :  0 false   NaN');
             test.done();
         },
         resolve_by_service_instantiation(test) {

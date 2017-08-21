@@ -335,7 +335,9 @@ export module Resolve {
             public foo() {}
         }
 
-        @decorator.provide<Resolve.ByValue.TestBase>(Resolve.ByValue.TestBase).register()
+        @decorator
+        .provide<Resolve.ByValue.TestBase>(Resolve.ByValue.TestBase)
+        .register()
         export class Test1 extends TestBase {
 
             constructor(@decorator.resolveValue('decorator value')  private value) {
@@ -354,14 +356,25 @@ export module Resolve {
         @decorator.provide<Resolve.ByValue.TestBase1>(Resolve.ByValue.TestBase1).register()
         export class Test2 extends TestBase1 {
 
-            constructor(@decorator.resolveValue('value 1')  private value1,
-                        @decorator.resolveValue('value 2')  private value2,
-                        @decorator.resolveValue('value 3')  private value3) {
+            constructor(@decorator.resolveValue(null)  private value1,
+                        @decorator.resolveValue(0)  private value2,
+                        @decorator.resolveValue(false)  private value3,
+                        @decorator.resolveValue('')  private value4,
+                        @decorator.resolveValue(undefined)  private value5,
+                        @decorator.resolveValue(NaN)  private value6) {
                 super();
             }
 
             public foo() {
-                return ['Test1 :', this.value1, this.value2, this.value3].join(' ');
+                return [
+                    'Test1 :',
+                    this.value1,
+                    this.value2,
+                    this.value3,
+                    this.value4,
+                    this.value5,
+                    this.value6,
+                ].join(' ');
             }
         }
 

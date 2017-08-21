@@ -16,6 +16,11 @@ declare module Typeioc.Internal {
         FactoryType = 2,
         FactoryValue = 3
     }
+
+    const enum DecoratorResolutionParameterType {
+        Service = 1,
+        Value = 2
+    }
     
     module Reflection {
 
@@ -154,6 +159,7 @@ declare module Typeioc.Internal {
         name? : string;
         attempt? : boolean;
         cache? : Internal.IApiCache;
+        type: DecoratorResolutionParameterType;
     }
 
     interface IDecoratorResolutionParamsData

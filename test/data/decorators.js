@@ -392,7 +392,9 @@ var Resolve;
             }
         };
         Test1 = __decorate([
-            exports.decorator.provide(Resolve.ByValue.TestBase).register(),
+            exports.decorator
+                .provide(Resolve.ByValue.TestBase)
+                .register(),
             __param(0, exports.decorator.resolveValue('decorator value')),
             __metadata("design:paramtypes", [Object])
         ], Test1);
@@ -402,22 +404,36 @@ var Resolve;
         }
         ByValue.TestBase1 = TestBase1;
         let Test2 = class Test2 extends TestBase1 {
-            constructor(value1, value2, value3) {
+            constructor(value1, value2, value3, value4, value5, value6) {
                 super();
                 this.value1 = value1;
                 this.value2 = value2;
                 this.value3 = value3;
+                this.value4 = value4;
+                this.value5 = value5;
+                this.value6 = value6;
             }
             foo() {
-                return ['Test1 :', this.value1, this.value2, this.value3].join(' ');
+                return [
+                    'Test1 :',
+                    this.value1,
+                    this.value2,
+                    this.value3,
+                    this.value4,
+                    this.value5,
+                    this.value6,
+                ].join(' ');
             }
         };
         Test2 = __decorate([
             exports.decorator.provide(Resolve.ByValue.TestBase1).register(),
-            __param(0, exports.decorator.resolveValue('value 1')),
-            __param(1, exports.decorator.resolveValue('value 2')),
-            __param(2, exports.decorator.resolveValue('value 3')),
-            __metadata("design:paramtypes", [Object, Object, Object])
+            __param(0, exports.decorator.resolveValue(null)),
+            __param(1, exports.decorator.resolveValue(0)),
+            __param(2, exports.decorator.resolveValue(false)),
+            __param(3, exports.decorator.resolveValue('')),
+            __param(4, exports.decorator.resolveValue(undefined)),
+            __param(5, exports.decorator.resolveValue(NaN)),
+            __metadata("design:paramtypes", [Object, Object, Object, Object, Object, Object])
         ], Test2);
         ByValue.Test2 = Test2;
     })(ByValue = Resolve.ByValue || (Resolve.ByValue = {}));
