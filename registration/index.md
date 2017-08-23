@@ -4,15 +4,15 @@ We start using TypeIOC by registering our services. The power of the service is 
 
 * [Factory registration](./factory.md)
 * [Type registration](./type.md)
-* [Self registration](./self)
-* [Value registration](./self)
+* [Self registration](./self.md)
+* [Value registration](./value.md)
 
 Depending on a type of registration chosen, there are certain constraints applied to the algorithm of resolution. Registration also defines additional service metadata:
 
-* [Initialization](./component-metadata.md)
-* [Name](./component-metadata.md)
+* [Initialization](./metadata.md#initialization)
+* [Naming](./metadata.md#naming)
 * [Life cycle](../life-cycle/index.md)
-* [Ownership](./component-metadata.md)
+* [Ownership](./metadata.md#ownership)
 
 To register a service, we have to create an instance of ContainerBuilder object. It exposes method **register** for all forms of registration.
 
