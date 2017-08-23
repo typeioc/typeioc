@@ -151,16 +151,22 @@ export class RegistrationBase implements Internal.IRegistrationBase {
     }
 
     public cloneFor(container: Typeioc.IContainer) : Internal.IRegistrationBase {
+        var result = this.clone();
+        result.container = container;
+        return result;
+    }
+
+    public clone() : Internal.IRegistrationBase {
         var result = new RegistrationBase(this._service);
         result._factory = this._factory;
         result._factoryType = this._factoryType;
         result._factoryValue = this._factoryValue;
         result._registrationType = this._registrationType;
-        result.container = container;
         result.owner = this._owner;
         result.scope = this._scope;
         result.initializer = this._initializer;
         result.params = this._params;
+        result.dependenciesValue = this._dependenciesValue;
 
         return result;
     }

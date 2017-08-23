@@ -1,7 +1,8 @@
 "use strict";
 
-import TestData = require('../data/decorators');
+
 import scaffold = require('./../scaffold');
+import TestData = require('../data/decorators');
 
 export module Level13 {
 

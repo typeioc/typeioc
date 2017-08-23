@@ -24,3 +24,5 @@ export function createBuilder() : Typeioc.IContainerBuilder {
 export function createDecorator() : Typeioc.Decorators.IDecorator {
     return <Typeioc.Decorators.IDecorator>typeioc.createDecorator();
 }
+
+export const TestDataDecorators = require('./data/decorators');

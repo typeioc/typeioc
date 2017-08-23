@@ -64,7 +64,16 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
 
         checkNullArgument(service, 'service');
 
+        const result = this.provideUndefined();
+
         this._service = service;
+
+        return result;
+    }
+
+    public provideUndefined() : Decorators.Register.IInitializedDisposedNamedReusedOwned<T> {
+        
+        this._service = undefined;
 
         return {
             initializeBy : this.initializeBy,

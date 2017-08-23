@@ -63,8 +63,11 @@ declare module Typeioc {
         interface IDecorator {
             build() : Typeioc.IContainer;
             provide<R>(service: any) : Register.IInitializedDisposedNamedReusedOwned<R>;
+            provideSelf<R>() : Register.IInitializedDisposedNamedReusedOwned<R>;
             by(service? : any) : Decorators.Resolve.IArgsTryNamedCache;
             resolveValue(value: any) : ParameterDecorator;
+            register<R>(service: any): Typeioc.IRegistration<R>;
+            import(builder: Typeioc.IContainerBuilder): void;
         }
 
         module Register {
@@ -109,10 +112,6 @@ declare module Typeioc {
 
         module Resolve {
 
-            interface IResolveExact {
-                resolve() : ParameterDecorator;
-            }
-
             interface IResolve {
                 resolve() : ParameterDecorator;
             }
@@ -142,7 +141,8 @@ declare module Typeioc {
     interface IContainerBuilder {
         register<R>(service : any) : IRegistration<R>;
         registerModule(serviceModule : Object) : Typeioc.IAsModuleRegistration;
-        build() : IContainer
+        build() : IContainer;
+        copy(builder: Typeioc.IContainerBuilder): void;
     }
 
     interface IContainer {

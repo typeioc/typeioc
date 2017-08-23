@@ -10,6 +10,8 @@ When transient life time cycle is chosen during registration of a specific servi
 registration.transient()
 ```
 
+ When specifying transient life cycle during registration, **transient** method could be omitted as it is the default value.
+
 #### TypeScript
 
 ```typescript
@@ -40,7 +42,8 @@ builder.register('create')
 .as(() => create());
 
 builder.register('A').asType(A);
-builder.register(A).asSelf();
+builder.register(A)
+.asSelf().transient();
 ```
 
 <!--sec data-title="Run example" data-id="section0" data-show=true data-collapse=true ces-->
@@ -80,7 +83,8 @@ builder.register('create')
 .as(() => create());
 
 builder.register('A').asType(A);
-builder.register(A).asSelf();
+builder.register(A)
+.asSelf().transient();
 ```
 
 <!--sec data-title="Run example" data-id="section1" data-show=true data-collapse=true ces-->

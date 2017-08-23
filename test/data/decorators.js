@@ -1099,4 +1099,58 @@ var Resolve;
         MultipleDecorators.Test3 = Test3;
     })(MultipleDecorators = Resolve.MultipleDecorators || (Resolve.MultipleDecorators = {}));
 })(Resolve = exports.Resolve || (exports.Resolve = {}));
+var Integration;
+(function (Integration) {
+    Integration.valueKey = 'value-key';
+    Integration.valueKey1 = 'value-key-1';
+    Integration.valueKey2 = 'value-key-2';
+    Integration.valueKey3 = 'value-key-3';
+    class TestBase {
+        get name() { return null; }
+    }
+    Integration.TestBase = TestBase;
+    class TestBase1 {
+        get name() { return null; }
+    }
+    Integration.TestBase1 = TestBase1;
+    let Test = class Test extends TestBase {
+        constructor(dependency1, dependency2, dependency3) {
+            super();
+            this.dependency1 = dependency1;
+            this.dependency2 = dependency2;
+            this.dependency3 = dependency3;
+        }
+        get name() {
+            return `test ${this.dependency1.name} ${this.dependency2} ${this.dependency3.name}`;
+        }
+    };
+    Test = __decorate([
+        exports.decorator.provide(Integration.TestBase).register(),
+        __param(0, exports.decorator.by(Integration.TestBase1).resolve()),
+        __param(1, exports.decorator.by(Integration.valueKey).resolve()),
+        __param(2, exports.decorator.by(Integration.valueKey1).resolve()),
+        __metadata("design:paramtypes", [Object, Object, Object])
+    ], Test);
+    class Test1 extends TestBase1 {
+        get name() { return 'test 1'; }
+    }
+    Integration.Test1 = Test1;
+    let Test2 = class Test2 extends TestBase {
+        constructor(dependency1, dependency2) {
+            super();
+            this.dependency1 = dependency1;
+            this.dependency2 = dependency2;
+        }
+        get name() {
+            return `test ${this.dependency1} ${this.dependency2}`;
+        }
+    };
+    Test2 = __decorate([
+        exports.decorator.provideSelf().register(),
+        __param(0, exports.decorator.by(Integration.valueKey2).resolve()),
+        __param(1, exports.decorator.by(Integration.valueKey3).resolve()),
+        __metadata("design:paramtypes", [Object, Object])
+    ], Test2);
+    Integration.Test2 = Test2;
+})(Integration = exports.Integration || (exports.Integration = {}));
 //# sourceMappingURL=decorators.js.map

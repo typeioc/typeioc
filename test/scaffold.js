@@ -20,4 +20,5 @@ function createDecorator() {
     return typeioc.createDecorator();
 }
 exports.createDecorator = createDecorator;
+exports.TestDataDecorators = require('./data/decorators');
 //# sourceMappingURL=scaffold.js.map

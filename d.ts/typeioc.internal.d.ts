@@ -139,6 +139,7 @@ declare module Typeioc.Internal {
         scope : Types.Scope;
         owner : Types.Owner
         provide(service: any) : Decorators.Register.IInitializedDisposedNamedReusedOwned<T>;
+        provideUndefined() : Decorators.Register.IInitializedDisposedNamedReusedOwned<T>;
     }
 
     interface IDecoratorResolutionApi {
@@ -241,6 +242,7 @@ declare module Typeioc.Internal {
         registrationType : RegistrationType;
         dependenciesValue : Array<Typeioc.IDynamicDependency>;
         cloneFor : (container: Typeioc.IContainer) => IRegistrationBase;
+        clone : () => IRegistrationBase;
         copyDependency : (dependency: Typeioc.IDynamicDependency) => void;
         checkRegistrationType: () => void;
     }

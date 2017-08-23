@@ -85,6 +85,12 @@ export class ContainerBuilder implements Typeioc.IContainerBuilder {
             disposeAsync : container.disposeAsync.bind(container)
         };
     }
+
+    public copy(builder: Typeioc.IContainerBuilder): void {
+        (<{_registrations: Array<Internal.IRegistrationBase>}>(<any>builder))
+        ._registrations
+        .forEach((item) => this._registrations.push(item.clone()));
+    }
 }
 
 function setDefaults(rego : Internal.IRegistrationBase) {

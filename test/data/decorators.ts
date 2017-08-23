@@ -102,7 +102,6 @@ export module InitializeBy {
     }
 }
 
-
 export module Scope {
 
     export class TestBase {
@@ -960,5 +959,58 @@ export module Resolve {
             }
         }
 
+    }
+}
+
+export module Integration {
+    export const valueKey = 'value-key';
+    export const valueKey1 = 'value-key-1';
+    export const valueKey2 = 'value-key-2';
+    export const valueKey3 = 'value-key-3';
+    
+    export class TestBase {
+        get name() { return null; }
+    }
+
+    export class TestBase1 {
+        get name() { return null; }
+    }
+
+    @decorator.provide(Integration.TestBase).register()
+    class Test extends TestBase {
+        
+        constructor(
+        @decorator.by(Integration.TestBase1).resolve()
+        private dependency1,
+        @decorator.by(Integration.valueKey).resolve()
+        private dependency2,
+        @decorator.by(Integration.valueKey1).resolve()
+        private dependency3) {
+            super();
+        }
+        
+        get name() {
+            return `test ${this.dependency1.name} ${this.dependency2} ${this.dependency3.name}`;
+        }
+    }
+
+    export class Test1 extends TestBase1 {
+        get name() { return 'test 1'; }
+    }
+
+    @decorator.provideSelf().register()
+    export class Test2 extends TestBase {
+        
+        constructor(
+        @decorator.by(Integration.valueKey2).resolve()
+        private dependency1,
+        @decorator.by(Integration.valueKey3).resolve()
+        private dependency2) {
+            super();
+        }
+        
+        get name() {
+            return `test ${this.dependency1} ${this.dependency2}`;
+        }
     }
 }
