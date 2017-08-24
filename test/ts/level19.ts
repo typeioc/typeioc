@@ -115,6 +115,45 @@ export module Level19 {
 
             test.strictEqual(actual.name, 'test 2 3');
             test.done();
+        },
+
+        resove_with_import_keeps_registrations: (test) => {
+            
+            let test1Copis = 0;
+            let test2Copis = 0;
+
+            class Test1 {
+                constructor() {
+                    test1Copis++;
+                }
+            }
+
+            class Test2 {
+                constructor() {
+                    test2Copis++;
+                }
+            }
+            
+            builder1.register(Integration.valueKey2)
+            .asType(Test1)
+            .singleton();
+            builder1.register(Integration.valueKey3)
+            .asType(Test2)
+            .singleton();
+            decorator.import(builder1);
+
+            const containerDecortor = decorator.build();
+            const actualDecorator = containerDecortor.resolve<Integration.TestBase>(Integration.Test2);
+
+            const containerBuilder = builder1.build();
+            const actualBuilder1 = containerBuilder.resolve(Integration.valueKey2);
+            const actualBuilder2 = containerBuilder.resolve(Integration.valueKey3);
+
+            test.strictEqual(actualDecorator.name, 'test [object Object] [object Object]');
+            test.strictEqual(test1Copis, 2);
+            test.strictEqual(test2Copis, 2);
+
+            test.done();
         }
     }
 }

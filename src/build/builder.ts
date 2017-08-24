@@ -89,7 +89,17 @@ export class ContainerBuilder implements Typeioc.IContainerBuilder {
     public copy(builder: Typeioc.IContainerBuilder): void {
         (<{_registrations: Array<Internal.IRegistrationBase>}>(<any>builder))
         ._registrations
-        .forEach((item) => this._registrations.push(item.clone()));
+        .forEach((item) => {
+            const clone = item.clone();
+            const index = this._registrations
+            .findIndex((rego) => rego.service === item.service);
+
+            if(index < 0) {
+                this._registrations.push(clone);
+            } else {
+                this._registrations[index] = clone;
+            }
+        });
     }
 }
 
