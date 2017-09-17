@@ -663,6 +663,7 @@ exports.api = {
                     };
 
                     var substitute2 = {
+                        method : 'foo',
                         wrapper : function(callInfo) {
 
                             wrapperStub();
@@ -707,6 +708,7 @@ exports.api = {
                     };
 
                     var substitute2  = {
+                        method : 'foo',
                         wrapper : function(callInfo) {
 
                             wrapperStub();
@@ -745,7 +747,6 @@ exports.api = {
                     parent.prototype = Object.create(grandParent.prototype);
                     parent.prototype.constructor = parent;
 
-
                     var substitute1 = {
                         method : 'foo',
                         type : CallInfoType.Method,
@@ -757,17 +758,17 @@ exports.api = {
                     };
 
                     var substitute2 = {
+                        method : 'foo',
                         wrapper : function(callInfo) {
 
                             wrapperStub();
                             var result = callInfo.invoke(callInfo.args);
                             return 1 + callInfo.next(result);
                         }
-                    }
+                    };
 
                     var Proto = resolve(parent, [ substitute1, substitute2 ]);
                     var instance = new Proto(1);
-
 
                     test.strictEqual(14, instance.foo(2, 3));
                     test.ok(stub.calledTwice);
@@ -799,6 +800,7 @@ exports.api = {
                     };
 
                     var substitute2 = {
+                        method : 'foo',
                         wrapper : function(callInfo) {
                             wrapperStub();
                             var result = callInfo.invoke(callInfo.args);
@@ -970,6 +972,7 @@ exports.api = {
                     };
 
                     var substitute2  = {
+                        method : 'foo',
                         wrapper : function(callInfo) {
 
                             wrapperStub();
@@ -1949,6 +1952,7 @@ exports.api = {
                     };
 
                     var substitute2 = {
+                        method : 'foo',
                         wrapper : function(callInfo) {
 
                             wrapperStub();
@@ -1992,6 +1996,7 @@ exports.api = {
                     };
 
                     var substitute2  = {
+                        method : 'foo',
                         wrapper : function(callInfo) {
 
                             wrapperStub();
@@ -2041,6 +2046,7 @@ exports.api = {
                     };
 
                     var substitute2 = {
+                        method : 'foo',
                         wrapper : function(callInfo) {
 
                             wrapperStub();

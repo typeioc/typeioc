@@ -37,22 +37,22 @@ export class Decorator implements Typeioc.Internal.Interceptors.IDecorator {
      public wrap(strategyInfo : IStrategyInfo) : void
      {
          strategyInfo = this.copyStrategy(strategyInfo);
-         var strategyStore = strategyInfo.substitute ? this.defineWrapStrategies() : this.defineNonWrapStrategies();
-         var strategy = strategyStore[strategyInfo.type];
+         const strategyStore = strategyInfo.substitute ? this.defineWrapStrategies() : this.defineNonWrapStrategies();
+         const strategy = strategyStore[strategyInfo.type];
          strategy(strategyInfo);
      }
 
      private defineNonWrapStrategies() : IStrategy
      {
-         var result = <IStrategy>{};
+         const result = <IStrategy>{};
 
          result[Typeioc.Internal.Reflection.PropertyType.Method] = (strategyInfo : IStrategyInfo) => {
 
-             var value = strategyInfo.source[strategyInfo.name];
+             const value = strategyInfo.source[strategyInfo.name];
 
              strategyInfo.destination[strategyInfo.name] = function() {
 
-                 var args  = Array.prototype.slice.call(arguments, 0);
+                 const args  = Array.prototype.slice.call(arguments, 0);
                  return value.apply(this, args);
              };
          };
@@ -92,18 +92,17 @@ export class Decorator implements Typeioc.Internal.Interceptors.IDecorator {
 
      private defineWrapStrategies() : IStrategy
      {
-         var result = <IStrategy>{};
-
-         var self = this;
+         const result = <IStrategy>{};
+         const self = this;
 
          result[Typeioc.Internal.Reflection.PropertyType.Method] = (strategyInfo : IStrategyInfo) => {
 
-             var value = strategyInfo.source[strategyInfo.name];
+             const value = strategyInfo.source[strategyInfo.name];
 
              strategyInfo.destination[strategyInfo.name] = function() {
 
-                 var destination = this;
-                 var args  = Array.prototype.slice.call(arguments, 0);
+                 const destination = this;
+                 const args  = Array.prototype.slice.call(arguments, 0);
 
                  var delegate = args => {
 
@@ -126,18 +125,18 @@ export class Decorator implements Typeioc.Internal.Interceptors.IDecorator {
          result[Typeioc.Internal.Reflection.PropertyType.Getter] = (strategyInfo : IStrategyInfo) => {
 
              Object.defineProperty(strategyInfo.destination, strategyInfo.name, {
-                 get : self.defineWrapGetter(strategyInfo),
-                 configurable : true,
-                 enumerable : strategyInfo.descriptor.enumerable
+                 get: self.defineWrapGetter(strategyInfo),
+                 configurable: true,
+                 enumerable: strategyInfo.descriptor.enumerable
              });
          };
 
          result[Typeioc.Internal.Reflection.PropertyType.Setter] = (strategyInfo : IStrategyInfo) => {
 
                Object.defineProperty(strategyInfo.destination, strategyInfo.name, {
-                 set : self.defineWrapSetter(strategyInfo),
-                 configurable :true,
-                 enumerable : strategyInfo.descriptor.enumerable
+                 set: self.defineWrapSetter(strategyInfo),
+                 configurable: true,
+                 enumerable: strategyInfo.descriptor.enumerable
              });
          };
 
@@ -156,10 +155,10 @@ export class Decorator implements Typeioc.Internal.Interceptors.IDecorator {
                             self.defineWrapSetter(strategyInfo) : self.defineSetter(strategyInfo);
 
              Object.defineProperty(strategyInfo.destination, strategyInfo.name, {
-                 get : getter,
-                 set : setter,
-                 configurable : true,
-                 enumerable : strategyInfo.descriptor.enumerable
+                 get: getter,
+                 set: setter,
+                 configurable: true,
+                 enumerable: strategyInfo.descriptor.enumerable
              });
          };
 
@@ -170,12 +169,12 @@ export class Decorator implements Typeioc.Internal.Interceptors.IDecorator {
 
      private defineWrapSetter(strategyInfo : IStrategyInfo) {
 
-         var self = this;
+         const self = this;
 
          return function (value) {
 
-             var destination = this;
-             var delegate = self.defineSetter(strategyInfo).bind(this);
+             const destination = this;
+             const delegate = self.defineSetter(strategyInfo).bind(this);
 
              return self.createCallChainFromList({
                  args : createImmutable([value]),
@@ -189,12 +188,12 @@ export class Decorator implements Typeioc.Internal.Interceptors.IDecorator {
 
      private defineWrapGetter(strategyInfo : IStrategyInfo) {
 
-         var self = this;
+         const self = this;
 
          return function() {
 
-             var destination = this;
-             var delegate = self.defineGetter(strategyInfo).bind(this);
+             const destination = this;
+             const delegate = self.defineGetter(strategyInfo).bind(this);
 
              return self.createCallChainFromList({
                  args : createImmutable([]),
@@ -208,7 +207,7 @@ export class Decorator implements Typeioc.Internal.Interceptors.IDecorator {
 
      private defineGetter(strategyInfo : IStrategyInfo)
      {
-         var self = this;
+         const self = this;
          return function() {
            return strategyInfo.contextName ? this[strategyInfo.contextName][strategyInfo.name]
                 : strategyInfo.source[strategyInfo.name];
@@ -217,7 +216,7 @@ export class Decorator implements Typeioc.Internal.Interceptors.IDecorator {
 
      private defineSetter(strategyInfo : IStrategyInfo)
      {
-         var self = this;
+         const self = this;
 
          return function(argValue) {
              if(strategyInfo.contextName) {
@@ -230,37 +229,37 @@ export class Decorator implements Typeioc.Internal.Interceptors.IDecorator {
 
      private createCallChainFromList(info : ICallChainParams) {
 
-         var mainCallInfo = this.createCallInfo(info);
+         const mainCallInfo = this.createCallInfo(info);
          this.createCallAction(mainCallInfo, info.strategyInfo.substitute.next, info);
 
          return info.strategyInfo.substitute.wrapper.call(info.wrapperContext, mainCallInfo);
-
      }
 
      private createCallAction(callInfo : Addons.Interceptors.ICallInfo,
                               substitute : ISubstitute,
                               info : ICallChainParams) {
+        if(!substitute) {
+            return;
+        }
 
-        if(!substitute) return;
-
-        var self = this;
-        var childCallInfo = this.createCallInfo(info);
+        const self = this;
+        const childCallInfo = this.createCallInfo(info);
+        const wrapper = substitute.wrapper.bind(info.wrapperContext); 
 
          callInfo.next = result => {
              childCallInfo.result = result;
-
              self.createCallAction(childCallInfo, substitute.next, info);
-
-             return substitute.wrapper.call(info.wrapperContext, childCallInfo);
+             return wrapper(childCallInfo);
          };
      }
 
      private createCallInfo(info : ICallChainParams) : Addons.Interceptors.ICallInfo {
 
-         var getter = <() => any>info.delegate;
-         var setter = <(any) => void>info.delegate;
+         const getter = <() => any>info.delegate;
+         const setter = <(any) => void>info.delegate;
 
          return {
+             source: info.strategyInfo.source,
              name : info.strategyInfo.name,
              args : info.args.value,
              type : info.callType || info.strategyInfo.substitute.type,

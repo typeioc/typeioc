@@ -73,15 +73,19 @@ export class Decorator implements Decorators.IDecorator {
         return api.by(service);
     }
 
-    public resolveValue(value:any) : ParameterDecorator {
+    public resolveValue(value: any | Function) : ParameterDecorator {
 
         return (target:any, key:string, index:number) => {
 
             const bucket = this._internalStorage.register(target, () => <Internal.IDecoratorResolutionCollection>{});
 
+            const type = Reflection.isFunction(value) ?
+                Internal.DecoratorResolutionParameterType.FunctionValue:
+                Internal.DecoratorResolutionParameterType.Value;
+
             bucket[index] = <Internal.IDecoratorResolutionParams> {
                 value,
-                type: Internal.DecoratorResolutionParameterType.Value
+                type
             };
         };
     }

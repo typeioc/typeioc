@@ -399,6 +399,24 @@ var Resolve;
             __metadata("design:paramtypes", [Object])
         ], Test1);
         ByValue.Test1 = Test1;
+        ByValue.test11 = 'test11';
+        let Test11 = class Test11 extends TestBase {
+            constructor(value) {
+                super();
+                this.value = value;
+            }
+            foo() {
+                return 'Test1 : ' + this.value;
+            }
+        };
+        Test11 = __decorate([
+            exports.decorator
+                .provide(ByValue.test11)
+                .register(),
+            __param(0, exports.decorator.resolveValue(() => 'decorator value func')),
+            __metadata("design:paramtypes", [Object])
+        ], Test11);
+        ByValue.Test11 = Test11;
         class TestBase1 {
             foo() { }
         }

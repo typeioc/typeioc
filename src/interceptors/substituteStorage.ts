@@ -37,7 +37,6 @@ export class SubstituteStorage implements Typeioc.Internal.Interceptors.IStorage
         var key = value.method;
 
         if(!key) {
-
             this.addToTypedStorage(this._unknown, value);
             return;
         }
@@ -61,6 +60,7 @@ export class SubstituteStorage implements Typeioc.Internal.Interceptors.IStorage
     }
 
     public getSubstitutes(name : string, types : Array<Addons.Interceptors.CallInfoType>) : Array<ISubstitute> {
+        
         var item = this._known[name];
 
         if(!item) return [];

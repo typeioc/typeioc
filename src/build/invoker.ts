@@ -92,6 +92,10 @@ export class Invoker implements Internal.IInvoker {
                     return depParamsValue.value;
                 }
 
+                if(depParamsValue.type === Internal.DecoratorResolutionParameterType.FunctionValue) {
+                    return depParamsValue.value();
+                }
+
                 let resolutionItem = depParamsValue.service || dependency;
                 let resolution = this._container.resolveWith(resolutionItem);
 

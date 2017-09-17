@@ -23,13 +23,22 @@ declare module Addons {
             Field = 6
         }
 
+        interface IWithSubstituteResult {
+            withSubstitute: (substitute: ISubstituteInfo) => IWithSubstituteResult;
+            interceptInstance: <R extends Object>(subject: R) => R;
+            interceptPrototype: <R extends Function>(subject: R) => R;
+            intercept: <R extends (Function | Object)>(subject: R) => R;
+        }
+
         interface IInterceptor {
             interceptPrototype<R extends Function>(subject : R, substitutes? : ISubstituteInfo | Array<ISubstituteInfo>) : R;
             interceptInstance<R extends Object>(subject : R, substitutes? : ISubstituteInfo | Array<ISubstituteInfo>) : R;
             intercept<R extends Function | Object>(subject : R, substitutes? : ISubstituteInfo | Array<ISubstituteInfo>) : R;
+            withSubstitute: (substitute: ISubstituteInfo) => IWithSubstituteResult;
         }
 
         interface ICallInfo {
+            source: Object;
             name : string;
             args : Array<any>;
             invoke: (args? : Array<any>) => any;
@@ -41,13 +50,13 @@ declare module Addons {
         }
 
         interface ISubstituteInfo {
-            method? : string;
+            method : string;
             type? : CallInfoType;
-            wrapper : (ICallInfo) => any;
+            wrapper : (callInfo: ICallInfo) => any;
         }
 
         interface ISubstitute extends ISubstituteInfo {
-            method? : string;
+            method : string;
             type : CallInfoType;
             next? : ISubstitute;
         }

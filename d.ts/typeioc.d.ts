@@ -65,7 +65,7 @@ declare module Typeioc {
             provide<R>(service: any) : Register.IInitializedDisposedNamedReusedOwned<R>;
             provideSelf<R>() : Register.IInitializedDisposedNamedReusedOwned<R>;
             by(service? : any) : Decorators.Resolve.IArgsTryNamedCache;
-            resolveValue(value: any) : ParameterDecorator;
+            resolveValue(value: any | Function) : ParameterDecorator;
             register<R>(service: any): Typeioc.IRegistration<R>;
             import(builder: Typeioc.IContainerBuilder): void;
         }

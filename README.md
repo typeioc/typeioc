@@ -28,17 +28,12 @@ Dependency injection container for typescript / javascript.
 - [x] - Custom instance disposal.
 - [x] - Instance scoping.
 - [x] - Instance ownership.
-- [x] - Module registration
 - [x] - Fluent API.
-- [x] - Configuration (JS).
 - [x] - Runtime / Dynamic dependencies substitution.
 - [x] - Cached resolution results.
 - [x] - Interceptors.
 - [x] - ES7 decorators style registration.
-- [x] - ES6 codebase + promises.
-- [x] - Instance lifetime scoping APIs extension.
+- [x] - Asynchronous resolution.
 - [ ] - Group registration.
 - [ ] - Decorative style interceptors.
-- [ ] - In-browser usage support.
 - [ ] - Usage with 3d part libraries.
-- [ ] - Full API documentation.

@@ -19,7 +19,8 @@ declare module Typeioc.Internal {
 
     const enum DecoratorResolutionParameterType {
         Service = 1,
-        Value = 2
+        Value = 2,
+        FunctionValue = 3
     }
     
     module Reflection {
@@ -37,9 +38,9 @@ declare module Typeioc.Internal {
 
         interface IProxy {
             byPrototype(parent : Function,
-                          storage : Typeioc.Internal.Interceptors.IStorage) : Function;
+                        storage? : Typeioc.Internal.Interceptors.IStorage) : Function;
 
-            byInstance(parent : Object, storage : IStorage) : Object;
+            byInstance(parent : Object, storage? : IStorage) : Object;
         }
 
         interface IDecorator {

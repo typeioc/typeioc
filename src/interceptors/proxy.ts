@@ -37,34 +37,33 @@ export class Proxy implements IProxy {
             this._parent = Reflection.construct(parent, arguments);
 
             Object.getOwnPropertyNames(this._parent)
-                .filter(name => name !== 'constructor' &&
-                                name !== 'prototype' &&
-                                (name in this) === false &&
-                                (name in Proxy.prototype) === false)
-                .map(p => self.createStrategyInfo(this._parent, this, p))
-                .forEach(s => self.decorateProperty(s, storage));
+            .filter(name => !isBlackListProperty(name))    
+            .filter(name => (name in this) === false &&
+                    (name in Proxy.prototype) === false)
+            .map(p => self.createStrategyInfo(this._parent, this, p))
+            .forEach(s => self.decorateProperty(s, storage));
         }
 
-        var source = parent.prototype;
+        const source = parent.prototype;
         Reflection.getAllPropertyNames(source)
-                        .filter(name => name !== 'constructor' && name !== 'prototype')
-                        .map(p => self.createStrategyInfo(source, Proxy.prototype, p, '_parent'))
-                        .forEach(s => self.decorateProperty(s, storage));
+            .filter(name => !isBlackListProperty(name))
+            .map(p => self.createStrategyInfo(source, Proxy.prototype, p, '_parent'))
+            .forEach(s => self.decorateProperty(s, storage));
 
         Object.getOwnPropertyNames(parent)
-                        .filter(name =>  self.restrictedProperties.indexOf(name) === -1)
-                        .map(p => self.createStrategyInfo(parent, Proxy, p))
-                        .forEach(s => self.decorateProperty(s, storage));
+            .filter(name =>  self.restrictedProperties.indexOf(name) === -1)
+            .map(p => self.createStrategyInfo(parent, Proxy, p))
+            .forEach(s => self.decorateProperty(s, storage));
 
         return Proxy;
     }
 
-    public byInstance(parent : Object, storage : IStorage) : Object {
+    public byInstance(parent : Object, storage? : IStorage) : Object {
 
-        var result = Object.create({});
+        const result = Object.create({});
 
         Reflection.getAllPropertyNames(parent)
-            .filter(name => name !== 'constructor')
+            .filter(name => !isBlackListProperty(name))
             .map(p => this.createStrategyInfo(parent, result, p))
             .forEach(s => this.decorateProperty(s, storage));
 
@@ -73,7 +72,7 @@ export class Proxy implements IProxy {
 
     private decorateProperty(strategyInfo : IStrategyInfo, storage? : IStorage) {
 
-        var substitutes = [];
+        let substitutes = [];
 
         if(storage) {
             var types = storage.getKnownTypes(strategyInfo.name);
@@ -96,8 +95,8 @@ export class Proxy implements IProxy {
 
     private hasProperType(types: Array<Addons.Interceptors.CallInfoType>, type : Addons.Interceptors.CallInfoType) : boolean {
 
-        var hasAny = types.indexOf(Addons.Interceptors.CallInfoType.Any) >= 0;
-        var hasType = types.indexOf(type) >= 0;
+        const hasAny = types.indexOf(Addons.Interceptors.CallInfoType.Any) >= 0;
+        const hasType = types.indexOf(type) >= 0;
 
         if((types.length == 1 && hasAny) ||
            (types.length == 2 && hasAny  && hasType) ||
@@ -106,43 +105,49 @@ export class Proxy implements IProxy {
         return false;
     }
 
-    private checkProxyCompatibility(propertyName : string,
-                                    types: Array<Addons.Interceptors.CallInfoType>,
-                                    propertyType : Typeioc.Internal.Reflection.PropertyType) {
+    private checkProxyCompatibility(
+        propertyName : string,
+        types: Array<Addons.Interceptors.CallInfoType>,
+        propertyType : Typeioc.Internal.Reflection.PropertyType) {
 
         switch (propertyType) {
             case Typeioc.Internal.Reflection.PropertyType.Method:
 
-                if(this.hasProperType(types, Addons.Interceptors.CallInfoType.Method) === false)
+                if(this.hasProperType(types, Addons.Interceptors.CallInfoType.Method) === false) {
                     throw this.combineError(propertyName, 'Method', types);
+                }
 
                 break;
 
             case Typeioc.Internal.Reflection.PropertyType.Getter:
 
-                if(this.hasProperType(types, Addons.Interceptors.CallInfoType.Getter) === false)
+                if(this.hasProperType(types, Addons.Interceptors.CallInfoType.Getter) === false) {
                     throw this.combineError(propertyName, 'Getter', types);
+                }
 
                 break;
 
             case Typeioc.Internal.Reflection.PropertyType.Setter:
-                if(this.hasProperType(types, Addons.Interceptors.CallInfoType.Setter) === false)
+                if(this.hasProperType(types, Addons.Interceptors.CallInfoType.Setter) === false) {
                     throw this.combineError(propertyName, 'Setter', types);
+                }
 
                 break;
             case Typeioc.Internal.Reflection.PropertyType.FullProperty:
 
                 if(this.hasProperType(types, Addons.Interceptors.CallInfoType.GetterSetter) === false &&
                    this.hasProperType(types, Addons.Interceptors.CallInfoType.Getter) === false &&
-                   this.hasProperType(types, Addons.Interceptors.CallInfoType.Setter)=== false)
+                   this.hasProperType(types, Addons.Interceptors.CallInfoType.Setter)=== false) {
                     throw this.combineError(propertyName, 'GetterSetter', types);
+                }
 
                 break;
 
             case Typeioc.Internal.Reflection.PropertyType.Field:
 
-                if(this.hasProperType(types, Addons.Interceptors.CallInfoType.Field) === false)
+                if(this.hasProperType(types, Addons.Interceptors.CallInfoType.Field) === false) {
                     throw this.combineError(propertyName, 'Field', types);
+                }
 
                 break;
         }
@@ -153,8 +158,8 @@ export class Proxy implements IProxy {
                                name : string,
                                contextName? : string) : IStrategyInfo {
 
-        var descriptor = Reflection.getPropertyDescriptor(source, name);
-        var propertyType = Reflection.getPropertyType(name, descriptor);
+        const descriptor = Reflection.getPropertyDescriptor(source, name);
+        const propertyType = Reflection.getPropertyType(name, descriptor);
 
         return {
             type : propertyType,
@@ -169,20 +174,36 @@ export class Proxy implements IProxy {
 
     private combineError(propertyName : string, nativeTypeName: string, types : Array<Addons.Interceptors.CallInfoType>) {
 
-        var type = types.filter(t => t !== Addons.Interceptors.CallInfoType.Any)[0];
+        const type = types.filter(t => t !== Addons.Interceptors.CallInfoType.Any)[0];
 
-        var allTypes = {};
-        allTypes[Addons.Interceptors.CallInfoType.Field] = 'Field';
-        allTypes[Addons.Interceptors.CallInfoType.Getter] = 'Getter';
-        allTypes[Addons.Interceptors.CallInfoType.Setter] = 'Setter';
-        allTypes[Addons.Interceptors.CallInfoType.Method] = 'Method';
-        allTypes[Addons.Interceptors.CallInfoType.GetterSetter] = 'GetterSetter';
+        const allTypes = {
+            [Addons.Interceptors.CallInfoType.Field]: 'Field',
+            [Addons.Interceptors.CallInfoType.Getter]: 'Getter',
+            [Addons.Interceptors.CallInfoType.Setter]: 'Setter',
+            [Addons.Interceptors.CallInfoType.Method]: 'Method',
+            [Addons.Interceptors.CallInfoType.GetterSetter]: 'GetterSetter'
+        };
 
-        var typeName = allTypes[type];
+        const typeName = allTypes[type];
 
-        var message = ['Could not match proxy type and property type. Expected: "', nativeTypeName, '", Actual: "', typeName, '"'].join('');
-        var error = new ProxyError(message);
+        const message = ['Could not match proxy type and property type. Expected: "', nativeTypeName, '", Actual: "', typeName, '"'].join('');
+        const error = new ProxyError(message);
         error.data = { method : propertyName, expected : nativeTypeName, actual : typeName };
         return error;
     }
+ }
+
+ const blacListProperties = [
+   '__lookupGetter__',
+   '__lookupSetter__',
+   '__proto__',
+   '__defineGetter__',
+   '__defineSetter__',
+   'hasOwnProperty',
+   'propertyIsEnumerable',
+   'constructor'            
+ ];
+
+ const isBlackListProperty = (property: string) => {
+     return blacListProperties.indexOf(property) >= 0;
  }

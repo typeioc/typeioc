@@ -348,6 +348,22 @@ export module Resolve {
             }
         }
 
+        export const test11 = 'test11';
+
+        @decorator
+        .provide<Resolve.ByValue.TestBase>(test11)
+        .register()
+        export class Test11 extends TestBase {
+
+            constructor(@decorator.resolveValue(() => 'decorator value func')  private value) {
+                super();
+            }
+
+            public foo() {
+                return 'Test1 : ' + this.value;
+            }
+        }
+
         export class TestBase1 {
             public foo() {}
         }

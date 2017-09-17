@@ -72,6 +72,10 @@ export class InternalContainer implements Internal.IContainer {
         }
 
         this._collection.clear();
+        
+        for (var member in this._cache)
+            delete this._cache[member];
+
     }
     
     public disposeAsync() : Promise<void> {
@@ -387,6 +391,11 @@ export class InternalContainer implements Internal.IContainer {
             throw new ResolutionError('Missing cache name');
         }
 
-        this._cache[name] = value;
+        Object.defineProperty(this._cache, name, {
+            value,
+            writable : true,
+            enumerable : true,
+            configurable : true
+        });
     }
 }

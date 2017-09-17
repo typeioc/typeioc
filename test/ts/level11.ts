@@ -424,6 +424,7 @@ export module Level11 {
             };
 
             var substitute2 = {
+                method : 'foo',
                 wrapper : function(callInfo) {
 
                     wrapperStub();
@@ -458,6 +459,7 @@ export module Level11 {
             };
 
             var substitute2  = {
+                method : 'foo',
                 wrapper : function(callInfo) {
 
                     wrapperStub();
@@ -494,6 +496,7 @@ export module Level11 {
             };
 
             var substitute2 = {
+                method : 'foo',
                 wrapper : function(callInfo) {
 
                     wrapperStub();
@@ -528,6 +531,7 @@ export module Level11 {
             };
 
             var substitute2 = {
+                method : 'foo',
                 wrapper : function(callInfo) {
                     wrapperStub();
                     var result = callInfo.invoke(callInfo.args);
@@ -646,6 +650,7 @@ export module Level11 {
             };
 
             var substitute2  = {
+                method : 'foo',
                 wrapper : function(callInfo) {
 
                     wrapperStub();
@@ -1265,6 +1270,7 @@ export module Level11 {
             };
 
             var substitute2 = {
+                method : 'foo',
                 wrapper : function(callInfo) {
 
                     wrapperStub();
@@ -1299,6 +1305,7 @@ export module Level11 {
             };
 
             var substitute2  = {
+                method : 'foo',
                 wrapper : function(callInfo) {
 
                     wrapperStub();
@@ -1335,6 +1342,7 @@ export module Level11 {
             };
 
             var substitute2 = {
+                method : 'foo',
                 wrapper : function(callInfo) {
 
                     wrapperStub();

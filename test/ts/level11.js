@@ -282,6 +282,7 @@ var Level11;
                 }
             };
             var substitute2 = {
+                method: 'foo',
                 wrapper: function (callInfo) {
                     wrapperStub();
                     var result = callInfo.invoke(callInfo.args);
@@ -307,6 +308,7 @@ var Level11;
                 }
             };
             var substitute2 = {
+                method: 'foo',
                 wrapper: function (callInfo) {
                     wrapperStub();
                     var result = callInfo.invoke(callInfo.args);
@@ -333,6 +335,7 @@ var Level11;
                 }
             };
             var substitute2 = {
+                method: 'foo',
                 wrapper: function (callInfo) {
                     wrapperStub();
                     var result = callInfo.invoke(callInfo.args);
@@ -358,6 +361,7 @@ var Level11;
                 }
             };
             var substitute2 = {
+                method: 'foo',
                 wrapper: function (callInfo) {
                     wrapperStub();
                     var result = callInfo.invoke(callInfo.args);
@@ -445,6 +449,7 @@ var Level11;
                 }
             };
             var substitute2 = {
+                method: 'foo',
                 wrapper: function (callInfo) {
                     wrapperStub();
                     var args = callInfo.args;
@@ -869,6 +874,7 @@ var Level11;
                 }
             };
             var substitute2 = {
+                method: 'foo',
                 wrapper: function (callInfo) {
                     wrapperStub();
                     var result = callInfo.invoke(callInfo.args);
@@ -894,6 +900,7 @@ var Level11;
                 }
             };
             var substitute2 = {
+                method: 'foo',
                 wrapper: function (callInfo) {
                     wrapperStub();
                     var result = callInfo.invoke(callInfo.args);
@@ -920,6 +927,7 @@ var Level11;
                 }
             };
             var substitute2 = {
+                method: 'foo',
                 wrapper: function (callInfo) {
                     wrapperStub();
                     var result = callInfo.invoke(callInfo.args);
