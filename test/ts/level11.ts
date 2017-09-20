@@ -419,7 +419,8 @@ export module Level11 {
                 wrapper : function(callInfo) {
 
                     wrapperStub();
-                    return 1 + callInfo.result + callInfo.invoke(callInfo.args);
+                    var result = callInfo.invoke(callInfo.args);
+                    return 1 + callInfo.next(result);
                 }
             };
 
@@ -428,8 +429,7 @@ export module Level11 {
                 wrapper : function(callInfo) {
 
                     wrapperStub();
-                    var result = callInfo.invoke(callInfo.args);
-                    return 1 + callInfo.next(result);
+                    return 1 + callInfo.result + callInfo.invoke(callInfo.args);
                 }
             };
 
@@ -454,7 +454,8 @@ export module Level11 {
                 wrapper : function(callInfo) {
 
                     wrapperStub();
-                    return 1 + callInfo.result + callInfo.invoke(callInfo.args);
+                    var result = callInfo.invoke(callInfo.args);
+                    return 1 + callInfo.next(result);
                 }
             };
 
@@ -463,8 +464,7 @@ export module Level11 {
                 wrapper : function(callInfo) {
 
                     wrapperStub();
-                    var result = callInfo.invoke(callInfo.args);
-                    return 1 + callInfo.next(result);
+                    return 1 + callInfo.result + callInfo.invoke(callInfo.args);
                 }
             };
 
@@ -491,7 +491,8 @@ export module Level11 {
                 wrapper : function(callInfo) {
 
                     wrapperStub();
-                    return 1 + callInfo.result + callInfo.invoke(callInfo.args);
+                    var result = callInfo.invoke(callInfo.args);
+                    return 1 + callInfo.next(result);
                 }
             };
 
@@ -500,8 +501,7 @@ export module Level11 {
                 wrapper : function(callInfo) {
 
                     wrapperStub();
-                    var result = callInfo.invoke(callInfo.args);
-                    return 1 + callInfo.next(result);
+                    return 1 + callInfo.result + callInfo.invoke(callInfo.args);
                 }
             };
 
@@ -526,7 +526,8 @@ export module Level11 {
                 wrapper : function(callInfo) {
 
                     wrapperStub();
-                    return 1 + callInfo.result + callInfo.invoke(callInfo.args);
+                    var result = callInfo.invoke(callInfo.args);
+                    return 1 + callInfo.next(result);
                 }
             };
 
@@ -534,8 +535,7 @@ export module Level11 {
                 method : 'foo',
                 wrapper : function(callInfo) {
                     wrapperStub();
-                    var result = callInfo.invoke(callInfo.args);
-                    return 1 + callInfo.next(result);
+                    return 1 + callInfo.result + callInfo.invoke(callInfo.args);
                 }
             };
 
@@ -645,7 +645,11 @@ export module Level11 {
                 wrapper : function(callInfo) {
 
                     wrapperStub();
-                    return 1 + callInfo.result + callInfo.invoke(callInfo.args);
+                    var args = callInfo.args;
+                    args[0] = -1;
+
+                    var result = callInfo.invoke(args);
+                    return 1 + callInfo.next(result);
                 }
             };
 
@@ -654,12 +658,7 @@ export module Level11 {
                 wrapper : function(callInfo) {
 
                     wrapperStub();
-
-                    var args = callInfo.args;
-                    args[0] = -1;
-
-                    var result = callInfo.invoke(args);
-                    return 1 + callInfo.next(result);
+                    return 1 + callInfo.result + callInfo.invoke(callInfo.args);
                 }
             }
 
@@ -1265,7 +1264,8 @@ export module Level11 {
                 wrapper : function(callInfo) {
 
                     wrapperStub();
-                    return 1 + callInfo.result + callInfo.invoke(callInfo.args);
+                    var result = callInfo.invoke(callInfo.args);
+                    return 1 + callInfo.next(result);
                 }
             };
 
@@ -1274,8 +1274,7 @@ export module Level11 {
                 wrapper : function(callInfo) {
 
                     wrapperStub();
-                    var result = callInfo.invoke(callInfo.args);
-                    return 1 + callInfo.next(result);
+                    return 1 + callInfo.result + callInfo.invoke(callInfo.args);
                 }
             };
 
@@ -1300,7 +1299,8 @@ export module Level11 {
                 wrapper : function(callInfo) {
 
                     wrapperStub();
-                    return 1 + callInfo.result + callInfo.invoke(callInfo.args);
+                    var result = callInfo.invoke(callInfo.args);
+                    return 1 + callInfo.next(result);
                 }
             };
 
@@ -1309,8 +1309,7 @@ export module Level11 {
                 wrapper : function(callInfo) {
 
                     wrapperStub();
-                    var result = callInfo.invoke(callInfo.args);
-                    return 1 + callInfo.next(result);
+                    return 1 + callInfo.result + callInfo.invoke(callInfo.args);
                 }
             };
 
@@ -1337,7 +1336,8 @@ export module Level11 {
                 wrapper : function(callInfo) {
 
                     wrapperStub();
-                    return 1 + callInfo.result + callInfo.invoke(callInfo.args);
+                    var result = callInfo.invoke(callInfo.args);
+                    return 1 + callInfo.next(result);
                 }
             };
 
@@ -1346,8 +1346,7 @@ export module Level11 {
                 wrapper : function(callInfo) {
 
                     wrapperStub();
-                    var result = callInfo.invoke(callInfo.args);
-                    return 1 + callInfo.next(result);
+                    return 1 + callInfo.result + callInfo.invoke(callInfo.args);            
                 }
             };
 

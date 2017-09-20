@@ -8,7 +8,6 @@
 
 'use strict';
 
-
 import IIndex = Typeioc.Internal.IIndexedCollection;
 import ISubstitute = Addons.Interceptors.ISubstitute;
 import IList = Typeioc.Internal.IList;
@@ -17,29 +16,18 @@ import IList = Typeioc.Internal.IList;
 export class SubstituteStorage implements Typeioc.Internal.Interceptors.IStorage {
 
     private _known : IIndex<IIndex<IList<ISubstitute>>>;
-    private _unknown : IIndex<IList<ISubstitute>>;
-
+    
     public get known() : IIndex<IIndex<IList<ISubstitute>>> {
         return this._known;
     }
 
-    public get unknown() : IIndex<IList<ISubstitute>> {
-        return this._unknown;
-    }
-
     constructor() {
         this._known = Object.create(null);
-        this._unknown = Object.create(null);
     }
 
     public add(value : ISubstitute) {
 
         var key = value.method;
-
-        if(!key) {
-            this.addToTypedStorage(this._unknown, value);
-            return;
-        }
 
         var item = this._known[key];
 
@@ -81,39 +69,10 @@ export class SubstituteStorage implements Typeioc.Internal.Interceptors.IStorage
                     result = anySubstitute;
                 }
 
-                var unknownSubstitute = this.getUnknownSubstitute(type, name);
-
-                if(unknownSubstitute) {
-                    unknownSubstitute.tail.next = result.head;
-                    unknownSubstitute.tail = result.tail;
-                    result = unknownSubstitute;
-                }
-
                 return result.head;
             });
 
         return items.length > 0 ? items : [ anySubstitute.head ];
-    }
-
-    private getUnknownSubstitute(type : Addons.Interceptors.CallInfoType, name : string) : IList<ISubstitute> {
-
-        var typedSubstitute = this.unknown[type]
-
-        if(typedSubstitute)
-            typedSubstitute = this.copySubstitute(typedSubstitute, name);
-
-        var anySubstitute = this.unknown[Addons.Interceptors.CallInfoType.Any];
-
-        if(!anySubstitute) return typedSubstitute;
-
-        anySubstitute = this.copySubstitute(anySubstitute, name);
-
-        if(!typedSubstitute) return anySubstitute;
-
-        anySubstitute.tail.next = typedSubstitute.head;
-        anySubstitute.tail = typedSubstitute.tail;
-
-        return anySubstitute;
     }
 
     private copySubstitute(list : IList<ISubstitute>, name : string) : IList<ISubstitute> {

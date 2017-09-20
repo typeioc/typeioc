@@ -49,10 +49,10 @@ declare module Typeioc.Internal {
 
         interface IStorage {
             known : IIndexedCollection<IIndexedCollection<IList<Addons.Interceptors.ISubstitute>>>;
-            unknown : IIndexedCollection<IList<Addons.Interceptors.ISubstitute>>;
             add(value : Addons.Interceptors.ISubstitute);
             getKnownTypes(name : string) : Array<Addons.Interceptors.CallInfoType>;
             getSubstitutes(name : string, types : Array<Addons.Interceptors.CallInfoType>) : Array<Addons.Interceptors.ISubstitute>;
+            getSubstitutes2(name : string, types: Array<Addons.Interceptors.CallInfoType>) : Addons.Interceptors.ISubstitute | null;
         }
 
         interface IStrategyInfo {

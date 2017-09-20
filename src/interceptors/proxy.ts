@@ -14,6 +14,8 @@ import IStorage = Typeioc.Internal.Interceptors.IStorage;
 import IProxy  = Typeioc.Internal.Interceptors.IProxy;
 import ISubstitute = Addons.Interceptors.ISubstitute;
 import IStrategyInfo = Typeioc.Internal.Interceptors.IStrategyInfo;
+import CallInfoType = Addons.Interceptors.CallInfoType;
+import PropertyType = Typeioc.Internal.Reflection.PropertyType;
 
 interface IPropertyPredicate {
     (name : string) : boolean;
@@ -22,6 +24,25 @@ interface IPropertyPredicate {
 export class Proxy implements IProxy {
 
     private restrictedProperties;
+
+    private propTypeToDescriptor = {
+        [PropertyType.Method]: [CallInfoType.Any, CallInfoType.Method],
+        [PropertyType.Getter]: [CallInfoType.Any, CallInfoType.Getter],
+        [PropertyType.Setter]: [CallInfoType.Any, CallInfoType.Setter],
+        [PropertyType.FullProperty]: [
+                CallInfoType.Any,
+                CallInfoType.Getter,
+                CallInfoType.Setter,
+                CallInfoType.GetterSetter
+        ],
+        [PropertyType.Field]: [
+            CallInfoType.Any,
+            CallInfoType.Getter,
+            CallInfoType.Setter,
+            CallInfoType.GetterSetter,
+            CallInfoType.Field
+        ]
+    };
 
     constructor(private _decorator : Typeioc.Internal.Interceptors.IDecorator) {
 
@@ -71,26 +92,39 @@ export class Proxy implements IProxy {
     }
 
     private decorateProperty(strategyInfo : IStrategyInfo, storage? : IStorage) {
-
-        let substitutes = [];
-
+        
         if(storage) {
-            var types = storage.getKnownTypes(strategyInfo.name);
-            substitutes = storage.getSubstitutes(strategyInfo.name, types);
-        }
+            const types = this.propTypeToDescriptor[strategyInfo.type];
+            const substitute = storage.getSubstitutes2(strategyInfo.name, types);
 
-        if(substitutes.length) {
-
-            this.checkProxyCompatibility(strategyInfo.name, types, strategyInfo.type);
-
-            substitutes.forEach(item => {
-
-                strategyInfo.substitute = item;
-                this._decorator.wrap(strategyInfo);
-            });
-        } else {
+            strategyInfo.substitute = substitute;
             this._decorator.wrap(strategyInfo);
+
+            return;
         }
+
+        this._decorator.wrap(strategyInfo);
+        
+        
+        // let substitutes = [];
+
+        // if(storage) {
+        //     var types = storage.getKnownTypes(strategyInfo.name);
+        //     substitutes = storage.getSubstitutes(strategyInfo.name, types);
+        // }
+
+        // if(substitutes.length) {
+
+        //     this.checkProxyCompatibility(strategyInfo.name, types, strategyInfo.type);
+
+        //     substitutes.forEach(item => {
+
+        //         strategyInfo.substitute = item;
+        //         this._decorator.wrap(strategyInfo);
+        //     });
+        // } else {
+        //     this._decorator.wrap(strategyInfo);
+        // }
     }
 
     private hasProperType(types: Array<Addons.Interceptors.CallInfoType>, type : Addons.Interceptors.CallInfoType) : boolean {
@@ -193,7 +227,7 @@ export class Proxy implements IProxy {
     }
  }
 
- const blacListProperties = [
+ const blackListProperties = [
    '__lookupGetter__',
    '__lookupSetter__',
    '__proto__',
@@ -205,5 +239,5 @@ export class Proxy implements IProxy {
  ];
 
  const isBlackListProperty = (property: string) => {
-     return blacListProperties.indexOf(property) >= 0;
+     return blackListProperties.indexOf(property) >= 0;
  }

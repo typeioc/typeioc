@@ -278,15 +278,15 @@ var Level11;
                 type: CallInfoType.Method,
                 wrapper: function (callInfo) {
                     wrapperStub();
-                    return 1 + callInfo.result + callInfo.invoke(callInfo.args);
+                    var result = callInfo.invoke(callInfo.args);
+                    return 1 + callInfo.next(result);
                 }
             };
             var substitute2 = {
                 method: 'foo',
                 wrapper: function (callInfo) {
                     wrapperStub();
-                    var result = callInfo.invoke(callInfo.args);
-                    return 1 + callInfo.next(result);
+                    return 1 + callInfo.result + callInfo.invoke(callInfo.args);
                 }
             };
             var Proto = resolve(DataInterceptors.Module24.Parent, DataInterceptors.Module24.Parent, [substitute1, substitute2]);
@@ -304,15 +304,15 @@ var Level11;
                 type: CallInfoType.Method,
                 wrapper: function (callInfo) {
                     wrapperStub();
-                    return 1 + callInfo.result + callInfo.invoke(callInfo.args);
+                    var result = callInfo.invoke(callInfo.args);
+                    return 1 + callInfo.next(result);
                 }
             };
             var substitute2 = {
                 method: 'foo',
                 wrapper: function (callInfo) {
                     wrapperStub();
-                    var result = callInfo.invoke(callInfo.args);
-                    return 1 + callInfo.next(result);
+                    return 1 + callInfo.result + callInfo.invoke(callInfo.args);
                 }
             };
             var Proto = resolve(DataInterceptors.Module25.Parent, DataInterceptors.Module25.Parent, [substitute1, substitute2]);
@@ -331,15 +331,15 @@ var Level11;
                 type: CallInfoType.Method,
                 wrapper: function (callInfo) {
                     wrapperStub();
-                    return 1 + callInfo.result + callInfo.invoke(callInfo.args);
+                    var result = callInfo.invoke(callInfo.args);
+                    return 1 + callInfo.next(result);
                 }
             };
             var substitute2 = {
                 method: 'foo',
                 wrapper: function (callInfo) {
                     wrapperStub();
-                    var result = callInfo.invoke(callInfo.args);
-                    return 1 + callInfo.next(result);
+                    return 1 + callInfo.result + callInfo.invoke(callInfo.args);
                 }
             };
             var Proto = resolve(DataInterceptors.Module26.Parent, DataInterceptors.Module26.Parent, [substitute1, substitute2]);
@@ -357,15 +357,15 @@ var Level11;
                 type: CallInfoType.Method,
                 wrapper: function (callInfo) {
                     wrapperStub();
-                    return 1 + callInfo.result + callInfo.invoke(callInfo.args);
+                    var result = callInfo.invoke(callInfo.args);
+                    return 1 + callInfo.next(result);
                 }
             };
             var substitute2 = {
                 method: 'foo',
                 wrapper: function (callInfo) {
                     wrapperStub();
-                    var result = callInfo.invoke(callInfo.args);
-                    return 1 + callInfo.next(result);
+                    return 1 + callInfo.result + callInfo.invoke(callInfo.args);
                 }
             };
             DataInterceptors.Module27.stub = stub;
@@ -445,17 +445,17 @@ var Level11;
                 type: CallInfoType.Method,
                 wrapper: function (callInfo) {
                     wrapperStub();
-                    return 1 + callInfo.result + callInfo.invoke(callInfo.args);
+                    var args = callInfo.args;
+                    args[0] = -1;
+                    var result = callInfo.invoke(args);
+                    return 1 + callInfo.next(result);
                 }
             };
             var substitute2 = {
                 method: 'foo',
                 wrapper: function (callInfo) {
                     wrapperStub();
-                    var args = callInfo.args;
-                    args[0] = -1;
-                    var result = callInfo.invoke(args);
-                    return 1 + callInfo.next(result);
+                    return 1 + callInfo.result + callInfo.invoke(callInfo.args);
                 }
             };
             DataInterceptors.Module30.stub = stub;
@@ -870,15 +870,15 @@ var Level11;
                 type: CallInfoType.Method,
                 wrapper: function (callInfo) {
                     wrapperStub();
-                    return 1 + callInfo.result + callInfo.invoke(callInfo.args);
+                    var result = callInfo.invoke(callInfo.args);
+                    return 1 + callInfo.next(result);
                 }
             };
             var substitute2 = {
                 method: 'foo',
                 wrapper: function (callInfo) {
                     wrapperStub();
-                    var result = callInfo.invoke(callInfo.args);
-                    return 1 + callInfo.next(result);
+                    return 1 + callInfo.result + callInfo.invoke(callInfo.args);
                 }
             };
             var object = new DataInterceptors.Module24.Parent(stub, 1);
@@ -896,15 +896,15 @@ var Level11;
                 type: CallInfoType.Method,
                 wrapper: function (callInfo) {
                     wrapperStub();
-                    return 1 + callInfo.result + callInfo.invoke(callInfo.args);
+                    var result = callInfo.invoke(callInfo.args);
+                    return 1 + callInfo.next(result);
                 }
             };
             var substitute2 = {
                 method: 'foo',
                 wrapper: function (callInfo) {
                     wrapperStub();
-                    var result = callInfo.invoke(callInfo.args);
-                    return 1 + callInfo.next(result);
+                    return 1 + callInfo.result + callInfo.invoke(callInfo.args);
                 }
             };
             var object = new DataInterceptors.Module25.Parent(stub, 1);
@@ -923,15 +923,15 @@ var Level11;
                 type: CallInfoType.Method,
                 wrapper: function (callInfo) {
                     wrapperStub();
-                    return 1 + callInfo.result + callInfo.invoke(callInfo.args);
+                    var result = callInfo.invoke(callInfo.args);
+                    return 1 + callInfo.next(result);
                 }
             };
             var substitute2 = {
                 method: 'foo',
                 wrapper: function (callInfo) {
                     wrapperStub();
-                    var result = callInfo.invoke(callInfo.args);
-                    return 1 + callInfo.next(result);
+                    return 1 + callInfo.result + callInfo.invoke(callInfo.args);
                 }
             };
             var object = new DataInterceptors.Module26.Parent(stub, 1);

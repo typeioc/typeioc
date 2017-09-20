@@ -297,9 +297,7 @@ exports.api = {
             instance_setter_recieves_original_object: (test) => {
                 
                 const subject = {
-                    
                     value1: 3,
-
                     value2: null,
                     
                     set value(value) {
@@ -431,13 +429,48 @@ exports.api = {
                     }
                 })
                 .intercept(Math);
-                
-
+               
                 const protoI = new ProtoI();
                 
                 test.strictEqual(protoI.pow(2, 3), 5);
                 test.strictEqual(math.pow(2, 3), 5);
 
+                test.done();
+            },
+
+            intercept_mixed_chain: (test) => {
+
+                const MathTest = {
+                    pow (a, b) {
+                        return Math.pow(a, b);
+                    }
+                };
+
+                const math = interceptor.intercept(MathTest, [{
+                    method: 'pow',
+                    type: Interceptors.CallInfoType.Method,
+                    wrapper: (callInfo) => {
+                        return callInfo.next(callInfo.args[0] + callInfo.args[1]);
+                    }
+                },{
+                    method: 'pow',
+                    wrapper: (callInfo) => {
+                        return callInfo.next(`${callInfo.result} 1`);
+                    }
+                }, {
+                    method: 'pow',
+                    type: Interceptors.CallInfoType.Method,
+                    wrapper: (callInfo) => {
+                        return callInfo.next(`${callInfo.result} 2`);
+                    }
+                }, {
+                    method: 'pow',
+                    wrapper: (callInfo) => {
+                        return `${callInfo.result} 3`;    
+                    }
+                }]);
+
+                test.strictEqual(math.pow(2, 3), '5 1 2 3');
                 test.done();
             }
         }
