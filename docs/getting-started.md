@@ -38,7 +38,7 @@ class SimpleClass {
 
 There are a couple of problems with the code above.
 
-SimpleClass knows "too much" about details of NotSoSimpleClass. For example, nin future NotSoSimpleClass might take dependencies on its own to compliate things even more. Instantiaton of _notSoSimple property might be moved to any arbitrary method of SimpleClass creating not so clear dependency. Unit testing SimpleClass requires substitution on _notSoSimple with some sort of mock, yet setting up different value for the private property. Effectively, this way unit test knows "too much" about SimpleClass internal details.
+SimpleClass knows "too much" about details of NotSoSimpleClass. For example, in future NotSoSimpleClass might take dependencies on its own to complicate things even more. Instantiation of _notSoSimple property might be moved to any arbitrary method of SimpleClass creating not so clear dependency. Unit testing SimpleClass requires substitution on _notSoSimple with some sort of mock, yet setting up different value for the private property. Effectively, this way unit test knows "too much" about SimpleClass internal details.
 
 Let's rewrite SimpleClass slightly differently.
 

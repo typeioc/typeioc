@@ -15,9 +15,6 @@ Dependency injection container for typescript / javascript.
 
 <br/>
 
-####[Documentation](https://github.com)
-
-
 ####Features
 
 - [x] - Type compliance checking.

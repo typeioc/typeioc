@@ -8,6 +8,7 @@
     "lib": "./lib"
   },
   "dependencies": {
+    "gitbook-plugin-github": "^2.0.0",
     "gitbook-plugin-prism": "^2.3.0",
     "hashes": "0.1.4",
     "reflect-metadata": "0.1.10"
