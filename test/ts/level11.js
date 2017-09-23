@@ -1126,6 +1126,26 @@ var Level11;
             test.strictEqual(4, barStub.callCount);
             test.strictEqual(4, barWrapperStub.callCount);
             test.done();
+        },
+        should_decorate: function (test) {
+            const math = interceptor.intercept(Math, [{
+                    wrapper: (callInfo) => callInfo.next(`${callInfo.result} 2`)
+                }, {
+                    method: 'pow',
+                    wrapper: (callInfo) => callInfo.next(callInfo.args[0] + callInfo.args[1])
+                }, {
+                    wrapper: (callInfo) => `${callInfo.result} 3`
+                }, {
+                    method: 'pow',
+                    wrapper: (callInfo) => callInfo.next(`${callInfo.result} 1`)
+                }, {
+                    method: 'round',
+                    wrapper: (callInfo) => callInfo.next(callInfo.args[0])
+                }
+            ]);
+            test.strictEqual('5 1 2 3', math.pow(2, 3));
+            test.strictEqual('5.777 2 3', math.round(5.777));
+            test.done();
         }
     };
 })(Level11 = exports.Level11 || (exports.Level11 = {}));

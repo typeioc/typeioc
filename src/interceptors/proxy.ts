@@ -95,7 +95,7 @@ export class Proxy implements IProxy {
         
         if(storage) {
             const types = this.propTypeToDescriptor[strategyInfo.type];
-            const substitute = storage.getSubstitutes2(strategyInfo.name, types);
+            const substitute = storage.getSubstitutes(strategyInfo.name, types);
 
             strategyInfo.substitute = substitute;
             this._decorator.wrap(strategyInfo);
@@ -104,87 +104,6 @@ export class Proxy implements IProxy {
         }
 
         this._decorator.wrap(strategyInfo);
-        
-        
-        // let substitutes = [];
-
-        // if(storage) {
-        //     var types = storage.getKnownTypes(strategyInfo.name);
-        //     substitutes = storage.getSubstitutes(strategyInfo.name, types);
-        // }
-
-        // if(substitutes.length) {
-
-        //     this.checkProxyCompatibility(strategyInfo.name, types, strategyInfo.type);
-
-        //     substitutes.forEach(item => {
-
-        //         strategyInfo.substitute = item;
-        //         this._decorator.wrap(strategyInfo);
-        //     });
-        // } else {
-        //     this._decorator.wrap(strategyInfo);
-        // }
-    }
-
-    private hasProperType(types: Array<Addons.Interceptors.CallInfoType>, type : Addons.Interceptors.CallInfoType) : boolean {
-
-        const hasAny = types.indexOf(Addons.Interceptors.CallInfoType.Any) >= 0;
-        const hasType = types.indexOf(type) >= 0;
-
-        if((types.length == 1 && hasAny) ||
-           (types.length == 2 && hasAny  && hasType) ||
-           (types.length == 1 && hasType)) return true;
-
-        return false;
-    }
-
-    private checkProxyCompatibility(
-        propertyName : string,
-        types: Array<Addons.Interceptors.CallInfoType>,
-        propertyType : Typeioc.Internal.Reflection.PropertyType) {
-
-        switch (propertyType) {
-            case Typeioc.Internal.Reflection.PropertyType.Method:
-
-                if(this.hasProperType(types, Addons.Interceptors.CallInfoType.Method) === false) {
-                    throw this.combineError(propertyName, 'Method', types);
-                }
-
-                break;
-
-            case Typeioc.Internal.Reflection.PropertyType.Getter:
-
-                if(this.hasProperType(types, Addons.Interceptors.CallInfoType.Getter) === false) {
-                    throw this.combineError(propertyName, 'Getter', types);
-                }
-
-                break;
-
-            case Typeioc.Internal.Reflection.PropertyType.Setter:
-                if(this.hasProperType(types, Addons.Interceptors.CallInfoType.Setter) === false) {
-                    throw this.combineError(propertyName, 'Setter', types);
-                }
-
-                break;
-            case Typeioc.Internal.Reflection.PropertyType.FullProperty:
-
-                if(this.hasProperType(types, Addons.Interceptors.CallInfoType.GetterSetter) === false &&
-                   this.hasProperType(types, Addons.Interceptors.CallInfoType.Getter) === false &&
-                   this.hasProperType(types, Addons.Interceptors.CallInfoType.Setter)=== false) {
-                    throw this.combineError(propertyName, 'GetterSetter', types);
-                }
-
-                break;
-
-            case Typeioc.Internal.Reflection.PropertyType.Field:
-
-                if(this.hasProperType(types, Addons.Interceptors.CallInfoType.Field) === false) {
-                    throw this.combineError(propertyName, 'Field', types);
-                }
-
-                break;
-        }
     }
 
     private createStrategyInfo(source : Function | Object,
@@ -204,26 +123,6 @@ export class Proxy implements IProxy {
             destination : destination,
             contextName : contextName
         };
-    }
-
-    private combineError(propertyName : string, nativeTypeName: string, types : Array<Addons.Interceptors.CallInfoType>) {
-
-        const type = types.filter(t => t !== Addons.Interceptors.CallInfoType.Any)[0];
-
-        const allTypes = {
-            [Addons.Interceptors.CallInfoType.Field]: 'Field',
-            [Addons.Interceptors.CallInfoType.Getter]: 'Getter',
-            [Addons.Interceptors.CallInfoType.Setter]: 'Setter',
-            [Addons.Interceptors.CallInfoType.Method]: 'Method',
-            [Addons.Interceptors.CallInfoType.GetterSetter]: 'GetterSetter'
-        };
-
-        const typeName = allTypes[type];
-
-        const message = ['Could not match proxy type and property type. Expected: "', nativeTypeName, '", Actual: "', typeName, '"'].join('');
-        const error = new ProxyError(message);
-        error.data = { method : propertyName, expected : nativeTypeName, actual : typeName };
-        return error;
     }
  }
 

@@ -11,3 +11,4 @@ samples
 src/*.js
 src/*.js.map
 test/coverage/
+test/**/*.js.map

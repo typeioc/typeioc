@@ -50,13 +50,13 @@ declare module Addons {
         }
 
         interface ISubstituteInfo {
-            method : string;
+            method? : string;
             type? : CallInfoType;
             wrapper : (callInfo: ICallInfo) => any;
         }
 
         interface ISubstitute extends ISubstituteInfo {
-            method : string;
+            method? : string;
             type : CallInfoType;
             next? : ISubstitute;
         }

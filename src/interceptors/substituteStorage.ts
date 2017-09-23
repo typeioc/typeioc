@@ -1,124 +1,124 @@
-/*---------------------------------------------------------------------------------------------------
- * Copyright (c) 2017 Maxim Gherman
- * typeioc - Dependency injection container for node typescript / javascript
- * @version v2.1.1
- * @link https://github.com/maxgherman/TypeIOC
- * @license MIT
- * --------------------------------------------------------------------------------------------------*/
-
 'use strict';
 
+import { ProxyError } from '../exceptions';
 import IIndex = Typeioc.Internal.IIndexedCollection;
 import ISubstitute = Addons.Interceptors.ISubstitute;
+import CallInfoType = Addons.Interceptors.CallInfoType;
 import IList = Typeioc.Internal.IList;
 
 
 export class SubstituteStorage implements Typeioc.Internal.Interceptors.IStorage {
-
-    private _known : IIndex<IIndex<IList<ISubstitute>>>;
+    private _known: IIndex<IList<ISubstitute>>;
+    private _unknown: IList<ISubstitute>;
     
-    public get known() : IIndex<IIndex<IList<ISubstitute>>> {
-        return this._known;
-    }
-
     constructor() {
         this._known = Object.create(null);
+        this._unknown = { head: null, tail: null };
     }
 
-    public add(value : ISubstitute) {
-
-        var key = value.method;
-
-        var item = this._known[key];
-
-        if(!item) {
-            item = {};
-            this._known[key] = item;
+    public add(value: ISubstitute) {
+        if(value.method) {
+            this.addKnownSubstitute(value);    
+        } else {
+            this.addUnknownSubstitute(value);
         }
-
-        this.addToTypedStorage(item, value);
     }
 
-    public getKnownTypes(name : string) : Array<Addons.Interceptors.CallInfoType> {
-        var item = this._known[name];
-
-        if(!item) return [];
-
-        return Object.getOwnPropertyNames(item).map(item => ~~item);
-    }
-
-    public getSubstitutes(name : string, types : Array<Addons.Interceptors.CallInfoType>) : Array<ISubstitute> {
+    getSubstitutes(name : string, types: CallInfoType[]): ISubstitute | null {
         
-        var item = this._known[name];
+        const unknown = this._unknown.head ? 
+            this.copyList(
+                this._unknown,
+                (value) => !value.type || types.indexOf(value.type) >=0 )
+            :
+            null;
 
-        if(!item) return [];
+        const bucket = this._known[name];
 
-        var anySubstitute = item[Addons.Interceptors.CallInfoType.Any];
-        if(anySubstitute) {
-            anySubstitute = this.copySubstitute(anySubstitute, name);
+        if(!bucket) {
+            return unknown ? unknown.head : null;
         }
 
-        var items = types.filter(type => type !== Addons.Interceptors.CallInfoType.Any)
-            .map(type => {
+        const result = this.copyList(bucket, (value) => {
+            if(!value.type || types.indexOf(value.type) >= 0) {
+                return true;
+            }
+            
+            throw this.createIncompatibleTypeError(value.type, types);
+         });
 
-                var result = this.copySubstitute(item[type], name);
+        result.tail.next = unknown ? unknown.head : result.tail.next;
 
-                if(anySubstitute) {
-                    anySubstitute.tail.next = result.head;
-                    anySubstitute.tail = result.tail;
-                    result = anySubstitute;
-                }
-
-                return result.head;
-            });
-
-        return items.length > 0 ? items : [ anySubstitute.head ];
+        return result.head;
     }
 
-    private copySubstitute(list : IList<ISubstitute>, name : string) : IList<ISubstitute> {
+    private addKnownSubstitute(value: ISubstitute) {
+        const method = value.method;
+        const bucket = this._known[method] || { head: null, tail: null };
 
-        var result = {
-            head : undefined,
-            tail : undefined
+        this.addToList(value, bucket);
+        this._known[method] = bucket;
+    }
+
+    private addUnknownSubstitute(value: ISubstitute) {
+        this.addToList(value, this._unknown);
+    }
+
+    private createIncompatibleTypeError(type: CallInfoType, types: CallInfoType[]) {
+
+        const typeMessage = types.map(item => this.callTypeToString(item)).join(', ');
+
+        const message = 
+        `Could not match proxy type and property type. Expected one of: ${typeMessage}. Actual: ${this.callTypeToString(type)}`;
+        const error = new ProxyError(message);
+        return error;
+    }
+
+    private addToList(value: ISubstitute, list: IList<ISubstitute>) {
+        if(!list.head) {
+            list.head = value;
+            list.tail = value;
+        } else {
+            list.tail.next = value;
+            list.tail = value;
+        }
+    }
+
+    private copyList(list: IList<ISubstitute>, predicate: (value: ISubstitute) => boolean): IList<ISubstitute> {
+        
+        const result = {
+            head: null,
+            tail: null
         };
-        var head = list.head;
 
-        while(head) {
+        let current = list.head;
 
-            var substitute = {
-                method : head.method || name,
-                type : head.type,
-                wrapper : head.wrapper
-            };
+        while(current) {
+            if(predicate(current)) {
+                
+                const substitute = {
+                    method : current.method,
+                    type : current.type,
+                    wrapper : current.wrapper
+                };
 
-            if(!result.head) {
-                result.head = substitute;
-                result.tail = substitute;
-            } else {
-                result.tail.next = substitute;
-                result.tail = result.tail.next;
+                this.addToList(substitute, result);
             }
 
-            head = head.next;
+            current = current.next;
         }
 
         return result;
     }
 
-
-    private addToTypedStorage(storage : IIndex<IList<ISubstitute>>, substitute : ISubstitute) {
-        var item = storage[substitute.type];
-
-        if(!item) {
-            item = {
-                head : substitute,
-                tail : substitute
-            };
-
-            storage[substitute.type] = item;
-        } else {
-            item.tail.next = substitute;
-            item.tail = item.tail.next;
+    private callTypeToString(type: CallInfoType): string {
+        switch(type) {
+            case CallInfoType.Any: return 'Any';
+            case CallInfoType.Field: return 'Field';
+            case CallInfoType.Getter: return 'Getter';
+            case CallInfoType.Setter: return 'Setter';
+            case CallInfoType.GetterSetter: return 'GetterSetter';
+            case CallInfoType.Method: return 'Method';
         }
     }
 }

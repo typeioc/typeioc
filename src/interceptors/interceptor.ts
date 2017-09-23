@@ -10,7 +10,7 @@
 
 import { Reflection, checkNullArgument } from '../utils';
 import { ArgumentError } from '../exceptions';
-import { SubstituteStorage2 } from './substituteStorage2';
+import { SubstituteStorage } from './substituteStorage';
 import IStorage = Typeioc.Internal.Interceptors.IStorage;
 import IProxy = Typeioc.Internal.Interceptors.IProxy;
 import ISubstituteInfo = Addons.Interceptors.ISubstituteInfo;
@@ -39,7 +39,7 @@ export class Interceptor implements Addons.Interceptors.IInterceptor {
     public withSubstitute(substitute: ISubstituteInfo): Addons.Interceptors.IWithSubstituteResult {
         checkNullArgument(substitute.method, 'method');
 
-        const storage = new SubstituteStorage2();
+        const storage = new SubstituteStorage();
 
         const interceptInstance = <R>(subject): R => {
             return this._proxy.byInstance(subject, storage) as R;
@@ -89,14 +89,8 @@ export class Interceptor implements Addons.Interceptors.IInterceptor {
     
         var data : any = substitutes;
 
-        if(data) {
-            if(!Reflection.isArray(data)) {
-                data = [ substitutes ];
-            }
-
-            data.forEach(element => {
-                checkNullArgument(element.method, 'method');    
-            });
+        if(data && !Reflection.isArray(data)) {
+            data = [ substitutes ];
         }
 
         return data ? this.transformSubstitutes(data) : null;
@@ -122,7 +116,7 @@ export class Interceptor implements Addons.Interceptors.IInterceptor {
 
     private transformSubstitutes(substitutes : Array<ISubstituteInfo>) : IStorage {
 
-        const storage = new SubstituteStorage2();
+        const storage = new SubstituteStorage();
 
         return substitutes.reduce((storage, current) => {
             const substitute = this.createSubstitute(current);

@@ -5,46 +5,13 @@ When multiple substitutions for the same member provided, they form an execution
 * Multiple substitutions with the same method name.
     The simplest scenario. We deliberately specify multiple interceptors for the same member.
 
-* Multiple substitutions with no type.
-    Substitutions with no type specified for a member.
+* Multiple substitutions with no member name
+    Substitutions with no member name specified apply to all members.
 
 ## Invocation priorities
 
 Multiple substitutions for the same member form a chain of prioritized calls.
 
-* Substitutes with no type take higher priority than substitutes with type specified.
+* Substitutes with member name take higher priority than substitutes with no member specified.
 
 * Substitutes of the same priority are invoked in the order they where defined.
-
-#### Typescript
-
-```typescript
-import * as Addons from 'typeioc/addons';
-import Interceptors = Addons.Interceptors;
-
-const interceptor = Interceptors.create();
-
-const math = interceptor.intercept(Math, [{
-    method: 'pow',
-    type: Interceptors.CallInfoType.Method,
-    wrapper: (callInfo) => {
-        return callInfo.next(`${callInfo.result} 2`);
-    }
-},{
-    method: 'pow',
-    wrapper: (callInfo) => {
-        return callInfo.next(callInfo.args[0] + callInfo.args[1]);
-    }
-}, {
-    method: 'pow',
-    type: Interceptors.CallInfoType.Method,
-    wrapper: (callInfo) => {
-        return `${callInfo.result} 3`;
-    }
-}, {
-    method: 'pow',
-    wrapper: (callInfo) => {
-        return callInfo.next(`${callInfo.result} 1`);
-    }
-}]);
-```

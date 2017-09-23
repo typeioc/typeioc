@@ -30,7 +30,7 @@ exports.internal = {
             include = include || 'foo';
 
             return {
-                getSubstitutes2 : function(p) {
+                getSubstitutes : function(p) {
                     return p === include ? substitutes[0] : null;
                 }
             };
