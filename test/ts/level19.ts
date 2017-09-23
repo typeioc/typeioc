@@ -480,6 +480,28 @@ export module Level19 {
 
             test.strictEqual(math.pow(2, 3), '5 1 2 3');
             test.done();
+        },
+
+        intercept_throws_when_incompatible_types: (test) => {
+            
+            const subject = {
+                field: 1
+            };
+
+            const delegate = () => { 
+                interceptor.intercept(subject, {
+                    method: 'field',
+                    type: 1,
+                    wrapper: () => {}
+                });
+            };
+
+            test.throws(delegate, function (err) {
+                return (err instanceof scaffold.Exceptions.ProxyError) && 
+                /Could not match proxy type and property type. Expected one of: Any, Getter, Setter, GetterSetter, Field. Actual: Method/.test(err.message);
+            });
+
+            test.done();
         }
     }
 }
