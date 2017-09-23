@@ -13,23 +13,23 @@
     "reflect-metadata": "0.1.10"
   },
   "devDependencies": {
-    "@types/node": "^8.0.20",
+    "@types/node": "8.0.30",
     "codeclimate-test-reporter": "0.5.0",
     "coveralls": "2.13.1",
     "del": "3.0.0",
-    "gitbook-cli": "^2.3.2",
-    "gitbook-plugin-anchorjs": "^1.1.1",
-    "gitbook-plugin-github": "^2.0.0",
-    "gitbook-plugin-prism": "^2.2.1",
-    "gitbook-plugin-sectionx": "^3.1.0",
+    "gitbook-cli": "2.3.2",
+    "gitbook-plugin-anchorjs": "1.1.1",
+    "gitbook-plugin-github": "3.0.0",
+    "gitbook-plugin-prism": "2.2.1",
+    "gitbook-plugin-sectionx": "3.1.0",
     "gulp": "3.9.1",
     "gulp-header": "1.8.9",
     "gulp-replace": "0.6.1",
     "gulp-util": "3.0.8",
     "istanbul": "0.4.5",
     "nodeunit": "0.11.1",
-    "run-sequence": "2.1.0",
-    "sinon": "^3.1.0"
+    "sinon": "3.3.0",
+    "run-sequence": "2.2.0"
   },
   "engines": {
     "node": ">=4.5.0"
