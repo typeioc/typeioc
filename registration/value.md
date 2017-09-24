@@ -2,6 +2,8 @@
 
 Value registration is the simplest form of registration. It is useful when no type construction / factory invocation needed at all. We are just registering a value of any type as is to be used by different components. To register a value, we have to use method **asValue** of builder registration.
 
+### Synopsis
+
 ```typescript
 /**
 * @param {any} value - value to be registered

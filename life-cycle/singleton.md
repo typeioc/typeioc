@@ -2,6 +2,8 @@
 
 Singleton life time cycle prescribes instances to be created only once regardless of scope nesting level. In other words, every single resolution of the same service will return the instance for exactly the same component.
 
+### Synopsis
+
 ```typescript
 /**
 * Specifies singleton resolution.

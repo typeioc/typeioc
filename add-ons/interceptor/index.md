@@ -14,6 +14,8 @@ Interceptor add-on is used to intercept calls to methods/getters/setters/fields 
 
 * Multiple substitution chains
 
+### Synopsis
+
 ```typescript
 /** Returns an instance of interceptors factory
 */
@@ -97,7 +99,8 @@ interface ICallInfo {
 * check substitution chains for more details
 * @returns {R} - decorated instance
 */
-interceptor.interceptInstance<R extends Object>(subject : R, substitutes? : ISubstituteInfo | Array<ISubstituteInfo>) : R;
+interceptor.interceptInstance<R extends Object>
+(subject : R, substitutes? : ISubstituteInfo | Array<ISubstituteInfo>) : R;
 
 /** Substitutes members of a prototypical/constructable function
 * @param {R} - subject, prototypical/constructable function
@@ -107,7 +110,8 @@ interceptor.interceptInstance<R extends Object>(subject : R, substitutes? : ISub
 * check substitution chains for more details
 * @returns {R} - decorated prototype
 */
-interceptor.interceptPrototype<R extends Function>(subject : R, substitutes? : ISubstituteInfo | Array<ISubstituteInfo>) : R;
+interceptor.interceptPrototype<R extends Function>
+(subject : R, substitutes? : ISubstituteInfo | Array<ISubstituteInfo>) : R;
 
 
 /** Substitutes members of a given subject. For instances of a object
@@ -121,7 +125,8 @@ interceptor.interceptPrototype<R extends Function>(subject : R, substitutes? : I
 * check substitution chains for more details
 * @returns {R} - decorated subject
 */
-interceptor.intercept<R extends Function | Object>(subject : R, substitutes? : ISubstituteInfo | Array<ISubstituteInfo>) : R;
+interceptor.intercept<R extends Function | Object>
+(subject : R, substitutes? : ISubstituteInfo | Array<ISubstituteInfo>) : R;
 ```
 
 #### TypeScript

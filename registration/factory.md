@@ -2,6 +2,8 @@
 
 Factory registration is the most generic type of registration. It accepts a lambda expression to register a service. Lambda expression serves as a factory method when service registration is resolved. To register a lambda expression, we have to use method **as** exposed by a builder registration. It takes a lambda as a parameter that has to return an instance of a service.
 
+### Synopsis
+
 ```typescript
 interface IFactory<T> {
     /**

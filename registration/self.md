@@ -2,6 +2,8 @@
 
 Self registration is very similar to type registration, hence shares same benefits and limitations. For self registration we are registering a type as a type itself to participate in resolution process. To register a type, we have to use method **asSelf** of builder registration.
 
+
+
 ```typescript
 /**
 * Service registration using construct-able type as self

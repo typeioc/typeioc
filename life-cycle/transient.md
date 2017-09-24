@@ -2,6 +2,8 @@
 
 When transient life time cycle is chosen during registration of a specific service, every single resolution / request of that service returns new component instance. This rule applies to factory registration - factory function will be called for every request, as well as type and self registrations - new instances of component will be created. Value resolution would return the same value though. Transient resolution rule spreads across life time scops as well. Every nested container will return a new instance as well.
 
+### Synopsis
+
 ```typescript
 /**
 * Specifies transient resolution.

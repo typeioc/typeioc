@@ -2,6 +2,8 @@
 
 Service registration uses class level decorator to bind a real component to the service under resolution. For the components, ony **class** level decorations are supported. All registration entries start with the method **provide** and are finalized with a method **register**. The rest of the methods are optional. They follow cascading fluent interface and specify registration additional details.
 
+### Synopsis
+
 ```typescript
 /**
 * Service registration

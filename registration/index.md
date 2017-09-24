@@ -16,6 +16,8 @@ Depending on a type of registration chosen, there are certain constraints applie
 
 To register a service, we have to create an instance of ContainerBuilder object. It exposes method **register** for all forms of registration.
 
+### Synopsis
+
 ```typescript
 /**
 * Service registration
