@@ -1,6 +1,6 @@
 {
   "name": "typeioc",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Dependency injection container for node typescript / javascript",
   "homepage": "https://github.com/maxgherman/TypeIOC",
   "main": "./index",
@@ -46,7 +46,7 @@
     "docs:prepare": "gitbook install",
     "docs:watch": "npm run docs:prepare && gitbook serve",
     "docs:build": "gitbook build",
-    "docs:publish": "npm run docs:build && cd _book && git init && git commit --allow-empty -m 'Update docs' && git checkout -b gh-pages && git add . && git commit -am 'Update docs' && git push git@github.com:<username>/<repo> gh-pages --force"
+    "docs:publish": "rm _book -rf && npm run docs:build && cd _book && git init && git remote add origin https://github.com/maxgherman/TypeIOC-docs.git && git add . && git commit -am 'Update docs' && git push origin master --force"
   },
   "keywords": [
     "typescript",
