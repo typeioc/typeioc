@@ -2,6 +2,8 @@
 
 Dynamic dependencies feature provides a way of resolving services using different dependencies from those specified initially. A service gets resolved with all the dependencies provided without affecting original registration. All the services resolved with dynamic dependencies get [transient](../life-cycle/transient.md) life cycle assigned regardless of initial life cycle specification. For a standalone resolution, **resolveWithDependencies** method from **IContainer** instance is used. When used within a fluent interface, **dependencies** method is used.
 
+### Synopsis
+
 ```typescript
 interface IDynamicDependency {
     /* A service to be resolved as a dependency */

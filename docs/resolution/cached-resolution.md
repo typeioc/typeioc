@@ -2,6 +2,8 @@
 
 Every resolution has an option to cache its results. Cached result is not the same as [singleton](../life-cycle/singleton.md) life cycle instance result. Caching keeps components aside for the sake of providing high performance access. Cache option is available as part of fluent cascading interface starting with **resolveWith** method.
 
+### Synopsis
+
 ```typescript
 /** Caches resolved component
 * @param {string} - name?, optional name to be cached under

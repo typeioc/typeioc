@@ -2,6 +2,8 @@
 
 By using constructor level decorators, we instruct TypeIOC how component dependencies will be resolved in run time. There are two way to specify resolution mechanism: a more generic **by** method and very specific **resolveValue** method of decorator instance.
 
+### Synopsis
+
 ```typescript
 /** Specifies dependency resolution by decorated service
 * @param {any?} - service, if provided is used to resolve dependency,

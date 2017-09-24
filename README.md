@@ -1,5 +1,5 @@
-TypeIOC
-=======
+# TypeIOC
+
 Dependency injection container for typescript / javascript.
 
 <br/>
@@ -11,11 +11,10 @@ Dependency injection container for typescript / javascript.
  [![Coverage Status](https://img.shields.io/coveralls/maxgherman/TypeIOC.svg)](https://coveralls.io/r/maxgherman/TypeIOC?branch=master)
  [![Code Climate](https://codeclimate.com/github/maxgherman/TypeIOC.png)](https://codeclimate.com/github/maxgherman/TypeIOC)
  [![Dependency Status](https://gemnasium.com/maxgherman/TypeIOC.svg)](https://gemnasium.com/maxgherman/TypeIOC)
- [![Stories in Progress](https://badge.waffle.io/maxgherman/TypeIOC.svg?label=In%20Progress&title=In%20Progress)](http://waffle.io/maxgherman/TypeIOC)
 
-<br/>
+## [Documentation](https://rawgit.com/maxgherman/TypeIOC-docs/master/)
 
-####Features
+## Features
 
 - [x] - Type compliance checking.
 - [x] - Late instances creation through lambda expressions.

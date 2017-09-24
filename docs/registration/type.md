@@ -2,6 +2,8 @@
 
 As opposite to factory registration, type registration is intended for construct-able types only: class, function, etc ... It uses new operator to instantiate the service being resolved. In exchange for this limitation, user gets an advantage of not declaring service dependencies construction. To register a type, we have to use method **asType** of builder registration.
 
+### Synopsis
+
 ```typescript
 /**
 * Service registration using construct-able types

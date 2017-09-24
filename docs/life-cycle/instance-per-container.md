@@ -2,10 +2,13 @@
 
 For situations where component instances have to be nested per scopes, instance per container life cycle is used. When this option is specified, every nested container will have its own and only one instance of a component. This option provides the best mechanism for dealing with multiple short lived cascading computations, while collecting their results.
 
+### Synopsis
+
 ```typescript
 /**
 * Specifies instance per container resolution.
-* Every time a service is resolved, the same instance of component per container is returned.
+* Every time a service is resolved, the same instance of component
+* per container is returned.
 */
 registration.instancePerContainer()
 ```

@@ -2,10 +2,11 @@
 
 Every registration has several customization options, things that affect its behavior and resolution process.
 
-* #### Initialization
-
+* ## Initialization
 
 Registration might specify an action, performed over a component during resolution.
+
+### Synopsis
 
 ```typescript
 interface IInitializer<T> {
@@ -13,15 +14,17 @@ interface IInitializer<T> {
 }
 
 /**
-* @param {IInitializer<T>} action - lambda expression executed during component resolution,
-* right after component initialization
+* @param {IInitializer<T>} action - lambda expression executed during component
+* resolution, right after component initialization
 */
 initializeBy(action : IInitializer<T>)
 ```
 
-* #### Naming
+* ### Naming
 
 Registration might have a name associated with it. In this case, a service can be resolved using only the name specified. Named registrations are useful for registering the same service several times with different names.
+
+### Synopsis
 
 ```typescript
 /**
@@ -31,9 +34,11 @@ Registration might have a name associated with it. In this case, a service can b
 named : (name: string)
 ```
 
-* #### Reusability / life cycle
+* ### Reusability / life cycle
 
 Reusability defines component repeated resolution behavior.
+
+### Synopsis
 
 ```typescript
 /**
@@ -50,16 +55,19 @@ singleton()
 
 /**
 * Specifies instancePerContainer resolution.
-* Every time a service is resolved, the same instance of component per container is returned.
+* Every time a service is resolved, the same instance of component per
+* container is returned.
 */
 instancePerContainer()
 ```
 
 [More info](../life-cycle/)
 
-* #### Ownership
+* ### Ownership
 
 Ownership defines component disposal behavior if any provided.
+
+### Synopsis
 
 ```typescript
 /**
@@ -77,7 +85,8 @@ interface IDisposer<T> {
 }
 
 /**
-* For internal owned instances, when dispose action is specified, it is invoked during container disposal
+* For internal owned instances, where dispose action is specified,
+* it is invoked during container disposal
 * @param {IDisposer<T>} action - lambda expression for component disposal.
 * It's invoked with an instance of component
 */

@@ -2,16 +2,16 @@
 
 Resolution is the process dual to registration. Once all the services were registered, we can start resolving them getting constructed components. All the component dependencies are resolved as well. Every resolution starts with a container - the root life cycle scope. To create a container we use a method **build** from **ContainerBuilder** instance. Services also could be resolved with [dynamic dependences](./dynamic-dependecies.md) and [cached](./cached-resolution.md) option.
 
+Having an instance of container we can use different methods to resolve registered service in a several ways.
+
+### Synopsis
+
 ```typescript
 /** Creates an instance of container
 * @returns {IContainer} - container instance
 */
 build()
-```
 
-Having an instance of container we can use different methods to resolve registered service in a several ways.
-
-```typescript
 /** Resolves a service with optional parameters.
 * Throws ResolutionException if not registration found
 * @param {any} - service, registered service
