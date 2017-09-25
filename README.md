@@ -14,7 +14,9 @@ Dependency injection container for typescript / javascript.
 
 ## [Documentation](https://rawgit.com/maxgherman/TypeIOC-docs/master/)
 
-## Features
+### [Examples](https://github.com/maxgherman/TypeIOC-examples)
+
+### Features
 
 - [x] - Type compliance checking.
 - [x] - Late instances creation through lambda expressions.

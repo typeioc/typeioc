@@ -9,8 +9,9 @@ build/
 src/
 d.ts/typeioc.internal.d.ts
 d.ts/hashes.d.ts
-test/coverage/
+test/
 COPYRIGHT
 *.yml
 tsconfig.json
 tsconfig.tests.json
+book.json

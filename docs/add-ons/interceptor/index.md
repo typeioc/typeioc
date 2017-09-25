@@ -36,7 +36,7 @@ interface ISubstituteInfo {
     type? : CallInfoType;
 
     // lambda expression executed during substitution call
-    // To execute wrapper in the context of subsitute proxy, provide function
+    // To execute wrapper in the context of subsitute proxy, provide a function
     // check ICallInfo for details
     wrapper : (callInfo: ICallInfo) => any;
 }
@@ -64,6 +64,11 @@ enum CallInfoType {
 
 // specifies parameters of the substituted call
 interface ICallInfo {
+    // Original interception subject.
+    // For prototype interception represents a prototype.
+    // For instance interception represents an original instance.
+    source: Object;
+
     // member name to substitue
     name: string;
 
@@ -153,7 +158,7 @@ class CalcAdd {
     }
 
     public set b(value: number) {
-        this._b = value;;
+        this._b = value;
     }
 
     public add() {
@@ -163,15 +168,14 @@ class CalcAdd {
 
 const interceptor = Interceptors.create();
 
-const CalcAddIntercepted = interceptor
-.interceptPrototype(CalcAdd, [{
+const calcAddIntercepted = interceptor
+.intercept(new CalcAdd(), [{
   method: 'a',
 
   // intercept 'a' getter
   type: Interceptors.CallInfoType.Getter,
 
-  // invoke getter in the context of interceptor proxy
-  wrapper: function(callInfo) { return callInfo.get() + this.b; }
+  wrapper: (callInfo) => callInfo.get() + (callInfo.source as CalcAdd).b
 }, {
   method: 'add',
 
@@ -182,10 +186,11 @@ const CalcAddIntercepted = interceptor
 const builder = typeioc.createBuilder();
 
 builder.register(CalcAdd)
-.asType(CalcAddIntercepted);
+.as(() => calcAddIntercepted);
 
 builder.register(CalcAdd)
-.asSelf().named('original');
+.as(() => new CalcAdd())
+.named('original');
 ```
 
 <!--sec data-title="Run example" data-id="section0" data-show=true data-collapse=true ces-->
@@ -226,18 +231,16 @@ class CalcAdd {
 
 const interceptor = Interceptors.create();
 
-const CalcAddIntercepted = interceptor
-.interceptPrototype(CalcAdd, [{
+const calcAddIntercepted = interceptor
+.intercept(new CalcAdd(), [{
   method: 'a',
 
   // intercept 'a' getter
   type: Interceptors.CallInfoType.Getter,
 
-  // invoke getter in the context of interceptor proxy
-  wrapper: function(callInfo) { return callInfo.get() + this.b; }
-}, {
+  wrapper: (callInfo) => callInfo.get() + callInfo.source.b
+}, s{
   method: 'add',
-
   // invoke original method
   wrapper: (callInfo) => callInfo.invoke()
 }]);
@@ -245,10 +248,11 @@ const CalcAddIntercepted = interceptor
 const builder = typeioc.createBuilder();
 
 builder.register(CalcAdd)
-.asType(CalcAddIntercepted);
+.as(() => calcAddIntercepted);
 
 builder.register(CalcAdd)
-.asSelf().named('original');
+.as(() => new CalcAdd())
+.named('original');
 ```
 
 <!--sec data-title="Run example" data-id="section1" data-show=true data-collapse=true ces-->
