@@ -22,11 +22,17 @@ export class Interceptor implements Addons.Interceptors.IInterceptor {
     constructor(private _proxy : IProxy) { }
 
     public interceptPrototype<R extends Function>(subject : R, substitutes? : ISubstituteInfo | Array<ISubstituteInfo>) : R {
+        
+        this.assertPrototype(subject);
+        
         const storage = this.convertParams(subject, substitutes);
         return this._proxy.byPrototype(subject, storage) as R;
     }
 
     public interceptInstance<R extends Object>(subject : R, substitutes? : ISubstituteInfo | Array<ISubstituteInfo>) : R {
+        
+        this.assertObject(subject);
+        
         const storage = this.convertParams(subject, substitutes);
         return this._proxy.byInstance(subject, storage) as R;
     }
@@ -37,15 +43,17 @@ export class Interceptor implements Addons.Interceptors.IInterceptor {
     }
 
     public withSubstitute(substitute: ISubstituteInfo): Addons.Interceptors.IWithSubstituteResult {
-        checkNullArgument(substitute.method, 'method');
-
         const storage = new SubstituteStorage();
 
         const interceptInstance = <R>(subject): R => {
+            this.assertObject(subject);
+
             return this._proxy.byInstance(subject, storage) as R;
         };
 
         const interceptPrototype = <R extends Function>(subject): R => {
+            this.assertPrototype(subject);
+            
             return this._proxy.byPrototype(subject, storage) as R;
         };
 
@@ -68,8 +76,6 @@ export class Interceptor implements Addons.Interceptors.IInterceptor {
         storage : IStorage,
         substitute: ISubstituteInfo) {
         
-        checkNullArgument(substitute.method, 'method');
-
         storage.add(this.createSubstitute(substitute));
         
         return {
@@ -97,15 +103,12 @@ export class Interceptor implements Addons.Interceptors.IInterceptor {
     }
 
     private convertToIntercept(subject: any, storage: IStorage) : any {
-        var result : any;
-        var argument : any = subject;
+        let result : any;
+        let argument : any = subject;
 
         if(Reflection.isPrototype(argument)) {
-
             result = this._proxy.byPrototype(argument, storage);
-
         } else if(Reflection.isObject(argument)) {
-
             result = this._proxy.byInstance(argument, storage);
         } else {
             throw new ArgumentError('subject', 'Subject should be a prototype function or an object');
@@ -140,5 +143,17 @@ export class Interceptor implements Addons.Interceptors.IInterceptor {
             wrapper : value.wrapper,
             next : null
         };
+    }
+
+    private assertPrototype<R>(subject: R) {
+        if(!Reflection.isPrototype(subject)) {
+            throw new ArgumentError('subject', 'Subject should be a prototype function');
+        }
+    }
+
+    private assertObject<R>(subject: R) {
+        if(Reflection.isPrototype(subject)) {
+            throw new ArgumentError('subject', 'Subject should be an object');
+        }
     }
 }

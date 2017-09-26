@@ -494,7 +494,70 @@ exports.api = {
                 });
 
                 test.done();
+            },
+
+            interceptPrototype_should_throw_when_no_prototype: (test) => {
+
+                const delegate = () => {
+                    interceptor.interceptPrototype(123, { wrapper: () => {} });
+                }
+
+                test.throws(delegate, function(error) {
+                    test.strictEqual(error.message, 'Subject should be a prototype function');
+                    return (error instanceof scaffold.Exceptions.ArgumentError);
+                });
+               
+                test.done();
+            },
+
+            interceptInstance_should_throw_when_no_object: (test) => {
+                
+                class A {}
+
+                const delegate = () => {
+                    interceptor.interceptInstance(A, { wrapper: () => {} });
+                };
+
+                test.throws(delegate, function(error) {
+                    test.strictEqual(error.message, 'Subject should be an object');
+                    return (error instanceof scaffold.Exceptions.ArgumentError);
+                });
+
+                test.done();
+            },
+
+            interceptPrototype_fluent_should_throw_when_no_prototype: (test) => {
+                
+                const delegate = () => {
+                    interceptor
+                        .withSubstitute({ wrapper: () => {} })
+                        .interceptPrototype('123');
+                };
+
+                test.throws(delegate, function(error) {
+                    test.strictEqual(error.message, 'Subject should be a prototype function');
+                    return (error instanceof scaffold.Exceptions.ArgumentError);
+                });
+
+                test.done();
+            },
+
+            interceptInstance_fluent_should_throw_when_no_object: (test) => {
+                
+                const delegate = () => {
+                    interceptor
+                        .withSubstitute({ wrapper: () => {} })
+                        .interceptInstance(function() {});
+                };
+
+                test.throws(delegate, function(error) {
+                    test.strictEqual(error.message, 'Subject should be an object');
+                    return (error instanceof scaffold.Exceptions.ArgumentError);
+                });
+
+                test.done();
             }
+            
         }
     }
 }

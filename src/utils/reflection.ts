@@ -41,7 +41,7 @@ export function isFunction(f : any) : boolean {
 }
 
 export function isPrototype(f : any) : boolean {
-    return isFunction(f) && f.prototype;
+    return toString.call(f) === "[object Function]";
 }
 
 export function isObject(o : any) : boolean {
