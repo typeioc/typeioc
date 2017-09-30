@@ -80,10 +80,6 @@ declare module Typeioc.Internal {
         create<R>(baseRegistration : IRegistrationBase) : Typeioc.IRegistration<R>;
     }
 
-    interface IModuleRegistrationService {
-        create(baseRegistration : IRegistrationBase) : IModuleRegistration;
-    }
-
     interface IRegistrationStorageService {
         create() : IRegistrationStorage;
     }
@@ -249,15 +245,5 @@ declare module Typeioc.Internal {
         invoke<R>(registration : Internal.IRegistrationBase,
             throwIfNotFound : boolean,
             args?: Array<any>) : R;
-    }
-
-    interface IModuleRegistration {
-        getAsModuleRegistration : () => Typeioc.IAsModuleRegistration;
-        registrations : IRegistrationBase[];
-    }
-
-    interface IModuleItemRegistrationOptions {
-        factory : Typeioc.IFactory<any>;
-        name : string;
     }
 }

@@ -15,7 +15,6 @@ import { InternalStorage } from './storage/internalStorage';
 import { DisposableStorage } from './storage/disposableStorage';
 import { RegistrationBase } from './registration/base/registrationBase';
 import { RegistrationStorage } from './storage/registrationStorage';
-import { ModuleRegistration } from './registration/module/moduleRegistration';
 import { Registration } from './registration/instance/registration';
 import { Container } from './build/container';
 import { ContainerBuilder } from './build/builder';
@@ -54,17 +53,14 @@ export class Scaffold {
         return {
             create : (internalContainerService : Internal.IInternalContainerService) => {
 
-                var moduleStorageService = this.internalStorageService<any, Internal.IModuleItemRegistrationOptions>();
                 var baseRegoService = this.registrationBaseService();
                 var instanceRegoService = this.instanceRegistrationService();
-                var moduleRegoService = this.moduleRegistrationService(moduleStorageService, baseRegoService);
               
                 var containerService = this.containerService();
 
                 return new ContainerBuilder(
                     baseRegoService,
                     instanceRegoService,
-                    moduleRegoService,
                     internalContainerService,
                     containerService);
             }
@@ -109,21 +105,6 @@ export class Scaffold {
         return {
             create() {
                 return new RegistrationStorage(service);
-            }
-        };
-    }
-
-    private moduleRegistrationService(
-        internalStorageService :
-            Internal.IInternalStorageService<any, Internal.IModuleItemRegistrationOptions>,
-        registrationBaseService : Internal.IRegistrationBaseService)
-        : Internal.IModuleRegistrationService {
-
-        return {
-            create(baseRegistration : Internal.IRegistrationBase) {
-                var storage = internalStorageService.create();
-
-                return new ModuleRegistration(baseRegistration, storage, registrationBaseService);
             }
         };
     }

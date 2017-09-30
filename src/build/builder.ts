@@ -15,16 +15,13 @@ import Internal = Typeioc.Internal;
 
 export class ContainerBuilder implements Typeioc.IContainerBuilder {
     private _registrations : Internal.IRegistrationBase[];
-    private _moduleRegistrations : Internal.IModuleRegistration[];
-  
+    
     constructor(private _registrationBaseService : Internal.IRegistrationBaseService,
                 private _instanceRegistrationService : Internal.IInstanceRegistrationService,
-                private _moduleRegistrationService : Internal.IModuleRegistrationService,
                 private _internalContainerService : Internal.IInternalContainerService,
                 private _containerService : Internal.IContainerService) {
 
         this._registrations = [];
-        this._moduleRegistrations = [];
     }
 
     public register<R>(service : any) : Typeioc.IRegistration<R> {
@@ -41,27 +38,9 @@ export class ContainerBuilder implements Typeioc.IContainerBuilder {
         return registration;
     }
 
-    public registerModule(serviceModule : Object) : Typeioc.IAsModuleRegistration {
-
-        checkNullArgument(serviceModule, 'serviceModule');
-
-        var regoBase = this._registrationBaseService.create(serviceModule);
-        var moduleRegistration = this._moduleRegistrationService.create(regoBase);
-
-        setDefaults(regoBase);
-
-        this._moduleRegistrations.push(moduleRegistration);
-
-        return moduleRegistration.getAsModuleRegistration();
-    }
-
     public build() : Typeioc.IContainer {
 
         var regoes = this._registrations.slice(0);
-        
-        this._moduleRegistrations.forEach(item => {
-            regoes.push.apply(regoes, item.registrations);
-        });
 
         var internalContainer = this._internalContainerService.create();
         var container = this._containerService.create(internalContainer);

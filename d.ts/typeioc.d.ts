@@ -140,7 +140,6 @@ declare module Typeioc {
     
     interface IContainerBuilder {
         register<R>(service : any) : IRegistration<R>;
-        registerModule(serviceModule : Object) : Typeioc.IAsModuleRegistration;
         build() : IContainer;
         copy(builder: Typeioc.IContainerBuilder): void;
     }
@@ -262,16 +261,6 @@ declare module Typeioc {
     }
 
     interface IRegistration<T> extends IAs<T> { }
-
-    interface IModuleReusedOwned extends IReusedOwned {
-        forService<R>(service: any, factory : IFactory<R>) : IModuleReusedOwned;
-        forArgs(service: any, ...args:any[]) : IModuleReusedOwned;
-        named(service: any, name : string) : IModuleReusedOwned;
-    }
-
-    interface IAsModuleRegistration {
-        as : (asModule : Object) => IModuleReusedOwned;
-    }
 
     interface IDynamicDependency {
         service : any;
