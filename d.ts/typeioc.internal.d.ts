@@ -220,6 +220,7 @@ declare module Typeioc.Internal {
     }
 
     interface IRegistrationBase {
+        id: string;
         service : any;
         factory : Typeioc.IFactory<any>;
         factoryType : any;

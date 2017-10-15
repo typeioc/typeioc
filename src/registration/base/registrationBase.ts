@@ -9,9 +9,11 @@
 'use strict';
 
 import { ApplicationError } from '../../exceptions';
+import { uuid } from '../../utils';
 import Internal = Typeioc.Internal;
 
 export class RegistrationBase implements Internal.IRegistrationBase {
+    private _id: string;
     private _factory : Typeioc.IFactory<any> = null;
     private _factoryType : any = null;
     private _factoryValue: any = null;
@@ -145,9 +147,15 @@ export class RegistrationBase implements Internal.IRegistrationBase {
         this._registrationType = Internal.RegistrationType.FactoryValue;
     }
 
-    constructor(private _service: any) {
+    public get id() : string {
+        return this._id;
+    }
+
+    constructor(private _service: any, id?: string) {
         this.args = [];
         this.params = [];
+
+        this._id = id || uuid()
     }
 
     public cloneFor(container: Typeioc.IContainer) : Internal.IRegistrationBase {
@@ -157,7 +165,7 @@ export class RegistrationBase implements Internal.IRegistrationBase {
     }
 
     public clone() : Internal.IRegistrationBase {
-        var result = new RegistrationBase(this._service);
+        var result = new RegistrationBase(this._service, this._id);
         result._factory = this._factory;
         result._factoryType = this._factoryType;
         result._factoryValue = this._factoryValue;

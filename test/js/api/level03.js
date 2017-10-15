@@ -151,7 +151,8 @@ exports.api = {
 
                 containerBuilder.register(testData.Test1Base).as(function () {
                     return new testData.Test4("test 4");
-                }).within(scaffold.Types.Scope.Hierarchy);
+                })
+                .within(scaffold.Types.Scope.Hierarchy);
 
                 var container = containerBuilder.build();
                 var test1 = container.resolve(testData.Test1Base);

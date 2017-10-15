@@ -31,7 +31,7 @@ export function checkNullArgument(value : any, argument: string,  message?: stri
 
 export function checkDependency(dependency: Typeioc.IDynamicDependency) : void {
     
-const factoryValueKey = 'factoryValue';
+    const factoryValueKey = 'factoryValue';
 
     if((dependency.factory && dependency.factoryType) ||
         (dependency.factory && factoryValueKey in dependency) ||
@@ -43,3 +43,10 @@ const factoryValueKey = 'factoryValue';
 export function createImmutable(array : Array<any>) : Typeioc.Internal.IImmutableArray {
     return new ImmutableArray(array);
 }
+
+export function uuid() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      const r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }

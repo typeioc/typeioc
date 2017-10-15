@@ -8,7 +8,7 @@
 
 "use strict";
 
-import { ResolutionError } from '../exceptions';
+import { ResolutionError, CircularDependencyError } from '../exceptions';
 import { Scope, Owner } from '../types';
 
 import Internal = Typeioc.Internal;
@@ -17,6 +17,7 @@ export class InternalContainer implements Internal.IContainer {
 
     private parent : InternalContainer;
     private children : InternalContainer [] = [];
+    private _pendingResolutions: {};
     private _disposableStorage : Internal.IDisposableStorage;
     private _collection : Internal.IRegistrationStorage;
     private _cache : Internal.IIndexedCollection<any>;
@@ -35,6 +36,8 @@ export class InternalContainer implements Internal.IContainer {
         this._disposableStorage = this._disposableStorageService.create();
         this._invoker = this._invokerService.create(this, _resolutionDetails);
         this._cache = {};
+
+        this._pendingResolutions = {};
 
         this.registerImpl = this.registerImpl.bind(this);
     }
@@ -57,6 +60,7 @@ export class InternalContainer implements Internal.IContainer {
             this._containerApiService,
             this._invokerService,
             this._resolutionDetails);
+
         child.parent = this;
         this.children.push(child);
         return child;
@@ -190,12 +194,25 @@ export class InternalContainer implements Internal.IContainer {
             return null;  
         }
 
-        // ------------ with args always returns new instance ...
-        if(registration.args && registration.args.length) {
-            return this.createTrackable(entry, throwIfNotFound, registration.args);
+        if(this._pendingResolutions[entry.id]) {
+            throw new CircularDependencyError(`Circular dependency for service: ${entry.service}`);
         }
-        
-        return this.resolveScope(entry, throwIfNotFound);
+
+        try {
+            this._pendingResolutions[entry.id] = true;
+            
+            // ------------ with args always returns new instance ...
+            if(registration.args && registration.args.length) {
+                const result = this.createTrackable(entry, throwIfNotFound, registration.args);
+                return result;
+            }
+
+            const result = this.resolveScope(entry, throwIfNotFound);
+            return result;
+
+        } finally {
+            delete this._pendingResolutions[entry.id];
+        }
     }
 
     private resolveImpl(registration : Internal.IRegistrationBase, throwIfNotFound : boolean) : Internal.IRegistrationBase {
@@ -281,6 +298,11 @@ export class InternalContainer implements Internal.IContainer {
 
             return instance;
         } catch (error) {
+
+            if(error instanceof CircularDependencyError) {
+                throw error;
+            }
+
             let message = 'Could not instantiate service';
 
             if(error instanceof ResolutionError) {
