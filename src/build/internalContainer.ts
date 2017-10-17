@@ -77,9 +77,9 @@ export class InternalContainer implements Internal.IContainer {
 
         this._collection.clear();
         
-        for (var member in this._cache)
+        for (var member in this._cache) {
             delete this._cache[member];
-
+        }
     }
     
     public disposeAsync() : Promise<void> {

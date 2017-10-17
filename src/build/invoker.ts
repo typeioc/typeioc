@@ -40,6 +40,11 @@ export class Invoker implements Internal.IInvoker {
         registration : Internal.IRegistrationBase, args: Array<any> = []) : R {
         
         args = [registration.container].concat(args.slice(0));
+
+        if(args.length === 1) {
+            return registration.factory(args[0]);
+        }
+
         return registration.factory.apply(registration.factory, args);
     }
 
