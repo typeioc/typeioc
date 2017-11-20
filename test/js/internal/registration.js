@@ -39,6 +39,7 @@ exports.internal = {
 
                 const expectedMethods = [
                     'initializeBy',
+                    'lazy',
                     'dispose',
                     'named',
                     'within',
@@ -147,6 +148,7 @@ exports.internal = {
                 const methods = Object.getOwnPropertyNames(result);
 
                 const expectedMethods = [
+                    'lazy',
                     'dispose',
                     'named',
                     'within',
@@ -222,6 +224,7 @@ exports.internal = {
 
                 const expectedMethods = [
                     'initializeBy',
+                    'lazy',
                     'dispose',
                     'named',
                     'within',

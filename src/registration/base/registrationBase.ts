@@ -28,6 +28,7 @@ export class RegistrationBase implements Internal.IRegistrationBase {
     private _instance: any = null;
     private _dependenciesValue : Array<Typeioc.IDynamicDependency> = [];
     private _registrationType : Internal.RegistrationType;
+    private _isLazy: boolean;
 
     public get name() : string {
         return this._name;
@@ -120,6 +121,7 @@ export class RegistrationBase implements Internal.IRegistrationBase {
     public set dependenciesValue(value: Array<Typeioc.IDynamicDependency>) {
         this._dependenciesValue = value || [];
     }
+
     public get factory() : Typeioc.IFactory<any> {
         return this._factory;
     }
@@ -149,6 +151,14 @@ export class RegistrationBase implements Internal.IRegistrationBase {
 
     public get id() : string {
         return this._id;
+    }
+
+    public get isLazy() : boolean {
+        return this._isLazy;
+    }
+
+    public set isLazy(value: boolean) {
+        this._isLazy = value;
     }
 
     constructor(private _service: any, id?: string) {

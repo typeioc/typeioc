@@ -17,7 +17,6 @@ export var Reflection = ReflectionModule;
 export function concat(array : any[], tailArray : any[]) : any[] {
 
     array.push.apply(array, tailArray);
-
     return array;
 }
 

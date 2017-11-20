@@ -21,7 +21,8 @@ export class Registration<T> implements Typeioc.IRegistration<T> {
         this.ownedExternally = this.ownedExternally.bind(this),
         this.transient = this.transient.bind(this),
         this.singleton = this.singleton.bind(this),
-        this.instancePerContainer = this.instancePerContainer.bind(this) 
+        this.instancePerContainer = this.instancePerContainer.bind(this);
+        this.lazy = this.lazy.bind(this);
     }
 
     public as(factory : Typeioc.IFactory<T>): Typeioc.IInitializedDisposedNamedReusedOwned<T> {
@@ -30,6 +31,7 @@ export class Registration<T> implements Typeioc.IRegistration<T> {
 
         return {
             initializeBy : this.initializeBy,
+            lazy: this.lazy,
             dispose : this.dispose,
             named : this.named,
             within : this.within,
@@ -49,6 +51,7 @@ export class Registration<T> implements Typeioc.IRegistration<T> {
 
         return {
             initializeBy : this.initializeBy,
+            lazy: this.lazy,
             dispose : this.dispose,
             named : this.named,
             within : this.within,
@@ -129,11 +132,12 @@ export class Registration<T> implements Typeioc.IRegistration<T> {
         this.ownedBy(Typeioc.Types.Owner.Externals);
     }
 
-    private initializeBy(action : Typeioc.IInitializer<T>) : Typeioc.INamedReusedOwnedDisposed<T> {
+    private initializeBy(action : Typeioc.IInitializer<T>) : Typeioc.ILazyNamedReusedOwnedDisposed<T> {
 
         this._base.initializer = action;
 
         return {
+            lazy: this.lazy,
             dispose : this.dispose,
             named : this.named,
             within : this.within,
@@ -148,6 +152,21 @@ export class Registration<T> implements Typeioc.IRegistration<T> {
 
     private dispose(action : Typeioc.IDisposer<T>) : Typeioc.INamedReusedOwned {
         this._base.disposer = action;
+
+        return {
+            named : this.named,
+            within : this.within,
+            ownedBy : this.ownedBy,
+            ownedInternally: this.ownedInternally,
+            ownedExternally: this.ownedExternally,
+            transient: this.transient,
+            singleton: this.singleton,
+            instancePerContainer: this.instancePerContainer
+        };
+    }
+
+    private lazy() : Typeioc.INamedReusedOwned {
+        this._base.isLazy = true;
 
         return {
             named : this.named,

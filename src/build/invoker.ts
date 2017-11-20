@@ -21,8 +21,19 @@ export class Invoker implements Internal.IInvoker {
     
     public invoke<R>(registration : Internal.IRegistrationBase,
         throwIfNotFound : boolean,
-        args?: Array<any>) : R {
+        args?: Array<any>) : R | (() => R) {
 
+        if(registration.isLazy) {
+            return () => this.invokeInernal(registration, throwIfNotFound, args);
+        }
+       
+        return this.invokeInernal(registration, throwIfNotFound, args);
+    }
+
+    private invokeInernal<R>(registration : Internal.IRegistrationBase,
+        throwIfNotFound : boolean,
+        args?: Array<any>) : R {
+        
         switch(registration.registrationType) {
             case Internal.RegistrationType.FactoryType:
                 return this.instantiate(registration.factoryType, registration, throwIfNotFound, args);
@@ -32,7 +43,7 @@ export class Invoker implements Internal.IInvoker {
 
             case Internal.RegistrationType.Factory:
             default:
-               return this.createByFactory(registration, args); 
+                return this.createByFactory(registration, args); 
         }
     }
 

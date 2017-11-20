@@ -235,6 +235,7 @@ declare module Typeioc.Internal {
         container : Typeioc.IContainer;
         instance : any;
         registrationType : RegistrationType;
+        isLazy: boolean;
         dependenciesValue : Array<Typeioc.IDynamicDependency>;
         cloneFor : (container: Typeioc.IContainer) => IRegistrationBase;
         clone : () => IRegistrationBase;
@@ -245,6 +246,6 @@ declare module Typeioc.Internal {
     interface IInvoker {
         invoke<R>(registration : Internal.IRegistrationBase,
             throwIfNotFound : boolean,
-            args?: Array<any>) : R;
+            args?: Array<any>) : R | (() => R);
     }
 }

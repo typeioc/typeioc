@@ -242,8 +242,14 @@ declare module Typeioc {
 
     interface INamedReusedOwnedDisposed<T> extends IDisposable<T>, INamedReusedOwned {}
 
+    interface ILazy {
+        lazy: () => INamedReusedOwned;
+    }
+
+    interface ILazyNamedReusedOwnedDisposed<T> extends ILazy, INamedReusedOwnedDisposed<T> {}
+
     interface IInitialized<T> {
-        initializeBy : (action : IInitializer<T>) => INamedReusedOwnedDisposed<T>;
+        initializeBy : (action : IInitializer<T>) => ILazyNamedReusedOwnedDisposed<T>;
     }
 
     interface IFactory<T> {
@@ -251,7 +257,7 @@ declare module Typeioc {
     }
 
     interface IInitializedDisposedNamedReusedOwned<T>
-        extends IInitialized<T>, IDisposable<T>, INamedReusedOwned { }
+        extends IInitialized<T>, ILazy, IDisposable<T>, INamedReusedOwned { }
 
     interface IAs<T> {
         as(factory: IFactory<T>): IInitializedDisposedNamedReusedOwned<T>;

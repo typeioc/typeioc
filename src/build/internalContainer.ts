@@ -292,6 +292,7 @@ export class InternalContainer implements Internal.IContainer {
             }
 
             if(registration.owner === Owner.Container &&
+                !registration.isLazy &&
                 registration.disposer) {
                 this._disposableStorage.add(instance, registration.disposer);
             }

@@ -40,8 +40,11 @@ export class Container implements Typeioc.IContainer {
 
         checkNullArgument(service, 'service');
 
-        args = concat([service], args);
+        if(!args.length) {
+            return this._container.resolve(service);
+        }
 
+        args = concat([service], args);
         return this._container.resolve.apply(this._container, args);
     }
     
@@ -56,8 +59,11 @@ export class Container implements Typeioc.IContainer {
 
         checkNullArgument(service, 'service');
 
-        args = concat([service], args);
+        if(!args.length) {
+            return this._container.tryResolve(service);
+        }
 
+        args = concat([service], args);
         return this._container.tryResolve.apply(this._container, args);
     }
     
@@ -72,8 +78,11 @@ export class Container implements Typeioc.IContainer {
 
         checkNullArgument(service, 'service');
 
-        args = concat([service, name], args);
+        if(!args.length) {
+            return this._container.resolveNamed(service, name);
+        }
 
+        args = concat([service, name], args);
         return this._container.resolveNamed.apply(this._container, args);
     }
     
@@ -88,8 +97,11 @@ export class Container implements Typeioc.IContainer {
 
         checkNullArgument(service, 'service');
 
+        if(!args.length) {
+            return this._container.tryResolveNamed(service, name);
+        }
+        
         args = concat([service, name], args);
-
         return this._container.tryResolveNamed.apply(this._container, args);
     }
     
