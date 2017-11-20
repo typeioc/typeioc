@@ -1,7 +1,0 @@
-languages:
-  JavaScript: true
-exclude_paths:
-- "lib-js/*"
-- "lib-cov/*"
-- "test/coverage/*"
-- "build/gulpfile.js"
