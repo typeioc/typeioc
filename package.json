@@ -13,7 +13,6 @@
   },
   "devDependencies": {
     "@types/node": "8.0.30",
-    "codeclimate-test-reporter": "0.5.0",
     "coveralls": "2.13.1",
     "del": "3.0.0",
     "gitbook-cli": "2.3.2",
@@ -40,7 +39,6 @@
     "test": "node --harmony ./node_modules/nodeunit/bin/nodeunit test/js/internal/ test/js/api/ test/ts/",
     "coverage": "NODE_ENV=coverage node --harmony node_modules/.bin/istanbul cover node_modules/.bin/nodeunit test/js/internal/ test/js/api/ test/ts/",
     "coveralls": "cat test/coverage/lcov.info | coveralls",
-    "codeclimate": "cat test/coverage/lcov.info | CODECLIMATE_REPO_TOKEN=4d695ca8fbc1be6c4f20509a918f006eb3ac84c871364cb935ac0f75ec852e01  codeclimate",
     "docs:prepare": "gitbook install",
     "docs:watch": "npm run docs:prepare && gitbook serve",
     "docs:build": "gitbook build",
