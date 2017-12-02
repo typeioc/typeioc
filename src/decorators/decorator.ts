@@ -35,13 +35,13 @@ export class Decorator implements Decorators.IDecorator {
         return this._builder.build();
     }
 
-    public provide<R>(service:any): Decorators.Register.IInitializedDisposedNamedReusedOwned<R> {
+    public provide<R>(service:any): Decorators.Register.IInitializedLazyDisposedNamedReusedOwned<R> {
         const register = createRegister(this._builder);
         const api = this._decoratorRegistrationApiService.createRegistration<R>(register);
         return api.provide(service);
     }
 
-    public provideSelf<R>() : Decorators.Register.IInitializedDisposedNamedReusedOwned<R> {
+    public provideSelf<R>() : Decorators.Register.IInitializedLazyDisposedNamedReusedOwned<R> {
         const register = createRegister(this._builder, true);
         const api = this._decoratorRegistrationApiService.createRegistration<R>(register);
         return api.provideUndefined();
@@ -115,16 +115,24 @@ function createRegister<R>(builder : Typeioc.IContainerBuilder, isSelf = false) 
             .asType(target);
 
         const initializer = api.initializedBy;
-        if (initializer)
+        if (initializer) {
             registration.initializeBy(initializer);
+        }
+
+        const isLazy = api.isLazy;
+        if (isLazy) {
+            registration.lazy();
+        }
 
         const disposer = api.disposedBy;
-        if (disposer)
+        if (disposer) {
             registration.dispose(disposer);
+        }
 
         const name = api.name;
-        if (name)
+        if (name) {
             registration.named(name);
+        }
 
         const scope = api.scope || Defaults.Scope;
         registration.within(scope);

@@ -12,7 +12,7 @@ exports.api = {
                 callback();
             },
 
-            self_resoltion: (test) => {
+            self_resolution: (test) => {
                 
                 builder.register('A')
                 .as((c) => {

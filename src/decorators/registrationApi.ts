@@ -21,6 +21,7 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
     private _owner : Types.Owner;
     private _initializedBy : Typeioc.IInitializer<T>;
     private _disposedBy : Typeioc.IDisposer<T>;
+    private _isLazy: boolean;
 
     public get service() : any {
         return this._service;
@@ -42,12 +43,17 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
         return this._initializedBy;
     }
 
+    public get isLazy() : boolean {
+        return this._isLazy;
+    }
+
     public get disposedBy() : Typeioc.IDisposer<T> {
         return this._disposedBy;
     }
 
     constructor(private _register : (api : Internal.IDecoratorRegistrationApi<T>) => ClassDecorator) {
         this.initializeBy = this.initializeBy.bind(this);
+        this.lazy = this.lazy.bind(this);
         this.dispose = this.dispose.bind(this);
         this.named = this.named.bind(this);
         this.within = this.within.bind(this);
@@ -58,9 +64,11 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
         this.ownedInternally = this.ownedInternally.bind(this);
         this.ownedExternally = this.ownedExternally.bind(this);
         this.register = this.register.bind(this);
+
+        this._isLazy = false;
     }
 
-    public provide(service: any) : Decorators.Register.IInitializedDisposedNamedReusedOwned<T> {
+    public provide(service: any) : Decorators.Register.IInitializedLazyDisposedNamedReusedOwned<T> {
 
         checkNullArgument(service, 'service');
 
@@ -71,12 +79,13 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
         return result;
     }
 
-    public provideUndefined() : Decorators.Register.IInitializedDisposedNamedReusedOwned<T> {
+    public provideUndefined() : Decorators.Register.IInitializedLazyDisposedNamedReusedOwned<T> {
         
         this._service = undefined;
 
         return {
             initializeBy : this.initializeBy,
+            lazy : this.lazy,
             dispose : this.dispose,
             named: this.named,
             within: this.within,
@@ -90,14 +99,31 @@ export class RegistrationApi<T> implements Internal.IDecoratorRegistrationApi<T>
         };
     }
 
-    private initializeBy(action : Typeioc.IInitializer<T>) : Decorators.Register.INamedReusedOwnedDisposed<T> {
+    private initializeBy(action : Typeioc.IInitializer<T>) : Decorators.Register.ILazyNamedReusedOwnedDisposed<T> {
 
         checkNullArgument(action, 'action');
 
         this._initializedBy = action;
 
         return {
+            lazy : this.lazy,
             dispose : this.dispose,
+            named: this.named,
+            within: this.within,
+            transient: this.transient,
+            singleton: this.singleton,
+            instancePerContainer: this.instancePerContainer,
+            ownedBy: this.ownedBy,
+            ownedInternally: this.ownedInternally,
+            ownedExternally: this.ownedExternally,
+            register: this.register
+        };
+    }
+
+    private lazy() : Decorators.Register.INamedReusedOwned {
+        this._isLazy = true;
+
+        return {
             named: this.named,
             within: this.within,
             transient: this.transient,

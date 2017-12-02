@@ -62,8 +62,8 @@ declare module Typeioc {
 
         interface IDecorator {
             build() : Typeioc.IContainer;
-            provide<R>(service: any) : Register.IInitializedDisposedNamedReusedOwned<R>;
-            provideSelf<R>() : Register.IInitializedDisposedNamedReusedOwned<R>;
+            provide<R>(service: any) : Register.IInitializedLazyDisposedNamedReusedOwned<R>;
+            provideSelf<R>() : Register.IInitializedLazyDisposedNamedReusedOwned<R>;
             by(service? : any) : Decorators.Resolve.IArgsTryNamedCache;
             resolveValue(value: any | Function) : ParameterDecorator;
             register<R>(service: any): Typeioc.IRegistration<R>;
@@ -100,14 +100,18 @@ declare module Typeioc {
                 dispose : (action : IDisposer<T>) =>  Register.INamedReusedOwned;
             }
 
-            interface INamedReusedOwnedDisposed<T> extends Register.IDisposable<T>, Register.INamedReusedOwned {}
+            interface ILazyNamedReusedOwnedDisposed<T> extends ILazy, Register.IDisposable<T>, Register.INamedReusedOwned {}
 
+            interface ILazy {
+                lazy: () => INamedReusedOwned;
+            }
+            
             interface IInitialized<T> {
-                initializeBy : (action : IInitializer<T>) =>  Register.INamedReusedOwnedDisposed<T>;
+                initializeBy : (action : IInitializer<T>) =>  Register.ILazyNamedReusedOwnedDisposed<T>;
             }
 
-            interface IInitializedDisposedNamedReusedOwned<T>
-                extends Register.IInitialized<T>, Register.IDisposable<T>, Register.INamedReusedOwned { }
+            interface IInitializedLazyDisposedNamedReusedOwned<T>
+                extends Register.IInitialized<T>, Register.ILazy, Register.IDisposable<T>, Register.INamedReusedOwned { }
         }
 
         module Resolve {
@@ -256,13 +260,13 @@ declare module Typeioc {
         (c: IContainer, ...args: Array<any>) : T;
     }
 
-    interface IInitializedDisposedNamedReusedOwned<T>
+    interface IInitializedLazyDisposedNamedReusedOwned<T>
         extends IInitialized<T>, ILazy, IDisposable<T>, INamedReusedOwned { }
 
     interface IAs<T> {
-        as(factory: IFactory<T>): IInitializedDisposedNamedReusedOwned<T>;
-        asType(type: T, ...params : Array<any>): IInitializedDisposedNamedReusedOwned<T>;
-        asSelf(...params : Array<any>): IInitializedDisposedNamedReusedOwned<T>;
+        as(factory: IFactory<T>): IInitializedLazyDisposedNamedReusedOwned<T>;
+        asType(type: T, ...params : Array<any>): IInitializedLazyDisposedNamedReusedOwned<T>;
+        asSelf(...params : Array<any>): IInitializedLazyDisposedNamedReusedOwned<T>;
         asValue(value): IName;
     }
 

@@ -128,12 +128,13 @@ declare module Typeioc.Internal {
     interface IDecoratorRegistrationApi<T> {
         service : any;
         initializedBy : Typeioc.IInitializer<T>;
+        isLazy: boolean;
         disposedBy : Typeioc.IDisposer<T>;
         name : string;
         scope : Types.Scope;
         owner : Types.Owner
-        provide(service: any) : Decorators.Register.IInitializedDisposedNamedReusedOwned<T>;
-        provideUndefined() : Decorators.Register.IInitializedDisposedNamedReusedOwned<T>;
+        provide(service: any) : Decorators.Register.IInitializedLazyDisposedNamedReusedOwned<T>;
+        provideUndefined() : Decorators.Register.IInitializedLazyDisposedNamedReusedOwned<T>;
     }
 
     interface IDecoratorResolutionApi {

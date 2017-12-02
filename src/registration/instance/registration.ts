@@ -25,7 +25,7 @@ export class Registration<T> implements Typeioc.IRegistration<T> {
         this.lazy = this.lazy.bind(this);
     }
 
-    public as(factory : Typeioc.IFactory<T>): Typeioc.IInitializedDisposedNamedReusedOwned<T> {
+    public as(factory : Typeioc.IFactory<T>): Typeioc.IInitializedLazyDisposedNamedReusedOwned<T> {
 
         this._base.factory = factory;
 
@@ -44,7 +44,7 @@ export class Registration<T> implements Typeioc.IRegistration<T> {
         };
     }
 
-    public asType(type: T, ...params : Array<any>): Typeioc.IInitializedDisposedNamedReusedOwned<T> {
+    public asType(type: T, ...params : Array<any>): Typeioc.IInitializedLazyDisposedNamedReusedOwned<T> {
 
         this._base.factoryType = type;
         this._base.params = params;
@@ -64,7 +64,7 @@ export class Registration<T> implements Typeioc.IRegistration<T> {
         };
     }
 
-    public asSelf(...params : Array<any>): Typeioc.IInitializedDisposedNamedReusedOwned<T> {
+    public asSelf(...params : Array<any>): Typeioc.IInitializedLazyDisposedNamedReusedOwned<T> {
         return this.asType(this._base.service, ...params);
     }
 
