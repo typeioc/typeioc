@@ -31,7 +31,8 @@ Dependency injection container for typescript / javascript.
 - [x] - Interceptors.
 - [x] - ES7 decorators style registration.
 - [x] - Asynchronous resolution.
-- [ ] - Circular dependency detection.
+- [x] - Circular dependency detection.
+- [x] - Lazy resolution.
 - [ ] - Group registration.
 - [ ] - Decorative style interceptors.
 - [ ] - Usage with 3d part libraries.
