@@ -33,6 +33,7 @@ Dependency injection container for typescript / javascript.
 - [x] - Asynchronous resolution.
 - [x] - Circular dependency detection.
 - [x] - Lazy resolution.
+- [ ] - Conditional registration.
 - [ ] - Group registration.
 - [ ] - Decorative style interceptors.
 - [ ] - Usage with 3d part libraries.

@@ -10,6 +10,7 @@ We start using TypeIOC by registering our services. The power of the service is 
 Depending on a type of registration chosen, there are certain constraints applied to the algorithm of resolution. Registration also defines additional service metadata:
 
 * [Initialization](./metadata.md#initialization)
+* [Lazy instantiation](./metadata.md#lazy-instantiation)
 * [Naming](./metadata.md#naming)
 * [Life cycle](../life-cycle/index.md)
 * [Ownership](./metadata.md#ownership)
