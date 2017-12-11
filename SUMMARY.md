@@ -14,6 +14,8 @@
 * [Resolution](./resolution/index.md)
     * [Dynamic dependencies](./resolution/dynamic-dependecies.md)
     * [Cached resolution](./resolution/cached-resolution.md)
+    * [Circular dependencies](./resolution/circular-dependencies.md)
+    * [Lazy resolution](./resolution/lazy-resolution.md)
 * [Decorators](./decorators/index.md)
     * [Services registration](./decorators/services-registration.md)
     * [Dependencies resolution](./decorators/dependencies-resolution.md)

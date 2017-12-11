@@ -6,8 +6,6 @@ Every registration has several customization options, things that affect its beh
 
 Registration might specify an action, performed over a component during resolution.
 
-### Synopsis
-
 ```typescript
 interface IInitializer<T> {
     (c:IContainer, item : T) : T;
@@ -20,11 +18,18 @@ interface IInitializer<T> {
 initializeBy(action : IInitializer<T>)
 ```
 
-* ### Naming
+* ## Lazy instantiation
+
+Specifies lazily resolved services.
+[More info](../resolution/lazy-resolution.md)
+
+```typescript
+lazy()
+```
+
+* ## Naming
 
 Registration might have a name associated with it. In this case, a service can be resolved using only the name specified. Named registrations are useful for registering the same service several times with different names.
-
-### Synopsis
 
 ```typescript
 /**
@@ -34,11 +39,9 @@ Registration might have a name associated with it. In this case, a service can b
 named : (name: string)
 ```
 
-* ### Reusability / life cycle
+* ## Reusability / life cycle
 
 Reusability defines component repeated resolution behavior.
-
-### Synopsis
 
 ```typescript
 /**
@@ -63,11 +66,9 @@ instancePerContainer()
 
 [More info](../life-cycle/)
 
-* ### Ownership
+* ## Ownership
 
 Ownership defines component disposal behavior if any provided.
-
-### Synopsis
 
 ```typescript
 /**
