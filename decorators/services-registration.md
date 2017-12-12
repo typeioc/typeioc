@@ -29,6 +29,11 @@ interface IInitializer<T> {
 initializeBy(action : IInitializer<T>)
 
 /**
+ * Specifies lazily resolved services.
+ */
+lazy()
+
+/**
 * @param {string} name - registration name.
 * A service will be resolved only using the name specified.
 */
