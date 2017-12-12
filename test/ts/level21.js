@@ -16,9 +16,11 @@ const scaffold = require("./../scaffold");
 var Level21;
 (function (Level21) {
     let decorator;
+    let builder;
     Level21.decorators_lazy = {
         setUp: function (callback) {
             decorator = scaffold.createDecorator();
+            builder = scaffold.createBuilder();
             callback();
         },
         self_resolution: (test) => {
@@ -182,6 +184,60 @@ var Level21;
             test.strictEqual(c.value, 'C');
             test.strictEqual(c.next.value, 'A');
             test.done();
+        },
+        factory_decorator_lazy_side_by_side: (test) => {
+            builder.register('F')
+                .as((c, h, n) => {
+                const a = c.resolve('F', n, h + n);
+                return {
+                    value: h,
+                    get next() {
+                        return a();
+                    }
+                };
+            })
+                .lazy();
+            let F = F_2 = class F {
+                constructor(f) {
+                    this.f = f;
+                }
+                next(h, n) {
+                    const value = h;
+                    const that = this;
+                    return {
+                        value,
+                        get next() {
+                            return that.f().next(n, h + n);
+                        }
+                    };
+                }
+            };
+            F = F_2 = __decorate([
+                decorator
+                    .provide(F_2)
+                    .lazy()
+                    .register(),
+                __param(0, decorator.by(F_2).resolve()),
+                __metadata("design:paramtypes", [Object])
+            ], F);
+            decorator.import(builder);
+            const container = decorator.build();
+            const lazy1 = container.resolve('F', 0, 1)();
+            const data1 = [...Array(10).keys()].reduce((acc, curnet) => {
+                acc.result.push(acc.lazy.value);
+                acc.lazy = acc.lazy.next;
+                return acc;
+            }, { lazy: lazy1, result: [] });
+            const f = container.resolve(F)();
+            const lazy2 = f.next(0, 1);
+            const data2 = [...Array(10).keys()].reduce((acc, curnet) => {
+                acc.result.push(acc.lazy.value);
+                acc.lazy = acc.lazy.next;
+                return acc;
+            }, { lazy: lazy2, result: [] });
+            test.deepEqual(data1.result, data2.result);
+            test.done();
+            var F_2;
         }
     };
 })(Level21 = exports.Level21 || (exports.Level21 = {}));

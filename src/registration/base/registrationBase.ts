@@ -183,6 +183,7 @@ export class RegistrationBase implements Internal.IRegistrationBase {
         result.owner = this._owner;
         result.scope = this._scope;
         result.initializer = this._initializer;
+        result.isLazy = this._isLazy;
         result.params = this._params;
         result.dependenciesValue = this._dependenciesValue;
 
