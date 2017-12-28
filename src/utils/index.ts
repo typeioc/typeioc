@@ -14,12 +14,6 @@ import ImmutableArray from './immutableArray';
 
 export var Reflection = ReflectionModule;
 
-export function concat(array : any[], tailArray : any[]) : any[] {
-
-    array.push.apply(array, tailArray);
-    return array;
-}
-
 export function checkNullArgument(value : any, argument: string,  message?: string) {
     if((value != '') && !value) {
         var exception = new ArgumentNullError(argument, message);

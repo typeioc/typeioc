@@ -8,7 +8,7 @@
 
 'use strict';
 
-import { checkNullArgument, checkDependency, concat} from '../utils';
+import { checkNullArgument, checkDependency } from '../utils';
 import { ResolutionError } from '../exceptions';
 
 export class Container implements Typeioc.IContainer {
@@ -43,9 +43,8 @@ export class Container implements Typeioc.IContainer {
         if(!args.length) {
             return this._container.resolve(service);
         }
-
-        args = concat([service], args);
-        return this._container.resolve.apply(this._container, args);
+        
+        return this._container.resolve(service, ...args);
     }
     
     public async resolveAsync<R>(service: any, ...args:any[]) : Promise<R> {
@@ -63,8 +62,7 @@ export class Container implements Typeioc.IContainer {
             return this._container.tryResolve(service);
         }
 
-        args = concat([service], args);
-        return this._container.tryResolve.apply(this._container, args);
+        return this._container.tryResolve(service, ...args);
     }
     
     public async tryResolveAsync<R>(service: any, ...args:any[]) : Promise<R> {
@@ -82,8 +80,7 @@ export class Container implements Typeioc.IContainer {
             return this._container.resolveNamed(service, name);
         }
 
-        args = concat([service, name], args);
-        return this._container.resolveNamed.apply(this._container, args);
+        return this._container.resolveNamed(service, name, ...args);
     }
     
     public async resolveNamedAsync<R>(service: any, name : string, ...args:any[]) : Promise<R> {
@@ -101,8 +98,7 @@ export class Container implements Typeioc.IContainer {
             return this._container.tryResolveNamed(service, name);
         }
         
-        args = concat([service, name], args);
-        return this._container.tryResolveNamed.apply(this._container, args);
+        return this._container.tryResolveNamed(service, name, ...args);
     }
     
     public async tryResolveNamedAsync<R>(service: any, name : string, ...args:any[]) : Promise<R> {
@@ -119,7 +115,7 @@ export class Container implements Typeioc.IContainer {
         if(!dependencies || dependencies.length <= 0)
             throw new ResolutionError('No dependencies provided');
 
-        dependencies.forEach((item) => checkDependency(item));
+        dependencies.forEach(checkDependency);
 
         return this._container.resolveWithDependencies<R>(service, dependencies);
     }

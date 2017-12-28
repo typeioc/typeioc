@@ -49,14 +49,8 @@ export class Invoker implements Internal.IInvoker {
 
     private createByFactory<R>(
         registration : Internal.IRegistrationBase, args: Array<any> = []) : R {
-        
-        args = [registration.container].concat(args.slice(0));
 
-        if(args.length === 1) {
-            return registration.factory(args[0]);
-        }
-
-        return registration.factory.apply(registration.factory, args);
+        return registration.factory(registration.container, ...args);
     }
 
     private instantiate(
