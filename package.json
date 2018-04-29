@@ -14,27 +14,27 @@
   "devDependencies": {
     "@types/node": "9.6.7",
     "coveralls": "3.0.0",
-    "del": "3.0.0",
+    "rimraf": "2.6.2",
     "gitbook-cli": "2.3.2",
     "gitbook-plugin-anchorjs": "1.1.1",
     "gitbook-plugin-github": "2.0.0",
     "gitbook-plugin-prism": "2.3.0",
     "gitbook-plugin-sectionx": "3.1.0",
-    "gulp": "3.9.1",
-    "gulp-header": "2.0.5",
-    "gulp-replace": "0.6.1",
-    "gulp-util": "3.0.8",
     "istanbul": "0.4.5",
     "nodeunit": "0.11.2",
     "sinon": "4.5.0",
-    "run-sequence": "2.2.1"
+    "typescript": "2.8.3"
   },
   "engines": {
     "node": ">=6.6.0"
   },
   "scripts": {
-    "compile": "gulp --gulpfile build/gulpfile.js compile",
-    "build": "gulp --gulpfile build/gulpfile.js build",
+    "prebuild": "rimraf lib/*",
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "prebuild:tests": "rimraf test/js/{data|ts}/**/*.{js|map} ",
+    "1prebuild:tests": "rimraf test/data/**/*.js test/data/**/*.js.map test/ts/**/*.js test/ts/**/*.js.map ",
+    "build:tests": "tsc -p tsconfig.tests.json",
     "build-appveyor": "gulp --env=appveyor --gulpfile build/gulpfile.js build",
     "test": "node --harmony ./node_modules/nodeunit/bin/nodeunit test/js/internal/ test/js/api/ test/ts/",
     "coverage": "NODE_ENV=coverage node --harmony node_modules/.bin/istanbul cover node_modules/.bin/nodeunit test/js/internal/ test/js/api/ test/ts/",

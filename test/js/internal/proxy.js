@@ -5,11 +5,11 @@ exports.internal = {
 
     proxy: (function () {
 
-        var Scaffold = require('../../scaffold');
-        var ScaffoldAddons = require('../../scaffoldAddons');
-        var ProxyModule = require('./../../../lib/interceptors/proxy');
-        var mockery = Scaffold.Mockery;
-        var CallInfoType = ScaffoldAddons.Interceptors.CallInfoType;
+        const Scaffold = require('../scaffold');
+        const ScaffoldAddons = require('../scaffoldAddons');
+        const ProxyModule = require('./../../../lib/interceptors/proxy');
+        const mockery = Scaffold.Mockery;
+        const CallInfoType = ScaffoldAddons.Interceptors.CallInfoType;
 
         var PropertyType = {
             Method : 1,                 // method

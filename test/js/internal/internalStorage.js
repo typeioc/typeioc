@@ -5,8 +5,8 @@ exports.internal = {
 
     internalStorage : (function() {
 
-        var Scaffold = require('../../scaffold');
-        var InternalStorageModule = require('../../../lib/storage/internalStorage');
+        const Scaffold = require('../scaffold');
+        const InternalStorageModule = require('../../../lib/storage/internalStorage');
 
         var internalStorage;
 

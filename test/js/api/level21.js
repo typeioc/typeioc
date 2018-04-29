@@ -1,6 +1,6 @@
 'use strict';
 
-const scaffold = require('./../../scaffold');
+const scaffold = require('../scaffold');
 let builder;
 
 exports.api = {

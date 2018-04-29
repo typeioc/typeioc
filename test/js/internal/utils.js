@@ -5,8 +5,8 @@ exports.internal = {
 
     utils: (function () {
 
-        var Scaffold = require('../../scaffold');
-        var Utils = Scaffold.Utils;
+        const Scaffold = require('../scaffold');
+        const Utils = Scaffold.Utils;
 
 
         return {

@@ -3,9 +3,9 @@
 exports.internal = {
 
     registrationStorage : (function() {
-        var Scaffold = require('../../scaffold');
-        var RegistrationStorageModule = require('../../../lib/storage/registrationStorage');
-        var mockery = Scaffold.Mockery;
+        const Scaffold = require('../scaffold');
+        const RegistrationStorageModule = require('../../../lib/storage/registrationStorage');
+        const mockery = Scaffold.Mockery;
 
         var registrationStorage;
         var internalStorage;

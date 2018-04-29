@@ -3,11 +3,7 @@
 exports.internal = {
 
     internalContainer: (function () {
-
-        var InternalContainerModule = require('../../../lib/build/internalContainer');
-
         var internalContainer;
-
 
         return {
 

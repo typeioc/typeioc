@@ -5,9 +5,9 @@ exports.internal = {
 
     disposableStorage : (function() {
 
-        var Scaffold = require('../../scaffold');
-        var DisposableStorageModule = require('../../../lib/storage/disposableStorage');
-        var mockery = Scaffold.Mockery;
+        const Scaffold = require('../scaffold');
+        const DisposableStorageModule = require('../../../lib/storage/disposableStorage');
+        const mockery = Scaffold.Mockery;
 
         var disposableStorage;
 

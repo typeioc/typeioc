@@ -4,9 +4,9 @@ exports.internal = {
 
     exceptions: (function () {
 
-        var Scaffold = require('../../scaffold');
-        var Exceptions = Scaffold.Exceptions;
-        var BaseError = Scaffold.BaseError;
+        const Scaffold = require('../scaffold');
+        const Exceptions = Scaffold.Exceptions;
+        const BaseError = Scaffold.BaseError;
 
         return {
 

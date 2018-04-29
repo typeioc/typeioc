@@ -4,11 +4,11 @@ exports.internal = {
 
     interceptor: (function () {
 
-        var Scaffold = require('../../scaffold');
-        var ScaffoldAddons = require('../../scaffoldAddons');
-        var InterceptorModule = require('./../../../lib/interceptors/interceptor');
-        var mockery = Scaffold.Mockery;
-        var CallInfoType = ScaffoldAddons.Interceptors.CallInfoType;
+        const Scaffold = require('../scaffold');
+        const ScaffoldAddons = require('../scaffoldAddons');
+        const InterceptorModule = require('./../../../lib/interceptors/interceptor');
+        const mockery = Scaffold.Mockery;
+        const CallInfoType = ScaffoldAddons.Interceptors.CallInfoType;
 
         var proxy;
         var interceptor;

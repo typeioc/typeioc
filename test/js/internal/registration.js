@@ -5,10 +5,10 @@ exports.internal = {
 
     registration : (function() {
 
-        var Scaffold = require('../../scaffold');
-        var RegistrationInstanceModule = require('./../../../lib/registration/instance/registration');
-        var mockery = Scaffold.Mockery;
-        var Types = Scaffold.Types;
+        const Scaffold = require('../scaffold');
+        const RegistrationInstanceModule = require('./../../../lib/registration/instance/registration');
+        const mockery = Scaffold.Mockery;
+        const Types = Scaffold.Types;
 
         var baseRegistration;
         var instanceRegistration;

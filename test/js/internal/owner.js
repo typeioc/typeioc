@@ -5,8 +5,8 @@ exports.internal = {
 
     owner : (function() {
 
-        var Scaffold = require('../../scaffold');
-        var Types = Scaffold.Types;
+        const Scaffold = require('../scaffold');
+        const Types = Scaffold.Types;
 
         return {
 

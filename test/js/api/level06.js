@@ -1,15 +1,14 @@
 
 'use strict';
 
-
 exports.api = {
 
     level6 : (function() {
 
-        var scaffold = require('../../scaffold');
-        var testData = scaffold.TestModule;
+        const scaffold = require('../scaffold');
+        const testData = scaffold.TestModule;
 
-        var containerBuilder;
+        let containerBuilder;
 
         return {
 

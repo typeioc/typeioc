@@ -4,10 +4,10 @@ exports.api = {
 
     level11: (function () {
 
-        var Scaffold = require('./../../scaffold');
-        var ScaffoldAddons = require('./../../scaffoldAddons');
-        var mockery = Scaffold.Mockery;
-        var CallInfoType = ScaffoldAddons.Interceptors.CallInfoType;
+        const Scaffold = require('../scaffold');
+        const ScaffoldAddons = require('../scaffoldAddons');
+        const mockery = Scaffold.Mockery;
+        const CallInfoType = ScaffoldAddons.Interceptors.CallInfoType;
 
         var interceptor = null;
         var containerBuilder = null;

@@ -5,8 +5,8 @@ exports.internal = {
 
     callInfoType : (function() {
 
-        var ScaffoldAddons = require('../../scaffoldAddons');
-        var CallInfoType = ScaffoldAddons.Interceptors.CallInfoType;
+        const ScaffoldAddons = require('../scaffoldAddons');
+        const CallInfoType = ScaffoldAddons.Interceptors.CallInfoType;
 
         return {
 

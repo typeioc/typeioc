@@ -4,13 +4,13 @@ exports.api = {
 
     level13: (function () {
 
-        var Scaffold = require('./../../scaffold');
-        var TestData = Scaffold.TestDataDecorators;
-        var ScaffoldAddons = require('./../../scaffoldAddons');
-        var Types = Scaffold.Types;
-        var container = null;
-        var builder = null;
-        var container2 = null;
+        const Scaffold = require('../scaffold');
+        const TestData = Scaffold.TestDataDecorators;
+        const ScaffoldAddons = require('../scaffoldAddons');
+        const Types = Scaffold.Types;
+        let container = null;
+        let builder = null;
+        let container2 = null;
 
         return {
             decorators : {

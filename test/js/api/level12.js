@@ -4,12 +4,12 @@ exports.api = {
 
     level12: (function () {
 
-        var Scaffold = require('./../../scaffold');
-        var ScaffoldAddons = require('./../../scaffoldAddons');
-        var CallInfoType = ScaffoldAddons.Interceptors.CallInfoType;
+        const Scaffold = require('../scaffold');
+        const ScaffoldAddons = require('../scaffoldAddons');
+        const CallInfoType = ScaffoldAddons.Interceptors.CallInfoType;
 
-        var interceptor = null;
-        var containerBuilder = null;
+        let interceptor = null;
+        let containerBuilder = null;
 
         function resolve(subject, substitutes) {
             var register1 = 'test';

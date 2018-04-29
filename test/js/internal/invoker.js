@@ -1,6 +1,6 @@
 'use strict';
 
-const Scaffold = require('../../scaffold');
+const Scaffold = require('../scaffold');
 const RegistrationBaseModule = require('../../../lib/registration/base/registrationBase');
 const InvoketModule = require('../../../lib/build/invoker');
 const mockery = Scaffold.Mockery;

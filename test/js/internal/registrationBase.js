@@ -5,9 +5,9 @@ exports.internal = {
 
     registrationBase : (function() {
 
-        var Scaffold = require('../../scaffold');
-        var RegistrationBaseModule = require('../../../lib/registration/base/registrationBase');
-        var mockery = Scaffold.Mockery;
+        const Scaffold = require('../scaffold');
+        const RegistrationBaseModule = require('../../../lib/registration/base/registrationBase');
+        const mockery = Scaffold.Mockery;
 
         return {
 

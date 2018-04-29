@@ -4,15 +4,15 @@ exports.internal = {
 
     container: (function () {
 
-        var Scaffold = require('../../scaffold');
-        var ContainerModule = require('../../../lib/build/container');
-        var mockery = Scaffold.Mockery;
+        const Scaffold = require('../scaffold');
+        const ContainerModule = require('../../../lib/build/container');
+        const mockery = Scaffold.Mockery;
 
-        var registrationStorageService = mockery.stub();
-        var disposableStorageService = mockery.stub();
-        var registrationBaseService = mockery.stub();
-        var containerApiService = mockery.stub();
-        var container;
+        const registrationStorageService = mockery.stub();
+        const disposableStorageService = mockery.stub();
+        const registrationBaseService = mockery.stub();
+        const containerApiService = mockery.stub();
+        let container;
 
         return {
             setUp: function (callback) {

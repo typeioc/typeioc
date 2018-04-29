@@ -1,7 +1,7 @@
 'use strict';
 
-const scaffold = require('./../../scaffold');
-var ScaffoldAddons = require('./../../scaffoldAddons');
+const scaffold = require('../scaffold');
+var ScaffoldAddons = require('../scaffoldAddons');
 const Interceptors = ScaffoldAddons.Interceptors;
 
 const testData = scaffold.TestModule;

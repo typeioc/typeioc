@@ -29,7 +29,7 @@
 			"request": "launch",
 			"program": "${workspaceRoot}/node_modules/.bin/nodeunit",
 			"stopOnEntry": false,
-			"args": ["test/ts/"],
+			"args": ["test/js/ts/"],
 			"cwd": "${workspaceRoot}",
 			"preLaunchTask": null,
 			"runtimeExecutable": null,
@@ -50,7 +50,7 @@
 			"request": "launch",
 			"program": "${workspaceRoot}/node_modules/.bin/nodeunit",
 			"stopOnEntry": false,
-			"args": ["test/js/internal/", "test/js/api/", "test/ts/"],
+			"args": ["test/js/internal/", "test/js/api/", "test/js/ts/"],
 			"cwd": "${workspaceRoot}",
 			"preLaunchTask": null,
 			"runtimeExecutable": null,
@@ -76,7 +76,7 @@
 						"node_modules/.bin/nodeunit",
 						"test/js/internal/",
 						"test/js/api/",
-						 "test/ts/"
+						"test/js/ts/"
 			],
 			"cwd": "${workspaceRoot}",
 			"preLaunchTask": null,

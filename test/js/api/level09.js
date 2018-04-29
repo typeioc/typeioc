@@ -4,9 +4,9 @@ exports.api = {
 
     level9: (function () {
 
-        var scaffold = require('./../../scaffold');
-        var testData = scaffold.TestModule;
-        var mockery = scaffold.Mockery;
+        const scaffold = require('../scaffold');
+        const testData = scaffold.TestModule;
+        const mockery = scaffold.Mockery;
 
         var containerBuilder;
 

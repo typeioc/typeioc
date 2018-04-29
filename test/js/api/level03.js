@@ -5,11 +5,10 @@ exports.api = {
 
     level3 : (function() {
 
-        var scaffold = require('../../scaffold');
-        var testData = scaffold.TestModule;
+        const scaffold = require('../scaffold');
+        const testData = scaffold.TestModule;
 
-
-        var containerBuilder = null;
+        let containerBuilder = null;
 
         return {
 

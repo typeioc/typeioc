@@ -2,18 +2,18 @@
 
 'use strict';
 
-var typeioc = require('../');
-var BError = require('../lib/exceptions/baseError').default;
+var typeioc = require('../../');
+var BError = require('../../lib/exceptions/baseError').default;
 
 export var Exceptions = typeioc.Exceptions;
 export var Types = typeioc.Types;
-export var RegistrationBase = require('../lib/registration/base/registrationBase');
+export var RegistrationBase = require('../../lib/registration/base/registrationBase');
 export var BaseError = BError;
 export var TestModule = require('./data/test-data');
 export var TestModule2 = require('./data/test-data2');
 export var TestModuleInterceptors = require('./data/test-data-intercept');
 
-export var Utils = require('../lib/utils/index');
+export var Utils = require('../../lib/utils/index');
 export var Mockery = require('sinon');
 
 

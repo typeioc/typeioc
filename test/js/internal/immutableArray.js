@@ -4,8 +4,8 @@ exports.internal = {
 
     immutableArray: (function () {
 
-        var Scaffold = require('../../scaffold');
-        var ImmutableArray = require('./../../../lib/utils/immutableArray').default;
+        const Scaffold = require('../scaffold');
+        const ImmutableArray = require('./../../../lib/utils/immutableArray').default;
 
         function createArray(data) {
             return new ImmutableArray(data);

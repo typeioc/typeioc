@@ -4,10 +4,10 @@ exports.internal = {
 
     substituteStorage: (function () {
 
-        var Scaffold = require('../../scaffold');
-        var ScaffoldAddons = require('../../scaffoldAddons');
-        var SubstituteStorageModule = require('./../../../lib/interceptors/substituteStorage');
-        var CallInfoType = ScaffoldAddons.Interceptors.CallInfoType;
+        const Scaffold = require('../scaffold');
+        const ScaffoldAddons = require('../scaffoldAddons');
+        const SubstituteStorageModule = require('./../../../lib/interceptors/substituteStorage');
+        const CallInfoType = ScaffoldAddons.Interceptors.CallInfoType;
 
         var storage;
 

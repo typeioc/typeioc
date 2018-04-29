@@ -2,6 +2,6 @@
 
 'use strict';
 
-var addons = require('../addons/index');
+var addons = require('../../addons/index');
 
 export var Interceptors = addons.Interceptors;

@@ -5,8 +5,8 @@ exports.internal = {
 
     scope : (function() {
 
-        var Scaffold = require('../../scaffold');
-        var Types = Scaffold.Types;
+        const Scaffold = require('../scaffold');
+        const Types = Scaffold.Types;
 
 
         return {

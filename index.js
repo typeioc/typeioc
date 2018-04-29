@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------------------------
- * Copyright (c) 2017 Maxim Gherman
+ * Copyright (c) 2014 Maxim Gherman
  * typeioc - Dependency injection container for node typescript / javascript
  * @version v2.1.4
  * @link https://github.com/maxgherman/TypeIOC

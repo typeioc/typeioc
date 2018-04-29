@@ -61,23 +61,13 @@
 	"command": "npm",
 	"isShellCommand": true,
 	"tasks": [
-		
 		{
-			"taskName": "run",
+			"taskName": "build",
 			// Make this the default build command.
 			"isBuildCommand": true,
 			// Show the output window only if unrecognized errors occur.
 			"showOutput": "silent",
-          	"args": ["compile"]
-		},
-		{
-			"taskName": "build",
-			// Make this the default build command.
-			"isBuildCommand": false,
-			// Show the output window only if unrecognized errors occur.
-			"showOutput": "silent",
-            
-			"args": ["build"]
+       	"args": ["build"]
 		}
 	]
 }

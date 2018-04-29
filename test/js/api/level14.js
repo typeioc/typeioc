@@ -4,10 +4,10 @@ exports.api = {
 
     level14: (function () {
 
-        var scaffold = require('../../scaffold');
-        var testData = scaffold.TestModule;
+        const scaffold = require('../scaffold');
+        const testData = scaffold.TestModule;
        
-        var containerBuilder = null;
+        let containerBuilder = null;
 
         function setUpDefaultAsync(callback) {
             containerBuilder = scaffold.createBuilder();
