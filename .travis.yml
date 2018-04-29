@@ -1,15 +1,13 @@
 language: node_js
 node_js:
-  - "7.7.3"
-  - "8.2.1"
+  - "8.0.0"
   - "9.2.0"
-before_install:
-  - npm install typescript -g
-  - npm install gulp -g
+  - "10.0.0"
 install:
   - npm install
 before_script:
   - npm run build
+  - npm run build:test
 script:
   - npm run test
 after_script:

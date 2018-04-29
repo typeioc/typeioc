@@ -26,7 +26,7 @@
     "typescript": "2.8.3"
   },
   "engines": {
-    "node": ">=6.6.0"
+    "node": ">=7.0.0"
   },
   "scripts": {
     "prebuild": "rimraf lib/*",
@@ -34,9 +34,8 @@
     "build:watch": "tsc --watch",
     "prebuild:test": "rimraf test/js/*.{js,map} test/js/{data,ts}/*",
     "build:test": "tsc -p tsconfig.tests.json",
-    "build-appveyor": "gulp --env=appveyor --gulpfile build/gulpfile.js build",
-    "test": "node --harmony ./node_modules/nodeunit/bin/nodeunit test/js/internal/ test/js/api/ test/js/ts/",
-    "coverage": "NODE_ENV=coverage node --harmony node_modules/.bin/istanbul cover node_modules/.bin/nodeunit test/js/internal/ test/js/api/ test/ts/",
+    "test": "node ./node_modules/nodeunit/bin/nodeunit test/js/internal/ test/js/api/ test/js/ts/",
+    "coverage": "NODE_ENV=coverage node node_modules/.bin/istanbul cover node_modules/.bin/nodeunit test/js/internal/ test/js/api/ test/ts/",
     "coveralls": "cat test/coverage/lcov.info | coveralls",
     "docs:prepare": "gitbook install",
     "docs:watch": "npm run docs:prepare && gitbook serve",
