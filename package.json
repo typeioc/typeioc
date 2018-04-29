@@ -9,10 +9,10 @@
   },
   "dependencies": {
     "hashes": "0.1.4",
-    "reflect-metadata": "0.1.10"
+    "reflect-metadata": "0.1.12"
   },
   "devDependencies": {
-    "@types/node": "8.0.53",
+    "@types/node": "9.6.7",
     "coveralls": "3.0.0",
     "del": "3.0.0",
     "gitbook-cli": "2.3.2",
@@ -21,13 +21,13 @@
     "gitbook-plugin-prism": "2.3.0",
     "gitbook-plugin-sectionx": "3.1.0",
     "gulp": "3.9.1",
-    "gulp-header": "1.8.9",
+    "gulp-header": "2.0.5",
     "gulp-replace": "0.6.1",
     "gulp-util": "3.0.8",
     "istanbul": "0.4.5",
     "nodeunit": "0.11.2",
-    "sinon": "4.1.2",
-    "run-sequence": "2.2.0"
+    "sinon": "4.5.0",
+    "run-sequence": "2.2.1"
   },
   "engines": {
     "node": ">=6.6.0"

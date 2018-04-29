@@ -7,7 +7,6 @@ lib/
 lib-cov/
 npm-debug.log
 node_modules
-samples
 src/*.js
 src/*.js.map
 test/coverage/
