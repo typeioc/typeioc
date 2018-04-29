@@ -10,5 +10,7 @@ node_modules
 src/*.js
 src/*.js.map
 test/coverage/
+test/js/data/
+test/js/ts/
 test/**/*.js.map
 test/ts/**/*.js
