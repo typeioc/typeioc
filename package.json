@@ -1,8 +1,6 @@
 {
   "name": "typeioc",
   "version": "2.1.4",
-  "description": "Dependency injection container for node typescript / javascript",
-  "homepage": "https://github.com/maxgherman/TypeIOC",
   "scripts": {
     "prebuild": "rimraf lib/*",
     "build": "tsc",
@@ -30,9 +28,9 @@
     "coveralls": "3.0.2",
     "rimraf": "2.6.2",
     "gitbook-cli": "2.3.2",
-    "gitbook-plugin-anchorjs": "1.1.1",
+    "gitbook-plugin-anchorjs": "2.0.1",
     "gitbook-plugin-github": "2.0.0",
-    "gitbook-plugin-prism": "2.3.0",
+    "gitbook-plugin-prism": "2.4.0",
     "gitbook-plugin-sectionx": "3.1.0",
     "istanbul": "0.4.5",
     "nodeunit": "0.11.3",
@@ -42,6 +40,8 @@
   "engines": {
     "node": ">=7.0.0"
   },
+  "description": "Dependency injection container for node typescript / javascript",
+  "homepage": "https://github.com/maxgherman/TypeIOC",
   "keywords": [
     "typescript",
     "dependency",
