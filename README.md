@@ -9,7 +9,6 @@ Dependency injection container for typescript / javascript.
 [![Build Status](https://travis-ci.org/maxgherman/TypeIOC.svg?branch=master)](https://travis-ci.org/maxgherman/TypeIOC)|[![Build status](https://ci.appveyor.com/api/projects/status/0813svinij5s2cg7)](https://ci.appveyor.com/project/maxgherman/typeioc)
 
  [![Coverage Status](https://img.shields.io/coveralls/maxgherman/TypeIOC.svg)](https://coveralls.io/r/maxgherman/TypeIOC?branch=master)
- [![Dependency Status](https://gemnasium.com/maxgherman/TypeIOC.svg)](https://gemnasium.com/maxgherman/TypeIOC)
 
 ## [Documentation](https://rawgit.com/maxgherman/TypeIOC-docs/master/)
 

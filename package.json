@@ -3,31 +3,6 @@
   "version": "2.1.4",
   "description": "Dependency injection container for node typescript / javascript",
   "homepage": "https://github.com/maxgherman/TypeIOC",
-  "main": "./index",
-  "directories": {
-    "lib": "./lib"
-  },
-  "dependencies": {
-    "hashes": "0.1.4",
-    "reflect-metadata": "0.1.12"
-  },
-  "devDependencies": {
-    "@types/node": "9.6.7",
-    "coveralls": "3.0.0",
-    "rimraf": "2.6.2",
-    "gitbook-cli": "2.3.2",
-    "gitbook-plugin-anchorjs": "1.1.1",
-    "gitbook-plugin-github": "2.0.0",
-    "gitbook-plugin-prism": "2.3.0",
-    "gitbook-plugin-sectionx": "3.1.0",
-    "istanbul": "0.4.5",
-    "nodeunit": "0.11.2",
-    "sinon": "4.5.0",
-    "typescript": "2.8.3"
-  },
-  "engines": {
-    "node": ">=7.0.0"
-  },
   "scripts": {
     "prebuild": "rimraf lib/*",
     "build": "tsc",
@@ -41,6 +16,31 @@
     "docs:watch": "npm run docs:prepare && gitbook serve",
     "docs:build": "gitbook build",
     "docs:publish": "rm _book -rf && npm run docs:build && cd _book && git init && git remote add origin https://github.com/maxgherman/TypeIOC-docs.git && git add . && git commit -am 'Update docs' && git push origin master --force"
+  },
+  "main": "./index",
+  "directories": {
+    "lib": "./lib"
+  },
+  "dependencies": {
+    "hashes": "0.1.4",
+    "reflect-metadata": "0.1.12"
+  },
+  "devDependencies": {
+    "@types/node": "10.11.3",
+    "coveralls": "3.0.2",
+    "rimraf": "2.6.2",
+    "gitbook-cli": "2.3.2",
+    "gitbook-plugin-anchorjs": "1.1.1",
+    "gitbook-plugin-github": "2.0.0",
+    "gitbook-plugin-prism": "2.3.0",
+    "gitbook-plugin-sectionx": "3.1.0",
+    "istanbul": "0.4.5",
+    "nodeunit": "0.11.3",
+    "sinon": "6.3.4",
+    "typescript": "3.1.1"
+  },
+  "engines": {
+    "node": ">=7.0.0"
   },
   "keywords": [
     "typescript",
