@@ -10,7 +10,7 @@ Dependency injection container for typescript / javascript.
 
  [![Coverage Status](https://img.shields.io/coveralls/maxgherman/TypeIOC.svg)](https://coveralls.io/r/maxgherman/TypeIOC?branch=master)
 
-## [Documentation](https://rawgit.com/maxgherman/TypeIOC-docs/master/)
+## [Documentation](https://maxgherman.github.io/TypeIOC-docs/)
 
 ### [Examples](https://github.com/maxgherman/TypeIOC-examples)
 
