@@ -21,20 +21,20 @@
   },
   "dependencies": {
     "hashes": "0.1.4",
-    "reflect-metadata": "0.1.12"
+    "reflect-metadata": "0.1.13"
   },
   "devDependencies": {
-    "@types/node": "10.11.3",
+    "@types/node": "11.9.4",
     "coveralls": "3.0.2",
-    "rimraf": "2.6.2",
+    "rimraf": "2.6.3",
     "gitbook-plugin-anchorjs": "2.0.1",
     "gitbook-plugin-github": "2.0.0",
     "gitbook-plugin-prism": "2.4.0",
     "gitbook-plugin-sectionx": "3.1.0",
     "istanbul": "0.4.5",
     "nodeunit": "0.11.3",
-    "sinon": "6.3.4",
-    "typescript": "3.1.1"
+    "sinon": "7.2.4",
+    "typescript": "3.3.3"
   },
   "engines": {
     "node": ">=7.0.0"
