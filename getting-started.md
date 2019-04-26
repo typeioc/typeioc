@@ -8,7 +8,7 @@ import * as typeioc from 'typeioc'; // ES2015
 const typeioc = require('typeioc'); // CommonJS
 ```
 
-For TypeScript add the path to TypeIOC definition file into your tsconfig.json as well as support for experimental decorators:
+For TypeScript add support for experimental decorators:
 
 ```json
 {
@@ -16,11 +16,7 @@ For TypeScript add the path to TypeIOC definition file into your tsconfig.json a
     "experimentalDecorators" : true,
     "emitDecoratorMetadata" : true
     ...
-  },
-  "files": [
-    "node_modules/typeioc/d.ts/typeioc.d.ts"
-    ...
-  ]
+  }
 }
 ```
 
