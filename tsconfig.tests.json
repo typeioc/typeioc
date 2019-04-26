@@ -8,8 +8,7 @@
     "emitDecoratorMetadata" : true
   },
   "include": [
-    "./d.ts/typeioc.d.ts",
-    "./d.ts/typeioc.addons.d.ts",
+    "./index.d.ts",
     "./test/data/*",
     "./test/scaffold.ts",
     "./test/scaffoldAddons.ts",

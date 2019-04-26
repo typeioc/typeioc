@@ -37,7 +37,7 @@
     "typescript": "3.3.3"
   },
   "engines": {
-    "node": ">=7.0.0"
+    "node": ">=10.0.0"
   },
   "description": "Dependency injection container for node typescript / javascript",
   "homepage": "https://github.com/maxgherman/TypeIOC",

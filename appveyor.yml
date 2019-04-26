@@ -15,9 +15,9 @@ environment:
 
   matrix:
     # node.js
-    - nodejs_version: "8.0.0"
-    - nodejs_version: "9.2.0"
     - nodejs_version: "10.0.0"
+    - nodejs_version: "11.1.0"
+    - nodejs_version: "12.0.0"
 platform:
   - x86
   - x64

@@ -1,4 +1,4 @@
-/// <reference path='../../d.ts/typeioc.addons.d.ts' />
+/// <reference path='../../index.d.ts' />
 
 'use strict';
 

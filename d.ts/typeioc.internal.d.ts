@@ -1,5 +1,4 @@
-///<reference path='typeioc.d.ts' />
-///<reference path='typeioc.addons.d.ts' />
+///<reference path='../index.d.ts' />
 
 declare module Typeioc.Internal {
 

@@ -7,9 +7,9 @@
     "experimentalDecorators" : true
   },
   "files": [
+    "./index.d.ts",
     "./d.ts/hashes.d.ts",
     "./d.ts/typeioc.internal.d.ts",
-    "./d.ts/typeioc.addons.d.ts",
     "./src/scaffold.ts",
     "./src/scaffoldAddons.ts",
     "./src/types/index.ts"
