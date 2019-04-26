@@ -13,7 +13,7 @@
     "docs:prepare": "gitbook install",
     "docs:watch": "npm run docs:prepare && gitbook serve",
     "docs:build": "gitbook build",
-    "docs:publish": "rm _book -rf && npm run docs:build && cd _book && git init && git remote add origin https://github.com/maxgherman/TypeIOC-docs.git && git add . && git commit -am 'Update docs' && git push origin master --force"
+    "docs:publish": "rm _book -rf && npm run docs:build && cd _book && git init && git config user.email \"german.maxim@gmail.com\" && git config user.name \"Max Gherman\" && git remote add origin https://github.com/maxgherman/TypeIOC-docs.git && git add . && git commit -am 'Update docs' && git push origin master --force"
   },
   "main": "./index",
   "directories": {
