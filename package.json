@@ -1,6 +1,6 @@
 {
   "name": "typeioc",
-  "version": "2.1.6",
+  "version": "2.1.7",
   "scripts": {
     "prebuild": "rimraf lib/*",
     "build": "tsc",
