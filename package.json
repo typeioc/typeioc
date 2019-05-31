@@ -1,40 +1,48 @@
 {
   "name": "typeioc",
-  "version": "2.1.7",
+  "version": "3.0.0",
   "scripts": {
-    "prebuild": "rimraf lib/*",
-    "build": "tsc",
-    "build:watch": "tsc --watch",
-    "prebuild:test": "rimraf test/js/*.{js,map} test/js/{data,ts}/*",
-    "build:test": "tsc -p tsconfig.tests.json",
-    "test": "node ./node_modules/nodeunit/bin/nodeunit test/js/internal/ test/js/api/ test/js/ts/",
-    "coverage": "NODE_ENV=coverage node node_modules/.bin/istanbul cover node_modules/.bin/nodeunit test/js/internal/ test/js/api/ test/ts/",
+    "prebuild": "npm run clean:lib && npm run lint",
+    "build": "tsc -b src test",
+    "lint:src": "tslint -c tslint.json -p src/tsconfig.json",
+    "lint:test": "tslint -c tslint.json -p test/tsconfig.json",
+    "lint": "npm run lint:src && npm run lint:test",
+    "clean:lib": "rimraf ./lib",
+    "test": "TS_NODE_FILES=true TS_NODE_PROJECT=\"./test/tsconfig.json\" tap --node-arg=\"-r\" --node-arg=\"tsconfig-paths/register\" test/tests/**",
+    "test:watch": "npm run test -- --watch --changed",
+    "test:report": "npm run test -- --coverage-report=\"html\"",
+
     "coveralls": "cat test/coverage/lcov.info | coveralls",
     "docs:prepare": "gitbook install",
     "docs:watch": "npm run docs:prepare && gitbook serve",
     "docs:build": "gitbook build",
     "docs:publish": "rm _book -rf && npm run docs:build && cd _book && git init && git config user.email \"german.maxim@gmail.com\" && git config user.name \"Max Gherman\" && git remote add origin https://github.com/maxgherman/TypeIOC-docs.git && git add . && git commit -am 'Update docs' && git push origin master --force"
   },
-  "main": "./index",
+  "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
   "directories": {
     "lib": "./lib"
   },
   "dependencies": {
     "hashes": "0.1.4",
-    "reflect-metadata": "0.1.13"
+    "reflect-metadata": "0.1.13",
+    "tslib": "1.9.3"
   },
   "devDependencies": {
-    "@types/node": "11.9.4",
-    "coveralls": "3.0.2",
+    "@types/node": "11.13.8",
+    "@types/sinon": "7.0.11",
     "rimraf": "2.6.3",
+    "sinon": "7.3.2",
+    "tap": "13.1.2",
+    "tsconfig-paths": "3.8.0",
+    "tslint": "5.16.0",
+    "tslint-config-airbnb": "5.11.1",
+    "typescript": "3.5.1",
+    "coveralls": "3.0.2",
     "gitbook-plugin-anchorjs": "2.0.1",
     "gitbook-plugin-github": "2.0.0",
     "gitbook-plugin-prism": "2.4.0",
-    "gitbook-plugin-sectionx": "3.1.0",
-    "istanbul": "0.4.5",
-    "nodeunit": "0.11.3",
-    "sinon": "7.2.4",
-    "typescript": "3.3.3"
+    "gitbook-plugin-sectionx": "3.1.0"
   },
   "engines": {
     "node": ">=10.0.0"

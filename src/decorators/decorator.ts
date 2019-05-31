@@ -1,137 +1,156 @@
-'use strict';
+import { DecoratorError } from '../exceptions'
+import {
+    IDecorator,
+    IDecoratorResolutionCollection,
+    IDecoratorResolutionApi,
+    IDecoratorResolutionParams,
+    DecoratorResolutionParameterType,
+    IDecoratorRegistrationApi
+} from './types'
+import { IInternalStorage } from '../storage'
+import {
+    IContainerBuilderService,
+    IDecoratorApiService,
+    IInternalStorageService,
+    IInternalContainerService,
+    IContainerBuilder,
+    IContainer
+} from '../build'
+import { IRegistration } from '../registration'
+import { IDecoratorRegistration } from './types/registration'
+import { IDecoratorResolution } from './types/resolution'
+import { defaults } from '../common'
+import { getMetadata, isPrototype, isFunction } from '../utils'
 
-import { Reflection } from '../utils';
-import { DecoratorError } from '../exceptions';
-import { Defaults } from '../types';
-import Decorators = Typeioc.Decorators;
-import Internal = Typeioc.Internal;
+export class Decorator implements IDecorator {
 
-export class Decorator implements Decorators.IDecorator {
+    private _builder: IContainerBuilder
+    private _internalStorage: IInternalStorage<{}, IDecoratorResolutionCollection>
 
-    private _builder : Typeioc.IContainerBuilder;
-    private _internalStorage : Internal.IInternalStorage<any, Internal.IDecoratorResolutionCollection>;
+    constructor(
+        builderService: IContainerBuilderService,
+        internalContainerService: IInternalContainerService,
+        private _decoratorRegistrationApiService: IDecoratorApiService,
+        private _internalStorageService:
+            IInternalStorageService<{}, IDecoratorResolutionCollection>) {
 
-    constructor(private _builderService : Internal.IContainerBuilderService,
-                private _internalContainerService : Internal.IInternalContainerService,
-                private _decoratorRegistrationApiService : Internal.IDecoratorApiService,
-                private _internalStorageService : Internal.IInternalStorageService<any, Internal.IDecoratorResolutionCollection>) {
+        this._internalStorage = this._internalStorageService.create()
 
-        this._internalStorage = this._internalStorageService.create();
-
-        _internalContainerService.resolutionDetails = this._internalStorage;
-
-        this._builder = _builderService.create(_internalContainerService);
+        internalContainerService.resolutionDetails = this._internalStorage
+        this._builder = builderService.create(internalContainerService)
     }
 
-    public build():Typeioc.IContainer {
-        return this._builder.build();
+    public build(): IContainer {
+        return this._builder.build()
     }
 
-    public provide<R>(service:any): Decorators.Register.IInitializedLazyDisposedNamedReusedOwned<R> {
-        const register = createRegister(this._builder);
-        const api = this._decoratorRegistrationApiService.createRegistration<R>(register);
-        return api.provide(service);
+    public provide<R>(service: {}): IDecoratorRegistration<R> {
+        const register = createRegister<R>(this._builder)
+        const api = this._decoratorRegistrationApiService.createRegistration<R>(register)
+        return api.provide(service)
     }
 
-    public provideSelf<R>() : Decorators.Register.IInitializedLazyDisposedNamedReusedOwned<R> {
-        const register = createRegister(this._builder, true);
-        const api = this._decoratorRegistrationApiService.createRegistration<R>(register);
-        return api.provideUndefined();
+    public provideSelf<R>(): IDecoratorRegistration<R> {
+        const register = createRegister<R>(this._builder, true)
+        const api = this._decoratorRegistrationApiService.createRegistration<R>(register)
+        return api.provideUndefined()
     }
 
-    public by(service?:any): Decorators.Resolve.IArgsTryNamedCache {
+    public by(service?: {}): IDecoratorResolution {
 
-        const resolve = (api:Internal.IDecoratorResolutionApi) => (target:any, key:string, index:number) => {
+        const resolve =
+            (api: IDecoratorResolutionApi): ParameterDecorator =>
+                (target, _key, index) => {
 
-            if(!api.service) {
-                var dependencies = Reflection.getMetadata(Reflect, target);
-                api.service = dependencies[index];
-            }
+                    if (!api.service) {
+                        const dependencies = getMetadata(target)
+                        api.service = dependencies[index]
+                    }
 
-            const bucket = this._internalStorage.register(target, () => <Internal.IDecoratorResolutionCollection>{});
+                    const bucket = this._internalStorage.register(target,
+                        () => <IDecoratorResolutionCollection>{})
 
-            bucket[index] = <Internal.IDecoratorResolutionParams> {
-                service: api.service,
-                args: api.args,
-                attempt: api.attempt,
-                name: api.name,
-                cache: api.cache,
-                type: Internal.DecoratorResolutionParameterType.Service
-            };
-        };
+                    bucket[index] = <IDecoratorResolutionParams> {
+                        service: api.service,
+                        args: api.args,
+                        attempt: api.attempt,
+                        name: api.name,
+                        cache: api.cache,
+                        type: DecoratorResolutionParameterType.Service
+                    }
+                }
 
-        const api = this._decoratorRegistrationApiService.createResolution(resolve);
+        const api = this._decoratorRegistrationApiService.createResolution(resolve)
 
-        return api.by(service);
+        return api.by(service)
     }
 
-    public resolveValue(value: any | Function) : ParameterDecorator {
+    public resolveValue(value: {} | Function) : ParameterDecorator {
 
-        return (target:any, key:string, index:number) => {
+        return (target, _key, index) => {
 
-            const bucket = this._internalStorage.register(target, () => <Internal.IDecoratorResolutionCollection>{});
+            const bucket = this._internalStorage.register(
+                target,
+                () => <IDecoratorResolutionCollection>{})
 
-            const type = Reflection.isFunction(value) ?
-                Internal.DecoratorResolutionParameterType.FunctionValue:
-                Internal.DecoratorResolutionParameterType.Value;
+            const type = isFunction(value) ?
+                DecoratorResolutionParameterType.FunctionValue :
+                DecoratorResolutionParameterType.Value
 
-            bucket[index] = <Internal.IDecoratorResolutionParams> {
+            bucket[index] = <IDecoratorResolutionParams> {
                 value,
                 type
-            };
-        };
+            }
+        }
     }
 
-    public register<R>(service: any): Typeioc.IRegistration<R> {
-        return this._builder.register<R>(service);
+    public register<R>(service: {}): IRegistration<R> {
+        return this._builder.register<R>(service)
     }
 
-    public import(builder: Typeioc.IContainerBuilder): void {
-        this._builder.copy(builder);
+    public import(builder: IContainerBuilder): void {
+        this._builder.copy(builder)
     }
 }
 
-function createRegister<R>(builder : Typeioc.IContainerBuilder, isSelf = false) { 
-    return (api:Internal.IDecoratorRegistrationApi<R>)  => (target) => {
-    
-        if (!Reflection.isPrototype(target)) {
-            const error = new DecoratorError("Decorator target not supported, not a prototype");
-            error.data = { target };
-            throw error;
+function createRegister<R>(builder: IContainerBuilder, isSelf = false) {
+    return (api: IDecoratorRegistrationApi<R>): ClassDecorator => (target) => {
+
+        if (!isPrototype(target)) {
+            throw new DecoratorError(
+                { message: 'Decorator target not supported, not a prototype', data: { target } })
         }
 
         const registration = isSelf ?
-            builder.register(target).asSelf() :
-            builder
-            .register(api.service)
-            .asType(target);
+            builder.register<R>(target).asSelf() :
+            builder.register<R>(api.service!).asType(target as unknown as R)
 
-        const initializer = api.initializedBy;
+        const initializer = api.initializedBy
         if (initializer) {
-            registration.initializeBy(initializer);
+            registration.initializeBy(initializer)
         }
 
-        const isLazy = api.isLazy;
+        const isLazy = api.isLazy
         if (isLazy) {
-            registration.lazy();
+            registration.lazy()
         }
 
-        const disposer = api.disposedBy;
+        const disposer = api.disposedBy
         if (disposer) {
-            registration.dispose(disposer);
+            registration.dispose(disposer)
         }
 
-        const name = api.name;
+        const name = api.name
         if (name) {
-            registration.named(name);
+            registration.named(name)
         }
 
-        const scope = api.scope || Defaults.Scope;
-        registration.within(scope);
+        const scope = api.scope || defaults.scope
+        registration.within(scope)
 
-        const owner = api.owner || Defaults.Owner;
-        registration.ownedBy(owner);
+        const owner = api.owner || defaults.owner
+        registration.ownedBy(owner)
 
-        return target;
-    };
+        return target
+    }
 }

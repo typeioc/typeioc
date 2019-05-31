@@ -1,128 +1,130 @@
-'use strict';
+import { IDynamicDependency } from '../registration'
+import { IResolveWith, IContainer, IInternalContainer } from './types'
+import { checkNullArgument, checkDependency } from '../utils'
+import { ResolutionError } from '../exceptions'
+import { InternalContainer } from './internal-container'
 
-import { checkNullArgument, checkDependency } from '../utils';
-import { ResolutionError } from '../exceptions';
+export class Container implements IContainer {
 
-export class Container implements Typeioc.IContainer {
+    constructor(private _container: IInternalContainer) { }
 
-    constructor(private _container : Typeioc.Internal.IContainer) { }
-
-    public get cache() : any {
-        return this._container.cache;
+    public get cache(): {} {
+        return this._container.cache
     }
 
-    public createChild() : Typeioc.IContainer {
-
-        return new Container(<Typeioc.Internal.IContainer>this._container.createChild());
+    public createChild(): IContainer {
+        return new Container(this._container.createChild() as InternalContainer)
     }
 
-    public dispose() : void {
-        this._container.dispose();
-    }
-    
-    public async disposeAsync() : Promise<void> {
-        
-         return new Promise<void>(resolve => {
-           this._container.dispose();
-           resolve();
-        });
+    public dispose(): void {
+        this._container.dispose()
     }
 
-    public resolve<R>(service: R, ...args:any[]) : R {
-
-        checkNullArgument(service, 'service');
-
-        if(!args.length) {
-            return this._container.resolve(service);
-        }
-        
-        return this._container.resolve(service, ...args);
-    }
-    
-    public async resolveAsync<R>(service: any, ...args:any[]) : Promise<R> {
-        
-        return new Promise<R>(resolve => {
-           resolve(this.resolve<R>(service, ...args));
-        });
+    public async disposeAsync(): Promise<void> {
+        return new Promise<void>(resolve => {
+            this._container.dispose()
+            resolve()
+        })
     }
 
-    public tryResolve<R>(service: R, ...args:any[]) : R {
+    public resolve<R>(service: {}, ...args: {}[]): R {
 
-        checkNullArgument(service, 'service');
+        checkNullArgument(service, 'service')
 
-        if(!args.length) {
-            return this._container.tryResolve(service);
+        if (!args.length) {
+            return this._container.resolve(service)
         }
 
-        return this._container.tryResolve(service, ...args);
+        return this._container.resolve(service, ...args)
     }
-    
-    public async tryResolveAsync<R>(service: any, ...args:any[]) : Promise<R> {
-        
+
+    public async resolveAsync<R>(service: {}, ...args: {}[]): Promise<R> {
+
         return new Promise<R>(resolve => {
-           resolve(this.tryResolve<R>(service, ...args));
-        });
+            resolve(this.resolve<R>(service, ...args))
+        })
     }
 
-    public resolveNamed<R>(service: R, name : string, ...args:any[]) : R {
+    public tryResolve<R>(service: {}, ...args: {}[]): R | undefined {
 
-        checkNullArgument(service, 'service');
+        checkNullArgument(service, 'service')
 
-        if(!args.length) {
-            return this._container.resolveNamed(service, name);
+        if (!args.length) {
+            return this._container.tryResolve(service) || undefined
         }
 
-        return this._container.resolveNamed(service, name, ...args);
+        return this._container.tryResolve(service, ...args)
     }
-    
-    public async resolveNamedAsync<R>(service: any, name : string, ...args:any[]) : Promise<R> {
-        
+
+    public async tryResolveAsync<R>(service: {}, ...args: {}[]): Promise<R | undefined> {
         return new Promise<R>(resolve => {
-           resolve(this.resolveNamed<R>(service, name, ...args));
-        });
+            resolve(this.tryResolve<R>(service, ...args) || undefined)
+        })
     }
 
-    public tryResolveNamed<R>(service: R, name : string, ...args:any[]) : R {
+    public resolveNamed<R>(service: {}, name: string, ...args: {}[]): R | never {
 
-        checkNullArgument(service, 'service');
+        checkNullArgument(service, 'service')
 
-        if(!args.length) {
-            return this._container.tryResolveNamed(service, name);
+        if (!args.length) {
+            return this._container.resolveNamed(service, name)
         }
-        
-        return this._container.tryResolveNamed(service, name, ...args);
+
+        return this._container.resolveNamed(service, name, ...args)
     }
-    
-    public async tryResolveNamedAsync<R>(service: any, name : string, ...args:any[]) : Promise<R> {
-        
+
+    public async resolveNamedAsync<R>(service: {}, name: string, ...args: {}[])
+        : Promise<R> {
+
         return new Promise<R>(resolve => {
-           resolve(this.tryResolveNamed<R>(service, name, ...args));
-        });
+            resolve(this.resolveNamed<R>(service, name, ...args))
+        })
     }
 
-    public resolveWithDependencies<R>(service: R, dependencies : Typeioc.IDynamicDependency[]) : R {
+    public tryResolveNamed<R>(service: {}, name: string, ...args: {}[]): R | undefined {
 
-        checkNullArgument(service, 'service');
+        checkNullArgument(service, 'service')
 
-        if(!dependencies || dependencies.length <= 0)
-            throw new ResolutionError('No dependencies provided');
+        const result = args.length <= 0 ?
+            this._container.tryResolveNamed<R>(service, name) :
+            this._container.tryResolveNamed<R>(service, name, ...args)
 
-        dependencies.forEach(checkDependency);
-
-        return this._container.resolveWithDependencies<R>(service, dependencies);
+        return result || undefined
     }
-    
-    public async resolveWithDependenciesAsync<R>(service: any, dependencies : Typeioc.IDynamicDependency[]) : Promise<R> {
-        
+
+    public async tryResolveNamedAsync<R>(service: {}, name: string, ...args: {}[]):
+        Promise<R | undefined> {
+
         return new Promise<R>(resolve => {
-           resolve(this.resolveWithDependencies<R>(service, dependencies));
-        });
+            resolve(this.tryResolveNamed<R>(service, name, ...args) || undefined)
+        })
     }
 
-    public resolveWith<R>(service : any) : Typeioc.IResolveWith<R> {
+    public resolveWithDependencies<R>(service: {}, dependencies: IDynamicDependency[]): R | never {
 
-        checkNullArgument(service, 'service');
+        checkNullArgument(service, 'service')
 
-        return this._container.resolveWith<R>(service);
+        if (!dependencies || dependencies.length <= 0) {
+            throw new ResolutionError({ message: 'No dependencies provided' })
+        }
+
+        dependencies.forEach(checkDependency)
+
+        return this._container.resolveWithDependencies<R>(service, dependencies)
+    }
+
+    public async resolveWithDependenciesAsync<R>(
+        service: {}, dependencies: IDynamicDependency[]): Promise<R> {
+
+        return new Promise<R>(resolve => {
+            resolve(this.resolveWithDependencies<R>(service, dependencies))
+        })
+    }
+
+    public resolveWith<R>(service: {}): IResolveWith<R> {
+
+        checkNullArgument(service, 'service')
+
+        return this._container.resolveWith<R>(service)
     }
 }

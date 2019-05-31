@@ -1,95 +1,25 @@
 {
-	"version": "0.2.0",
-	"configurations": [
-	
-		{
-			"name": "JS tests",
-			"type": "node",
-			"request": "launch",
-			"program": "${workspaceRoot}/node_modules/.bin/nodeunit",
-			"stopOnEntry": false,
-			"args": ["test/js/internal/", "test/js/api/"],
-			"cwd": "${workspaceRoot}",
-			"preLaunchTask": null,
-			"runtimeExecutable": null,
-			"runtimeArgs": [
-				"--nolazy",
-                "--harmony"
-			],
-			"env": {
-				"NODE_ENV": "development"
-			},
-			"console": "internalConsole",
-			"sourceMaps": false,
-			"outFiles": []
-		},
-		{
-			"name": "TS tests",
-			"type": "node",
-			"request": "launch",
-			"program": "${workspaceRoot}/node_modules/.bin/nodeunit",
-			"stopOnEntry": false,
-			"args": ["test/js/ts/"],
-			"cwd": "${workspaceRoot}",
-			"preLaunchTask": null,
-			"runtimeExecutable": null,
-			"runtimeArgs": [
-				"--nolazy",
-                "--harmony"
-			],
-			"env": {
-				"NODE_ENV": "development"
-			},
-			"console": "internalConsole",
-			"sourceMaps": false,
-			"outFiles": []
-		},
-        {
-			"name": "All tests",
-			"type": "node",
-			"request": "launch",
-			"program": "${workspaceRoot}/node_modules/.bin/nodeunit",
-			"stopOnEntry": false,
-			"args": ["test/js/internal/", "test/js/api/", "test/js/ts/"],
-			"cwd": "${workspaceRoot}",
-			"preLaunchTask": null,
-			"runtimeExecutable": null,
-			"runtimeArgs": [
-				"--nolazy",
-                "--harmony"
-			],
-			"env": {
-				"NODE_ENV": "development"
-			},
-			"console": "internalConsole",
-			"sourceMaps": false,
-			"outFiles": []
-		},
-		{
-			"name": "Coverage",
-			"type": "node",
-			"request": "launch",
-			"program": "${workspaceRoot}/node_modules/.bin/istanbul",
-			"stopOnEntry": false,
-			"args": [
-						"cover", 
-						"node_modules/.bin/nodeunit",
-						"test/js/internal/",
-						"test/js/api/",
-						"test/js/ts/"
-			],
-			"cwd": "${workspaceRoot}",
-			"preLaunchTask": null,
-			"runtimeExecutable": null,
-			"runtimeArgs": [			
-                "--harmony"
-			],
-			"env": {
-				"NODE_ENV": "coverage"
-			},
-			"console": "internalConsole",
-			"sourceMaps": false,
-			"outFiles": []
-		}
-	]
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [{
+            "name": "Tap current file",
+            "type": "node",
+            "request": "launch",
+            "args": ["${relativeFile}"],
+            "runtimeArgs": [
+                "--nolazy",
+                "-r",
+                "ts-node/register",
+                "-r",
+                "tsconfig-paths/register"
+            ],
+            "env": {
+                "TS_NODE_FILES": "true",
+                "TS_NODE_PROJECT": "./test/tsconfig.json"
+            },
+            "cwd": "${workspaceRoot}",
+            "protocol": "inspector",
+        }]
 }

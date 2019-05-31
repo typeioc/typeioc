@@ -1,37 +1,37 @@
-'use strict';
+import { ArgumentError, ApplicationError } from '../exceptions'
+import { IDynamicDependency } from '../registration'
+export * from './reflection'
+export * from './immutable-array'
 
-import { ArgumentNullError, ApplicationError } from '../exceptions';
-import * as ReflectionModule from './reflection';
-import ImmutableArray from './immutableArray';
+// TODO: remove this when API extractor Omit exception is fixed
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 
-export var Reflection = ReflectionModule;
+export const factoryValueKey = 'factoryValue'
 
-export function checkNullArgument(value : any, argument: string,  message?: string) {
-    if((value != '') && !value) {
-        var exception = new ArgumentNullError(argument, message);
-        exception.data = value;
-        throw exception;
+export function checkNullArgument(
+    value: {} | null | undefined, argument: string,  message?: string) {
+
+    if (value == null || value === undefined) {
+        throw new ArgumentError(argument, { message })
     }
 }
 
-export function checkDependency(dependency: Typeioc.IDynamicDependency) : void {
-    
-    const factoryValueKey = 'factoryValue';
+export function checkDependency(dependency: IDynamicDependency) : void {
 
-    if((dependency.factory && dependency.factoryType) ||
+    if ((dependency.factory && dependency.factoryType) ||
         (dependency.factory && factoryValueKey in dependency) ||
         (dependency.factoryType && factoryValueKey in dependency)) {
-            throw new ApplicationError('Unknown registration type');
-        }
-}
-
-export function createImmutable(array : Array<any>) : Typeioc.Internal.IImmutableArray {
-    return new ImmutableArray(array);
+        throw new ApplicationError({ message: 'Unknown registration type' })
+    }
 }
 
 export function uuid() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      const r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-      return v.toString(16);
-    });
-  }
+
+    const replace = (c: {}) => {
+        // tslint:disable-next-line: one-variable-per-declaration
+        const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8)
+        return v.toString(16)
+    }
+
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, replace)
+}

@@ -1,17 +1,11 @@
-'use strict';
+export type Index<T> = {
+    [index: number]: T
+}
 
-import { default as OwnerType } from './owner';
-import { default as ScopeType } from './scope';
+export type IndexedCollection<T> = Index<T> & {
+    [name: string]: T
+}
 
-export var Owner = OwnerType;
-export var Scope = ScopeType;
-
-export var Defaults : Typeioc.Types.IDefaults = {
-    get Scope() : Typeioc.Types.Scope {
-        return Typeioc.Types.Scope.None;
-    },
-
-    get Owner() : Typeioc.Types.Owner {
-        return Typeioc.Types.Owner.Container;
-    }
-};
+export type SetPrototypeOf = {
+    setPrototypeOf: Function
+}

@@ -1,20 +1,6 @@
- 'use strict';
-
-import { default as AppError} from './applicationError';
-import { default as ArgError } from './argumentError';
-import { default as ArgNulError} from './argumentNullError';
-import { default as ResolError } from './resolutionError';
-import { default as CircularDepError } from './circularDependencyError';
-import { default as StoreKeyNotFoundError } from './storageKeyNotFoundError';
-import { default as PrxError } from './proxyError';
-import { default as DecorError } from './decoratorError';
-
-export var ApplicationError = AppError;
-export var ArgumentError = ArgError;
-export var ArgumentNullError = ArgNulError;
-export var ResolutionError = ResolError;
-export var CircularDependencyError = CircularDepError;
-export var StorageKeyNotFoundError = StoreKeyNotFoundError;
-export var ProxyError = PrxError;
-export var DecoratorError = DecorError;
-
+export * from './application-error'
+export * from './argument-error'
+export * from './circular-dependency-error'
+export * from './decorator-error'
+export * from './proxy-error'
+export * from './resolution-error'

@@ -1,151 +1,157 @@
-'use strict';
+import { CallInfo } from '../common'
+import {
+    ISubstituteInfo, ISubstitute, IWithSubstituteResult, IInterceptor, IStorage
+} from './types'
+import { IProxy } from './proxy'
+import { SubstituteStorage } from './substitute-storage'
+import { checkNullArgument, isPrototype, isObject, isArray } from '../utils'
+import { ArgumentError } from '../exceptions'
 
-import { Reflection, checkNullArgument } from '../utils';
-import { ArgumentError } from '../exceptions';
-import { SubstituteStorage } from './substituteStorage';
-import IStorage = Typeioc.Internal.Interceptors.IStorage;
-import IProxy = Typeioc.Internal.Interceptors.IProxy;
-import ISubstituteInfo = Addons.Interceptors.ISubstituteInfo;
-import ISubstitute = Addons.Interceptors.ISubstitute;
+export class Interceptor implements IInterceptor {
 
+    constructor(private _proxy: IProxy) { }
 
-export class Interceptor implements Addons.Interceptors.IInterceptor {
+    public interceptPrototype<R extends Function>(
+        subject: R, substitutes?: ISubstituteInfo | ISubstituteInfo[]): R {
 
-    constructor(private _proxy : IProxy) { }
+        this.assertPrototype(subject)
 
-    public interceptPrototype<R extends Function>(subject : R, substitutes? : ISubstituteInfo | Array<ISubstituteInfo>) : R {
-        
-        this.assertPrototype(subject);
-        
-        const storage = this.convertParams(subject, substitutes);
-        return this._proxy.byPrototype(subject, storage) as R;
+        const storage = this.convertParams(subject, substitutes)
+        return this._proxy.byPrototype(subject, storage) as R
     }
 
-    public interceptInstance<R extends Object>(subject : R, substitutes? : ISubstituteInfo | Array<ISubstituteInfo>) : R {
-        
-        this.assertObject(subject);
-        
-        const storage = this.convertParams(subject, substitutes);
-        return this._proxy.byInstance(subject, storage) as R;
+    public interceptInstance<R extends Object>(
+        subject: R, substitutes?: ISubstituteInfo | ISubstituteInfo[]): R {
+
+        this.assertObject(subject)
+
+        const storage = this.convertParams(subject, substitutes)
+        return this._proxy.byInstance(subject, storage) as R
     }
 
-    public intercept<R extends (Function | Object)>(subject: R, substitutes? : ISubstituteInfo | Array<ISubstituteInfo>) : R {
-        const storage = this.convertParams(subject, substitutes);
-        return this.convertToIntercept(subject, storage);
+    public intercept<R extends (Function | Object)>(
+        subject: R, substitutes?: ISubstituteInfo | ISubstituteInfo): R {
+        const storage = this.convertParams(subject, substitutes)
+        return this.convertToIntercept(subject, storage)
     }
 
-    public withSubstitute(substitute: ISubstituteInfo): Addons.Interceptors.IWithSubstituteResult {
-        const storage = new SubstituteStorage();
+    public withSubstitute(substitute: ISubstituteInfo): IWithSubstituteResult {
+        const storage = new SubstituteStorage()
 
-        const interceptInstance = <R>(subject): R => {
-            this.assertObject(subject);
+        const interceptInstance = <R>(subject: {}): R => {
+            this.assertObject(subject)
 
-            return this._proxy.byInstance(subject, storage) as R;
-        };
+            return this._proxy.byInstance(subject, storage) as R
+        }
 
-        const interceptPrototype = <R extends Function>(subject): R => {
-            this.assertPrototype(subject);
-            
-            return this._proxy.byPrototype(subject, storage) as R;
-        };
+        const interceptPrototype = <R extends Function>(subject: Function): R => {
+            this.assertPrototype(subject)
 
-        const intercept = <R extends (Function | Object)>(subject): R => {
-            return this.convertToIntercept(subject, storage);
-        };
+            return this._proxy.byPrototype(subject, storage) as R
+        }
+
+        const intercept = <R extends (Function | Object)>(subject: {}): R => {
+            return this.convertToIntercept(subject, storage)
+        }
 
         return this.with(
             interceptInstance,
             interceptPrototype,
             intercept,
             storage,
-            substitute);
+            substitute)
     }
 
     private with(
         interceptInstance: <R extends Object>(subject: R) => R,
-        interceptPrototype: <R extends Function>(subject) => R,
+        interceptPrototype: <R extends Function>(subject: R) => R,
         intercept: <R extends (Function | Object)>(subject: R) => R,
-        storage : IStorage,
-        substitute: ISubstituteInfo) {
-        
-        storage.add(this.createSubstitute(substitute));
-        
+        storage: IStorage,
+        substitute: ISubstituteInfo): IWithSubstituteResult {
+
+        storage.add(this.createSubstitute(substitute))
+
         return {
             withSubstitute: this.with.bind(
                 this, interceptInstance, interceptPrototype, intercept, storage),
             interceptInstance,
             interceptPrototype,
             intercept
-        };
+        }
     }
 
     private convertParams<R extends (Function | Object)>(
         subject: R,
-        substitutes? : ISubstituteInfo | Array<ISubstituteInfo>): IStorage {
-        
-        checkNullArgument(subject, 'subject');
-    
-        var data : any = substitutes;
+        substitutes? : ISubstituteInfo | ISubstituteInfo[]): IStorage | undefined {
 
-        if(data && !Reflection.isArray(data)) {
-            data = [ substitutes ];
+        checkNullArgument(subject, 'subject')
+
+        if (!substitutes) {
+            return undefined
         }
 
-        return data ? this.transformSubstitutes(data) : null;
+        const data = isArray(substitutes) ?
+            (substitutes as ISubstituteInfo[]) :
+            [substitutes as ISubstituteInfo]
+
+        return this.transformSubstitutes(data)
     }
 
-    private convertToIntercept(subject: any, storage: IStorage) : any {
-        let result : any;
-        let argument : any = subject;
+    private convertToIntercept<R>(subject: {}, storage?: IStorage): R {
+        let result: {}
 
-        if(Reflection.isPrototype(argument)) {
-            result = this._proxy.byPrototype(argument, storage);
-        } else if(Reflection.isObject(argument)) {
-            result = this._proxy.byInstance(argument, storage);
+        if (isPrototype(subject)) {
+            result = this._proxy.byPrototype(subject as Function, storage)
+        } else if (isObject(subject)) {
+            result = this._proxy.byInstance(subject, storage)
         } else {
-            throw new ArgumentError('subject', 'Subject should be a prototype function or an object');
+            throw new ArgumentError('subject', {
+                message: 'Subject should be a prototype function or an object'
+            })
         }
 
-        return result;
+        return result as R
     }
 
-    private transformSubstitutes(substitutes : Array<ISubstituteInfo>) : IStorage {
+    private transformSubstitutes(substitutes: ISubstituteInfo[]): IStorage {
 
-        const storage = new SubstituteStorage();
+        const storage = new SubstituteStorage()
 
         return substitutes.reduce((storage, current) => {
-            const substitute = this.createSubstitute(current);
-            storage.add(substitute);
-            return storage;
+            const substitute = this.createSubstitute(current)
+            storage.add(substitute)
+            return storage
         },
-        storage);
-}
+        storage)
+    }
 
-    private createSubstitute(value : ISubstituteInfo) : ISubstitute {
+    private createSubstitute(value : ISubstituteInfo): ISubstitute {
 
-        if(!value.wrapper) {
-            var error = new ArgumentError('wrapper', 'Missing interceptor wrapper');
-            error.data = value;
-            throw error;
+        if (!value.wrapper) {
+            throw new ArgumentError('wrapper', {
+                message: 'Missing interceptor wrapper', data: value
+            })
         }
 
         return {
             method : value.method,
-            type : value.type || Addons.Interceptors.CallInfoType.Any,
+            type: value.type || CallInfo.Any,
             wrapper : value.wrapper,
-            next : null
-        };
+            next: undefined
+        }
     }
 
     private assertPrototype<R>(subject: R) {
-        if(!Reflection.isPrototype(subject)) {
-            throw new ArgumentError('subject', 'Subject should be a prototype function');
+        if (!isPrototype(subject)) {
+            throw new ArgumentError('subject', {
+                message: 'Subject should be a prototype function'
+            })
         }
     }
 
     private assertObject<R>(subject: R) {
-        if(Reflection.isPrototype(subject)) {
-            throw new ArgumentError('subject', 'Subject should be an object');
+        if (isPrototype(subject)) {
+            throw new ArgumentError('subject', { message: 'Subject should be an object' })
         }
     }
 }

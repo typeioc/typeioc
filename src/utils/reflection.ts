@@ -1,83 +1,58 @@
-import Internal = Typeioc.Internal;
+import { } from 'reflect-metadata'
+import { SetPrototypeOf } from '../types'
 
-export function getMetadata(reflect, type : any) {
-    return reflect.getMetadata("design:paramtypes", type) || [];
+export function getMetadata(type: {}) {
+    return Reflect.getMetadata('design:paramtypes', type) || []
 }
 
-export function getFactoryArgsCount(factory: Typeioc.IFactory<any>): number {
+export type Invocable = { new (...args: {}[]): {}}
 
-    const paramsCount = (<Function>factory).length;
-    return Math.max(paramsCount - 1, 0);
+export function construct(constructor: Invocable, args: IArguments | {}[]) {
+    return args && args.length ? new constructor(...args) : new constructor()
 }
 
-export function isCompatible(obj1 : Object, obj2 : Object) : boolean {
-   
-    return !Object.getOwnPropertyNames(obj2)
-    .filter(key => isFunction(obj2[key]))
-    .some(key => {
-        const obj1Val = obj1[key];
-        return !obj1Val || !isFunction(obj1Val);
-    });
+export function isArray(value: {}): boolean {
+    return Array.isArray(value)
 }
 
-export function construct(constructor, args) {
-    return args && args.length ? new constructor(...args) : new constructor();
+export function isFunction(f : {}) : boolean {
+    return f instanceof Function
 }
 
-export function isArray(value : any) : boolean {
-    return Array.isArray(value);
+export function isPrototype(f: {}) : boolean {
+    return toString.call(f) === '[object Function]'
 }
 
-export function isFunction(f : any) : boolean {
-    return f instanceof Function;
+export function isObject(o: {}) : boolean {
+    return o === Object(o)
 }
 
-export function isPrototype(f : any) : boolean {
-    return toString.call(f) === "[object Function]";
-}
-
-export function isObject(o : any) : boolean {
-    return o === Object(o);
-}
-
-export function getPropertyType(name : string, descriptor : PropertyDescriptor)
-        : Internal.Reflection.PropertyType {
-
-    if(descriptor.value && isFunction(descriptor.value )) return Internal.Reflection.PropertyType.Method;
-
-    if(descriptor.get && !descriptor.set) return Internal.Reflection.PropertyType.Getter;
-
-    if(!descriptor.get && descriptor.set) return Internal.Reflection.PropertyType.Setter;
-
-    if(descriptor.get && descriptor.set) return Internal.Reflection.PropertyType.FullProperty;
-
-    return Internal.Reflection.PropertyType.Field;
-}
-
-export function getPropertyDescriptor(object, key) {
-    let descriptor;
-    
-    do {
-        descriptor = Object.getOwnPropertyDescriptor(object, key);
-    } while(!descriptor && (object = Object.getPrototypeOf(object)));
-
-    if (descriptor) {
-        descriptor['object'] = object;
-    }
-
-    return descriptor;
-}
-
-export function getAllPropertyNames(obj) {
-    const props = [];
+export function getPropertyDescriptor(object: {}, key: string) {
+    let descriptor: PropertyDescriptor | undefined
 
     do {
-        Object.getOwnPropertyNames(obj).forEach(function ( prop ) {
+        descriptor = Object.getOwnPropertyDescriptor(object, key)
+    } while (!descriptor && (object = Object.getPrototypeOf(object)))
+
+    return descriptor
+}
+
+export function getAllPropertyNames(obj: {}) {
+    const props: string[] = []
+
+    do {
+        Object.getOwnPropertyNames(obj).forEach((prop) => {
             if (props.indexOf(prop) === -1) {
-                props.push( prop );
+                props.push(prop)
             }
-        });
-    } while(obj = Object.getPrototypeOf(obj));
+        })
+    } while (obj = Object.getPrototypeOf(obj))
 
-    return props;
+    return props
+}
+
+export function setPrototypeOf(instance: {}, prototype: {}) {
+    if ((Object as SetPrototypeOf).setPrototypeOf) {
+        (Object as SetPrototypeOf).setPrototypeOf(instance, prototype)
+    }
 }

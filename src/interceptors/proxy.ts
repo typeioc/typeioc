@@ -1,134 +1,101 @@
- 'use strict';
+import { CallInfo } from '../common'
+import { createProxy, getPropertyType, isBlackListProperty } from './common'
+import { IDecorator, PropertyType, IStrategyInfo, IStorage } from './types'
+import { getAllPropertyNames, getPropertyDescriptor } from '../utils'
+import { IndexedCollection } from '../types'
 
-import { Reflection } from '../utils';
-import { ProxyError } from '../exceptions';
-import IStorage = Typeioc.Internal.Interceptors.IStorage;
-import IProxy  = Typeioc.Internal.Interceptors.IProxy;
-import ISubstitute = Addons.Interceptors.ISubstitute;
-import IStrategyInfo = Typeioc.Internal.Interceptors.IStrategyInfo;
-import CallInfoType = Addons.Interceptors.CallInfoType;
-import PropertyType = Typeioc.Internal.Reflection.PropertyType;
-
-interface IPropertyPredicate {
-    (name : string) : boolean;
+export interface IProxy {
+    byPrototype(parent: Function, storage?: IStorage): Function
+    byInstance(parent: {}, storage?: IStorage): {}
 }
 
 export class Proxy implements IProxy {
 
-    private restrictedProperties;
+    private restrictedProperties = getAllPropertyNames(Function)
 
     private propTypeToDescriptor = {
-        [PropertyType.Method]: [CallInfoType.Any, CallInfoType.Method],
-        [PropertyType.Getter]: [CallInfoType.Any, CallInfoType.Getter],
-        [PropertyType.Setter]: [CallInfoType.Any, CallInfoType.Setter],
+        [PropertyType.Method]: [CallInfo.Any, CallInfo.Method],
+        [PropertyType.Getter]: [CallInfo.Any, CallInfo.Getter],
+        [PropertyType.Setter]: [CallInfo.Any, CallInfo.Setter],
         [PropertyType.FullProperty]: [
-                CallInfoType.Any,
-                CallInfoType.Getter,
-                CallInfoType.Setter,
-                CallInfoType.GetterSetter
+            CallInfo.Any,
+            CallInfo.Getter,
+            CallInfo.Setter,
+            CallInfo.GetterSetter
         ],
         [PropertyType.Field]: [
-            CallInfoType.Any,
-            CallInfoType.Getter,
-            CallInfoType.Setter,
-            CallInfoType.GetterSetter,
-            CallInfoType.Field
+            CallInfo.Any,
+            CallInfo.Getter,
+            CallInfo.Setter,
+            CallInfo.GetterSetter,
+            CallInfo.Field
         ]
-    };
-
-    constructor(private _decorator : Typeioc.Internal.Interceptors.IDecorator) {
-
-        this.restrictedProperties = Reflection.getAllPropertyNames(Function);
     }
 
-    public byPrototype(parent : Function,
-                       storage? : IStorage) : Function {
+    constructor(private _decorator: IDecorator) {}
 
-        var self = this;
+    public byPrototype(parent: Function,
+                       storage?: IStorage): Function {
 
-        function Proxy() {
-            this._parent = Reflection.construct(parent, arguments);
+        const source = parent.prototype
+        const proxy = createProxy(this, parent, storage)
 
-            Object.getOwnPropertyNames(this._parent)
-            .filter(name => !isBlackListProperty(name))    
-            .filter(name => (name in this) === false &&
-                    (name in Proxy.prototype) === false)
-            .map(p => self.createStrategyInfo(this._parent, this, p))
-            .forEach(s => self.decorateProperty(s, storage));
-        }
-
-        const source = parent.prototype;
-        Reflection.getAllPropertyNames(source)
+        getAllPropertyNames(source)
             .filter(name => !isBlackListProperty(name))
-            .map(p => self.createStrategyInfo(source, Proxy.prototype, p, '_parent'))
-            .forEach(s => self.decorateProperty(s, storage));
+            .map(p => this.createStrategyInfo(source, proxy.prototype, p, '_parent'))
+            .forEach(s => this.decorateProperty(s, storage))
 
         Object.getOwnPropertyNames(parent)
-            .filter(name =>  self.restrictedProperties.indexOf(name) === -1)
-            .map(p => self.createStrategyInfo(parent, Proxy, p))
-            .forEach(s => self.decorateProperty(s, storage));
+            .filter(name => this.restrictedProperties.indexOf(name) === -1)
+            .map(p => this.createStrategyInfo(parent, proxy, p))
+            .forEach(s => this.decorateProperty(s, storage))
 
-        return Proxy;
+        return proxy
     }
 
-    public byInstance(parent : Object, storage? : IStorage) : Object {
+    public byInstance(parent: Object, storage? : IStorage) : Object {
 
-        const result = Object.create({});
+        const result = Object.create({})
 
-        Reflection.getAllPropertyNames(parent)
+        getAllPropertyNames(parent)
             .filter(name => !isBlackListProperty(name))
             .map(p => this.createStrategyInfo(parent, result, p))
-            .forEach(s => this.decorateProperty(s, storage));
+            .forEach(s => this.decorateProperty(s, storage))
 
-        return result;
+        return result
     }
 
-    private decorateProperty(strategyInfo : IStrategyInfo, storage? : IStorage) {
-        
-        if(storage) {
-            const types = this.propTypeToDescriptor[strategyInfo.type];
-            const substitute = storage.getSubstitutes(strategyInfo.name, types);
+    private decorateProperty(strategyInfo: IStrategyInfo, storage? : IStorage) {
 
-            strategyInfo.substitute = substitute;
-            this._decorator.wrap(strategyInfo);
+        if (storage) {
+            const types = this.propTypeToDescriptor[strategyInfo.type]
+            const substitute = storage.getSubstitutes(strategyInfo.name, types)
 
-            return;
+            strategyInfo.substitute = substitute || undefined
+            this._decorator.wrap(strategyInfo)
+
+            return
         }
 
-        this._decorator.wrap(strategyInfo);
+        this._decorator.wrap(strategyInfo)
     }
 
-    private createStrategyInfo(source : Function | Object,
-                               destination : Function | Object,
-                               name : string,
-                               contextName? : string) : IStrategyInfo {
+    private createStrategyInfo(source: Function | Object,
+                               destination: Function | Object,
+                               name: string,
+                               contextName?: string): IStrategyInfo {
 
-        const descriptor = Reflection.getPropertyDescriptor(source, name);
-        const propertyType = Reflection.getPropertyType(name, descriptor);
+        const descriptor = getPropertyDescriptor(source, name)
+        const propertyType = getPropertyType(descriptor)
 
         return {
-            type : propertyType,
-            descriptor : descriptor,
-            substitute : null,
-            name : name,
-            source : source,
-            destination : destination,
-            contextName : contextName
-        };
+            type: propertyType,
+            descriptor,
+            substitute: undefined,
+            name,
+            source: (source as IndexedCollection<Function | {}>),
+            destination: (destination as IndexedCollection<Function | {}>),
+            contextName
+        }
     }
- }
-
- const blackListProperties = [
-   '__lookupGetter__',
-   '__lookupSetter__',
-   '__proto__',
-   '__defineGetter__',
-   '__defineSetter__',
-   'hasOwnProperty',
-   'propertyIsEnumerable',
-   'constructor'            
- ];
-
- const isBlackListProperty = (property: string) => {
-     return blackListProperties.indexOf(property) >= 0;
- }
+}
