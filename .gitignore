@@ -1,5 +1,8 @@
 .nyc_output
 _book
+!api-metadata/
+api-metadata/*
+!api-metadata/etc/
 lib
 node_modules
 coverage
