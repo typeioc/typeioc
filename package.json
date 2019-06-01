@@ -12,7 +12,7 @@
     "test:watch": "npm run test -- --watch --changed",
     "test:report": "npm run test -- --coverage-report=\"html\"",
     "coveralls": "cat test/coverage/lcov.info | coveralls",
-    "extract-api": "api-extractor run",
+    "extract-api": "api-extractor run --local --verbose",
     "docs:api": "api-documenter markdown -i ./api-metadata/temp -o ./api-metadata/docs",
     "docs:prepare": "gitbook install",
     "docs:watch": "npm run docs:prepare && gitbook serve",

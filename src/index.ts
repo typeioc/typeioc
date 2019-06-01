@@ -30,7 +30,7 @@ export default <IEntryPoint>{
 export { IEntryPoint } from './scaffold'
 export { IContainerBuilder, IContainer } from './build'
 export { Owner, Scope, CallInfo, owner, scope, callInfo } from './common'
-export { IDynamicDependency } from './registration'
+export { IDynamicDependency, IFactory } from './registration'
 export { IInterceptor, ISubstituteInfo, ICallInfo } from './interceptors'
 export { IDecorator } from './decorators'
 export {

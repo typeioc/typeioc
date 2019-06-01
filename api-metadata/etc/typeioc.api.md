@@ -165,8 +165,6 @@ export interface IDecorator {
 
 // @public (undocumented)
 export interface IDynamicDependency {
-    // Warning: (ae-forgotten-export) The symbol "IFactory" needs to be exported by the entry point index.d.ts
-    // 
     // (undocumented)
     factory?: IFactory<{}>;
     // (undocumented)
@@ -190,6 +188,12 @@ export interface IEntryPoint {
     createBuilder(): IContainerBuilder;
     createDecorator(): IDecorator;
     createInterceptor(): IInterceptor;
+}
+
+// @public (undocumented)
+export interface IFactory<T> {
+    // (undocumented)
+    (c: IContainer, ...args: any[]): T;
 }
 
 // @public (undocumented)
