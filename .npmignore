@@ -1,5 +1,7 @@
 .vscode/
+.nyc_output/
 _book/
+api-metadata/
 docs/
 src/
 test/
@@ -9,3 +11,6 @@ lib/**/*.d.ts.map
 !lib/index.d.ts
 *.yml
 book.json
+api-extractor.json
+tslint.json
+.editorcongig
