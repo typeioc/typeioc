@@ -13,4 +13,4 @@ lib/**/*.d.ts.map
 book.json
 api-extractor.json
 tslint.json
-.editorcongig
+.editorconfig
