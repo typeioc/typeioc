@@ -12,6 +12,8 @@ Dependency injection container for typescript / javascript.
 
 ## [Documentation](https://maxgherman.github.io/TypeIOC-docs/)
 
+### [API](./api-metadata/docs/index.md)
+
 ### [Examples](https://github.com/maxgherman/TypeIOC-examples)
 
 ### Features
