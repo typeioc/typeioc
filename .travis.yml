@@ -7,9 +7,6 @@ install:
   - npm install
 before_script:
   - npm run build
-  - npm run build:test
+  - npm run extract-api
 script:
-  - npm run test
-after_script:
-  - npm run coverage
-  - npm run coveralls
+  - npm run test:100
