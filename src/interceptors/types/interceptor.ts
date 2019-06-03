@@ -1,5 +1,8 @@
 import { ISubstituteInfo } from '.'
 
+/**
+ * @public
+ */
 export interface IWithSubstituteResult {
     withSubstitute: (substitute: ISubstituteInfo) => IWithSubstituteResult
     interceptInstance: <R extends Object>(subject: R) => R

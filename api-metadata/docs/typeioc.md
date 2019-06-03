@@ -33,11 +33,18 @@ Dependency injection container for TypeScript / JavaScript
 |  [IContainer](./typeioc.icontainer.md) |  |
 |  [IContainerBuilder](./typeioc.icontainerbuilder.md) |  |
 |  [IDecorator](./typeioc.idecorator.md) |  |
+|  [IDecoratorRegistration](./typeioc.idecoratorregistration.md) |  |
+|  [IDisposer](./typeioc.idisposer.md) |  |
 |  [IDynamicDependency](./typeioc.idynamicdependency.md) |  |
 |  [IEntryPoint](./typeioc.ientrypoint.md) | Represents functionality exposed be the library |
 |  [IFactory](./typeioc.ifactory.md) |  |
+|  [IInitializer](./typeioc.iinitializer.md) |  |
 |  [IInterceptor](./typeioc.iinterceptor.md) |  |
+|  [IName](./typeioc.iname.md) |  |
+|  [IRegistration](./typeioc.iregistration.md) |  |
+|  [IResolveWith](./typeioc.iresolvewith.md) |  |
 |  [ISubstituteInfo](./typeioc.isubstituteinfo.md) |  |
+|  [IWithSubstituteResult](./typeioc.iwithsubstituteresult.md) |  |
 
 ## Variables
 
@@ -47,4 +54,23 @@ Dependency injection container for TypeScript / JavaScript
 |  [callInfo](./typeioc.callinfo.md) |  |
 |  [owner](./typeioc.owner.md) |  |
 |  [scope](./typeioc.scope.md) |  |
+
+## Type Aliases
+
+|  Type Alias | Description |
+|  --- | --- |
+|  [RegisterWithAs](./typeioc.registerwithas.md) |  |
+|  [RegisterWithInitializeBy](./typeioc.registerwithinitializeby.md) |  |
+|  [RegisterWithLazy](./typeioc.registerwithlazy.md) |  |
+|  [RegisterWithName](./typeioc.registerwithname.md) |  |
+|  [RegisterWithScope](./typeioc.registerwithscope.md) |  |
+|  [WithDecoratorRegister](./typeioc.withdecoratorregister.md) |  |
+|  [WithDecoratorRegisterInitializeBy](./typeioc.withdecoratorregisterinitializeby.md) |  |
+|  [WithDecoratorRegisterLazy](./typeioc.withdecoratorregisterlazy.md) |  |
+|  [WithDecoratorRegisterName](./typeioc.withdecoratorregistername.md) |  |
+|  [WithDecoratorRegisterScope](./typeioc.withdecoratorregisterscope.md) |  |
+|  [WithDecoratorResolver](./typeioc.withdecoratorresolver.md) |  |
+|  [WithDecoratorResolverArgs](./typeioc.withdecoratorresolverargs.md) |  |
+|  [WithDecoratorResolverAttempt](./typeioc.withdecoratorresolverattempt.md) |  |
+|  [WithDecoratorResolverName](./typeioc.withdecoratorresolvername.md) |  |
 

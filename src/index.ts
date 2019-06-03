@@ -28,11 +28,21 @@ export default <IEntryPoint>{
 }
 
 export { IEntryPoint } from './scaffold'
-export { IContainerBuilder, IContainer } from './build'
+export { IContainerBuilder, IContainer, IResolveWith } from './build'
 export { Owner, Scope, CallInfo, owner, scope, callInfo } from './common'
-export { IDynamicDependency, IFactory } from './registration'
-export { IInterceptor, ISubstituteInfo, ICallInfo } from './interceptors'
-export { IDecorator } from './decorators'
+export {
+    IRegistration, IDynamicDependency, IFactory, IInitializer, IDisposer, IName,
+    RegisterWithAs, RegisterWithInitializeBy, RegisterWithLazy, RegisterWithName,
+    RegisterWithScope  } from './registration'
+export { IInterceptor, ISubstituteInfo, ICallInfo, IWithSubstituteResult } from './interceptors'
+export {
+    IDecorator, IDecoratorRegistration,
+    WithDecoratorRegister, WithDecoratorRegisterInitializeBy,
+    WithDecoratorRegisterLazy, WithDecoratorRegisterName,
+    WithDecoratorRegisterScope, WithDecoratorResolver,
+    WithDecoratorResolverArgs, WithDecoratorResolverAttempt,
+    WithDecoratorResolverName
+} from './decorators'
 export {
     ApplicationError,
     ArgumentError,

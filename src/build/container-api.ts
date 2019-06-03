@@ -1,7 +1,7 @@
 import {
     IApiCache,
     IResolveWith,
-    WithArgs, WithAttempt, WithName, WithCache,
+    ResolveWithArgs, ResolveWithAttempt, ResolveWithName, ResolveWithCache,
     IContainerApi, ImportApi
 } from './types'
 import { IDynamicDependency } from '../registration'
@@ -84,7 +84,7 @@ export class Api<T> implements IContainerApi<T> {
         }
     }
 
-    private args(...args: {}[]): WithArgs<T> {
+    private args(...args: {}[]): ResolveWithArgs<T> {
         this._args = args
 
         return {
@@ -97,7 +97,7 @@ export class Api<T> implements IContainerApi<T> {
         }
     }
 
-    private attempt(): WithAttempt<T> {
+    private attempt(): ResolveWithAttempt<T> {
         this._attempt = true
 
         return {
@@ -109,7 +109,7 @@ export class Api<T> implements IContainerApi<T> {
         }
     }
 
-    private name(value: string): WithName<T> {
+    private name(value: string): ResolveWithName<T> {
 
         checkNullArgument(value, 'value')
 
@@ -123,7 +123,7 @@ export class Api<T> implements IContainerApi<T> {
         }
     }
 
-    private dependencies(data: IDynamicDependency | IDynamicDependency[]): WithName<T> {
+    private dependencies(data: IDynamicDependency | IDynamicDependency[]): ResolveWithName<T> {
         checkNullArgument(data, 'data')
 
         if (isArray(data)) {
@@ -144,7 +144,7 @@ export class Api<T> implements IContainerApi<T> {
         }
     }
 
-    private cache(name?: string): WithCache<T> {
+    private cache(name?: string): ResolveWithCache<T> {
         this._cache.use = true
         this._cache.name = name
 

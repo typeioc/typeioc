@@ -1,17 +1,32 @@
 import { Omit } from '../../utils'
 
+/**
+ * @public
+ */
 export interface IDecoratorResolution {
-    args(...value: {}[]): WithArgs
-    attempt(): WithAttempt
-    name(value : string): WithName
-    cache(name?: string): WithResolver
+    args(...value: {}[]): WithDecoratorResolverArgs
+    attempt(): WithDecoratorResolverAttempt
+    name(value : string): WithDecoratorResolverName
+    cache(name?: string): WithDecoratorResolver
     resolve(): ParameterDecorator
 }
 
-export type WithResolver = Pick<IDecoratorResolution, 'resolve'>
+/**
+ * @public
+ */
+export type WithDecoratorResolver = Pick<IDecoratorResolution, 'resolve'>
 
-export type WithArgs = Omit<IDecoratorResolution, 'args'>
+/**
+ * @public
+ */
+export type WithDecoratorResolverArgs = Omit<IDecoratorResolution, 'args'>
 
-export type WithAttempt = Omit<WithArgs, 'attempt'>
+/**
+ * @public
+ */
+export type WithDecoratorResolverAttempt = Omit<WithDecoratorResolverArgs, 'attempt'>
 
-export type WithName = Omit<WithAttempt, 'name'>
+/**
+ * @public
+ */
+export type WithDecoratorResolverName = Omit<WithDecoratorResolverAttempt, 'name'>

@@ -111,8 +111,6 @@ export interface IContainer {
     resolveNamed<R>(service: {}, name: string, ...args: {}[]): R | never;
     // (undocumented)
     resolveNamedAsync<R>(service: {}, name: string, ...args: {}[]): Promise<R>;
-    // Warning: (ae-forgotten-export) The symbol "IResolveWith" needs to be exported by the entry point index.d.ts
-    // 
     // (undocumented)
     resolveWith<R>(service: {}): IResolveWith<R> | never;
     // (undocumented)
@@ -135,8 +133,6 @@ export interface IContainerBuilder {
     build(): IContainer;
     // (undocumented)
     copy(builder: IContainerBuilder): void;
-    // Warning: (ae-forgotten-export) The symbol "IRegistration" needs to be exported by the entry point index.d.ts
-    // 
     // (undocumented)
     register<R>(service: {}): IRegistration<R>;
 }
@@ -151,8 +147,6 @@ export interface IDecorator {
     by(service?: {}): IDecoratorResolution;
     // (undocumented)
     import(builder: IContainerBuilder): void;
-    // Warning: (ae-forgotten-export) The symbol "IDecoratorRegistration" needs to be exported by the entry point index.d.ts
-    // 
     // (undocumented)
     provide<R>(service: {}): IDecoratorRegistration<R>;
     // (undocumented)
@@ -164,6 +158,40 @@ export interface IDecorator {
 }
 
 // @public (undocumented)
+export interface IDecoratorRegistration<T> {
+    // (undocumented)
+    dispose(action: IDisposer<T>): WithDecoratorRegisterLazy<T>;
+    // (undocumented)
+    initializeBy(action: IInitializer<T>): WithDecoratorRegisterInitializeBy<T>;
+    // (undocumented)
+    instancePerContainer(): WithDecoratorRegisterScope<T>;
+    // (undocumented)
+    lazy(): WithDecoratorRegisterLazy<T>;
+    // (undocumented)
+    named(name: string): WithDecoratorRegisterName<T>;
+    // (undocumented)
+    ownedBy(owner: Owner): WithDecoratorRegister<T>;
+    // (undocumented)
+    ownedExternally(): WithDecoratorRegister<T>;
+    // (undocumented)
+    ownedInternally(): WithDecoratorRegister<T>;
+    // (undocumented)
+    register(): ClassDecorator;
+    // (undocumented)
+    singleton(): WithDecoratorRegisterScope<T>;
+    // (undocumented)
+    transient(): WithDecoratorRegisterScope<T>;
+    // (undocumented)
+    within(scope: Scope): WithDecoratorRegisterScope<T>;
+}
+
+// @public (undocumented)
+export interface IDisposer<T> {
+    // (undocumented)
+    (item: T): void;
+}
+
+// @public (undocumented)
 export interface IDynamicDependency {
     // (undocumented)
     factory?: IFactory<{}>;
@@ -171,8 +199,6 @@ export interface IDynamicDependency {
     factoryType?: {};
     // (undocumented)
     factoryValue?: {};
-    // Warning: (ae-forgotten-export) The symbol "IInitializer" needs to be exported by the entry point index.d.ts
-    // 
     // (undocumented)
     initializer?: IInitializer<{}>;
     // (undocumented)
@@ -197,6 +223,12 @@ export interface IFactory<T> {
 }
 
 // @public (undocumented)
+export interface IInitializer<T> {
+    // (undocumented)
+    (c: IContainer, item: T): T;
+}
+
+// @public (undocumented)
 export interface IInterceptor {
     // (undocumented)
     intercept<R extends Function | Object>(subject: R, substitutes?: ISubstituteInfo | ISubstituteInfo[]): R;
@@ -204,10 +236,52 @@ export interface IInterceptor {
     interceptInstance<R extends Object>(subject: R, substitutes?: ISubstituteInfo | ISubstituteInfo[]): R;
     // (undocumented)
     interceptPrototype<R extends Function>(subject: R, substitutes?: ISubstituteInfo | ISubstituteInfo[]): R;
-    // Warning: (ae-forgotten-export) The symbol "IWithSubstituteResult" needs to be exported by the entry point index.d.ts
-    // 
     // (undocumented)
     withSubstitute: (substitute: ISubstituteInfo) => IWithSubstituteResult;
+}
+
+// @public (undocumented)
+export interface IName {
+    // (undocumented)
+    named(name: string): void;
+}
+
+// @public (undocumented)
+export interface IRegistration<T> {
+    // (undocumented)
+    as(factory: IFactory<T>): RegisterWithAs<T>;
+    // (undocumented)
+    asSelf(...params: {}[]): RegisterWithAs<T>;
+    // (undocumented)
+    asType(type: T, ...params: {}[]): RegisterWithAs<T>;
+    // (undocumented)
+    asValue(value: {}): IName;
+}
+
+// @public (undocumented)
+export interface IResolveWith<T> {
+    // Warning: (ae-forgotten-export) The symbol "ResolveWithArgs" needs to be exported by the entry point index.d.ts
+    // 
+    // (undocumented)
+    args(...args: {}[]): ResolveWithArgs<T>;
+    // Warning: (ae-forgotten-export) The symbol "ResolveWithAttempt" needs to be exported by the entry point index.d.ts
+    // 
+    // (undocumented)
+    attempt(): ResolveWithAttempt<T>;
+    // Warning: (ae-forgotten-export) The symbol "ResolveWithCache" needs to be exported by the entry point index.d.ts
+    // 
+    // (undocumented)
+    cache(name?: string): ResolveWithCache<T>;
+    // (undocumented)
+    dependencies(dependencies: IDynamicDependency | IDynamicDependency[]): ResolveWithName<T>;
+    // (undocumented)
+    exec(): T;
+    // (undocumented)
+    execAsync(): Promise<T>;
+    // Warning: (ae-forgotten-export) The symbol "ResolveWithName" needs to be exported by the entry point index.d.ts
+    // 
+    // (undocumented)
+    name(value: string): ResolveWithName<T>;
 }
 
 // @public (undocumented)
@@ -218,6 +292,18 @@ export interface ISubstituteInfo {
     type?: CallInfo;
     // (undocumented)
     wrapper: (callInfo: ICallInfo) => any | void;
+}
+
+// @public (undocumented)
+export interface IWithSubstituteResult {
+    // (undocumented)
+    intercept: <R extends (Function | Object)>(subject: R) => R;
+    // (undocumented)
+    interceptInstance: <R extends Object>(subject: R) => R;
+    // (undocumented)
+    interceptPrototype: <R extends Function>(subject: R) => R;
+    // (undocumented)
+    withSubstitute: (substitute: ISubstituteInfo) => IWithSubstituteResult;
 }
 
 // @public (undocumented)
@@ -240,6 +326,35 @@ export class ProxyError extends ApplicationError {
         data?: {};
     });
 }
+
+// @public (undocumented)
+export type RegisterWithAs<T> = {
+    initializeBy(action: IInitializer<T>): RegisterWithInitializeBy<T>;
+    lazy(): RegisterWithLazy<T>;
+    named(name: string): RegisterWithName<T>;
+    dispose(action: IDisposer<T>): RegisterWithLazy<T>;
+    within(scope: Scope): RegisterWithScope<T>;
+    transient(): RegisterWithScope<T>;
+    singleton(): RegisterWithScope<T>;
+    instancePerContainer(): RegisterWithScope<T>;
+    ownedBy(owner: Owner): void;
+    ownedInternally(): void;
+    ownedExternally(): void;
+};
+
+// Warning: (ae-forgotten-export) The symbol "Omit" needs to be exported by the entry point index.d.ts
+// 
+// @public (undocumented)
+export type RegisterWithInitializeBy<T> = Omit<RegisterWithAs<T>, 'initializeBy'>;
+
+// @public (undocumented)
+export type RegisterWithLazy<T> = Omit<RegisterWithInitializeBy<T>, 'lazy' | 'dispose'>;
+
+// @public (undocumented)
+export type RegisterWithName<T> = Omit<RegisterWithLazy<T>, 'named'>;
+
+// @public (undocumented)
+export type RegisterWithScope<T> = Pick<RegisterWithAs<T>, 'ownedBy' | 'ownedInternally' | 'ownedExternally'>;
 
 // @public (undocumented)
 export class ResolutionError extends ApplicationError {
@@ -268,6 +383,33 @@ export const enum Scope {
 // 
 // @public (undocumented)
 export const scope: ScopeType;
+
+// @public (undocumented)
+export type WithDecoratorRegister<T> = Pick<IDecoratorRegistration<T>, 'register'>;
+
+// @public (undocumented)
+export type WithDecoratorRegisterInitializeBy<T> = Omit<IDecoratorRegistration<T>, 'initializeBy'>;
+
+// @public (undocumented)
+export type WithDecoratorRegisterLazy<T> = Omit<WithDecoratorRegisterInitializeBy<T>, 'lazy' | 'dispose'>;
+
+// @public (undocumented)
+export type WithDecoratorRegisterName<T> = Omit<WithDecoratorRegisterLazy<T>, 'named'>;
+
+// @public (undocumented)
+export type WithDecoratorRegisterScope<T> = Omit<WithDecoratorRegisterName<T>, 'within' | 'transient' | 'singleton' | 'instancePerContainer'>;
+
+// @public (undocumented)
+export type WithDecoratorResolver = Pick<IDecoratorResolution, 'resolve'>;
+
+// @public (undocumented)
+export type WithDecoratorResolverArgs = Omit<IDecoratorResolution, 'args'>;
+
+// @public (undocumented)
+export type WithDecoratorResolverAttempt = Omit<WithDecoratorResolverArgs, 'attempt'>;
+
+// @public (undocumented)
+export type WithDecoratorResolverName = Omit<WithDecoratorResolverAttempt, 'name'>;
 
 
 ```

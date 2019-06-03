@@ -2,31 +2,50 @@ import { Owner, Scope } from '../../common'
 import { IDisposer, IInitializer } from '../../registration'
 import { Omit } from '../../utils'
 
+/**
+ * @public
+ */
 export interface IDecoratorRegistration<T> {
-    initializeBy(action: IInitializer<T>): WithInitializeBy<T>
-    lazy(): WithLazy<T>
-    dispose(action: IDisposer<T>): WithLazy<T>
-    named(name: string): WithName<T>
+    initializeBy(action: IInitializer<T>): WithDecoratorRegisterInitializeBy<T>
+    lazy(): WithDecoratorRegisterLazy<T>
+    dispose(action: IDisposer<T>): WithDecoratorRegisterLazy<T>
+    named(name: string): WithDecoratorRegisterName<T>
 
-    within(scope: Scope): WithScope<T>
-    transient(): WithScope<T>
-    singleton(): WithScope<T>
-    instancePerContainer(): WithScope<T>
+    within(scope: Scope): WithDecoratorRegisterScope<T>
+    transient(): WithDecoratorRegisterScope<T>
+    singleton(): WithDecoratorRegisterScope<T>
+    instancePerContainer(): WithDecoratorRegisterScope<T>
 
-    ownedBy(owner: Owner): WithRegister<T>
-    ownedInternally(): WithRegister<T>
-    ownedExternally(): WithRegister<T>
+    ownedBy(owner: Owner): WithDecoratorRegister<T>
+    ownedInternally(): WithDecoratorRegister<T>
+    ownedExternally(): WithDecoratorRegister<T>
 
     register(): ClassDecorator
 }
 
-export type WithRegister<T> = Pick<IDecoratorRegistration<T>, 'register'>
+/**
+ * @public
+ */
+export type WithDecoratorRegister<T> = Pick<IDecoratorRegistration<T>, 'register'>
 
-export type WithInitializeBy<T> = Omit<IDecoratorRegistration<T>, 'initializeBy'>
+/**
+ * @public
+ */
+export type WithDecoratorRegisterInitializeBy<T> = Omit<IDecoratorRegistration<T>, 'initializeBy'>
 
-export type WithLazy<T> = Omit<WithInitializeBy<T>, 'lazy' | 'dispose'>
+/**
+ * @public
+ */
+export type WithDecoratorRegisterLazy<T> =
+    Omit<WithDecoratorRegisterInitializeBy<T>, 'lazy' | 'dispose'>
 
-export type WithName<T> = Omit<WithLazy<T>, 'named'>
+/**
+ * @public
+ */
+export type WithDecoratorRegisterName<T> = Omit<WithDecoratorRegisterLazy<T>, 'named'>
 
-export type WithScope<T> = Omit<WithName<T>,
+/**
+ * @public
+ */
+export type WithDecoratorRegisterScope<T> = Omit<WithDecoratorRegisterName<T>,
     'within' | 'transient' | 'singleton' | 'instancePerContainer'>

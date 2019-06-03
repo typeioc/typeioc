@@ -52,16 +52,16 @@ export interface IDisposer<T> {
 /**
  * @public
  */
-export type WithAs<T> = {
-    initializeBy(action: IInitializer<T>): WithInitializeBy<T>
-    lazy(): WithLazy<T>
-    named(name: string): WithName<T>
-    dispose(action: IDisposer<T>): WithLazy<T>
+export type RegisterWithAs<T> = {
+    initializeBy(action: IInitializer<T>): RegisterWithInitializeBy<T>
+    lazy(): RegisterWithLazy<T>
+    named(name: string): RegisterWithName<T>
+    dispose(action: IDisposer<T>): RegisterWithLazy<T>
 
-    within(scope: Scope): WithScope<T>
-    transient(): WithScope<T>
-    singleton(): WithScope<T>
-    instancePerContainer(): WithScope<T>
+    within(scope: Scope): RegisterWithScope<T>
+    transient(): RegisterWithScope<T>
+    singleton(): RegisterWithScope<T>
+    instancePerContainer(): RegisterWithScope<T>
 
     ownedBy(owner: Owner): void
     ownedInternally(): void
@@ -71,30 +71,30 @@ export type WithAs<T> = {
 /**
  * @public
  */
-export type WithInitializeBy<T> = Omit<WithAs<T>, 'initializeBy'>
+export type RegisterWithInitializeBy<T> = Omit<RegisterWithAs<T>, 'initializeBy'>
 
 /**
  * @public
  */
-export type WithLazy<T> = Omit<WithInitializeBy<T>, 'lazy' | 'dispose'>
+export type RegisterWithLazy<T> = Omit<RegisterWithInitializeBy<T>, 'lazy' | 'dispose'>
 
 /**
  * @public
  */
-export type WithName<T> = Omit<WithLazy<T>, 'named'>
+export type RegisterWithName<T> = Omit<RegisterWithLazy<T>, 'named'>
 
 /**
  * @public
  */
-export type WithScope<T> = Pick<WithAs<T>,
+export type RegisterWithScope<T> = Pick<RegisterWithAs<T>,
     'ownedBy' | 'ownedInternally' | 'ownedExternally'>
 
 /**
  * @public
  */
 export interface IRegistration<T> {
-    as(factory: IFactory<T>): WithAs<T>
-    asType(type: T, ...params: {}[]): WithAs<T>
-    asSelf(...params: {}[]): WithAs<T>
+    as(factory: IFactory<T>): RegisterWithAs<T>
+    asType(type: T, ...params: {}[]): RegisterWithAs<T>
+    asSelf(...params: {}[]): RegisterWithAs<T>
     asValue(value: {}): IName
 }

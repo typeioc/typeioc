@@ -3,7 +3,7 @@ import {
     IName,
     IInitializer,
     IDisposer,
-    WithAs, WithInitializeBy, WithLazy, WithName, WithScope,
+    RegisterWithAs, RegisterWithInitializeBy, RegisterWithLazy, RegisterWithName, RegisterWithScope,
     IRegistrationBase,
     IRegistration
 } from './types'
@@ -26,7 +26,7 @@ export class Registration<T> implements IRegistration<T> {
         this.lazy = this.lazy.bind(this)
     }
 
-    public as(factory: IFactory<T>): WithAs<T> {
+    public as(factory: IFactory<T>): RegisterWithAs<T> {
 
         this._base.factory = factory
 
@@ -45,7 +45,7 @@ export class Registration<T> implements IRegistration<T> {
         }
     }
 
-    public asType(type: T, ...params: {}[]): WithAs<T> {
+    public asType(type: T, ...params: {}[]): RegisterWithAs<T> {
 
         this._base.factoryType = type
         this._base.params = params
@@ -65,7 +65,7 @@ export class Registration<T> implements IRegistration<T> {
         }
     }
 
-    public asSelf(...params: {}[]): WithAs<T> {
+    public asSelf(...params: {}[]): RegisterWithAs<T> {
         return this.asType(this._base.service as T, ...params)
     }
 
@@ -83,7 +83,7 @@ export class Registration<T> implements IRegistration<T> {
         this.named(value)
     }
 
-    private named(value : string): WithName<T> {
+    private named(value : string): RegisterWithName<T> {
 
         this._base.name = value
 
@@ -98,7 +98,7 @@ export class Registration<T> implements IRegistration<T> {
         }
     }
 
-    private within(scope: Scope): WithScope<T> {
+    private within(scope: Scope): RegisterWithScope<T> {
 
         this._base.scope = scope
 
@@ -109,15 +109,15 @@ export class Registration<T> implements IRegistration<T> {
         }
     }
 
-    private transient(): WithScope<T> {
+    private transient(): RegisterWithScope<T> {
         return this.within(scope.none)
     }
 
-    private singleton(): WithScope<T> {
+    private singleton(): RegisterWithScope<T> {
         return this.within(scope.hierarchy)
     }
 
-    private instancePerContainer(): WithScope<T> {
+    private instancePerContainer(): RegisterWithScope<T> {
         return this.within(scope.container)
     }
 
@@ -133,7 +133,7 @@ export class Registration<T> implements IRegistration<T> {
         this.ownedBy(owner.externals)
     }
 
-    private initializeBy(action: IInitializer<T>): WithInitializeBy<T> {
+    private initializeBy(action: IInitializer<T>): RegisterWithInitializeBy<T> {
         (this._base.initializer as IInitializer<T> | undefined) = action
 
         return {
@@ -150,7 +150,7 @@ export class Registration<T> implements IRegistration<T> {
         }
     }
 
-    private dispose(action: IDisposer<T>): WithLazy<T> {
+    private dispose(action: IDisposer<T>): RegisterWithLazy<T> {
         (this._base.disposer as IDisposer<T> | undefined) = action
 
         return {
@@ -165,7 +165,7 @@ export class Registration<T> implements IRegistration<T> {
         }
     }
 
-    private lazy(): WithLazy<T> {
+    private lazy(): RegisterWithLazy<T> {
         this._base.isLazy = true
 
         return {

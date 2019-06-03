@@ -10,11 +10,11 @@ export interface IApiCache {
  * @public
  */
 export interface IResolveWith<T> {
-    args(...args: {}[]): WithArgs<T>
-    attempt(): WithAttempt<T>
-    name(value: string): WithName<T>
-    dependencies(dependencies: IDynamicDependency | IDynamicDependency[]): WithName<T>
-    cache(name?: string): WithCache<T>
+    args(...args: {}[]): ResolveWithArgs<T>
+    attempt(): ResolveWithAttempt<T>
+    name(value: string): ResolveWithName<T>
+    dependencies(dependencies: IDynamicDependency | IDynamicDependency[]): ResolveWithName<T>
+    cache(name?: string): ResolveWithCache<T>
     exec(): T
     execAsync(): Promise<T>
 }
@@ -22,19 +22,19 @@ export interface IResolveWith<T> {
 /**
  * @public
  */
-export type WithArgs<T> = Omit<IResolveWith<T>, 'args'>
+export type ResolveWithArgs<T> = Omit<IResolveWith<T>, 'args'>
 
 /**
  * @public
  */
-export type WithAttempt<T> = Omit<WithArgs<T>, 'attempt'>
+export type ResolveWithAttempt<T> = Omit<ResolveWithArgs<T>, 'attempt'>
 
 /**
  * @public
  */
-export type WithName<T> = Omit<WithAttempt<T>, 'name'>
+export type ResolveWithName<T> = Omit<ResolveWithAttempt<T>, 'name'>
 
 /**
  * @public
  */
-export type WithCache<T> = Pick<IResolveWith<T>, 'exec' | 'execAsync'>
+export type ResolveWithCache<T> = Pick<IResolveWith<T>, 'exec' | 'execAsync'>

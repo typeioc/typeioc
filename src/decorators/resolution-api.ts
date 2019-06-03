@@ -1,10 +1,10 @@
 import { IDecoratorResolutionApi } from './types'
 import {
     IDecoratorResolution,
-    WithArgs,
-    WithAttempt,
-    WithName,
-    WithResolver
+    WithDecoratorResolverArgs,
+    WithDecoratorResolverAttempt,
+    WithDecoratorResolverName,
+    WithDecoratorResolver
 } from './types/resolution'
 import { IApiCache } from '../build'
 
@@ -58,7 +58,7 @@ export class ResolutionApi implements IDecoratorResolutionApi {
         }
     }
 
-    private argsAction(...value: {}[]): WithArgs {
+    private argsAction(...value: {}[]): WithDecoratorResolverArgs {
         this._args = value
 
         return {
@@ -69,7 +69,7 @@ export class ResolutionApi implements IDecoratorResolutionApi {
         }
     }
 
-    private attemptAction(): WithAttempt {
+    private attemptAction(): WithDecoratorResolverAttempt {
 
         this._attempt = true
 
@@ -80,7 +80,7 @@ export class ResolutionApi implements IDecoratorResolutionApi {
         }
     }
 
-    private nameAction(value : string): WithName {
+    private nameAction(value : string): WithDecoratorResolverName {
 
         this._name = value
 
@@ -90,7 +90,7 @@ export class ResolutionApi implements IDecoratorResolutionApi {
         }
     }
 
-    private cacheAction(name? : string): WithResolver {
+    private cacheAction(name? : string): WithDecoratorResolver {
         this._cache = {
             use: true,
             name

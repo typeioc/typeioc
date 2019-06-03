@@ -2,11 +2,11 @@ import { checkNullArgument } from '../utils'
 import { IDecoratorRegistrationApi } from './types'
 import {
     IDecoratorRegistration,
-    WithRegister,
-    WithInitializeBy,
-    WithLazy,
-    WithName,
-    WithScope
+    WithDecoratorRegister,
+    WithDecoratorRegisterInitializeBy,
+    WithDecoratorRegisterLazy,
+    WithDecoratorRegisterName,
+    WithDecoratorRegisterScope
 } from './types/registration'
 import { IInitializer, IDisposer } from '../registration'
 import { Owner, Scope } from '../common'
@@ -96,7 +96,7 @@ export class RegistrationApi<T> implements IDecoratorRegistrationApi<T> {
         }
     }
 
-    private initializeBy(action: IInitializer<T>): WithInitializeBy<T> {
+    private initializeBy(action: IInitializer<T>): WithDecoratorRegisterInitializeBy<T> {
 
         checkNullArgument(action, 'action')
 
@@ -117,7 +117,7 @@ export class RegistrationApi<T> implements IDecoratorRegistrationApi<T> {
         }
     }
 
-    private lazy(): WithLazy<T> {
+    private lazy(): WithDecoratorRegisterLazy<T> {
         this._isLazy = true
 
         return {
@@ -133,7 +133,7 @@ export class RegistrationApi<T> implements IDecoratorRegistrationApi<T> {
         }
     }
 
-    private dispose(action: IDisposer<T>): WithLazy<T> {
+    private dispose(action: IDisposer<T>): WithDecoratorRegisterLazy<T> {
 
         checkNullArgument(action, 'action')
 
@@ -152,7 +152,7 @@ export class RegistrationApi<T> implements IDecoratorRegistrationApi<T> {
         }
     }
 
-    private named(name: string): WithName<T> {
+    private named(name: string): WithDecoratorRegisterName<T> {
 
         checkNullArgument(name, 'name')
 
@@ -170,7 +170,7 @@ export class RegistrationApi<T> implements IDecoratorRegistrationApi<T> {
         }
     }
 
-    private within(scope: Scope): WithScope<T> {
+    private within(scope: Scope): WithDecoratorRegisterScope<T> {
 
         checkNullArgument(scope, 'scope')
 
@@ -184,19 +184,19 @@ export class RegistrationApi<T> implements IDecoratorRegistrationApi<T> {
         }
     }
 
-    private transient(): WithScope<T> {
+    private transient(): WithDecoratorRegisterScope<T> {
         return this.within(Scope.None)
     }
 
-    private singleton(): WithScope<T> {
+    private singleton(): WithDecoratorRegisterScope<T> {
         return this.within(Scope.Hierarchy)
     }
 
-    private instancePerContainer(): WithScope<T> {
+    private instancePerContainer(): WithDecoratorRegisterScope<T> {
         return this.within(Scope.Container)
     }
 
-    private ownedBy(owner: Owner): WithRegister<T> {
+    private ownedBy(owner: Owner): WithDecoratorRegister<T> {
 
         checkNullArgument(owner, 'owner')
 
@@ -207,11 +207,11 @@ export class RegistrationApi<T> implements IDecoratorRegistrationApi<T> {
         }
     }
 
-    private ownedInternally(): WithRegister<T> {
+    private ownedInternally(): WithDecoratorRegister<T> {
         return this.ownedBy(Owner.Container)
     }
 
-    private ownedExternally(): WithRegister<T> {
+    private ownedExternally(): WithDecoratorRegister<T> {
         return this.ownedBy(Owner.Externals)
     }
 
