@@ -86,7 +86,7 @@ tap.test<Context>('tryResolveAsync no resolution', async (test) => {
 
     await container.tryResolveAsync<Test1Base>(Test1Base)
     .then(actual => {
-        test.notOk(actual)
+        test.ok(actual === undefined)
     })
 })
 

@@ -4,6 +4,8 @@
 
 ## IContainer.resolveWith() method
 
+Resolves a service using fluent cascading interface
+
 <b>Signature:</b>
 
 ```typescript
@@ -14,9 +16,11 @@ resolveWith<R>(service: {}): IResolveWith<R> | never;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  service | <code>{}</code> |  |
+|  service | <code>{}</code> | service value registered prior resolution If service is <code>null</code> or <code>undefined</code> [ArgumentError](./typeioc.argumenterror.md) is thrown |
 
 <b>Returns:</b>
 
 `IResolveWith<R> | never`
+
+- an instance of [IResolveWith](./typeioc.iresolvewith.md) interface
 

@@ -4,6 +4,8 @@
 
 ## IContainerBuilder.build() method
 
+Creates an instance of [IContainer](./typeioc.icontainer.md) interface
+
 <b>Signature:</b>
 
 ```typescript
@@ -12,4 +14,6 @@ build(): IContainer;
 <b>Returns:</b>
 
 `IContainer`
+
+- an instance of [IContainer](./typeioc.icontainer.md) interface
 

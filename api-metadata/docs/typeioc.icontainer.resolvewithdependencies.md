@@ -4,6 +4,8 @@
 
 ## IContainer.resolveWithDependencies() method
 
+Resolves a service with dynamic dependencies
+
 <b>Signature:</b>
 
 ```typescript
@@ -14,10 +16,18 @@ resolveWithDependencies<R>(service: {}, dependencies: IDynamicDependency[]): R |
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  service | <code>{}</code> |  |
-|  dependencies | <code>IDynamicDependency[]</code> |  |
+|  service | <code>{}</code> | service value registered prior resolution If service is <code>null</code> or <code>undefined</code> [ArgumentError](./typeioc.argumenterror.md) is thrown |
+|  dependencies | <code>IDynamicDependency[]</code> | an array of [IDynamicDependency](./typeioc.idynamicdependency.md) instances |
 
 <b>Returns:</b>
 
 `R | never`
+
+- registered instance of a service
+
+## Remarks
+
+A service gets resolved with all the dependencies provided without affecting original registration. All the services resolved with dynamic dependencies get transient (no scope, [Scope](./typeioc.scope.md)<!-- -->, [scope](./typeioc.scope.md)<!-- -->) life cycle assigned regardless of initial life cycle specified
+
+Throws [ResolutionError](./typeioc.resolutionerror.md) if not registration found
 

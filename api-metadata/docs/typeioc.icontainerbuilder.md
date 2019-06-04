@@ -4,6 +4,7 @@
 
 ## IContainerBuilder interface
 
+Represents container builder interface
 
 <b>Signature:</b>
 
@@ -15,7 +16,11 @@ export interface IContainerBuilder
 
 |  Method | Description |
 |  --- | --- |
-|  [build()](./typeioc.icontainerbuilder.build.md) |  |
-|  [copy(builder)](./typeioc.icontainerbuilder.copy.md) |  |
-|  [register(service)](./typeioc.icontainerbuilder.register.md) |  |
+|  [build()](./typeioc.icontainerbuilder.build.md) | Creates an instance of [IContainer](./typeioc.icontainer.md) interface |
+|  [copy(builder)](./typeioc.icontainerbuilder.copy.md) | Copies all registrations from the container builder provided into self |
+|  [register(service)](./typeioc.icontainerbuilder.register.md) | Registers a service using fluent API |
+
+## Remarks
+
+Container builders provide functionality for working with containers and registering services
 

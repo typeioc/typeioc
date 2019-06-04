@@ -21,6 +21,5 @@ export declare class ResolutionError extends ApplicationError
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [\_innerError](./typeioc.resolutionerror._innererror.md) |  | <code>Error</code> |  |
 |  [innerError](./typeioc.resolutionerror.innererror.md) |  | <code>Error &#124; undefined</code> |  |
 

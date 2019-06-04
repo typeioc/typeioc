@@ -4,6 +4,8 @@
 
 ## IContainer.createChild() method
 
+Creates nested life cycle scoped container
+
 <b>Signature:</b>
 
 ```typescript
@@ -12,4 +14,6 @@ createChild(): IContainer;
 <b>Returns:</b>
 
 `IContainer`
+
+- an instance of [IContainer](./typeioc.icontainer.md) interface
 

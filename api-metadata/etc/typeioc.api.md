@@ -24,7 +24,7 @@ export class ArgumentError extends ApplicationError {
     });
     // (undocumented)
     readonly argumentName: string;
-    // (undocumented)
+    // @internal (undocumented)
     _argumentName: string;
 }
 
@@ -54,7 +54,7 @@ export class CircularDependencyError extends ApplicationError {
     constructor(serviceName: string, data?: {});
     // (undocumented)
     readonly serviceName: string;
-    // (undocumented)
+    // @internal (undocumented)
     _serviceName: string;
 }
 
@@ -93,47 +93,29 @@ export interface ICallInfo {
     type: CallInfo;
 }
 
-// @public (undocumented)
+// @public
 export interface IContainer {
-    // (undocumented)
-    cache: any;
-    // (undocumented)
+    cache: IStringIndex<any>;
     createChild(): IContainer;
-    // (undocumented)
     dispose(): void;
-    // (undocumented)
     disposeAsync(): Promise<void>;
-    // (undocumented)
     resolve<R>(service: {}, ...args: {}[]): R | never;
-    // (undocumented)
     resolveAsync<R>(service: {}, ...args: {}[]): Promise<R>;
-    // (undocumented)
     resolveNamed<R>(service: {}, name: string, ...args: {}[]): R | never;
-    // (undocumented)
     resolveNamedAsync<R>(service: {}, name: string, ...args: {}[]): Promise<R>;
-    // (undocumented)
     resolveWith<R>(service: {}): IResolveWith<R> | never;
-    // (undocumented)
     resolveWithDependencies<R>(service: {}, dependencies: IDynamicDependency[]): R | never;
-    // (undocumented)
     resolveWithDependenciesAsync<R>(service: {}, dependencies: IDynamicDependency[]): Promise<R>;
-    // (undocumented)
     tryResolve<R>(service: {}, ...args: {}[]): R | undefined;
-    // (undocumented)
     tryResolveAsync<R>(service: {}, ...args: {}[]): Promise<R | undefined>;
-    // (undocumented)
     tryResolveNamed<R>(service: {}, name: string, ...args: {}[]): R | undefined;
-    // (undocumented)
     tryResolveNamedAsync<R>(service: {}, name: string, ...args: {}[]): Promise<R | undefined>;
 }
 
-// @public (undocumented)
+// @public
 export interface IContainerBuilder {
-    // (undocumented)
     build(): IContainer;
-    // (undocumented)
     copy(builder: IContainerBuilder): void;
-    // (undocumented)
     register<R>(service: {}): IRegistration<R>;
 }
 
@@ -285,6 +267,11 @@ export interface IResolveWith<T> {
 }
 
 // @public (undocumented)
+export type IStringIndex<T> = {
+    [name: string]: T;
+};
+
+// @public (undocumented)
 export interface ISubstituteInfo {
     // (undocumented)
     method?: string;
@@ -314,10 +301,14 @@ export const enum Owner {
     Externals = 2
 }
 
-// Warning: (ae-forgotten-export) The symbol "OwnerType" needs to be exported by the entry point index.d.ts
-// 
 // @public (undocumented)
 export const owner: OwnerType;
+
+// @public (undocumented)
+export type OwnerType = {
+    readonly container: number;
+    readonly externals: number;
+};
 
 // @public (undocumented)
 export class ProxyError extends ApplicationError {
@@ -365,7 +356,7 @@ export class ResolutionError extends ApplicationError {
     });
     // (undocumented)
     readonly innerError: Error | undefined;
-    // (undocumented)
+    // @internal (undocumented)
     _innerError?: Error;
 }
 
@@ -379,10 +370,15 @@ export const enum Scope {
     None = 1
 }
 
-// Warning: (ae-forgotten-export) The symbol "ScopeType" needs to be exported by the entry point index.d.ts
-// 
 // @public (undocumented)
 export const scope: ScopeType;
+
+// @public (undocumented)
+export type ScopeType = {
+    readonly none: number;
+    readonly container: number;
+    readonly hierarchy: number;
+};
 
 // @public (undocumented)
 export type WithDecoratorRegister<T> = Pick<IDecoratorRegistration<T>, 'register'>;

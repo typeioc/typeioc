@@ -4,6 +4,7 @@
 
 ## IContainer interface
 
+Represents container interface
 
 <b>Signature:</b>
 
@@ -15,24 +16,28 @@ export interface IContainer
 
 |  Property | Type | Description |
 |  --- | --- | --- |
-|  [cache](./typeioc.icontainer.cache.md) | <code>any</code> |  |
+|  [cache](./typeioc.icontainer.cache.md) | <code>IStringIndex&lt;any&gt;</code> | Represents a dictionary of cached components/resolved registrations [IStringIndex](./typeioc.istringindex.md) |
 
 ## Methods
 
 |  Method | Description |
 |  --- | --- |
-|  [createChild()](./typeioc.icontainer.createchild.md) |  |
-|  [dispose()](./typeioc.icontainer.dispose.md) |  |
-|  [disposeAsync()](./typeioc.icontainer.disposeasync.md) |  |
-|  [resolve(service, args)](./typeioc.icontainer.resolve.md) |  |
-|  [resolveAsync(service, args)](./typeioc.icontainer.resolveasync.md) |  |
-|  [resolveNamed(service, name, args)](./typeioc.icontainer.resolvenamed.md) |  |
-|  [resolveNamedAsync(service, name, args)](./typeioc.icontainer.resolvenamedasync.md) |  |
-|  [resolveWith(service)](./typeioc.icontainer.resolvewith.md) |  |
-|  [resolveWithDependencies(service, dependencies)](./typeioc.icontainer.resolvewithdependencies.md) |  |
-|  [resolveWithDependenciesAsync(service, dependencies)](./typeioc.icontainer.resolvewithdependenciesasync.md) |  |
-|  [tryResolve(service, args)](./typeioc.icontainer.tryresolve.md) |  |
-|  [tryResolveAsync(service, args)](./typeioc.icontainer.tryresolveasync.md) |  |
-|  [tryResolveNamed(service, name, args)](./typeioc.icontainer.tryresolvenamed.md) |  |
-|  [tryResolveNamedAsync(service, name, args)](./typeioc.icontainer.tryresolvenamedasync.md) |  |
+|  [createChild()](./typeioc.icontainer.createchild.md) | Creates nested life cycle scoped container |
+|  [dispose()](./typeioc.icontainer.dispose.md) | Disposes all resolved, internally owned instances registered using [IDisposer](./typeioc.idisposer.md) interface |
+|  [disposeAsync()](./typeioc.icontainer.disposeasync.md) | Asynchronously disposes all resolved, internally owned instances registered using [IDisposer](./typeioc.idisposer.md) interface |
+|  [resolve(service, args)](./typeioc.icontainer.resolve.md) | Resolves a service with optional parameters Throws [ResolutionError](./typeioc.resolutionerror.md) if not registration found |
+|  [resolveAsync(service, args)](./typeioc.icontainer.resolveasync.md) | Asynchronously resolves a service with optional parameters |
+|  [resolveNamed(service, name, args)](./typeioc.icontainer.resolvenamed.md) | Resolves a service with specific name and optional parameters Throws [ResolutionError](./typeioc.resolutionerror.md) if not registration found |
+|  [resolveNamedAsync(service, name, args)](./typeioc.icontainer.resolvenamedasync.md) | Asynchronously resolves a service with specific name and optional parameters |
+|  [resolveWith(service)](./typeioc.icontainer.resolvewith.md) | Resolves a service using fluent cascading interface |
+|  [resolveWithDependencies(service, dependencies)](./typeioc.icontainer.resolvewithdependencies.md) | Resolves a service with dynamic dependencies |
+|  [resolveWithDependenciesAsync(service, dependencies)](./typeioc.icontainer.resolvewithdependenciesasync.md) | Asynchronously resolves a service with dynamic dependencies |
+|  [tryResolve(service, args)](./typeioc.icontainer.tryresolve.md) | Attempts to resolve a service with optional parameters. |
+|  [tryResolveAsync(service, args)](./typeioc.icontainer.tryresolveasync.md) | Asynchronously attempts to resolve a service with optional parameters. |
+|  [tryResolveNamed(service, name, args)](./typeioc.icontainer.tryresolvenamed.md) | Attempts to resolve a service with specific name and optional parameters |
+|  [tryResolveNamedAsync(service, name, args)](./typeioc.icontainer.tryresolvenamedasync.md) | Asynchronously attempts to resolve a service with specific name and optional parameters |
+
+## Remarks
+
+Containers are used to resolve prior registered services
 

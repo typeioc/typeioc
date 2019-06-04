@@ -4,6 +4,8 @@
 
 ## IContainerBuilder.copy() method
 
+Copies all registrations from the container builder provided into self
+
 <b>Signature:</b>
 
 ```typescript
@@ -14,7 +16,7 @@ copy(builder: IContainerBuilder): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  builder | <code>IContainerBuilder</code> |  |
+|  builder | <code>IContainerBuilder</code> | an instance of [IContainerBuilder](./typeioc.icontainerbuilder.md) interface |
 
 <b>Returns:</b>
 

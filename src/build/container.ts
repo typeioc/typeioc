@@ -3,12 +3,13 @@ import { IResolveWith, IContainer, IInternalContainer } from './types'
 import { checkNullArgument, checkDependency } from '../utils'
 import { ResolutionError } from '../exceptions'
 import { InternalContainer } from './internal-container'
+import { IStringIndex } from '../types'
 
 export class Container implements IContainer {
 
     constructor(private _container: IInternalContainer) { }
 
-    public get cache(): {} {
+    public get cache(): IStringIndex<any> {
         return this._container.cache
     }
 
@@ -65,6 +66,7 @@ export class Container implements IContainer {
     public resolveNamed<R>(service: {}, name: string, ...args: {}[]): R | never {
 
         checkNullArgument(service, 'service')
+        checkNullArgument(name, 'name')
 
         if (!args.length) {
             return this._container.resolveNamed(service, name)
@@ -84,6 +86,7 @@ export class Container implements IContainer {
     public tryResolveNamed<R>(service: {}, name: string, ...args: {}[]): R | undefined {
 
         checkNullArgument(service, 'service')
+        checkNullArgument(name, 'name')
 
         const result = args.length <= 0 ?
             this._container.tryResolveNamed<R>(service, name) :

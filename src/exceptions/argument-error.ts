@@ -5,6 +5,9 @@ import { setPrototypeOf } from '../utils'
  * @public
  */
 export class ArgumentError extends ApplicationError {
+    /**
+     * @internal
+     */
     _argumentName: string
 
     get argumentName() {

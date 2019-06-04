@@ -14,7 +14,7 @@ import {
 } from './types'
 import { IDecoratorResolutionParamsData } from '../decorators'
 import { IDisposableStorage, IRegistrationStorage } from '../storage'
-import { IndexedCollection } from '../types'
+import { IndexedCollection, IStringIndex } from '../types'
 import { IResolveWith } from './types/resolution'
 
 export class InternalContainer implements IInternalContainer {
@@ -24,7 +24,7 @@ export class InternalContainer implements IInternalContainer {
     private _pendingResolutions: IndexedCollection<boolean>
     private _disposableStorage: IDisposableStorage
     private _collection: IRegistrationStorage
-    private _cache: IndexedCollection<{}>
+    private _cache: IStringIndex<any>
     private _invoker: IInvoker
     private _dependencyScope = Scope.None
     private _dependencyOwner = Owner.Externals
@@ -46,7 +46,7 @@ export class InternalContainer implements IInternalContainer {
         this.registerImpl = this.registerImpl.bind(this)
     }
 
-    public get cache(): IndexedCollection<{}> {
+    public get cache(): IStringIndex<any> {
         return this._cache
     }
 

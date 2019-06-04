@@ -30,8 +30,8 @@ Dependency injection container for TypeScript / JavaScript
 |  Interface | Description |
 |  --- | --- |
 |  [ICallInfo](./typeioc.icallinfo.md) |  |
-|  [IContainer](./typeioc.icontainer.md) |  |
-|  [IContainerBuilder](./typeioc.icontainerbuilder.md) |  |
+|  [IContainer](./typeioc.icontainer.md) | Represents container interface |
+|  [IContainerBuilder](./typeioc.icontainerbuilder.md) | Represents container builder interface |
 |  [IDecorator](./typeioc.idecorator.md) |  |
 |  [IDecoratorRegistration](./typeioc.idecoratorregistration.md) |  |
 |  [IDisposer](./typeioc.idisposer.md) |  |
@@ -59,11 +59,14 @@ Dependency injection container for TypeScript / JavaScript
 
 |  Type Alias | Description |
 |  --- | --- |
+|  [IStringIndex](./typeioc.istringindex.md) |  |
+|  [OwnerType](./typeioc.ownertype.md) |  |
 |  [RegisterWithAs](./typeioc.registerwithas.md) |  |
 |  [RegisterWithInitializeBy](./typeioc.registerwithinitializeby.md) |  |
 |  [RegisterWithLazy](./typeioc.registerwithlazy.md) |  |
 |  [RegisterWithName](./typeioc.registerwithname.md) |  |
 |  [RegisterWithScope](./typeioc.registerwithscope.md) |  |
+|  [ScopeType](./typeioc.scopetype.md) |  |
 |  [WithDecoratorRegister](./typeioc.withdecoratorregister.md) |  |
 |  [WithDecoratorRegisterInitializeBy](./typeioc.withdecoratorregisterinitializeby.md) |  |
 |  [WithDecoratorRegisterLazy](./typeioc.withdecoratorregisterlazy.md) |  |

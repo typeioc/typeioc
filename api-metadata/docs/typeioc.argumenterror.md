@@ -21,6 +21,5 @@ export declare class ArgumentError extends ApplicationError
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [\_argumentName](./typeioc.argumenterror._argumentname.md) |  | <code>string</code> |  |
 |  [argumentName](./typeioc.argumenterror.argumentname.md) |  | <code>string</code> |  |
 

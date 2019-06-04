@@ -21,6 +21,5 @@ export declare class CircularDependencyError extends ApplicationError
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [\_serviceName](./typeioc.circulardependencyerror._servicename.md) |  | <code>string</code> |  |
 |  [serviceName](./typeioc.circulardependencyerror.servicename.md) |  | <code>string</code> |  |
 

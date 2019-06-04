@@ -6,6 +6,9 @@ import { setPrototypeOf } from '../utils'
  */
 export class CircularDependencyError extends ApplicationError {
 
+    /**
+     * @internal
+     */
     _serviceName: string
 
     get serviceName(): string {

@@ -29,12 +29,13 @@ export default <IEntryPoint>{
 
 export { IEntryPoint } from './scaffold'
 export { IContainerBuilder, IContainer, IResolveWith } from './build'
-export { Owner, Scope, CallInfo, owner, scope, callInfo } from './common'
 export {
     IRegistration, IDynamicDependency, IFactory, IInitializer, IDisposer, IName,
     RegisterWithAs, RegisterWithInitializeBy, RegisterWithLazy, RegisterWithName,
     RegisterWithScope  } from './registration'
 export { IInterceptor, ISubstituteInfo, ICallInfo, IWithSubstituteResult } from './interceptors'
+export { Owner, OwnerType, Scope, ScopeType, owner, scope, CallInfo, callInfo } from './common'
+export { IStringIndex } from './types'
 export {
     IDecorator, IDecoratorRegistration,
     WithDecoratorRegister, WithDecoratorRegisterInitializeBy,

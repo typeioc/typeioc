@@ -4,6 +4,8 @@
 
 ## IContainer.tryResolve() method
 
+Attempts to resolve a service with optional parameters.
+
 <b>Signature:</b>
 
 ```typescript
@@ -14,10 +16,12 @@ tryResolve<R>(service: {}, ...args: {}[]): R | undefined;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  service | <code>{}</code> |  |
-|  args | <code>{}[]</code> |  |
+|  service | <code>{}</code> | service value registered prior resolution. If service is <code>null</code> or <code>undefined</code> [ArgumentError](./typeioc.argumenterror.md) is thrown |
+|  args | <code>{}[]</code> | optional arguments for the service instantiation |
 
 <b>Returns:</b>
 
 `R | undefined`
+
+- registered instance of a service. If registration not found - returns undefined
 

@@ -1,6 +1,6 @@
 import { Tap } from '@common/tap'
 const tap = require('tap') as Tap
-import typeioc, { IContainerBuilder, ResolutionError } from '@lib'
+import typeioc, { IContainerBuilder, ResolutionError, ArgumentError } from '@lib'
 import { Test1Base, Test1, Test2, Test4 } from '@data/base'
 
 type Context = { builder: IContainerBuilder }
@@ -133,6 +133,23 @@ tap.test<Context>('named services resolution with params error', (test) => {
         message: 'Could not resolve service',
         data: Test1Base
     }))
+
+    test.done()
+})
+
+tap.test<Context>('named services resolution no name error', (test) => {
+
+    const { builder } = test.context
+
+    builder.register<Test1Base>(Test1Base)
+        .as(() => new Test1()).named('A')
+
+    const container = builder.build()
+    const delegate1 = () => container.resolveNamed(Test1Base, null as unknown as string)
+    const delegate2 = () => container.resolveNamed(Test1Base, undefined as unknown as string)
+
+    test.throws(delegate1, new ArgumentError('name'))
+    test.throws(delegate2, new ArgumentError('name'))
 
     test.done()
 })

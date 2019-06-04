@@ -4,6 +4,8 @@
 
 ## IContainer.resolve() method
 
+Resolves a service with optional parameters Throws [ResolutionError](./typeioc.resolutionerror.md) if not registration found
+
 <b>Signature:</b>
 
 ```typescript
@@ -14,10 +16,12 @@ resolve<R>(service: {}, ...args: {}[]): R | never;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  service | <code>{}</code> |  |
-|  args | <code>{}[]</code> |  |
+|  service | <code>{}</code> | service value registered prior resolution. If service is <code>null</code> or <code>undefined</code> [ArgumentError](./typeioc.argumenterror.md) is thrown |
+|  args | <code>{}[]</code> | optional arguments for the service instantiation |
 
 <b>Returns:</b>
 
 `R | never`
+
+- registered instance of a service
 

@@ -4,6 +4,8 @@
 
 ## IContainer.resolveNamed() method
 
+Resolves a service with specific name and optional parameters Throws [ResolutionError](./typeioc.resolutionerror.md) if not registration found
+
 <b>Signature:</b>
 
 ```typescript
@@ -14,11 +16,13 @@ resolveNamed<R>(service: {}, name: string, ...args: {}[]): R | never;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  service | <code>{}</code> |  |
-|  name | <code>string</code> |  |
-|  args | <code>{}[]</code> |  |
+|  service | <code>{}</code> | service value registered prior resolution. If service is <code>null</code> or <code>undefined</code> [ArgumentError](./typeioc.argumenterror.md) is thrown |
+|  name | <code>string</code> | a unique named used to register a service If name is <code>null</code> or <code>undefined</code> [ArgumentError](./typeioc.argumenterror.md) is thrown |
+|  args | <code>{}[]</code> | optional arguments for the service instantiation |
 
 <b>Returns:</b>
 
 `R | never`
+
+- registered instance of a service
 

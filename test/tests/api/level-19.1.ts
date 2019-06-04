@@ -1,6 +1,6 @@
 import { Tap } from '@common/tap'
 const tap = require('tap') as Tap
-import typeioc, { IContainerBuilder } from '@lib'
+import typeioc, { IContainerBuilder, ArgumentError } from '@lib'
 import { Test1Base, Test2Base, Test1 } from '@data/base'
 
 type Context = {
@@ -79,5 +79,22 @@ tap.test<Context>('copy keeps destination registrations', (test) => {
     test.equal(container2.resolve<Test1>(Test1).Name, 'test 1')
     test.equal(container2.resolve(Test2Base), 123)
     test.equal(container2.resolve('value'), 'test - value')
+    test.done()
+})
+
+tap.test<Context>('copy throws when no builder', (test) => {
+    const { builder1 } = test.context
+
+    const delegate1 = () => {
+        builder1.copy(null as any)
+    }
+
+    const delegate2 = () => {
+        builder1.copy(undefined as any)
+    }
+
+    test.throws(delegate1, new ArgumentError('builder'))
+    test.throws(delegate2, new ArgumentError('builder'))
+
     test.done()
 })

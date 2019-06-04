@@ -113,7 +113,7 @@ tap.test<Context>('attempt resolution', (test) => {
     const container = builder.build()
     const actual = container.tryResolve(Test1Base)
 
-    test.notOk(actual)
+    test.ok(actual === undefined)
     test.done()
 })
 
@@ -125,7 +125,7 @@ tap.test<Context>('attempt named resolution', (test) => {
         const container = builder.build()
         const actual = container.tryResolveNamed(Test1Base, 'Test Name')
 
-        test.notOk(actual)
+        test.ok(actual === undefined)
         test.done()
     })
 
@@ -134,9 +134,26 @@ tap.test<Context>('attempt named resolution', (test) => {
         const container = builder.build()
         const actual = container.tryResolveNamed(Test1Base, 'Test Name')
 
-        test.notOk(actual)
+        test.ok(actual === undefined)
         test.done()
     })
+
+    test.done()
+})
+
+tap.test<Context>('attempt named services resolution no name error', (test) => {
+
+    const { builder } = test.context
+
+    builder.register<Test1Base>(Test1Base)
+        .as(() => new Test1()).named('A')
+
+    const container = builder.build()
+    const delegate1 = () => container.tryResolveNamed(Test1Base, null as unknown as string)
+    const delegate2 = () => container.tryResolveNamed(Test1Base, undefined as unknown as string)
+
+    test.throws(delegate1, new ArgumentError('name'))
+    test.throws(delegate2, new ArgumentError('name'))
 
     test.done()
 })

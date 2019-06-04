@@ -4,6 +4,8 @@
 
 ## IContainer.resolveAsync() method
 
+Asynchronously resolves a service with optional parameters
+
 <b>Signature:</b>
 
 ```typescript
@@ -14,10 +16,12 @@ resolveAsync<R>(service: {}, ...args: {}[]): Promise<R>;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  service | <code>{}</code> |  |
-|  args | <code>{}[]</code> |  |
+|  service | <code>{}</code> | service value registered prior resolution |
+|  args | <code>{}[]</code> | optional arguments for the service instantiation |
 
 <b>Returns:</b>
 
 `Promise<R>`
+
+- promise, resolving with a registered instance of a service. If registration not found - rejects the promise with [ResolutionError](./typeioc.resolutionerror.md) If `null` or `undefined` service value, rejects the promise with [ArgumentError](./typeioc.argumenterror.md)
 

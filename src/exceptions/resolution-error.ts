@@ -6,6 +6,9 @@ import { setPrototypeOf } from '../utils'
  */
 export class ResolutionError extends ApplicationError {
 
+    /**
+     * @internal
+     */
     _innerError?: Error
 
     get innerError() {

@@ -63,6 +63,8 @@ export class ContainerBuilder implements IContainerBuilder {
     }
 
     public copy(builder: IContainerBuilder): void {
+        checkNullArgument(builder, 'builder');
+
         (<{_registrations: IRegistrationBase[]}>(<{}>builder))
         ._registrations
         .forEach((item) => {

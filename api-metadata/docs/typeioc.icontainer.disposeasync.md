@@ -4,6 +4,8 @@
 
 ## IContainer.disposeAsync() method
 
+Asynchronously disposes all resolved, internally owned instances registered using [IDisposer](./typeioc.idisposer.md) interface
+
 <b>Signature:</b>
 
 ```typescript
@@ -12,4 +14,6 @@ disposeAsync(): Promise<void>;
 <b>Returns:</b>
 
 `Promise<void>`
+
+- promise
 
