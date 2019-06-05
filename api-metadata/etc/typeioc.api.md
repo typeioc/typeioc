@@ -240,29 +240,14 @@ export interface IRegistration<T> {
     asValue(value: {}): IName;
 }
 
-// @public (undocumented)
+// @public
 export interface IResolveWith<T> {
-    // Warning: (ae-forgotten-export) The symbol "ResolveWithArgs" needs to be exported by the entry point index.d.ts
-    // 
-    // (undocumented)
-    args(...args: {}[]): ResolveWithArgs<T>;
-    // Warning: (ae-forgotten-export) The symbol "ResolveWithAttempt" needs to be exported by the entry point index.d.ts
-    // 
-    // (undocumented)
+    args(...args: any[]): ResolveWithArgs<T>;
     attempt(): ResolveWithAttempt<T>;
-    // Warning: (ae-forgotten-export) The symbol "ResolveWithCache" needs to be exported by the entry point index.d.ts
-    // 
-    // (undocumented)
     cache(name?: string): ResolveWithCache<T>;
-    // (undocumented)
     dependencies(dependencies: IDynamicDependency | IDynamicDependency[]): ResolveWithName<T>;
-    // (undocumented)
     exec(): T;
-    // (undocumented)
     execAsync(): Promise<T>;
-    // Warning: (ae-forgotten-export) The symbol "ResolveWithName" needs to be exported by the entry point index.d.ts
-    // 
-    // (undocumented)
     name(value: string): ResolveWithName<T>;
 }
 
@@ -359,6 +344,18 @@ export class ResolutionError extends ApplicationError {
     // @internal (undocumented)
     _innerError?: Error;
 }
+
+// @public
+export type ResolveWithArgs<T> = Omit<IResolveWith<T>, 'args'>;
+
+// @public
+export type ResolveWithAttempt<T> = Omit<ResolveWithArgs<T>, 'attempt'>;
+
+// @public
+export type ResolveWithCache<T> = Pick<IResolveWith<T>, 'exec' | 'execAsync'>;
+
+// @public
+export type ResolveWithName<T> = Omit<ResolveWithAttempt<T>, 'name'>;
 
 // @public (undocumented)
 export const enum Scope {

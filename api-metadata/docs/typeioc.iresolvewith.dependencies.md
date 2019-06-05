@@ -4,6 +4,8 @@
 
 ## IResolveWith.dependencies() method
 
+Sets dynamic dependencies for service resolution
+
 <b>Signature:</b>
 
 ```typescript
@@ -14,9 +16,11 @@ dependencies(dependencies: IDynamicDependency | IDynamicDependency[]): ResolveWi
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  dependencies | <code>IDynamicDependency &#124; IDynamicDependency[]</code> |  |
+|  dependencies | <code>IDynamicDependency &#124; IDynamicDependency[]</code> | [IDynamicDependency](./typeioc.idynamicdependency.md) instance(s) |
 
 <b>Returns:</b>
 
 `ResolveWithName<T>`
+
+- an instance of [ResolveWithName](./typeioc.resolvewithname.md) interface
 

@@ -12,7 +12,7 @@ export class ResolutionApi implements IDecoratorResolutionApi {
     private _name?: string
     private _attempt: boolean = false
     private _service?: {}
-    private _args: {}[] = []
+    private _args: any[] = []
 
     private _cache: IApiCache = {
         use: false,
@@ -27,7 +27,7 @@ export class ResolutionApi implements IDecoratorResolutionApi {
         this._service = value
     }
 
-    public get args(): {}[] {
+    public get args(): any[] {
         return this._args
     }
 

@@ -4,6 +4,8 @@
 
 ## IResolveWith.execAsync() method
 
+Asynchronously executes service resolution
+
 <b>Signature:</b>
 
 ```typescript
@@ -12,4 +14,6 @@ execAsync(): Promise<T>;
 <b>Returns:</b>
 
 `Promise<T>`
+
+- promise, resolving with a registered instance of a service
 

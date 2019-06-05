@@ -4,6 +4,8 @@
 
 ## IResolveWith.cache() method
 
+Sets cached resolution flag. When resolved, resolution will be stored in cache
+
 <b>Signature:</b>
 
 ```typescript
@@ -14,9 +16,11 @@ cache(name?: string): ResolveWithCache<T>;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  name | <code>string</code> |  |
+|  name | <code>string</code> | the name to be used to retrieve resolution form cache |
 
 <b>Returns:</b>
 
 `ResolveWithCache<T>`
+
+- an instance of [ResolveWithCache](./typeioc.resolvewithcache.md) interface
 

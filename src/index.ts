@@ -28,7 +28,10 @@ export default <IEntryPoint>{
 }
 
 export { IEntryPoint } from './scaffold'
-export { IContainerBuilder, IContainer, IResolveWith } from './build'
+export {
+    IContainerBuilder, IContainer,
+    IResolveWith, ResolveWithArgs, ResolveWithAttempt, ResolveWithCache, ResolveWithName
+} from './build'
 export {
     IRegistration, IDynamicDependency, IFactory, IInitializer, IDisposer, IName,
     RegisterWithAs, RegisterWithInitializeBy, RegisterWithLazy, RegisterWithName,

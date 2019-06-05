@@ -4,6 +4,8 @@
 
 ## IResolveWith.attempt() method
 
+Sets attempted resolution flag indicating non disruptive resolution behavior (no exception is thrown when no registration found)
+
 <b>Signature:</b>
 
 ```typescript
@@ -12,4 +14,6 @@ attempt(): ResolveWithAttempt<T>;
 <b>Returns:</b>
 
 `ResolveWithAttempt<T>`
+
+- an instance of [ResolveWithAttempt](./typeioc.resolvewithattempt.md) interface
 

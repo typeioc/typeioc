@@ -4,7 +4,7 @@ import { Omit } from '../../utils'
  * @public
  */
 export interface IDecoratorResolution {
-    args(...value: {}[]): WithDecoratorResolverArgs
+    args(...value: any[]): WithDecoratorResolverArgs
     attempt(): WithDecoratorResolverAttempt
     name(value : string): WithDecoratorResolverName
     cache(name?: string): WithDecoratorResolver

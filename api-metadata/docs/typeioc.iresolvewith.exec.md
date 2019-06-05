@@ -4,6 +4,8 @@
 
 ## IResolveWith.exec() method
 
+Executes service resolution
+
 <b>Signature:</b>
 
 ```typescript
@@ -12,4 +14,6 @@ exec(): T;
 <b>Returns:</b>
 
 `T`
+
+- an instance of resolved service
 

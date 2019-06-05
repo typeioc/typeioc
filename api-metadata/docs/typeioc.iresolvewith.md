@@ -4,6 +4,7 @@
 
 ## IResolveWith interface
 
+Represents fluent cascading interface for services resolution
 
 <b>Signature:</b>
 
@@ -15,11 +16,11 @@ export interface IResolveWith<T>
 
 |  Method | Description |
 |  --- | --- |
-|  [args(args)](./typeioc.iresolvewith.args.md) |  |
-|  [attempt()](./typeioc.iresolvewith.attempt.md) |  |
-|  [cache(name)](./typeioc.iresolvewith.cache.md) |  |
-|  [dependencies(dependencies)](./typeioc.iresolvewith.dependencies.md) |  |
-|  [exec()](./typeioc.iresolvewith.exec.md) |  |
-|  [execAsync()](./typeioc.iresolvewith.execasync.md) |  |
-|  [name(value)](./typeioc.iresolvewith.name.md) |  |
+|  [args(args)](./typeioc.iresolvewith.args.md) | Sets arguments for service instantiation |
+|  [attempt()](./typeioc.iresolvewith.attempt.md) | Sets attempted resolution flag indicating non disruptive resolution behavior (no exception is thrown when no registration found) |
+|  [cache(name)](./typeioc.iresolvewith.cache.md) | Sets cached resolution flag. When resolved, resolution will be stored in cache |
+|  [dependencies(dependencies)](./typeioc.iresolvewith.dependencies.md) | Sets dynamic dependencies for service resolution |
+|  [exec()](./typeioc.iresolvewith.exec.md) | Executes service resolution |
+|  [execAsync()](./typeioc.iresolvewith.execasync.md) | Asynchronously executes service resolution |
+|  [name(value)](./typeioc.iresolvewith.name.md) | Sets named resolution flag. Service will be resolved given the name provided |
 

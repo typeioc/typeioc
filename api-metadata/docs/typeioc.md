@@ -42,7 +42,7 @@ Dependency injection container for TypeScript / JavaScript
 |  [IInterceptor](./typeioc.iinterceptor.md) |  |
 |  [IName](./typeioc.iname.md) |  |
 |  [IRegistration](./typeioc.iregistration.md) |  |
-|  [IResolveWith](./typeioc.iresolvewith.md) |  |
+|  [IResolveWith](./typeioc.iresolvewith.md) | Represents fluent cascading interface for services resolution |
 |  [ISubstituteInfo](./typeioc.isubstituteinfo.md) |  |
 |  [IWithSubstituteResult](./typeioc.iwithsubstituteresult.md) |  |
 
@@ -66,6 +66,10 @@ Dependency injection container for TypeScript / JavaScript
 |  [RegisterWithLazy](./typeioc.registerwithlazy.md) |  |
 |  [RegisterWithName](./typeioc.registerwithname.md) |  |
 |  [RegisterWithScope](./typeioc.registerwithscope.md) |  |
+|  [ResolveWithArgs](./typeioc.resolvewithargs.md) | Represents a step within fluent cascading API sequence where <code>args</code> method was applied |
+|  [ResolveWithAttempt](./typeioc.resolvewithattempt.md) | Represents a step within fluent cascading API sequence where <code>attempt</code> method was applied |
+|  [ResolveWithCache](./typeioc.resolvewithcache.md) | \* Represents final step within fluent cascading API sequence |
+|  [ResolveWithName](./typeioc.resolvewithname.md) | Represents a step within fluent cascading API sequence where <code>name</code> method was applied |
 |  [ScopeType](./typeioc.scopetype.md) |  |
 |  [WithDecoratorRegister](./typeioc.withdecoratorregister.md) |  |
 |  [WithDecoratorRegisterInitializeBy](./typeioc.withdecoratorregisterinitializeby.md) |  |

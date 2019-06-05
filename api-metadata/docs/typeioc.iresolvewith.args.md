@@ -4,19 +4,23 @@
 
 ## IResolveWith.args() method
 
+Sets arguments for service instantiation
+
 <b>Signature:</b>
 
 ```typescript
-args(...args: {}[]): ResolveWithArgs<T>;
+args(...args: any[]): ResolveWithArgs<T>;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  args | <code>{}[]</code> |  |
+|  args | <code>any[]</code> | optional arguments for the service instantiation |
 
 <b>Returns:</b>
 
 `ResolveWithArgs<T>`
+
+- an instance of [ResolveWithArgs](./typeioc.resolvewithargs.md) interface
 

@@ -74,11 +74,11 @@ export class RegistrationBase implements IRegistrationBase {
         this._disposer = value
     }
 
-    public get args(): {}[] {
+    public get args(): any[] {
         return this._args
     }
 
-    public set args(value: {}[]) {
+    public set args(value: any[]) {
         this._args = value
     }
 
