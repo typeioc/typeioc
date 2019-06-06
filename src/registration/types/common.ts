@@ -176,22 +176,28 @@ export interface IName {
 
 /**
  * Represents a step within fluent cascading API registration sequence where `initializeBy` method
- * was applied
+ * was omitted
  * @public
  */
 export type RegisterWithInitializeBy<T> = Omit<IRegisterWithAs<T>, 'initializeBy'>
 
 /**
+ * Represents a step within fluent cascading API registration sequence where `lazy` and
+ * `dispose` methods were omitted
  * @public
  */
 export type RegisterWithLazy<T> = Omit<RegisterWithInitializeBy<T>, 'lazy' | 'dispose'>
 
 /**
+ * Represents a step within fluent cascading API registration sequence where `named` method
+ * was omitted
  * @public
  */
 export type RegisterWithName<T> = Omit<RegisterWithLazy<T>, 'named'>
 
 /**
+ * Represents a step within fluent cascading API registration sequence where instance
+ * ownership is specified
  * @public
  */
 export type RegisterWithScope<T> = Pick<IRegisterWithAs<T>,

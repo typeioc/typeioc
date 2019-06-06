@@ -62,14 +62,14 @@ Dependency injection container for TypeScript / JavaScript
 |  --- | --- |
 |  [IStringIndex](./typeioc.istringindex.md) |  |
 |  [OwnerType](./typeioc.ownertype.md) |  |
-|  [RegisterWithInitializeBy](./typeioc.registerwithinitializeby.md) | Represents a step within fluent cascading API registration sequence where <code>initializeBy</code> method was applied |
-|  [RegisterWithLazy](./typeioc.registerwithlazy.md) |  |
-|  [RegisterWithName](./typeioc.registerwithname.md) |  |
-|  [RegisterWithScope](./typeioc.registerwithscope.md) |  |
-|  [ResolveWithArgs](./typeioc.resolvewithargs.md) | Represents a step within fluent cascading API resolution sequence where <code>args</code> method was applied |
-|  [ResolveWithAttempt](./typeioc.resolvewithattempt.md) | Represents a step within fluent cascading API resolution sequence where <code>attempt</code> method was applied |
+|  [RegisterWithInitializeBy](./typeioc.registerwithinitializeby.md) | Represents a step within fluent cascading API registration sequence where <code>initializeBy</code> method was omitted |
+|  [RegisterWithLazy](./typeioc.registerwithlazy.md) | Represents a step within fluent cascading API registration sequence where <code>lazy</code> and <code>dispose</code> methods were omitted |
+|  [RegisterWithName](./typeioc.registerwithname.md) | Represents a step within fluent cascading API registration sequence where <code>named</code> method was omitted |
+|  [RegisterWithScope](./typeioc.registerwithscope.md) | Represents a step within fluent cascading API registration sequence where instance ownership is specified |
+|  [ResolveWithArgs](./typeioc.resolvewithargs.md) | Represents a step within fluent cascading API resolution sequence where <code>args</code> method was omitted |
+|  [ResolveWithAttempt](./typeioc.resolvewithattempt.md) | Represents a step within fluent cascading API resolution sequence where <code>attempt</code> method was omitted |
 |  [ResolveWithCache](./typeioc.resolvewithcache.md) | \* Represents final step within fluent cascading API resolution sequence |
-|  [ResolveWithName](./typeioc.resolvewithname.md) | Represents a step within fluent cascading API resolution sequence where <code>name</code> method was applied |
+|  [ResolveWithName](./typeioc.resolvewithname.md) | Represents a step within fluent cascading API resolution sequence where <code>name</code> method was omitted |
 |  [ScopeType](./typeioc.scopetype.md) |  |
 |  [WithDecoratorRegister](./typeioc.withdecoratorregister.md) |  |
 |  [WithDecoratorRegisterInitializeBy](./typeioc.withdecoratorregisterinitializeby.md) |  |

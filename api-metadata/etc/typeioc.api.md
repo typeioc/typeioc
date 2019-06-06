@@ -312,13 +312,13 @@ export class ProxyError extends ApplicationError {
 // @public
 export type RegisterWithInitializeBy<T> = Omit<IRegisterWithAs<T>, 'initializeBy'>;
 
-// @public (undocumented)
+// @public
 export type RegisterWithLazy<T> = Omit<RegisterWithInitializeBy<T>, 'lazy' | 'dispose'>;
 
-// @public (undocumented)
+// @public
 export type RegisterWithName<T> = Omit<RegisterWithLazy<T>, 'named'>;
 
-// @public (undocumented)
+// @public
 export type RegisterWithScope<T> = Pick<IRegisterWithAs<T>, 'ownedBy' | 'ownedInternally' | 'ownedExternally'>;
 
 // @public (undocumented)

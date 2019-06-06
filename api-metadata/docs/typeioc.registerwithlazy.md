@@ -4,6 +4,7 @@
 
 ## RegisterWithLazy type
 
+Represents a step within fluent cascading API registration sequence where `lazy` and `dispose` methods were omitted
 
 <b>Signature:</b>
 

@@ -4,7 +4,7 @@
 
 ## ResolveWithName type
 
-Represents a step within fluent cascading API resolution sequence where `name` method was applied
+Represents a step within fluent cascading API resolution sequence where `name` method was omitted
 
 <b>Signature:</b>
 

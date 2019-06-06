@@ -4,6 +4,7 @@
 
 ## RegisterWithScope type
 
+Represents a step within fluent cascading API registration sequence where instance ownership is specified
 
 <b>Signature:</b>
 

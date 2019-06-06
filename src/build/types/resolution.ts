@@ -61,21 +61,21 @@ export interface IResolveWith<T> {
 
 /**
  * Represents a step within fluent cascading API resolution sequence where `args` method
- * was applied
+ * was omitted
  * @public
  */
 export type ResolveWithArgs<T> = Omit<IResolveWith<T>, 'args'>
 
 /**
  * Represents a step within fluent cascading API resolution sequence where `attempt` method
- * was applied
+ * was omitted
  * @public
  */
 export type ResolveWithAttempt<T> = Omit<ResolveWithArgs<T>, 'attempt'>
 
 /**
  * Represents a step within fluent cascading API resolution sequence where `name` method
- * was applied
+ * was omitted
  * @public
  */
 export type ResolveWithName<T> = Omit<ResolveWithAttempt<T>, 'name'>

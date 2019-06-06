@@ -4,6 +4,7 @@
 
 ## RegisterWithName type
 
+Represents a step within fluent cascading API registration sequence where `named` method was omitted
 
 <b>Signature:</b>
 
