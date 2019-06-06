@@ -3,7 +3,8 @@ import {
     IName,
     IInitializer,
     IDisposer,
-    RegisterWithAs, RegisterWithInitializeBy, RegisterWithLazy, RegisterWithName, RegisterWithScope,
+    IRegisterWithAs, RegisterWithInitializeBy, RegisterWithLazy, RegisterWithName,
+    RegisterWithScope,
     IRegistrationBase,
     IRegistration
 } from './types'
@@ -26,7 +27,7 @@ export class Registration<T> implements IRegistration<T> {
         this.lazy = this.lazy.bind(this)
     }
 
-    public as(factory: IFactory<T>): RegisterWithAs<T> {
+    public as(factory: IFactory<T>): IRegisterWithAs<T> {
 
         this._base.factory = factory
 
@@ -45,7 +46,7 @@ export class Registration<T> implements IRegistration<T> {
         }
     }
 
-    public asType(type: T, ...params: {}[]): RegisterWithAs<T> {
+    public asType(type: T, ...params: any[]): IRegisterWithAs<T> {
 
         this._base.factoryType = type
         this._base.params = params
@@ -65,7 +66,7 @@ export class Registration<T> implements IRegistration<T> {
         }
     }
 
-    public asSelf(...params: {}[]): RegisterWithAs<T> {
+    public asSelf(...params: any[]): IRegisterWithAs<T> {
         return this.asType(this._base.service as T, ...params)
     }
 

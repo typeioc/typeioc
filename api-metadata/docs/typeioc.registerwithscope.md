@@ -8,5 +8,5 @@
 <b>Signature:</b>
 
 ```typescript
-export declare type RegisterWithScope<T> = Pick<RegisterWithAs<T>, 'ownedBy' | 'ownedInternally' | 'ownedExternally'>;
+export declare type RegisterWithScope<T> = Pick<IRegisterWithAs<T>, 'ownedBy' | 'ownedInternally' | 'ownedExternally'>;
 ```

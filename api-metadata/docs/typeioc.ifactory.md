@@ -4,6 +4,7 @@
 
 ## IFactory interface
 
+Represents factory method registration interface. Receives an instance of a container [IContainer](./typeioc.icontainer.md) and an array of optional parameters provided during resolution
 
 <b>Signature:</b>
 

@@ -34,7 +34,7 @@ export {
 } from './build'
 export {
     IRegistration, IDynamicDependency, IFactory, IInitializer, IDisposer, IName,
-    RegisterWithAs, RegisterWithInitializeBy, RegisterWithLazy, RegisterWithName,
+    IRegisterWithAs, RegisterWithInitializeBy, RegisterWithLazy, RegisterWithName,
     RegisterWithScope  } from './registration'
 export { IInterceptor, ISubstituteInfo, ICallInfo, IWithSubstituteResult } from './interceptors'
 export { Owner, OwnerType, Scope, ScopeType, owner, scope, CallInfo, callInfo } from './common'

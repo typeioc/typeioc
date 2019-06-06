@@ -7,7 +7,7 @@ Factory registration is the most generic type of registration. It accepts a lamb
 ```typescript
 interface IFactory<T> {
     /**
-    * Lambda expression for service instanciation
+    * Lambda expression for service instantiation
     * @param {IContainer} c - container instance
     * @param {Array<any>} ...args - array of rest arguments passed during resolution
     * @returns {T} - service instance

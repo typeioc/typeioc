@@ -4,7 +4,7 @@
 
 ## ResolveWithArgs type
 
-Represents a step within fluent cascading API sequence where `args` method was applied
+Represents a step within fluent cascading API resolution sequence where `args` method was applied
 
 <b>Signature:</b>
 

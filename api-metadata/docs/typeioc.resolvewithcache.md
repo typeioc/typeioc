@@ -4,7 +4,7 @@
 
 ## ResolveWithCache type
 
-\* Represents final step within fluent cascading API sequence
+\* Represents final step within fluent cascading API resolution sequence
 
 <b>Signature:</b>
 

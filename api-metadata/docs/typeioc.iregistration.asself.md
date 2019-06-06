@@ -4,19 +4,27 @@
 
 ## IRegistration.asSelf() method
 
+Sets registration to be marked as self registration
+
 <b>Signature:</b>
 
 ```typescript
-asSelf(...params: {}[]): RegisterWithAs<T>;
+asSelf(...params: any[]): IRegisterWithAs<T>;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  params | <code>{}[]</code> |  |
+|  params | <code>any[]</code> | optional array of parameters to be used for the type |
 
 <b>Returns:</b>
 
-`RegisterWithAs<T>`
+`IRegisterWithAs<T>`
+
+- an instance of [IRegisterWithAs](./typeioc.iregisterwithas.md) interface
+
+## Remarks
+
+Registration is provided as a type itself (participates both in registration and resolution). It is intended for construct-able types only. Uses new operator for type construction
 

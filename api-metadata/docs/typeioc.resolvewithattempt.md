@@ -4,7 +4,7 @@
 
 ## ResolveWithAttempt type
 
-Represents a step within fluent cascading API sequence where `attempt` method was applied
+Represents a step within fluent cascading API resolution sequence where `attempt` method was applied
 
 <b>Signature:</b>
 

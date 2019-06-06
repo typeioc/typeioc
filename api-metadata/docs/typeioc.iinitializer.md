@@ -4,6 +4,7 @@
 
 ## IInitializer interface
 
+Specifies an instance of initializer to be used during resolution initialization. Receives an instance of a container [IContainer](./typeioc.icontainer.md) and an instance of the resolved service
 
 <b>Signature:</b>
 

@@ -4,6 +4,8 @@
 
 ## IDynamicDependency.factory property
 
+Specifies factory interface [IFactory](./typeioc.ifactory.md) to be used as substitution for factory registrations
+
 <b>Signature:</b>
 
 ```typescript

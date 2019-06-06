@@ -4,6 +4,8 @@
 
 ## IDynamicDependency.service property
 
+Specifies service value, registration to be substituted for
+
 <b>Signature:</b>
 
 ```typescript

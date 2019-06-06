@@ -4,6 +4,7 @@
 
 ## IRegistration interface
 
+Represents an entry into service registration fluent cascading API interface
 
 <b>Signature:</b>
 
@@ -15,8 +16,8 @@ export interface IRegistration<T>
 
 |  Method | Description |
 |  --- | --- |
-|  [as(factory)](./typeioc.iregistration.as.md) |  |
-|  [asSelf(params)](./typeioc.iregistration.asself.md) |  |
-|  [asType(type, params)](./typeioc.iregistration.astype.md) |  |
-|  [asValue(value)](./typeioc.iregistration.asvalue.md) |  |
+|  [as(factory)](./typeioc.iregistration.as.md) | Sets registration to be marked as factory registration |
+|  [asSelf(params)](./typeioc.iregistration.asself.md) | Sets registration to be marked as self registration |
+|  [asType(type, params)](./typeioc.iregistration.astype.md) | Sets registration to be marked as type registration |
+|  [asValue(value)](./typeioc.iregistration.asvalue.md) | Sets registration to be marked as value registration |
 

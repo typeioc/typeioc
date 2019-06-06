@@ -4,6 +4,8 @@
 
 ## IDynamicDependency.factoryType property
 
+Specifies factory type to be used as substitution for factory type registrations
+
 <b>Signature:</b>
 
 ```typescript

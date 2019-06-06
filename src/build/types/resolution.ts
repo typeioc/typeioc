@@ -60,28 +60,28 @@ export interface IResolveWith<T> {
 }
 
 /**
- * Represents a step within fluent cascading API sequence where `args` method
+ * Represents a step within fluent cascading API resolution sequence where `args` method
  * was applied
  * @public
  */
 export type ResolveWithArgs<T> = Omit<IResolveWith<T>, 'args'>
 
 /**
- * Represents a step within fluent cascading API sequence where `attempt` method
+ * Represents a step within fluent cascading API resolution sequence where `attempt` method
  * was applied
  * @public
  */
 export type ResolveWithAttempt<T> = Omit<ResolveWithArgs<T>, 'attempt'>
 
 /**
- * Represents a step within fluent cascading API sequence where `name` method
+ * Represents a step within fluent cascading API resolution sequence where `name` method
  * was applied
  * @public
  */
 export type ResolveWithName<T> = Omit<ResolveWithAttempt<T>, 'name'>
 
 /**
- * * Represents final step within fluent cascading API sequence
+ * * Represents final step within fluent cascading API resolution sequence
  * @public
  */
 export type ResolveWithCache<T> = Pick<IResolveWith<T>, 'exec' | 'execAsync'>

@@ -4,9 +4,10 @@
 
 ## RegisterWithInitializeBy type
 
+Represents a step within fluent cascading API registration sequence where `initializeBy` method was applied
 
 <b>Signature:</b>
 
 ```typescript
-export declare type RegisterWithInitializeBy<T> = Omit<RegisterWithAs<T>, 'initializeBy'>;
+export declare type RegisterWithInitializeBy<T> = Omit<IRegisterWithAs<T>, 'initializeBy'>;
 ```

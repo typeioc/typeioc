@@ -4,19 +4,27 @@
 
 ## IRegistration.as() method
 
+Sets registration to be marked as factory registration
+
 <b>Signature:</b>
 
 ```typescript
-as(factory: IFactory<T>): RegisterWithAs<T>;
+as(factory: IFactory<T>): IRegisterWithAs<T>;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  factory | <code>IFactory&lt;T&gt;</code> |  |
+|  factory | <code>IFactory&lt;T&gt;</code> | an instance of [IFactory](./typeioc.ifactory.md) interface |
 
 <b>Returns:</b>
 
-`RegisterWithAs<T>`
+`IRegisterWithAs<T>`
+
+- an instance of [IRegisterWithAs](./typeioc.iregisterwithas.md) interface
+
+## Remarks
+
+Registration is provided as a factory method
 

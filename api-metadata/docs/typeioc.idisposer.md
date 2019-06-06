@@ -4,6 +4,7 @@
 
 ## IDisposer interface
 
+Specifies an instance of disposer to be used during resolution disposal Receives an instance of the resolution
 
 <b>Signature:</b>
 

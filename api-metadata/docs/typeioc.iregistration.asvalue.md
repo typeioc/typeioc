@@ -4,6 +4,8 @@
 
 ## IRegistration.asValue() method
 
+Sets registration to be marked as value registration
+
 <b>Signature:</b>
 
 ```typescript
@@ -14,9 +16,15 @@ asValue(value: {}): IName;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  value | <code>{}</code> |  |
+|  value | <code>{}</code> | value to be returned during resolution |
 
 <b>Returns:</b>
 
 `IName`
+
+- an instance of [IName](./typeioc.iname.md) interface
+
+## Remarks
+
+Registration is provided as a value that is returned during resolution
 

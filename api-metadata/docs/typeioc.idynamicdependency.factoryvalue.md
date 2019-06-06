@@ -4,6 +4,8 @@
 
 ## IDynamicDependency.factoryValue property
 
+Specifies factory value to be used as substitution for factory value registrations
+
 <b>Signature:</b>
 
 ```typescript

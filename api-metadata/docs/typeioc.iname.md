@@ -4,6 +4,7 @@
 
 ## IName interface
 
+Specifies named registration interface with no additional steps within fluent cascading API Receives a value to be used named registrations / resolutions
 
 <b>Signature:</b>
 

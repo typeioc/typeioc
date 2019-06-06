@@ -167,27 +167,20 @@ export interface IDecoratorRegistration<T> {
     within(scope: Scope): WithDecoratorRegisterScope<T>;
 }
 
-// @public (undocumented)
+// @public
 export interface IDisposer<T> {
     // (undocumented)
     (item: T): void;
 }
 
-// @public (undocumented)
+// @public
 export interface IDynamicDependency {
-    // (undocumented)
     factory?: IFactory<{}>;
-    // (undocumented)
     factoryType?: {};
-    // (undocumented)
     factoryValue?: {};
-    // (undocumented)
     initializer?: IInitializer<{}>;
-    // (undocumented)
     named?: string;
-    // (undocumented)
     required?: boolean;
-    // (undocumented)
     service: {};
 }
 
@@ -198,13 +191,13 @@ export interface IEntryPoint {
     createInterceptor(): IInterceptor;
 }
 
-// @public (undocumented)
+// @public
 export interface IFactory<T> {
     // (undocumented)
     (c: IContainer, ...args: any[]): T;
 }
 
-// @public (undocumented)
+// @public
 export interface IInitializer<T> {
     // (undocumented)
     (c: IContainer, item: T): T;
@@ -222,21 +215,32 @@ export interface IInterceptor {
     withSubstitute: (substitute: ISubstituteInfo) => IWithSubstituteResult;
 }
 
-// @public (undocumented)
+// @public
 export interface IName {
     // (undocumented)
     named(name: string): void;
 }
 
-// @public (undocumented)
+// @public
+export interface IRegisterWithAs<T> {
+    dispose(action: IDisposer<T>): RegisterWithLazy<T>;
+    initializeBy(action: IInitializer<T>): RegisterWithInitializeBy<T>;
+    instancePerContainer(): RegisterWithScope<T>;
+    lazy(): RegisterWithLazy<T>;
+    named(name: string): RegisterWithName<T>;
+    ownedBy(owner: Owner): void;
+    ownedExternally(): void;
+    ownedInternally(): void;
+    singleton(): RegisterWithScope<T>;
+    transient(): RegisterWithScope<T>;
+    within(scope: Scope): RegisterWithScope<T>;
+}
+
+// @public
 export interface IRegistration<T> {
-    // (undocumented)
-    as(factory: IFactory<T>): RegisterWithAs<T>;
-    // (undocumented)
-    asSelf(...params: {}[]): RegisterWithAs<T>;
-    // (undocumented)
-    asType(type: T, ...params: {}[]): RegisterWithAs<T>;
-    // (undocumented)
+    as(factory: IFactory<T>): IRegisterWithAs<T>;
+    asSelf(...params: any[]): IRegisterWithAs<T>;
+    asType(type: T, ...params: any[]): IRegisterWithAs<T>;
     asValue(value: {}): IName;
 }
 
@@ -303,25 +307,10 @@ export class ProxyError extends ApplicationError {
     });
 }
 
-// @public (undocumented)
-export type RegisterWithAs<T> = {
-    initializeBy(action: IInitializer<T>): RegisterWithInitializeBy<T>;
-    lazy(): RegisterWithLazy<T>;
-    named(name: string): RegisterWithName<T>;
-    dispose(action: IDisposer<T>): RegisterWithLazy<T>;
-    within(scope: Scope): RegisterWithScope<T>;
-    transient(): RegisterWithScope<T>;
-    singleton(): RegisterWithScope<T>;
-    instancePerContainer(): RegisterWithScope<T>;
-    ownedBy(owner: Owner): void;
-    ownedInternally(): void;
-    ownedExternally(): void;
-};
-
 // Warning: (ae-forgotten-export) The symbol "Omit" needs to be exported by the entry point index.d.ts
 // 
-// @public (undocumented)
-export type RegisterWithInitializeBy<T> = Omit<RegisterWithAs<T>, 'initializeBy'>;
+// @public
+export type RegisterWithInitializeBy<T> = Omit<IRegisterWithAs<T>, 'initializeBy'>;
 
 // @public (undocumented)
 export type RegisterWithLazy<T> = Omit<RegisterWithInitializeBy<T>, 'lazy' | 'dispose'>;
@@ -330,7 +319,7 @@ export type RegisterWithLazy<T> = Omit<RegisterWithInitializeBy<T>, 'lazy' | 'di
 export type RegisterWithName<T> = Omit<RegisterWithLazy<T>, 'named'>;
 
 // @public (undocumented)
-export type RegisterWithScope<T> = Pick<RegisterWithAs<T>, 'ownedBy' | 'ownedInternally' | 'ownedExternally'>;
+export type RegisterWithScope<T> = Pick<IRegisterWithAs<T>, 'ownedBy' | 'ownedInternally' | 'ownedExternally'>;
 
 // @public (undocumented)
 export class ResolutionError extends ApplicationError {

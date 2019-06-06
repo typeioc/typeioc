@@ -4,6 +4,8 @@
 
 ## IDynamicDependency.required property
 
+Specifies the necessity of the registration presence prior substitution. If required is true and no registration found, throws [ResolutionError](./typeioc.resolutionerror.md) during resolution
+
 <b>Signature:</b>
 
 ```typescript

@@ -34,14 +34,15 @@ Dependency injection container for TypeScript / JavaScript
 |  [IContainerBuilder](./typeioc.icontainerbuilder.md) | Represents container builder interface |
 |  [IDecorator](./typeioc.idecorator.md) |  |
 |  [IDecoratorRegistration](./typeioc.idecoratorregistration.md) |  |
-|  [IDisposer](./typeioc.idisposer.md) |  |
-|  [IDynamicDependency](./typeioc.idynamicdependency.md) |  |
+|  [IDisposer](./typeioc.idisposer.md) | Specifies an instance of disposer to be used during resolution disposal Receives an instance of the resolution |
+|  [IDynamicDependency](./typeioc.idynamicdependency.md) | Represents dynamic dependency interface |
 |  [IEntryPoint](./typeioc.ientrypoint.md) | Represents functionality exposed be the library |
-|  [IFactory](./typeioc.ifactory.md) |  |
-|  [IInitializer](./typeioc.iinitializer.md) |  |
+|  [IFactory](./typeioc.ifactory.md) | Represents factory method registration interface. Receives an instance of a container [IContainer](./typeioc.icontainer.md) and an array of optional parameters provided during resolution |
+|  [IInitializer](./typeioc.iinitializer.md) | Specifies an instance of initializer to be used during resolution initialization. Receives an instance of a container [IContainer](./typeioc.icontainer.md) and an instance of the resolved service |
 |  [IInterceptor](./typeioc.iinterceptor.md) |  |
-|  [IName](./typeioc.iname.md) |  |
-|  [IRegistration](./typeioc.iregistration.md) |  |
+|  [IName](./typeioc.iname.md) | Specifies named registration interface with no additional steps within fluent cascading API Receives a value to be used named registrations / resolutions |
+|  [IRegisterWithAs](./typeioc.iregisterwithas.md) | Represents an entry step within registration fluent cascading API sequence |
+|  [IRegistration](./typeioc.iregistration.md) | Represents an entry into service registration fluent cascading API interface |
 |  [IResolveWith](./typeioc.iresolvewith.md) | Represents fluent cascading interface for services resolution |
 |  [ISubstituteInfo](./typeioc.isubstituteinfo.md) |  |
 |  [IWithSubstituteResult](./typeioc.iwithsubstituteresult.md) |  |
@@ -61,15 +62,14 @@ Dependency injection container for TypeScript / JavaScript
 |  --- | --- |
 |  [IStringIndex](./typeioc.istringindex.md) |  |
 |  [OwnerType](./typeioc.ownertype.md) |  |
-|  [RegisterWithAs](./typeioc.registerwithas.md) |  |
-|  [RegisterWithInitializeBy](./typeioc.registerwithinitializeby.md) |  |
+|  [RegisterWithInitializeBy](./typeioc.registerwithinitializeby.md) | Represents a step within fluent cascading API registration sequence where <code>initializeBy</code> method was applied |
 |  [RegisterWithLazy](./typeioc.registerwithlazy.md) |  |
 |  [RegisterWithName](./typeioc.registerwithname.md) |  |
 |  [RegisterWithScope](./typeioc.registerwithscope.md) |  |
-|  [ResolveWithArgs](./typeioc.resolvewithargs.md) | Represents a step within fluent cascading API sequence where <code>args</code> method was applied |
-|  [ResolveWithAttempt](./typeioc.resolvewithattempt.md) | Represents a step within fluent cascading API sequence where <code>attempt</code> method was applied |
-|  [ResolveWithCache](./typeioc.resolvewithcache.md) | \* Represents final step within fluent cascading API sequence |
-|  [ResolveWithName](./typeioc.resolvewithname.md) | Represents a step within fluent cascading API sequence where <code>name</code> method was applied |
+|  [ResolveWithArgs](./typeioc.resolvewithargs.md) | Represents a step within fluent cascading API resolution sequence where <code>args</code> method was applied |
+|  [ResolveWithAttempt](./typeioc.resolvewithattempt.md) | Represents a step within fluent cascading API resolution sequence where <code>attempt</code> method was applied |
+|  [ResolveWithCache](./typeioc.resolvewithcache.md) | \* Represents final step within fluent cascading API resolution sequence |
+|  [ResolveWithName](./typeioc.resolvewithname.md) | Represents a step within fluent cascading API resolution sequence where <code>name</code> method was applied |
 |  [ScopeType](./typeioc.scopetype.md) |  |
 |  [WithDecoratorRegister](./typeioc.withdecoratorregister.md) |  |
 |  [WithDecoratorRegisterInitializeBy](./typeioc.withdecoratorregisterinitializeby.md) |  |

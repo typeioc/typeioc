@@ -4,6 +4,8 @@
 
 ## IDynamicDependency.named property
 
+Specifies a name to be used as substitution for named registrations
+
 <b>Signature:</b>
 
 ```typescript

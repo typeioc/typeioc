@@ -4,6 +4,8 @@
 
 ## IDynamicDependency.initializer property
 
+Specifies an instance of initializer [IInitializer](./typeioc.iinitializer.md) to be used during substitution initialization
+
 <b>Signature:</b>
 
 ```typescript
