@@ -28,6 +28,24 @@ tap.test('owner is exported', (test) => {
     test.done()
 })
 
+tap.test<Context>('registrations with dispose setting are disposed', (test) => {
+    const { builder } = test.context
+
+    builder.register<Test1Base>(Test1Base)
+        .as(() => new Test5())
+        .dispose((item)  => { (item as Test5).dispose() })
+        .within(scope.none)
+
+    const container = builder.build()
+    const test1 = container.resolve<Test5>(Test1Base)
+
+    test.equal(test1.Disposed, false)
+    container.dispose()
+    test.equal(test1.Disposed, true)
+
+    test.done()
+})
+
 tap.test<Context>('container owned instances are disposed', (test) => {
 
     const { builder } = test.context

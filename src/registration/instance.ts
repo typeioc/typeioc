@@ -9,6 +9,7 @@ import {
     IRegistration
 } from './types'
 import { scope, owner, Scope, Owner } from '../common'
+import { checkNullArgument } from '../utils'
 
 export class Registration<T> implements IRegistration<T> {
 
@@ -28,6 +29,7 @@ export class Registration<T> implements IRegistration<T> {
     }
 
     public as(factory: IFactory<T>): IRegisterWithAs<T> {
+        checkNullArgument(factory, 'factory')
 
         this._base.factory = factory
 
@@ -47,6 +49,7 @@ export class Registration<T> implements IRegistration<T> {
     }
 
     public asType(type: T, ...params: any[]): IRegisterWithAs<T> {
+        checkNullArgument(type, 'type')
 
         this._base.factoryType = type
         this._base.params = params
@@ -71,6 +74,8 @@ export class Registration<T> implements IRegistration<T> {
     }
 
     public asValue(value: {}): IName {
+        checkNullArgument(value, 'value')
+
         this._base.factoryValue = value
         this._base.owner = owner.externals
         this._base.scope = scope.none
@@ -84,13 +89,14 @@ export class Registration<T> implements IRegistration<T> {
         this.named(value)
     }
 
-    private named(value : string): RegisterWithName<T> {
+    private named(value: string): RegisterWithName<T> {
+        checkNullArgument(value, 'value')
 
         this._base.name = value
 
         return {
-            within : this.within,
-            ownedBy : this.ownedBy,
+            within: this.within,
+            ownedBy: this.ownedBy,
             ownedInternally: this.ownedInternally,
             ownedExternally: this.ownedExternally,
             transient: this.transient,
@@ -100,11 +106,12 @@ export class Registration<T> implements IRegistration<T> {
     }
 
     private within(scope: Scope): RegisterWithScope<T> {
+        checkNullArgument(scope, 'scope')
 
         this._base.scope = scope
 
         return {
-            ownedBy : this.ownedBy,
+            ownedBy: this.ownedBy,
             ownedInternally: this.ownedInternally,
             ownedExternally: this.ownedExternally
         }
@@ -123,6 +130,8 @@ export class Registration<T> implements IRegistration<T> {
     }
 
     private ownedBy(owner: Owner): void {
+        checkNullArgument(owner, 'owner')
+
         this._base.owner = owner
     }
 
@@ -135,14 +144,16 @@ export class Registration<T> implements IRegistration<T> {
     }
 
     private initializeBy(action: IInitializer<T>): RegisterWithInitializeBy<T> {
+        checkNullArgument(action, 'action');
+
         (this._base.initializer as IInitializer<T> | undefined) = action
 
         return {
             lazy: this.lazy,
-            dispose : this.dispose,
-            named : this.named,
-            within : this.within,
-            ownedBy : this.ownedBy,
+            dispose: this.dispose,
+            named: this.named,
+            within: this.within,
+            ownedBy: this.ownedBy,
             ownedInternally: this.ownedInternally,
             ownedExternally: this.ownedExternally,
             transient: this.transient,
@@ -152,12 +163,15 @@ export class Registration<T> implements IRegistration<T> {
     }
 
     private dispose(action: IDisposer<T>): RegisterWithLazy<T> {
+        checkNullArgument(action, 'action');
+
         (this._base.disposer as IDisposer<T> | undefined) = action
+        this.ownedInternally()
 
         return {
-            named : this.named,
-            within : this.within,
-            ownedBy : this.ownedBy,
+            named: this.named,
+            within: this.within,
+            ownedBy: this.ownedBy,
             ownedInternally: this.ownedInternally,
             ownedExternally: this.ownedExternally,
             transient: this.transient,
@@ -170,9 +184,9 @@ export class Registration<T> implements IRegistration<T> {
         this._base.isLazy = true
 
         return {
-            named : this.named,
-            within : this.within,
-            ownedBy : this.ownedBy,
+            named: this.named,
+            within: this.within,
+            ownedBy: this.ownedBy,
             ownedInternally: this.ownedInternally,
             ownedExternally: this.ownedExternally,
             transient: this.transient,
