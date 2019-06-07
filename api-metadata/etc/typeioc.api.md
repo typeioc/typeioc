@@ -264,18 +264,16 @@ export interface IWithSubstituteResult {
     withSubstitute: (substitute: ISubstituteInfo) => IWithSubstituteResult;
 }
 
-// @public (undocumented)
+// @public
 export const enum Owner {
-    // (undocumented)
     Container = 1,
-    // (undocumented)
     Externals = 2
 }
 
-// @public (undocumented)
+// @public
 export const owner: OwnerType;
 
-// @public (undocumented)
+// @public
 export type OwnerType = {
     readonly container: number;
     readonly externals: number;
@@ -328,20 +326,17 @@ export type ResolveWithCache<T> = Pick<IResolveWith<T>, 'exec' | 'execAsync'>;
 // @public
 export type ResolveWithName<T> = Omit<ResolveWithAttempt<T>, 'name'>;
 
-// @public (undocumented)
+// @public
 export const enum Scope {
-    // (undocumented)
     Container = 2,
-    // (undocumented)
     Hierarchy = 3,
-    // (undocumented)
     None = 1
 }
 
-// @public (undocumented)
+// @public
 export const scope: ScopeType;
 
-// @public (undocumented)
+// @public
 export type ScopeType = {
     readonly none: number;
     readonly container: number;

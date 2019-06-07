@@ -4,6 +4,7 @@
 
 ## OwnerType type
 
+Represents resolution instance ownership type metadata
 
 <b>Signature:</b>
 

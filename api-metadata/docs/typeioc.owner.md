@@ -4,6 +4,7 @@
 
 ## owner variable
 
+Represent runtime / JavaScript resolution instance ownership type
 
 <b>Signature:</b>
 

@@ -22,8 +22,8 @@ Dependency injection container for TypeScript / JavaScript
 |  Enumeration | Description |
 |  --- | --- |
 |  [CallInfo](./typeioc.callinfo.md) | Represent original substituted subject member type |
-|  [Owner](./typeioc.owner.md) |  |
-|  [Scope](./typeioc.scope.md) |  |
+|  [Owner](./typeioc.owner.md) | Represents resolution instance ownership type |
+|  [Scope](./typeioc.scope.md) | Represents resolution life-cycle type definition |
 
 ## Interfaces
 
@@ -53,8 +53,8 @@ Dependency injection container for TypeScript / JavaScript
 |  --- | --- |
 |  [\_default](./typeioc._default.md) |  |
 |  [callInfo](./typeioc.callinfo.md) | Represent runtime / JavaScript original substituted subject member type |
-|  [owner](./typeioc.owner.md) |  |
-|  [scope](./typeioc.scope.md) |  |
+|  [owner](./typeioc.owner.md) | Represent runtime / JavaScript resolution instance ownership type |
+|  [scope](./typeioc.scope.md) | Represent runtime / JavaScript resolution instance scope |
 
 ## Type Aliases
 
@@ -62,7 +62,7 @@ Dependency injection container for TypeScript / JavaScript
 |  --- | --- |
 |  [CallInfoType](./typeioc.callinfotype.md) | Represent original substituted subject member type metadata |
 |  [IStringIndex](./typeioc.istringindex.md) |  |
-|  [OwnerType](./typeioc.ownertype.md) |  |
+|  [OwnerType](./typeioc.ownertype.md) | Represents resolution instance ownership type metadata |
 |  [RegisterWithInitializeBy](./typeioc.registerwithinitializeby.md) | Represents a step within fluent cascading API registration sequence where <code>initializeBy</code> method was omitted |
 |  [RegisterWithLazy](./typeioc.registerwithlazy.md) | Represents a step within fluent cascading API registration sequence where <code>lazy</code> and <code>dispose</code> methods were omitted |
 |  [RegisterWithName](./typeioc.registerwithname.md) | Represents a step within fluent cascading API registration sequence where <code>named</code> method was omitted |
@@ -71,7 +71,7 @@ Dependency injection container for TypeScript / JavaScript
 |  [ResolveWithAttempt](./typeioc.resolvewithattempt.md) | Represents a step within fluent cascading API resolution sequence where <code>attempt</code> method was omitted |
 |  [ResolveWithCache](./typeioc.resolvewithcache.md) | \* Represents final step within fluent cascading API resolution sequence |
 |  [ResolveWithName](./typeioc.resolvewithname.md) | Represents a step within fluent cascading API resolution sequence where <code>name</code> method was omitted |
-|  [ScopeType](./typeioc.scopetype.md) |  |
+|  [ScopeType](./typeioc.scopetype.md) | Represents resolution life-cycle type definition metadata |
 |  [WithDecoratorRegister](./typeioc.withdecoratorregister.md) |  |
 |  [WithDecoratorRegisterInitializeBy](./typeioc.withdecoratorregisterinitializeby.md) |  |
 |  [WithDecoratorRegisterLazy](./typeioc.withdecoratorregisterlazy.md) |  |

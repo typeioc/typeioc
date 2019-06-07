@@ -4,6 +4,7 @@
 
 ## scope variable
 
+Represent runtime / JavaScript resolution instance scope
 
 <b>Signature:</b>
 

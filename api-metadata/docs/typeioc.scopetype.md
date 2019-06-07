@@ -4,6 +4,7 @@
 
 ## ScopeType type
 
+Represents resolution life-cycle type definition metadata
 
 <b>Signature:</b>
 
