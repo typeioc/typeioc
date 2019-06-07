@@ -13,7 +13,7 @@
     "test:report": "npm run test -- --coverage-report=\"html\"",
     "test:100": "npm run test -- --100",
     "extract-api": "api-extractor run --local --verbose",
-    "docs:api:update": "npm run build && npm run extract-api && npm run docs:api",
+    "docs:api:update": "npm run build && npm run extract-api && npm run docs:api && git checkout ./api-metadata/docs/index.md",
     "docs:api": "api-documenter markdown -i ./api-metadata/temp -o ./api-metadata/docs",
     "docs:prepare": "gitbook install",
     "docs:watch": "npm run docs:prepare && gitbook serve",
