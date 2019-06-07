@@ -4,6 +4,7 @@
 
 ## IWithSubstituteResult interface
 
+Represents fluent cascading API interface for substitutes specification
 
 <b>Signature:</b>
 
@@ -15,8 +16,8 @@ export interface IWithSubstituteResult
 
 |  Property | Type | Description |
 |  --- | --- | --- |
-|  [intercept](./typeioc.iwithsubstituteresult.intercept.md) | <code>&lt;R extends (Function &#124; Object)&gt;(subject: R) =&gt; R</code> |  |
-|  [interceptInstance](./typeioc.iwithsubstituteresult.interceptinstance.md) | <code>&lt;R extends Object&gt;(subject: R) =&gt; R</code> |  |
-|  [interceptPrototype](./typeioc.iwithsubstituteresult.interceptprototype.md) | <code>&lt;R extends Function&gt;(subject: R) =&gt; R</code> |  |
-|  [withSubstitute](./typeioc.iwithsubstituteresult.withsubstitute.md) | <code>(substitute: ISubstituteInfo) =&gt; IWithSubstituteResult</code> |  |
+|  [intercept](./typeioc.iwithsubstituteresult.intercept.md) | <code>&lt;R extends (Function &#124; Object)&gt;(subject: R) =&gt; R</code> | Create a subject with members substituted by given parameters. For the instances of an object - interceptInstance method is used, for prototypical/constructible functions - interceptPrototype is used |
+|  [interceptInstance](./typeioc.iwithsubstituteresult.interceptinstance.md) | <code>&lt;R extends Object&gt;(subject: R) =&gt; R</code> | Creates intercepted instance representative |
+|  [interceptPrototype](./typeioc.iwithsubstituteresult.interceptprototype.md) | <code>&lt;R extends Function&gt;(subject: R) =&gt; R</code> | Creates intercepted prototype representative |
+|  [withSubstitute](./typeioc.iwithsubstituteresult.withsubstitute.md) | <code>(substitute: ISubstituteInfo) =&gt; IWithSubstituteResult</code> | Adds a new substitute to the substitute chain |
 

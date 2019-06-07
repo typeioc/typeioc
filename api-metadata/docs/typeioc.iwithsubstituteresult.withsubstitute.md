@@ -4,6 +4,8 @@
 
 ## IWithSubstituteResult.withSubstitute property
 
+Adds a new substitute to the substitute chain
+
 <b>Signature:</b>
 
 ```typescript

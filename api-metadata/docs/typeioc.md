@@ -39,13 +39,13 @@ Dependency injection container for TypeScript / JavaScript
 |  [IEntryPoint](./typeioc.ientrypoint.md) | Represents functionality exposed be the library |
 |  [IFactory](./typeioc.ifactory.md) | Represents factory method registration interface. Receives an instance of a container [IContainer](./typeioc.icontainer.md) and an array of optional parameters provided during resolution |
 |  [IInitializer](./typeioc.iinitializer.md) | Specifies an instance of initializer to be used during resolution initialization. Receives an instance of a container [IContainer](./typeioc.icontainer.md) and an instance of the resolved service |
-|  [IInterceptor](./typeioc.iinterceptor.md) |  |
+|  [IInterceptor](./typeioc.iinterceptor.md) | Represents interceptor specification interface |
 |  [IName](./typeioc.iname.md) | Specifies named registration interface with no additional steps within fluent cascading API Receives a value to be used named registrations / resolutions |
 |  [IRegisterWithAs](./typeioc.iregisterwithas.md) | Represents an entry step within registration fluent cascading API sequence |
 |  [IRegistration](./typeioc.iregistration.md) | Represents an entry into service registration fluent cascading API interface |
 |  [IResolveWith](./typeioc.iresolvewith.md) | Represents fluent cascading interface for services resolution |
 |  [ISubstituteInfo](./typeioc.isubstituteinfo.md) |  |
-|  [IWithSubstituteResult](./typeioc.iwithsubstituteresult.md) |  |
+|  [IWithSubstituteResult](./typeioc.iwithsubstituteresult.md) | Represents fluent cascading API interface for substitutes specification |
 
 ## Variables
 

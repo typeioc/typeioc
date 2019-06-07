@@ -4,6 +4,8 @@
 
 ## IInterceptor.interceptInstance() method
 
+Creates intercepted instance representative
+
 <b>Signature:</b>
 
 ```typescript
@@ -14,10 +16,12 @@ interceptInstance<R extends Object>(subject: R, substitutes?: ISubstituteInfo | 
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  subject | <code>R</code> |  |
-|  substitutes | <code>ISubstituteInfo &#124; ISubstituteInfo[]</code> |  |
+|  subject | <code>R</code> | an instance of a type |
+|  substitutes | <code>ISubstituteInfo &#124; ISubstituteInfo[]</code> | instance(s) of [ISubstituteInfo](./typeioc.isubstituteinfo.md) interface. If substitutes are applied to the same member, they are chained |
 
 <b>Returns:</b>
 
 `R`
+
+- a decorated instance. If no substitutes provided returns same input subject parameter
 

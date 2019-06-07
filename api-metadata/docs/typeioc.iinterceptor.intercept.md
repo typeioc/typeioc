@@ -4,6 +4,8 @@
 
 ## IInterceptor.intercept() method
 
+Create a subject with members substituted by given parameters. For the instances of an object - interceptInstance method is used, for prototypical/constructible functions - interceptPrototype is used
+
 <b>Signature:</b>
 
 ```typescript
@@ -14,10 +16,12 @@ intercept<R extends Function | Object>(subject: R, substitutes?: ISubstituteInfo
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  subject | <code>R</code> |  |
-|  substitutes | <code>ISubstituteInfo &#124; ISubstituteInfo[]</code> |  |
+|  subject | <code>R</code> | prototypical/constructable function or an instance of an abject |
+|  substitutes | <code>ISubstituteInfo &#124; ISubstituteInfo[]</code> | instance(s) of [ISubstituteInfo](./typeioc.isubstituteinfo.md) interface |
 
 <b>Returns:</b>
 
 `R`
+
+- decorated subject. If no substitutes provided returns same input subject parameter
 

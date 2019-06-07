@@ -4,6 +4,8 @@
 
 ## IInterceptor.interceptPrototype() method
 
+Creates intercepted prototype representative
+
 <b>Signature:</b>
 
 ```typescript
@@ -14,10 +16,12 @@ interceptPrototype<R extends Function>(subject: R, substitutes?: ISubstituteInfo
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  subject | <code>R</code> |  |
-|  substitutes | <code>ISubstituteInfo &#124; ISubstituteInfo[]</code> |  |
+|  subject | <code>R</code> | function/class prototype (prototypical/constructible function) |
+|  substitutes | <code>ISubstituteInfo &#124; ISubstituteInfo[]</code> | instance(s) of [ISubstituteInfo](./typeioc.isubstituteinfo.md) interface. If substitutes are applied to the same member, they are chained |
 
 <b>Returns:</b>
 
 `R`
+
+- a decorated prototype. If no substitutes provided returns same input subject parameter
 

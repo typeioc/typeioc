@@ -4,6 +4,7 @@
 
 ## IInterceptor interface
 
+Represents interceptor specification interface
 
 <b>Signature:</b>
 
@@ -11,17 +12,16 @@
 export interface IInterceptor 
 ```
 
-## Properties
-
-|  Property | Type | Description |
-|  --- | --- | --- |
-|  [withSubstitute](./typeioc.iinterceptor.withsubstitute.md) | <code>(substitute: ISubstituteInfo) =&gt; IWithSubstituteResult</code> |  |
-
 ## Methods
 
 |  Method | Description |
 |  --- | --- |
-|  [intercept(subject, substitutes)](./typeioc.iinterceptor.intercept.md) |  |
-|  [interceptInstance(subject, substitutes)](./typeioc.iinterceptor.interceptinstance.md) |  |
-|  [interceptPrototype(subject, substitutes)](./typeioc.iinterceptor.interceptprototype.md) |  |
+|  [intercept(subject, substitutes)](./typeioc.iinterceptor.intercept.md) | Create a subject with members substituted by given parameters. For the instances of an object - interceptInstance method is used, for prototypical/constructible functions - interceptPrototype is used |
+|  [interceptInstance(subject, substitutes)](./typeioc.iinterceptor.interceptinstance.md) | Creates intercepted instance representative |
+|  [interceptPrototype(subject, substitutes)](./typeioc.iinterceptor.interceptprototype.md) | Creates intercepted prototype representative |
+|  [withSubstitute(substitute)](./typeioc.iinterceptor.withsubstitute.md) | Represents an entry point in fluent cascading API substitutes specification |
+
+## Remarks
+
+Interceptors are used to intercept calls to methods/getters/setters/fields of provided component
 

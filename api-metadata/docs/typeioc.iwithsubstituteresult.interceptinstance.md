@@ -4,6 +4,8 @@
 
 ## IWithSubstituteResult.interceptInstance property
 
+Creates intercepted instance representative
+
 <b>Signature:</b>
 
 ```typescript

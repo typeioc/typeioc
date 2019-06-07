@@ -203,16 +203,12 @@ export interface IInitializer<T> {
     (c: IContainer, item: T): T;
 }
 
-// @public (undocumented)
+// @public
 export interface IInterceptor {
-    // (undocumented)
     intercept<R extends Function | Object>(subject: R, substitutes?: ISubstituteInfo | ISubstituteInfo[]): R;
-    // (undocumented)
     interceptInstance<R extends Object>(subject: R, substitutes?: ISubstituteInfo | ISubstituteInfo[]): R;
-    // (undocumented)
     interceptPrototype<R extends Function>(subject: R, substitutes?: ISubstituteInfo | ISubstituteInfo[]): R;
-    // (undocumented)
-    withSubstitute: (substitute: ISubstituteInfo) => IWithSubstituteResult;
+    withSubstitute(substitute: ISubstituteInfo): IWithSubstituteResult;
 }
 
 // @public
@@ -270,15 +266,11 @@ export interface ISubstituteInfo {
     wrapper: (callInfo: ICallInfo) => any | void;
 }
 
-// @public (undocumented)
+// @public
 export interface IWithSubstituteResult {
-    // (undocumented)
     intercept: <R extends (Function | Object)>(subject: R) => R;
-    // (undocumented)
     interceptInstance: <R extends Object>(subject: R) => R;
-    // (undocumented)
     interceptPrototype: <R extends Function>(subject: R) => R;
-    // (undocumented)
     withSubstitute: (substitute: ISubstituteInfo) => IWithSubstituteResult;
 }
 

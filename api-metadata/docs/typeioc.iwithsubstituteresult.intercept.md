@@ -4,6 +4,8 @@
 
 ## IWithSubstituteResult.intercept property
 
+Create a subject with members substituted by given parameters. For the instances of an object - interceptInstance method is used, for prototypical/constructible functions - interceptPrototype is used
+
 <b>Signature:</b>
 
 ```typescript

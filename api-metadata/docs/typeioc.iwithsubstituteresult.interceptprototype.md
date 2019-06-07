@@ -4,6 +4,8 @@
 
 ## IWithSubstituteResult.interceptPrototype property
 
+Creates intercepted prototype representative
+
 <b>Signature:</b>
 
 ```typescript
