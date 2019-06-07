@@ -1,7 +1,7 @@
 import { setPrototypeOf } from '../utils'
 
 /**
- * General purpose application error
+ * Represents general purpose application error
  * @public
  */
 export class ApplicationError extends Error {
@@ -17,8 +17,8 @@ export class ApplicationError extends Error {
 
     /**
      * Constructor
-     * @param params - optional additional information
-     * @returns An instance of ApplicationError
+     * @param params - optional additional information about the error
+     * @returns - an instance of ApplicationError
      */
     constructor(params?: { message?: string, data?: {} }) {
         super(params ? params.message : undefined)

@@ -4,6 +4,7 @@
 
 ## CircularDependencyError class
 
+Represents circular dependency error. It is thrown when two or more service resolutions depend on each other directly on indirectly
 
 <b>Signature:</b>
 
@@ -15,11 +16,11 @@ export declare class CircularDependencyError extends ApplicationError
 
 |  Constructor | Modifiers | Description |
 |  --- | --- | --- |
-|  [(constructor)(serviceName, data)](./typeioc.circulardependencyerror.(constructor).md) |  | Constructs a new instance of the <code>CircularDependencyError</code> class |
+|  [(constructor)(serviceName, data)](./typeioc.circulardependencyerror.(constructor).md) |  | Constructor |
 
 ## Properties
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [serviceName](./typeioc.circulardependencyerror.servicename.md) |  | <code>string</code> |  |
+|  [serviceName](./typeioc.circulardependencyerror.servicename.md) |  | <code>string</code> | The name of the service that circularly resolves itself |
 

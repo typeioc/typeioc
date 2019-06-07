@@ -10,12 +10,12 @@ Dependency injection container for TypeScript / JavaScript
 
 |  Class | Description |
 |  --- | --- |
-|  [ApplicationError](./typeioc.applicationerror.md) | General purpose application error |
-|  [ArgumentError](./typeioc.argumenterror.md) |  |
-|  [CircularDependencyError](./typeioc.circulardependencyerror.md) |  |
-|  [DecoratorError](./typeioc.decoratorerror.md) |  |
-|  [ProxyError](./typeioc.proxyerror.md) |  |
-|  [ResolutionError](./typeioc.resolutionerror.md) |  |
+|  [ApplicationError](./typeioc.applicationerror.md) | Represents general purpose application error |
+|  [ArgumentError](./typeioc.argumenterror.md) | Represents argument error. It is thrown when the argument value does not comply with the method specification |
+|  [CircularDependencyError](./typeioc.circulardependencyerror.md) | Represents circular dependency error. It is thrown when two or more service resolutions depend on each other directly on indirectly |
+|  [DecoratorError](./typeioc.decoratorerror.md) | Represents decorator error. It is thrown when an exception happens during service parts decoration (class, parameter, etc...) |
+|  [ProxyError](./typeioc.proxyerror.md) | Represents proxy error. It is thrown when an exception happens during proxy - interceptor construction |
+|  [ResolutionError](./typeioc.resolutionerror.md) | Represents resolution error. It is thrown when an error happens during service resolution / instantiation |
 
 ## Enumerations
 

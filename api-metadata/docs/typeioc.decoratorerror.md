@@ -4,6 +4,7 @@
 
 ## DecoratorError class
 
+Represents decorator error. It is thrown when an exception happens during service parts decoration (class, parameter, etc...)
 
 <b>Signature:</b>
 
@@ -15,5 +16,5 @@ export declare class DecoratorError extends ApplicationError
 
 |  Constructor | Modifiers | Description |
 |  --- | --- | --- |
-|  [(constructor)(params)](./typeioc.decoratorerror.(constructor).md) |  | Constructs a new instance of the <code>DecoratorError</code> class |
+|  [(constructor)(params)](./typeioc.decoratorerror.(constructor).md) |  | Constructor |
 

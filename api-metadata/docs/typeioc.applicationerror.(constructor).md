@@ -19,5 +19,5 @@ constructor(params?: {
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  params | <code>{</code><br/><code>        message?: string;</code><br/><code>        data?: {};</code><br/><code>    }</code> | optional additional information |
+|  params | <code>{</code><br/><code>        message?: string;</code><br/><code>        data?: {};</code><br/><code>    }</code> | optional additional information about the error |
 

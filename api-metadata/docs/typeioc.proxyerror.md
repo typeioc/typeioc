@@ -4,6 +4,7 @@
 
 ## ProxyError class
 
+Represents proxy error. It is thrown when an exception happens during proxy - interceptor construction
 
 <b>Signature:</b>
 
@@ -15,5 +16,5 @@ export declare class ProxyError extends ApplicationError
 
 |  Constructor | Modifiers | Description |
 |  --- | --- | --- |
-|  [(constructor)(params)](./typeioc.proxyerror.(constructor).md) |  | Constructs a new instance of the <code>ProxyError</code> class |
+|  [(constructor)(params)](./typeioc.proxyerror.(constructor).md) |  | Constructor |
 

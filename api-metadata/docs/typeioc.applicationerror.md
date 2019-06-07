@@ -4,7 +4,7 @@
 
 ## ApplicationError class
 
-General purpose application error
+Represents general purpose application error
 
 <b>Signature:</b>
 

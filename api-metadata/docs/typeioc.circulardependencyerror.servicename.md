@@ -4,6 +4,8 @@
 
 ## CircularDependencyError.serviceName property
 
+The name of the service that circularly resolves itself
+
 <b>Signature:</b>
 
 ```typescript

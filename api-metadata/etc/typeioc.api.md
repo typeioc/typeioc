@@ -16,7 +16,7 @@ export class ApplicationError extends Error {
     _data?: {};
 }
 
-// @public (undocumented)
+// @public
 export class ArgumentError extends ApplicationError {
     constructor(argumentName: string, params?: {
         message?: string;
@@ -51,16 +51,15 @@ export type CallInfoType = {
     readonly field: number;
 };
 
-// @public (undocumented)
+// @public
 export class CircularDependencyError extends ApplicationError {
     constructor(serviceName: string, data?: {});
-    // (undocumented)
     readonly serviceName: string;
     // @internal (undocumented)
     _serviceName: string;
 }
 
-// @public (undocumented)
+// @public
 export class DecoratorError extends ApplicationError {
     constructor(params?: {
         message?: string;
@@ -279,7 +278,7 @@ export type OwnerType = {
     readonly externals: number;
 };
 
-// @public (undocumented)
+// @public
 export class ProxyError extends ApplicationError {
     constructor(params?: {
         message?: string;
@@ -301,14 +300,13 @@ export type RegisterWithName<T> = Omit<RegisterWithLazy<T>, 'named'>;
 // @public
 export type RegisterWithScope<T> = Pick<IRegisterWithAs<T>, 'ownedBy' | 'ownedInternally' | 'ownedExternally'>;
 
-// @public (undocumented)
+// @public
 export class ResolutionError extends ApplicationError {
     constructor(params?: {
         message?: string;
         data?: {};
         error?: Error;
     });
-    // (undocumented)
     readonly innerError: Error | undefined;
     // @internal (undocumented)
     _innerError?: Error;

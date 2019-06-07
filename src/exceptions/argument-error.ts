@@ -2,6 +2,8 @@ import { ApplicationError } from './application-error'
 import { setPrototypeOf } from '../utils'
 
 /**
+ * Represents argument error. It is thrown when the argument value does not
+ * comply with the method specification
  * @public
  */
 export class ArgumentError extends ApplicationError {
@@ -14,6 +16,12 @@ export class ArgumentError extends ApplicationError {
         return this._argumentName
     }
 
+    /**
+     * Constructor
+     * @param argumentName - argument name
+     * @param params - optional additional information about the error
+     * @returns - an instance of ArgumentError
+     */
     constructor (argumentName: string, params?: { message?: string, data?: {} }) {
         super(params)
 

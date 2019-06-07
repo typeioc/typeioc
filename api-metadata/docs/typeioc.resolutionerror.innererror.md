@@ -4,6 +4,8 @@
 
 ## ResolutionError.innerError property
 
+Internal error
+
 <b>Signature:</b>
 
 ```typescript

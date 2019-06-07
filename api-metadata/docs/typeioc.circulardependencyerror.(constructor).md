@@ -4,7 +4,7 @@
 
 ## CircularDependencyError.(constructor)
 
-Constructs a new instance of the `CircularDependencyError` class
+Constructor
 
 <b>Signature:</b>
 
@@ -17,5 +17,5 @@ constructor(serviceName: string, data?: {});
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  serviceName | <code>string</code> |  |
-|  data | <code>{}</code> |  |
+|  data | <code>{}</code> | optional additional information about the error |
 

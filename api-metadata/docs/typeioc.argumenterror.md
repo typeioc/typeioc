@@ -4,6 +4,7 @@
 
 ## ArgumentError class
 
+Represents argument error. It is thrown when the argument value does not comply with the method specification
 
 <b>Signature:</b>
 
@@ -15,7 +16,7 @@ export declare class ArgumentError extends ApplicationError
 
 |  Constructor | Modifiers | Description |
 |  --- | --- | --- |
-|  [(constructor)(argumentName, params)](./typeioc.argumenterror.(constructor).md) |  | Constructs a new instance of the <code>ArgumentError</code> class |
+|  [(constructor)(argumentName, params)](./typeioc.argumenterror.(constructor).md) |  | Constructor |
 
 ## Properties
 

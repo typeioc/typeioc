@@ -4,7 +4,7 @@
 
 ## ProxyError.(constructor)
 
-Constructs a new instance of the `ProxyError` class
+Constructor
 
 <b>Signature:</b>
 
@@ -19,5 +19,5 @@ constructor(params?: {
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  params | <code>{</code><br/><code>        message?: string;</code><br/><code>        data?: {};</code><br/><code>    }</code> |  |
+|  params | <code>{</code><br/><code>        message?: string;</code><br/><code>        data?: {};</code><br/><code>    }</code> | optional additional information about the error |
 

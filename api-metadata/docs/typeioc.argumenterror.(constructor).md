@@ -4,7 +4,7 @@
 
 ## ArgumentError.(constructor)
 
-Constructs a new instance of the `ArgumentError` class
+Constructor
 
 <b>Signature:</b>
 
@@ -19,6 +19,6 @@ constructor(argumentName: string, params?: {
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  argumentName | <code>string</code> |  |
-|  params | <code>{</code><br/><code>        message?: string;</code><br/><code>        data?: {};</code><br/><code>    }</code> |  |
+|  argumentName | <code>string</code> | argument name |
+|  params | <code>{</code><br/><code>        message?: string;</code><br/><code>        data?: {};</code><br/><code>    }</code> | optional additional information about the error |
 

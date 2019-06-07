@@ -4,6 +4,7 @@
 
 ## ResolutionError class
 
+Represents resolution error. It is thrown when an error happens during service resolution / instantiation
 
 <b>Signature:</b>
 
@@ -15,11 +16,11 @@ export declare class ResolutionError extends ApplicationError
 
 |  Constructor | Modifiers | Description |
 |  --- | --- | --- |
-|  [(constructor)(params)](./typeioc.resolutionerror.(constructor).md) |  | Constructs a new instance of the <code>ResolutionError</code> class |
+|  [(constructor)(params)](./typeioc.resolutionerror.(constructor).md) |  | Constructor |
 
 ## Properties
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [innerError](./typeioc.resolutionerror.innererror.md) |  | <code>Error &#124; undefined</code> |  |
+|  [innerError](./typeioc.resolutionerror.innererror.md) |  | <code>Error &#124; undefined</code> | Internal error |
 
