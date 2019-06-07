@@ -21,7 +21,7 @@ Dependency injection container for TypeScript / JavaScript
 
 |  Enumeration | Description |
 |  --- | --- |
-|  [CallInfo](./typeioc.callinfo.md) |  |
+|  [CallInfo](./typeioc.callinfo.md) | Represent original substituted subject member type |
 |  [Owner](./typeioc.owner.md) |  |
 |  [Scope](./typeioc.scope.md) |  |
 
@@ -29,7 +29,7 @@ Dependency injection container for TypeScript / JavaScript
 
 |  Interface | Description |
 |  --- | --- |
-|  [ICallInfo](./typeioc.icallinfo.md) |  |
+|  [ICallInfo](./typeioc.icallinfo.md) | Represents a substitute parameters specification interface |
 |  [IContainer](./typeioc.icontainer.md) | Represents container interface |
 |  [IContainerBuilder](./typeioc.icontainerbuilder.md) | Represents container builder interface |
 |  [IDecorator](./typeioc.idecorator.md) |  |
@@ -44,7 +44,7 @@ Dependency injection container for TypeScript / JavaScript
 |  [IRegisterWithAs](./typeioc.iregisterwithas.md) | Represents an entry step within registration fluent cascading API sequence |
 |  [IRegistration](./typeioc.iregistration.md) | Represents an entry into service registration fluent cascading API interface |
 |  [IResolveWith](./typeioc.iresolvewith.md) | Represents fluent cascading interface for services resolution |
-|  [ISubstituteInfo](./typeioc.isubstituteinfo.md) |  |
+|  [ISubstituteInfo](./typeioc.isubstituteinfo.md) | Represents substitute information encapsulation interface |
 |  [IWithSubstituteResult](./typeioc.iwithsubstituteresult.md) | Represents fluent cascading API interface for substitutes specification |
 
 ## Variables
@@ -52,7 +52,7 @@ Dependency injection container for TypeScript / JavaScript
 |  Variable | Description |
 |  --- | --- |
 |  [\_default](./typeioc._default.md) |  |
-|  [callInfo](./typeioc.callinfo.md) |  |
+|  [callInfo](./typeioc.callinfo.md) | Represent runtime / JavaScript original substituted subject member type |
 |  [owner](./typeioc.owner.md) |  |
 |  [scope](./typeioc.scope.md) |  |
 
@@ -60,6 +60,7 @@ Dependency injection container for TypeScript / JavaScript
 
 |  Type Alias | Description |
 |  --- | --- |
+|  [CallInfoType](./typeioc.callinfotype.md) | Represent original substituted subject member type metadata |
 |  [IStringIndex](./typeioc.istringindex.md) |  |
 |  [OwnerType](./typeioc.ownertype.md) |  |
 |  [RegisterWithInitializeBy](./typeioc.registerwithinitializeby.md) | Represents a step within fluent cascading API registration sequence where <code>initializeBy</code> method was omitted |

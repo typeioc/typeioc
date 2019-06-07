@@ -35,9 +35,13 @@ export {
 export {
     IRegistration, IDynamicDependency, IFactory, IInitializer, IDisposer, IName,
     IRegisterWithAs, RegisterWithInitializeBy, RegisterWithLazy, RegisterWithName,
-    RegisterWithScope  } from './registration'
+    RegisterWithScope } from './registration'
 export { IInterceptor, ISubstituteInfo, ICallInfo, IWithSubstituteResult } from './interceptors'
-export { Owner, OwnerType, Scope, ScopeType, owner, scope, CallInfo, callInfo } from './common'
+export {
+    Owner, OwnerType, owner,
+    Scope, ScopeType, scope,
+    CallInfo, CallInfoType, callInfo
+} from './common'
 export { IStringIndex } from './types'
 export {
     IDecorator, IDecoratorRegistration,

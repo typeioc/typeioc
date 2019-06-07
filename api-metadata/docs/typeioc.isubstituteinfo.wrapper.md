@@ -4,8 +4,15 @@
 
 ## ISubstituteInfo.wrapper property
 
+Specifies substitute action/behavior (lambda expression executed during substitution call)
+
 <b>Signature:</b>
 
 ```typescript
 wrapper: (callInfo: ICallInfo) => any | void;
 ```
+
+## Remarks
+
+To execute wrapper in the context of the substitute proxy as opposite to original subject, provide a function instead of a lambda expression. This will give you access to `this` within substituted members
+

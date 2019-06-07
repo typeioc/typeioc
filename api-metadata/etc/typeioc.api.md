@@ -28,26 +28,28 @@ export class ArgumentError extends ApplicationError {
     _argumentName: string;
 }
 
-// @public (undocumented)
+// @public
 export const enum CallInfo {
-    // (undocumented)
     Any = 5,
-    // (undocumented)
     Field = 6,
-    // (undocumented)
     Getter = 2,
-    // (undocumented)
     GetterSetter = 4,
-    // (undocumented)
     Method = 1,
-    // (undocumented)
     Setter = 3
 }
 
-// Warning: (ae-forgotten-export) The symbol "CallInfoType" needs to be exported by the entry point index.d.ts
-// 
-// @public (undocumented)
+// @public
 export const callInfo: CallInfoType;
+
+// @public
+export type CallInfoType = {
+    readonly method: number;
+    readonly getter: number;
+    readonly setter: number;
+    readonly getterSetter: number;
+    readonly any: number;
+    readonly field: number;
+};
 
 // @public (undocumented)
 export class CircularDependencyError extends ApplicationError {
@@ -71,25 +73,16 @@ const _default: IEntryPoint;
 
 export default _default;
 
-// @public (undocumented)
+// @public
 export interface ICallInfo {
-    // (undocumented)
     args: any[];
-    // (undocumented)
     get?: () => any;
-    // (undocumented)
     invoke: (args?: any | any[]) => any | void;
-    // (undocumented)
     name: string;
-    // (undocumented)
     next?: (result?: any) => any;
-    // (undocumented)
     result?: any;
-    // (undocumented)
     set?: ({}: {}) => void;
-    // (undocumented)
     source: {};
-    // (undocumented)
     type: CallInfo;
 }
 
@@ -256,13 +249,10 @@ export type IStringIndex<T> = {
     [name: string]: T;
 };
 
-// @public (undocumented)
+// @public
 export interface ISubstituteInfo {
-    // (undocumented)
     method?: string;
-    // (undocumented)
     type?: CallInfo;
-    // (undocumented)
     wrapper: (callInfo: ICallInfo) => any | void;
 }
 

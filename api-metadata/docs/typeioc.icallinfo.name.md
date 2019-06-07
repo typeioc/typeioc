@@ -4,6 +4,8 @@
 
 ## ICallInfo.name property
 
+Original subject member name
+
 <b>Signature:</b>
 
 ```typescript

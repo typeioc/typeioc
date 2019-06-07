@@ -4,6 +4,8 @@
 
 ## ICallInfo.invoke property
 
+Invokes original subject member
+
 <b>Signature:</b>
 
 ```typescript

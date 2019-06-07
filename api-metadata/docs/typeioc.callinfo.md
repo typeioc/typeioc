@@ -4,6 +4,7 @@
 
 ## callInfo variable
 
+Represent runtime / JavaScript original substituted subject member type
 
 <b>Signature:</b>
 

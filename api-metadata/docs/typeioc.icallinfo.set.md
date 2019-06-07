@@ -4,6 +4,8 @@
 
 ## ICallInfo.set property
 
+Invokes original subject setter. If original subject member is not a setter nor a field, this member is undefined
+
 <b>Signature:</b>
 
 ```typescript

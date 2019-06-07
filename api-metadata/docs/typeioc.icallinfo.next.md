@@ -4,6 +4,8 @@
 
 ## ICallInfo.next property
 
+Invokes next substitution in a chain. If only one substitution is present in the chain, this member is undefined
+
 <b>Signature:</b>
 
 ```typescript

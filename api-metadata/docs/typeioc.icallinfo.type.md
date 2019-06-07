@@ -4,6 +4,8 @@
 
 ## ICallInfo.type property
 
+Original subject member type [CallInfo](./typeioc.callinfo.md)
+
 <b>Signature:</b>
 
 ```typescript

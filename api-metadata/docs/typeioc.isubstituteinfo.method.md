@@ -4,6 +4,8 @@
 
 ## ISubstituteInfo.method property
 
+Original subject member name. If omitted, substitution is applied to all members
+
 <b>Signature:</b>
 
 ```typescript

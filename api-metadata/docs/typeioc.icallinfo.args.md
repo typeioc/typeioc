@@ -4,6 +4,8 @@
 
 ## ICallInfo.args property
 
+Substitute invocation parameters
+
 <b>Signature:</b>
 
 ```typescript

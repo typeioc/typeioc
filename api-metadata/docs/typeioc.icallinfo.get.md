@@ -4,6 +4,8 @@
 
 ## ICallInfo.get property
 
+Invokes original subject getter. If original subject member is not a getter nor a field, this member is undefined
+
 <b>Signature:</b>
 
 ```typescript

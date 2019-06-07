@@ -18,4 +18,4 @@ export const defaults: IDefaults = {
 
 export { owner, Owner, OwnerType } from './owner'
 export { scope, Scope, ScopeType } from './scope'
-export { callInfo, CallInfo  } from './call-info-type'
+export { callInfo, CallInfo, CallInfoType  } from './call-info-type'

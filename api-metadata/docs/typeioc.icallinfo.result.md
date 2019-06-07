@@ -4,6 +4,8 @@
 
 ## ICallInfo.result property
 
+Represents a result of a previous substitution in a chain, if it exist
+
 <b>Signature:</b>
 
 ```typescript
