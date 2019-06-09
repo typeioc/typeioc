@@ -1,6 +1,6 @@
 # Decorators
 
-In TypeIOC, decorators are used as an alternative way to register services. All the APIs available through regular registration are available using decorators. There are two types of decorators used: class decorators and constructor decorators. Class decorators are used to describe service registration, where constructor decorators are for describing component dependencies. All decorator features are available for TypeScript only.
+In TypeIOC, decorators are used as an alternative way to register services. All the APIs available through regular registration are available using decorators. There are two types of decorators used: class decorators and constructor parameter decorators. Class decorators are used to describe service registration, where constructor parameter decorators are for describing component dependencies. All decorator features are available for TypeScript only.
 
 * [Class decorators](./services-registration.md)
 * [Constructor decorators](./dependencies-resolution.md)
