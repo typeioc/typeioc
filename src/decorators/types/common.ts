@@ -49,14 +49,65 @@ export interface IDecoratorResolutionApi {
 }
 
 /**
+ * Represents a decorator style fluent cascading API services registration /
+ * resolution interface
  * @public
  */
 export interface IDecorator {
+    /**
+     * Creates an instance of {@link IContainer} interface
+     *
+     * @returns - an instance of {@link IContainer} interface
+     */
     build(): IContainer
+
+    /**
+     * Registers a service using fluent API
+     *
+     * @param service - an instance of a service.
+     * If service is `null` or `undefined` {@link ArgumentError} is thrown
+     * @returns - an instance of {@link IDecoratorRegistration} fluent API interface
+     */
     provide<R>(service: {}): IDecoratorRegistration<R>
+
+    /**
+     * Sets registration to be marked as self registration
+     *
+     * @remarks
+     * Registration is provided as a type itself (participates both in registration and
+     * resolution). It is intended for construct-able types only. Uses new
+     * operator for type construction
+     *
+     * @returns - an instance of {@link IDecoratorRegistration} interface
+     */
     provideSelf<R>(): IDecoratorRegistration<R>
+
+    /**
+     * Specifies entry point into decorator fluent cascading API for
+     * service resolution
+     * @param service - component registration service
+     * @returns - an instance of {@link IDecoratorResolution} interface
+     */
     by(service?: {}): IDecoratorResolution
+
+    /**
+     * Specifies a value to be used for parameter resolution. It is used as is
+     * and no resolution computation is preformed
+     * @param value - resolution value
+     * @returns - ParameterDecorator instance
+     */
     resolveValue(value: {} | Function): ParameterDecorator
+
+    /**
+     * Provides non decorator compatible registration interface
+     * @param service - component registration service
+     * @returns an instance on {@link IRegistration} interface
+     */
     register<R>(service: {}): IRegistration<R>
+
+    /**
+     * Imports registrations from non decorator container builder
+     * @param builder - an instance of {@link IContainerBuilder} interface
+     */
     import(builder: IContainerBuilder): void
 }

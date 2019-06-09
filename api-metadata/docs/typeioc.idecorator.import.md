@@ -4,6 +4,8 @@
 
 ## IDecorator.import() method
 
+Imports registrations from non decorator container builder
+
 <b>Signature:</b>
 
 ```typescript
@@ -14,7 +16,7 @@ import(builder: IContainerBuilder): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  builder | <code>IContainerBuilder</code> |  |
+|  builder | <code>IContainerBuilder</code> | an instance of [IContainerBuilder](./typeioc.icontainerbuilder.md) interface |
 
 <b>Returns:</b>
 

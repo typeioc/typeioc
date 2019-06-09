@@ -111,52 +111,40 @@ export interface IContainerBuilder {
     register<R>(service: {}): IRegistration<R>;
 }
 
-// @public (undocumented)
+// @public
 export interface IDecorator {
-    // (undocumented)
     build(): IContainer;
-    // Warning: (ae-forgotten-export) The symbol "IDecoratorResolution" needs to be exported by the entry point index.d.ts
-    // 
-    // (undocumented)
     by(service?: {}): IDecoratorResolution;
-    // (undocumented)
     import(builder: IContainerBuilder): void;
-    // (undocumented)
     provide<R>(service: {}): IDecoratorRegistration<R>;
-    // (undocumented)
     provideSelf<R>(): IDecoratorRegistration<R>;
-    // (undocumented)
     register<R>(service: {}): IRegistration<R>;
-    // (undocumented)
     resolveValue(value: {} | Function): ParameterDecorator;
 }
 
-// @public (undocumented)
+// @public
 export interface IDecoratorRegistration<T> {
-    // (undocumented)
     dispose(action: IDisposer<T>): WithDecoratorRegisterLazy<T>;
-    // (undocumented)
     initializeBy(action: IInitializer<T>): WithDecoratorRegisterInitializeBy<T>;
-    // (undocumented)
     instancePerContainer(): WithDecoratorRegisterScope<T>;
-    // (undocumented)
     lazy(): WithDecoratorRegisterLazy<T>;
-    // (undocumented)
     named(name: string): WithDecoratorRegisterName<T>;
-    // (undocumented)
     ownedBy(owner: Owner): WithDecoratorRegister<T>;
-    // (undocumented)
     ownedExternally(): WithDecoratorRegister<T>;
-    // (undocumented)
     ownedInternally(): WithDecoratorRegister<T>;
-    // (undocumented)
     register(): ClassDecorator;
-    // (undocumented)
     singleton(): WithDecoratorRegisterScope<T>;
-    // (undocumented)
     transient(): WithDecoratorRegisterScope<T>;
-    // (undocumented)
     within(scope: Scope): WithDecoratorRegisterScope<T>;
+}
+
+// @public
+export interface IDecoratorResolution {
+    args(...value: any[]): WithDecoratorResolverArgs;
+    attempt(): WithDecoratorResolverAttempt;
+    cache(name?: string): WithDecoratorResolver;
+    name(value: string): WithDecoratorResolverName;
+    resolve(): ParameterDecorator;
 }
 
 // @public
@@ -341,31 +329,31 @@ export type ScopeType = {
     readonly hierarchy: number;
 };
 
-// @public (undocumented)
+// @public
 export type WithDecoratorRegister<T> = Pick<IDecoratorRegistration<T>, 'register'>;
 
-// @public (undocumented)
+// @public
 export type WithDecoratorRegisterInitializeBy<T> = Omit<IDecoratorRegistration<T>, 'initializeBy'>;
 
-// @public (undocumented)
+// @public
 export type WithDecoratorRegisterLazy<T> = Omit<WithDecoratorRegisterInitializeBy<T>, 'lazy' | 'dispose'>;
 
-// @public (undocumented)
+// @public
 export type WithDecoratorRegisterName<T> = Omit<WithDecoratorRegisterLazy<T>, 'named'>;
 
-// @public (undocumented)
+// @public
 export type WithDecoratorRegisterScope<T> = Omit<WithDecoratorRegisterName<T>, 'within' | 'transient' | 'singleton' | 'instancePerContainer'>;
 
-// @public (undocumented)
+// @public
 export type WithDecoratorResolver = Pick<IDecoratorResolution, 'resolve'>;
 
-// @public (undocumented)
+// @public
 export type WithDecoratorResolverArgs = Omit<IDecoratorResolution, 'args'>;
 
-// @public (undocumented)
+// @public
 export type WithDecoratorResolverAttempt = Omit<WithDecoratorResolverArgs, 'attempt'>;
 
-// @public (undocumented)
+// @public
 export type WithDecoratorResolverName = Omit<WithDecoratorResolverAttempt, 'name'>;
 
 

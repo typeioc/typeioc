@@ -4,6 +4,7 @@
 
 ## WithDecoratorRegister type
 
+Represents a step within fluent cascading API registration sequence where registration is finalized
 
 <b>Signature:</b>
 

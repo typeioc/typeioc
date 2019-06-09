@@ -4,6 +4,8 @@
 
 ## IDecoratorRegistration.register() method
 
+Finalizes service registration
+
 <b>Signature:</b>
 
 ```typescript

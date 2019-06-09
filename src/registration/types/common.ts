@@ -129,6 +129,7 @@ export interface IRegisterWithAs<T> {
     /**
      * Specifies transient scope resolution. Every resolution of service returns new instance
      * Is similar to Scope.None, scope.none {@link Scope} (default behavior)
+     * @returns - an instance of {@link RegisterWithScope} interface
      */
     transient(): RegisterWithScope<T>
 

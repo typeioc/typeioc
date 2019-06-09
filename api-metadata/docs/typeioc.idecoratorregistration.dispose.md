@@ -4,6 +4,8 @@
 
 ## IDecoratorRegistration.dispose() method
 
+Specifies disposer action during resolution disposal.
+
 <b>Signature:</b>
 
 ```typescript
@@ -14,9 +16,11 @@ dispose(action: IDisposer<T>): WithDecoratorRegisterLazy<T>;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  action | <code>IDisposer&lt;T&gt;</code> |  |
+|  action | <code>IDisposer&lt;T&gt;</code> | disposer action to be called during resolution disposal process ([IDisposer](./typeioc.idisposer.md)<!-- -->) |
 
 <b>Returns:</b>
 
 `WithDecoratorRegisterLazy<T>`
+
+- an instance of [WithDecoratorRegisterLazy](./typeioc.withdecoratorregisterlazy.md) interface
 

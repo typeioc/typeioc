@@ -4,6 +4,8 @@
 
 ## IDecorator.resolveValue() method
 
+Specifies a value to be used for parameter resolution. It is used as is and no resolution computation is preformed
+
 <b>Signature:</b>
 
 ```typescript
@@ -14,9 +16,11 @@ resolveValue(value: {} | Function): ParameterDecorator;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  value | <code>{} &#124; Function</code> |  |
+|  value | <code>{} &#124; Function</code> | resolution value |
 
 <b>Returns:</b>
 
 `ParameterDecorator`
+
+- ParameterDecorator instance
 

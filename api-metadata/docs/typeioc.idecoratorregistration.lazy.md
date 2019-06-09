@@ -4,6 +4,8 @@
 
 ## IDecoratorRegistration.lazy() method
 
+Specifies lazy registration. Resolution of services is differed until results are needed by other services/computations
+
 <b>Signature:</b>
 
 ```typescript
@@ -12,4 +14,6 @@ lazy(): WithDecoratorRegisterLazy<T>;
 <b>Returns:</b>
 
 `WithDecoratorRegisterLazy<T>`
+
+- an instance of [WithDecoratorRegisterLazy](./typeioc.withdecoratorregisterlazy.md) interface
 

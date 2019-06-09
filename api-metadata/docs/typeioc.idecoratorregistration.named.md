@@ -4,6 +4,8 @@
 
 ## IDecoratorRegistration.named() method
 
+Specifies named registration. Registration can be resolved only using the name provided
+
 <b>Signature:</b>
 
 ```typescript
@@ -14,9 +16,11 @@ named(name: string): WithDecoratorRegisterName<T>;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  name | <code>string</code> |  |
+|  name | <code>string</code> | a value that should be used during service resolution If parameter value is <code>null</code> or <code>undefined</code> [ArgumentError](./typeioc.argumenterror.md) is thrown |
 
 <b>Returns:</b>
 
 `WithDecoratorRegisterName<T>`
+
+- an instance of [WithDecoratorRegisterName](./typeioc.withdecoratorregistername.md) interface
 

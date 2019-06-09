@@ -22,7 +22,7 @@ export class CircularDependencyError extends ApplicationError {
 
     /**
      * Constructor
-     * @param - service name
+     * @param serviceName - service name
      * @param data - optional additional information about the error
      * @returns - an instance of CircularDependencyError
      */

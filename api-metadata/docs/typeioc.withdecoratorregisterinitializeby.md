@@ -4,6 +4,7 @@
 
 ## WithDecoratorRegisterInitializeBy type
 
+Represents a step within fluent cascading API registration sequence where `initializeBy` method was omitted
 
 <b>Signature:</b>
 

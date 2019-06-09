@@ -4,6 +4,8 @@
 
 ## IDecorator.by() method
 
+Specifies entry point into decorator fluent cascading API for service resolution
+
 <b>Signature:</b>
 
 ```typescript
@@ -14,9 +16,11 @@ by(service?: {}): IDecoratorResolution;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  service | <code>{}</code> |  |
+|  service | <code>{}</code> | component registration service |
 
 <b>Returns:</b>
 
 `IDecoratorResolution`
+
+- an instance of [IDecoratorResolution](./typeioc.idecoratorresolution.md) interface
 

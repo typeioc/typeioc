@@ -4,6 +4,8 @@
 
 ## IDecorator.provideSelf() method
 
+Sets registration to be marked as self registration
+
 <b>Signature:</b>
 
 ```typescript
@@ -12,4 +14,10 @@ provideSelf<R>(): IDecoratorRegistration<R>;
 <b>Returns:</b>
 
 `IDecoratorRegistration<R>`
+
+- an instance of [IDecoratorRegistration](./typeioc.idecoratorregistration.md) interface
+
+## Remarks
+
+Registration is provided as a type itself (participates both in registration and resolution). It is intended for construct-able types only. Uses new operator for type construction
 

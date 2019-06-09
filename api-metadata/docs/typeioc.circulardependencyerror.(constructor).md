@@ -16,6 +16,6 @@ constructor(serviceName: string, data?: {});
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  serviceName | <code>string</code> |  |
+|  serviceName | <code>string</code> | service name |
 |  data | <code>{}</code> | optional additional information about the error |
 

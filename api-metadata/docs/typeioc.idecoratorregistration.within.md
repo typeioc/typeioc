@@ -4,6 +4,8 @@
 
 ## IDecoratorRegistration.within() method
 
+Specifies resolution instance scope. Scope determines how resolved service instances behave in between resolutions
+
 <b>Signature:</b>
 
 ```typescript
@@ -14,9 +16,11 @@ within(scope: Scope): WithDecoratorRegisterScope<T>;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  scope | <code>Scope</code> |  |
+|  scope | <code>Scope</code> | the value of the scope [Scope](./typeioc.scope.md) |
 
 <b>Returns:</b>
 
 `WithDecoratorRegisterScope<T>`
+
+- an instance of [WithDecoratorRegisterScope](./typeioc.withdecoratorregisterscope.md) interface
 

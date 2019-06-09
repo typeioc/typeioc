@@ -4,6 +4,7 @@
 
 ## WithDecoratorResolver type
 
+Represents service resolution fluent API step
 
 <b>Signature:</b>
 

@@ -32,8 +32,9 @@ Dependency injection container for TypeScript / JavaScript
 |  [ICallInfo](./typeioc.icallinfo.md) | Represents a substitute parameters specification interface |
 |  [IContainer](./typeioc.icontainer.md) | Represents container interface |
 |  [IContainerBuilder](./typeioc.icontainerbuilder.md) | Represents container builder interface |
-|  [IDecorator](./typeioc.idecorator.md) |  |
-|  [IDecoratorRegistration](./typeioc.idecoratorregistration.md) |  |
+|  [IDecorator](./typeioc.idecorator.md) | Represents a decorator style fluent cascading API services registration / resolution interface |
+|  [IDecoratorRegistration](./typeioc.idecoratorregistration.md) | Represents an entry into service registration fluent cascading API interface |
+|  [IDecoratorResolution](./typeioc.idecoratorresolution.md) | Represents fluent cascading interface for services resolution |
 |  [IDisposer](./typeioc.idisposer.md) | Specifies an instance of disposer to be used during resolution disposal Receives an instance of the resolution |
 |  [IDynamicDependency](./typeioc.idynamicdependency.md) | Represents dynamic dependency interface |
 |  [IEntryPoint](./typeioc.ientrypoint.md) | Represents functionality exposed be the library |
@@ -72,13 +73,13 @@ Dependency injection container for TypeScript / JavaScript
 |  [ResolveWithCache](./typeioc.resolvewithcache.md) | \* Represents final step within fluent cascading API resolution sequence |
 |  [ResolveWithName](./typeioc.resolvewithname.md) | Represents a step within fluent cascading API resolution sequence where <code>name</code> method was omitted |
 |  [ScopeType](./typeioc.scopetype.md) | Represents resolution life-cycle type definition metadata |
-|  [WithDecoratorRegister](./typeioc.withdecoratorregister.md) |  |
-|  [WithDecoratorRegisterInitializeBy](./typeioc.withdecoratorregisterinitializeby.md) |  |
-|  [WithDecoratorRegisterLazy](./typeioc.withdecoratorregisterlazy.md) |  |
-|  [WithDecoratorRegisterName](./typeioc.withdecoratorregistername.md) |  |
-|  [WithDecoratorRegisterScope](./typeioc.withdecoratorregisterscope.md) |  |
-|  [WithDecoratorResolver](./typeioc.withdecoratorresolver.md) |  |
-|  [WithDecoratorResolverArgs](./typeioc.withdecoratorresolverargs.md) |  |
-|  [WithDecoratorResolverAttempt](./typeioc.withdecoratorresolverattempt.md) |  |
-|  [WithDecoratorResolverName](./typeioc.withdecoratorresolvername.md) |  |
+|  [WithDecoratorRegister](./typeioc.withdecoratorregister.md) | Represents a step within fluent cascading API registration sequence where registration is finalized |
+|  [WithDecoratorRegisterInitializeBy](./typeioc.withdecoratorregisterinitializeby.md) | Represents a step within fluent cascading API registration sequence where <code>initializeBy</code> method was omitted |
+|  [WithDecoratorRegisterLazy](./typeioc.withdecoratorregisterlazy.md) | Represents a step within fluent cascading API registration sequence where <code>lazy</code> and <code>dispose</code> methods were omitted |
+|  [WithDecoratorRegisterName](./typeioc.withdecoratorregistername.md) | Represents a step within fluent cascading API registration sequence where <code>named</code> method was omitted |
+|  [WithDecoratorRegisterScope](./typeioc.withdecoratorregisterscope.md) | Represents a step within fluent cascading API registration sequence where <code>within</code>, <code>transient</code>, <code>singleton</code>, <code>instancePerContainer</code> methods where omitted |
+|  [WithDecoratorResolver](./typeioc.withdecoratorresolver.md) | Represents service resolution fluent API step |
+|  [WithDecoratorResolverArgs](./typeioc.withdecoratorresolverargs.md) | Represents service resolution fluent API step where <code>args</code> method was omitted |
+|  [WithDecoratorResolverAttempt](./typeioc.withdecoratorresolverattempt.md) | Represents service resolution fluent API step where <code>attempt</code> method was omitted |
+|  [WithDecoratorResolverName](./typeioc.withdecoratorresolvername.md) | Represents service resolution fluent API step where <code>name</code> method was omitted |
 

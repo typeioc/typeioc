@@ -4,6 +4,7 @@
 
 ## WithDecoratorResolverName type
 
+Represents service resolution fluent API step where `name` method was omitted
 
 <b>Signature:</b>
 

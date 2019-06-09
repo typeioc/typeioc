@@ -4,6 +4,7 @@
 
 ## WithDecoratorRegisterScope type
 
+Represents a step within fluent cascading API registration sequence where `within`<!-- -->, `transient`<!-- -->, `singleton`<!-- -->, `instancePerContainer` methods where omitted
 
 <b>Signature:</b>
 

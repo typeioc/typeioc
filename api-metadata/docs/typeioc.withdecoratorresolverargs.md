@@ -4,6 +4,7 @@
 
 ## WithDecoratorResolverArgs type
 
+Represents service resolution fluent API step where `args` method was omitted
 
 <b>Signature:</b>
 

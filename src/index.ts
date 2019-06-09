@@ -44,7 +44,7 @@ export {
 } from './common'
 export { IStringIndex } from './types'
 export {
-    IDecorator, IDecoratorRegistration,
+    IDecorator, IDecoratorRegistration, IDecoratorResolution,
     WithDecoratorRegister, WithDecoratorRegisterInitializeBy,
     WithDecoratorRegisterLazy, WithDecoratorRegisterName,
     WithDecoratorRegisterScope, WithDecoratorResolver,

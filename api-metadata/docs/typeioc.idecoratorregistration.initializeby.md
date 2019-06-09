@@ -4,6 +4,8 @@
 
 ## IDecoratorRegistration.initializeBy() method
 
+Specifies initialization action during service instantiation
+
 <b>Signature:</b>
 
 ```typescript
@@ -14,9 +16,11 @@ initializeBy(action: IInitializer<T>): WithDecoratorRegisterInitializeBy<T>;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  action | <code>IInitializer&lt;T&gt;</code> |  |
+|  action | <code>IInitializer&lt;T&gt;</code> | an instance of [IInitializer](./typeioc.iinitializer.md) interface |
 
 <b>Returns:</b>
 
 `WithDecoratorRegisterInitializeBy<T>`
+
+- an instance of [WithDecoratorRegisterInitializeBy](./typeioc.withdecoratorregisterinitializeby.md) interface
 

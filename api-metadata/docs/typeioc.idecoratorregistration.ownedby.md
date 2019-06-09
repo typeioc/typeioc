@@ -4,6 +4,8 @@
 
 ## IDecoratorRegistration.ownedBy() method
 
+Specifies resolution disposal behavior
+
 <b>Signature:</b>
 
 ```typescript
@@ -14,9 +16,11 @@ ownedBy(owner: Owner): WithDecoratorRegister<T>;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  owner | <code>Owner</code> |  |
+|  owner | <code>Owner</code> | the value of the owner [Owner](./typeioc.owner.md) |
 
 <b>Returns:</b>
 
 `WithDecoratorRegister<T>`
+
+- an instance of [WithDecoratorRegister](./typeioc.withdecoratorregister.md) interface
 

@@ -4,6 +4,8 @@
 
 ## IDecoratorRegistration.singleton() method
 
+Specifies singleton scope resolution. Every resolution of service returns same instance Is similar to Scope.Hierarchy, scope.hierarchy [Scope](./typeioc.scope.md)
+
 <b>Signature:</b>
 
 ```typescript
@@ -12,4 +14,6 @@ singleton(): WithDecoratorRegisterScope<T>;
 <b>Returns:</b>
 
 `WithDecoratorRegisterScope<T>`
+
+- an instance on [WithDecoratorRegisterScope](./typeioc.withdecoratorregisterscope.md) interface
 

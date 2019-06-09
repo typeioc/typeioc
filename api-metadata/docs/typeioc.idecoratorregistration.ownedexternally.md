@@ -4,6 +4,8 @@
 
 ## IDecoratorRegistration.ownedExternally() method
 
+Specifies ownership model maintained externally
+
 <b>Signature:</b>
 
 ```typescript
@@ -12,4 +14,6 @@ ownedExternally(): WithDecoratorRegister<T>;
 <b>Returns:</b>
 
 `WithDecoratorRegister<T>`
+
+- an instance of [WithDecoratorRegister](./typeioc.withdecoratorregister.md) interface
 

@@ -4,6 +4,8 @@
 
 ## IDecorator.provide() method
 
+Registers a service using fluent API
+
 <b>Signature:</b>
 
 ```typescript
@@ -14,9 +16,11 @@ provide<R>(service: {}): IDecoratorRegistration<R>;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  service | <code>{}</code> |  |
+|  service | <code>{}</code> | an instance of a service. If service is <code>null</code> or <code>undefined</code> [ArgumentError](./typeioc.argumenterror.md) is thrown |
 
 <b>Returns:</b>
 
 `IDecoratorRegistration<R>`
+
+- an instance of [IDecoratorRegistration](./typeioc.idecoratorregistration.md) fluent API interface
 

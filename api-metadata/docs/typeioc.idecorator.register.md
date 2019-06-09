@@ -4,6 +4,8 @@
 
 ## IDecorator.register() method
 
+Provides non decorator compatible registration interface
+
 <b>Signature:</b>
 
 ```typescript
@@ -14,9 +16,11 @@ register<R>(service: {}): IRegistration<R>;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  service | <code>{}</code> |  |
+|  service | <code>{}</code> | component registration service |
 
 <b>Returns:</b>
 
 `IRegistration<R>`
+
+an instance on [IRegistration](./typeioc.iregistration.md) interface
 

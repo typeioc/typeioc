@@ -4,6 +4,8 @@
 
 ## IDecoratorRegistration.ownedInternally() method
 
+Specifies ownership model maintained by container (default behavior)
+
 <b>Signature:</b>
 
 ```typescript
@@ -12,4 +14,6 @@ ownedInternally(): WithDecoratorRegister<T>;
 <b>Returns:</b>
 
 `WithDecoratorRegister<T>`
+
+- an instance of [WithDecoratorRegister](./typeioc.withdecoratorregister.md) interface
 

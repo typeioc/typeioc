@@ -4,6 +4,7 @@
 
 ## WithDecoratorResolverAttempt type
 
+Represents service resolution fluent API step where `attempt` method was omitted
 
 <b>Signature:</b>
 

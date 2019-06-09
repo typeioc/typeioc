@@ -4,6 +4,8 @@
 
 ## IDecoratorRegistration.transient() method
 
+Specifies transient scope resolution. Every resolution of service returns new instance Is similar to Scope.None, scope.none [Scope](./typeioc.scope.md) (default behavior)
+
 <b>Signature:</b>
 
 ```typescript
@@ -12,4 +14,6 @@ transient(): WithDecoratorRegisterScope<T>;
 <b>Returns:</b>
 
 `WithDecoratorRegisterScope<T>`
+
+- an instance of [WithDecoratorRegisterScope](./typeioc.withdecoratorregisterscope.md) interface
 

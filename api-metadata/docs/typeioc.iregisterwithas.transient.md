@@ -15,3 +15,5 @@ transient(): RegisterWithScope<T>;
 
 `RegisterWithScope<T>`
 
+- an instance of [RegisterWithScope](./typeioc.registerwithscope.md) interface
+
