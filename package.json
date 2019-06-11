@@ -1,6 +1,6 @@
 {
   "name": "typeioc",
-  "version": "2.1.7",
+  "version": "2.1.8",
   "scripts": {
     "prebuild": "rimraf lib/*",
     "build": "tsc",
@@ -24,8 +24,8 @@
     "reflect-metadata": "0.1.13"
   },
   "devDependencies": {
-    "@types/node": "11.9.4",
-    "coveralls": "3.0.2",
+    "@types/node": "12.0.7",
+    "coveralls": "3.0.4",
     "rimraf": "2.6.3",
     "gitbook-plugin-anchorjs": "2.0.1",
     "gitbook-plugin-github": "2.0.0",
@@ -33,8 +33,8 @@
     "gitbook-plugin-sectionx": "3.1.0",
     "istanbul": "0.4.5",
     "nodeunit": "0.11.3",
-    "sinon": "7.2.4",
-    "typescript": "3.3.3"
+    "sinon": "7.3.2",
+    "typescript": "3.5.1"
   },
   "engines": {
     "node": ">=10.0.0"
