@@ -73,6 +73,14 @@ const _default: IEntryPoint;
 export default _default;
 
 // @public
+export interface ICache {
+    readonly instance: {
+        [name: string]: any;
+    };
+    resolve<R>(name: string): R;
+}
+
+// @public
 export interface ICallInfo {
     args: any[];
     get?: () => any;
@@ -87,7 +95,7 @@ export interface ICallInfo {
 
 // @public
 export interface IContainer {
-    cache: IStringIndex<any>;
+    cache: ICache;
     createChild(): IContainer;
     dispose(): void;
     disposeAsync(): Promise<void>;
@@ -230,11 +238,6 @@ export interface IResolveWith<T> {
     execAsync(): Promise<T>;
     name(value: string): ResolveWithName<T>;
 }
-
-// @public (undocumented)
-export type IStringIndex<T> = {
-    [name: string]: T;
-};
 
 // @public
 export interface ISubstituteInfo {

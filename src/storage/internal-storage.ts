@@ -3,14 +3,18 @@ import { IInternalStorage } from './types'
 
 export class InternalStorage<K, T> implements IInternalStorage<K, T> {
 
-    private _collection  : hashes.IHashTable<K, T>
+    private _collection: hashes.IHashTable<K, T>
 
     constructor() {
         this._collection = new HashTable<K, T>()
     }
 
-    public add(key : K, value : T) : void {
+    public add(key: K, value : T) : void {
         this._collection.add(key, value, true)
+    }
+
+    public get(key: K): T {
+        return this._collection.get(key).value
     }
 
     public tryGet(key : K) : T | undefined {

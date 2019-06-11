@@ -1,6 +1,6 @@
 import { IDynamicDependency, IRegistration, IRegistrationBase } from '../../registration'
 import { IResolveWith, IApiCache } from './resolution'
-import { IStringIndex } from '../../types'
+import { ICache } from '../../types'
 
 /**
  * Represents container interface
@@ -12,22 +12,13 @@ import { IStringIndex } from '../../types'
  */
 export interface IContainer {
     /**
-     * Represents a dictionary of cached components/resolved registrations {@link IStringIndex }
+     * Represents a dictionary of cached components/resolved registrations {@link ICache}
      *
      * @remarks
      * If a service is registered with cache option, its resolution is available
-     * through the `cache` property. The rules of computing property name have
-     * following priorities (from highest to lowest):
-     *
-     * 1. `name` parameter for `cache` method specified during resolution.
-     *
-     * 2. `name` parameter used for named registrations.
-     *
-     * 3. service parameter representing an object with a `name` property.
-     *
-     * 4. service parameter represent a string object
+     * through the `cache` property.
      */
-    cache: IStringIndex<any>
+    cache: ICache
 
     /**
      * Resolves a service with optional parameters

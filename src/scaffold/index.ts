@@ -1,5 +1,5 @@
 import {
-    InternalStorage, RegistrationStorage, DisposableStorage
+    InternalStorage, RegistrationStorage, DisposableStorage, ResolutionCache
 } from '../storage'
 import {
     RegistrationBase, IRegistrationBase, Registration, IRegistration
@@ -20,7 +20,8 @@ import {
     IRegistrationStorageService,
     IDisposableStorageService,
     IContainerApiService,
-    IInvokerService
+    IInvokerService,
+    IResolutionCacheService
  } from '../build'
 import {
     Decorator,
@@ -123,6 +124,14 @@ export class Scaffold implements IEntryPoint {
         }
     }
 
+    private resolutionCacheService() : IResolutionCacheService {
+        return {
+            create() {
+                return new ResolutionCache()
+            }
+        }
+    }
+
     private registrationBaseService(): IRegistrationBaseService {
         return {
             create(service: {}) {
@@ -162,13 +171,15 @@ export class Scaffold implements IEntryPoint {
             const baseRegistrationService = this.registrationBaseService()
             const containerApiService = this.containerApiService()
             const invokerService = this.invokerService()
+            const resolutionCacheService = this.resolutionCacheService()
 
             return {
                 registrationStorageService,
                 disposableStorageService,
                 baseRegistrationService,
                 containerApiService,
-                invokerService
+                invokerService,
+                resolutionCacheService
             }
         }
 
@@ -183,6 +194,7 @@ export class Scaffold implements IEntryPoint {
                     params.baseRegistrationService,
                     params.containerApiService,
                     params.invokerService,
+                    params.resolutionCacheService,
                     this.resolutionDetails)
             }
         }

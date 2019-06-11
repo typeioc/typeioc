@@ -3,13 +3,13 @@ import { IResolveWith, IContainer, IInternalContainer } from './types'
 import { checkNullArgument, checkDependency } from '../utils'
 import { ResolutionError } from '../exceptions'
 import { InternalContainer } from './internal-container'
-import { IStringIndex } from '../types'
+import { ICache } from '../types'
 
 export class Container implements IContainer {
 
     constructor(private _container: IInternalContainer) { }
 
-    public get cache(): IStringIndex<any> {
+    public get cache(): ICache {
         return this._container.cache
     }
 

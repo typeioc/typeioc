@@ -1,6 +1,6 @@
 import { Tap } from '@common/tap'
 const tap = require('tap') as Tap
-import typeioc, { IContainerBuilder } from '@lib'
+import typeioc, { IContainerBuilder, ResolutionError } from '@lib'
 import * as Integration from '@data/decorator/integration'
 import * as ValueResolution from '@data/decorator/resolution/by-value'
 
@@ -111,16 +111,42 @@ tap.test<Context>('cached resolutions cleanup', (test) => {
     container.resolveWith('A').cache('a').exec()
     container.resolveWith('B').cache('b').exec()
 
-    const a = container.cache.a
-    const b = container.cache.b
+    const { a, b } = container.cache.instance
 
     container.dispose()
 
     test.equal(a.a, 'A')
     test.equal(b.b, 'B')
 
-    test.equal(container.cache.a, undefined)
-    test.equal(container.cache.b, undefined)
+    test.equal(container.cache.instance.a, undefined)
+    test.equal(container.cache.instance.b, undefined)
 
+    test.done()
+})
+
+tap.test<Context>('cache resolve throws when no resolution', (test) => {
+    const { builder } = test.context
+
+    const serviceName = 'A'
+    const container = builder.build()
+
+    const delegate = () => {
+        container.cache.resolve<number>(serviceName)
+    }
+
+    test.throws(delegate, new ResolutionError({
+        message: 'Could not resolve service',
+        data: serviceName
+    }))
+
+    test.done()
+})
+
+tap.test<Context>('cache instance returns undefined when no resolution', (test) => {
+    const { builder } = test.context
+
+    const container = builder.build()
+
+    test.ok(container.cache.instance.a === undefined)
     test.done()
 })

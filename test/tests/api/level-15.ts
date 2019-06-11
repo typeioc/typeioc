@@ -200,8 +200,8 @@ tap.test<Context>('resolveWith resolves cache default', async test => {
     .execAsync()
     .then(() => {
         const cache = container.cache
-        const actual = cache.Test2Base
-        const actual2 = cache.Test2Base
+        const actual = cache.resolve<Test2Base>('Test2Base')
+        const actual2 = cache.resolve<Test2Base>('Test2Base')
 
         test.ok(actual)
         test.ok(actual instanceof Test2)

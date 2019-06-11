@@ -28,8 +28,8 @@ tap.test<Context>('resolveWith resolves cache default', (test) => {
 
     const cache = container.cache
 
-    const actual = cache.Test2Base
-    const actual2 = cache.Test2Base
+    const actual = cache.instance.Test2Base
+    const actual2 = cache.instance.Test2Base
 
     test.ok(actual instanceof Test2)
     test.equal(actual.Name, 'test 2')
@@ -56,7 +56,7 @@ tap.test<Context>('resolveWith resolves cache with name', (test) => {
 
     const cache = container.cache
 
-    const actual = cache.TestName111
+    const actual = cache.resolve<Test2Base>('TestName111')
 
     test.ok(actual instanceof Test2)
     test.equal(actual.Name, 'test 2')
@@ -85,7 +85,7 @@ tap.test<Context>('resolveWith resolves cache with service named resolution', (t
 
     const cache = container.cache
 
-    const actual = cache.AAAAA
+    const actual = cache.instance.AAAAA
 
     test.ok(actual instanceof Test2)
     test.equal(actual.Name, 'test 2')
@@ -112,8 +112,8 @@ tap.test<Context>('resolveWith resolves cache with service value name', (test) =
 
     const cache = container.cache
 
-    const actual = cache[name]
-    const actual2 = cache.AAAAAA
+    const actual = cache.instance[name]
+    const actual2 = cache.instance.AAAAAA
 
     test.ok(actual instanceof Test2)
     test.equal(actual.Name, 'test 2')
@@ -392,7 +392,7 @@ tap.test<Context>('resolve with args cache no name', (test) => {
         .cache()
         .exec()
 
-    const actual = container.cache.Test1Base
+    const actual = container.cache.instance.Test1Base
 
     test.ok(actual instanceof Test4)
     test.equal(actual.Name, argName)

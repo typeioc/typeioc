@@ -16,7 +16,7 @@ export interface IContainer
 
 |  Property | Type | Description |
 |  --- | --- | --- |
-|  [cache](./typeioc.icontainer.cache.md) | <code>IStringIndex&lt;any&gt;</code> | Represents a dictionary of cached components/resolved registrations [IStringIndex](./typeioc.istringindex.md) |
+|  [cache](./typeioc.icontainer.cache.md) | <code>ICache</code> | Represents a dictionary of cached components/resolved registrations [ICache](./typeioc.icache.md) |
 
 ## Methods
 

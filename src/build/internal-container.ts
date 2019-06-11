@@ -7,14 +7,15 @@ import {
     IRegistrationBaseService,
     IContainerApiService,
     IInvokerService,
+    IResolutionCacheService,
     IContainer,
     IInternalContainer,
     IContainerApi, ImportApi,
     IInvoker
 } from './types'
 import { IDecoratorResolutionParamsData } from '../decorators'
-import { IDisposableStorage, IRegistrationStorage } from '../storage'
-import { IndexedCollection, IStringIndex } from '../types'
+import { IDisposableStorage, IRegistrationStorage, IResolutionCache } from '../storage'
+import { IndexedCollection, ICache } from '../types'
 import { IResolveWith } from './types/resolution'
 
 export class InternalContainer implements IInternalContainer {
@@ -24,34 +25,35 @@ export class InternalContainer implements IInternalContainer {
     private _pendingResolutions: IndexedCollection<boolean>
     private _disposableStorage: IDisposableStorage
     private _collection: IRegistrationStorage
-    private _cache: IStringIndex<any>
     private _invoker: IInvoker
     private _dependencyScope = Scope.None
     private _dependencyOwner = Owner.Externals
+    private _cache: ICache
+    private _resolutionCache: IResolutionCache
 
     constructor(private _registrationStorageService: IRegistrationStorageService,
                 private _disposableStorageService: IDisposableStorageService,
                 private _registrationBaseService: IRegistrationBaseService,
                 private _containerApiService: IContainerApiService,
                 private _invokerService: IInvokerService,
+                private _resolutionCacheService: IResolutionCacheService,
                 private _resolutionDetails?: IDecoratorResolutionParamsData) {
 
         this._collection = this._registrationStorageService.create()
         this._disposableStorage = this._disposableStorageService.create()
         this._invoker = this._invokerService.create(this, _resolutionDetails)
-        this._cache = {}
-
         this._pendingResolutions = {}
 
         this.registerImpl = this.registerImpl.bind(this)
+        this._resolutionCache = _resolutionCacheService.create()
+        this._cache = this.createCache(this._resolutionCache)
     }
 
-    public get cache(): IStringIndex<any> {
+    public get cache(): ICache {
         return this._cache
     }
 
     public add(registrations : IRegistrationBase[]) {
-
         registrations.forEach(this.registerImpl)
     }
 
@@ -63,6 +65,7 @@ export class InternalContainer implements IInternalContainer {
             this._registrationBaseService,
             this._containerApiService,
             this._invokerService,
+            this._resolutionCacheService,
             this._resolutionDetails)
 
         child.parent = this
@@ -71,7 +74,6 @@ export class InternalContainer implements IInternalContainer {
     }
 
     public dispose(): void {
-
         this._disposableStorage.disposeItems()
 
         while (this.children.length > 0) {
@@ -80,10 +82,7 @@ export class InternalContainer implements IInternalContainer {
         }
 
         this._collection.clear()
-
-        for (const member in this._cache) {
-            delete this._cache[member]
-        }
+        this._resolutionCache.clear()
     }
 
     public disposeAsync(): never {
@@ -396,6 +395,18 @@ export class InternalContainer implements IInternalContainer {
         return <R>child.resolveBase(baseRegistration, api.throwResolveError)
     }
 
+    private createCache(resolutionCache: IResolutionCache): ICache {
+        return {
+            get instance() {
+                return resolutionCache.instance
+            },
+
+            resolve(name: string) {
+                return resolutionCache.resolve(name)
+            }
+        }
+    }
+
     private addToCache(value: {}, api: IContainerApi<{}>) : void {
         let name: string
 
@@ -414,11 +425,6 @@ export class InternalContainer implements IInternalContainer {
             throw new ResolutionError({ message: 'Missing cache name' })
         }
 
-        Object.defineProperty(this._cache, name, {
-            value,
-            writable : true,
-            enumerable : true,
-            configurable : true
-        })
+        this._resolutionCache.add(name, value)
     }
 }

@@ -229,7 +229,7 @@ tap.test<Context>('resolveWith attempt cache', (test) => {
         .cache()
         .exec()
 
-    const actual = container.cache.Test1Base
+    const actual = container.cache.instance.Test1Base
 
     test.ok(actual instanceof Test4)
     test.equal(actual.Name, argName)
@@ -299,7 +299,7 @@ tap.test<Context>('resolutionWith name cache', (test) => {
         .cache()
         .exec()
 
-    const actual = container.cache.AAAAA
+    const actual = container.cache.instance.AAAAA
 
     test.ok(actual instanceof Test4)
     test.equal(actual.Name, argName)
@@ -340,7 +340,7 @@ tap.test<Context>('resolveWith dependencies cache', (test) => {
         .cache()
         .exec()
 
-    const actual = container.cache.Test1Base
+    const actual = container.cache.instance.Test1Base
 
     test.ok(actual)
     test.ok(actual instanceof Test3)

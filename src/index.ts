@@ -42,7 +42,7 @@ export {
     Scope, ScopeType, scope,
     CallInfo, CallInfoType, callInfo
 } from './common'
-export { IStringIndex } from './types'
+export { ICache } from './types'
 export {
     IDecorator, IDecoratorRegistration, IDecoratorResolution,
     WithDecoratorRegister, WithDecoratorRegisterInitializeBy,

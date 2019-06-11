@@ -6,13 +6,15 @@ tap.beforeEach((done, setUp) => {
     const registrationStorageService = { create: () => { }, };
     const disposeStorageService = { create: () => { }, };
     const invokerService = { create: () => { }, };
+    const resolveCacheService = { create: () => ({ cache: {}, resolutionCache: {} }) }
 
     setUp.context.internalContainer = new InternalContainer(
         registrationStorageService,
         disposeStorageService,
         null,
         null,
-        invokerService)
+        invokerService,
+        resolveCacheService)
 
     done()
 })

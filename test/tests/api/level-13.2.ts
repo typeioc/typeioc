@@ -153,7 +153,7 @@ tap.test<Context>('resolve by cache', (test) => {
 
     test.equal(actual.foo(), 'Test1 : Test')
 
-    const actual2 = <CacheResolution.TestBase>cache.cache['TestBase']
+    const actual2 = <CacheResolution.TestBase>cache.cache.instance['TestBase']
 
     test.ok(actual2)
     test.equal(actual2.foo(), 'Test')
@@ -188,7 +188,7 @@ tap.test<Context>('resolve full api', (test) => {
     test.ok(actual1)
     test.equal(actual1.foo(), 'Test 1 2')
 
-    const actual2 = <FullResolution.TestBase>fullApi.cache['Some name']
+    const actual2 = <FullResolution.TestBase>fullApi.cache.instance['Some name']
     test.equal(actual2.foo(), 'Test 1 2')
 
     test.done()

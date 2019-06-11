@@ -29,6 +29,7 @@ Dependency injection container for TypeScript / JavaScript
 
 |  Interface | Description |
 |  --- | --- |
+|  [ICache](./typeioc.icache.md) | Represents cached resolutions interface. |
 |  [ICallInfo](./typeioc.icallinfo.md) | Represents a substitute parameters specification interface |
 |  [IContainer](./typeioc.icontainer.md) | Represents container interface |
 |  [IContainerBuilder](./typeioc.icontainerbuilder.md) | Represents container builder interface |
@@ -62,7 +63,6 @@ Dependency injection container for TypeScript / JavaScript
 |  Type Alias | Description |
 |  --- | --- |
 |  [CallInfoType](./typeioc.callinfotype.md) | Represent original substituted subject member type metadata |
-|  [IStringIndex](./typeioc.istringindex.md) |  |
 |  [OwnerType](./typeioc.ownertype.md) | Represents resolution instance ownership type metadata |
 |  [RegisterWithInitializeBy](./typeioc.registerwithinitializeby.md) | Represents a step within fluent cascading API registration sequence where <code>initializeBy</code> method was omitted |
 |  [RegisterWithLazy](./typeioc.registerwithlazy.md) | Represents a step within fluent cascading API registration sequence where <code>lazy</code> and <code>dispose</code> methods were omitted |

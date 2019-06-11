@@ -1,5 +1,10 @@
 import { IRegistrationBase, IRegistration } from '../../registration'
-import { IRegistrationStorage, IDisposableStorage, InternalStorage } from '../../storage'
+import {
+    IRegistrationStorage,
+    IDisposableStorage,
+    InternalStorage,
+    IResolutionCache
+} from '../../storage'
 import {
     IInternalContainer, IContainer, IContainerApi, ImportApi, IInvoker, IContainerBuilder
 } from './common'
@@ -31,6 +36,10 @@ export interface IInternalStorageService<K, T> {
 
 export interface IInlineInternalStorageService {
     create<R1, R2>(): InternalStorage<R1, R2>
+}
+
+export interface IResolutionCacheService {
+    create(): IResolutionCache
 }
 
 export interface IContainerService {
