@@ -6,7 +6,7 @@ Dependency injection container for typescript / javascript.
 
 ...X | Windows
 ---- | -------
-[![Build Status](https://travis-ci.org/maxgherman/TypeIOC.svg?branch=master)](https://travis-ci.org/maxgherman/TypeIOC)|[![Build status](https://ci.appveyor.com/api/projects/status/0813svinij5s2cg7)](https://ci.appveyor.com/project/maxgherman/typeioc)
+[![Build Status](https://travis-ci.org/typeioc/TypeIOC.svg?branch=master)](https://travis-ci.org/typeioc/TypeIOC)|[![Build status](https://ci.appveyor.com/api/projects/status/0813svinij5s2cg7)](https://ci.appveyor.com/project/maxgherman/typeioc)
 
  [![Coverage Status](https://img.shields.io/coveralls/maxgherman/TypeIOC.svg)](https://coveralls.io/r/maxgherman/TypeIOC?branch=master)
 
