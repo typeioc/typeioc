@@ -40,7 +40,7 @@
     "node": ">=10.0.0"
   },
   "description": "Dependency injection container for node typescript / javascript",
-  "homepage": "https://github.com/maxgherman/TypeIOC",
+  "homepage": "https://github.com/typeioc/TypeIOC",
   "keywords": [
     "typescript",
     "dependency",
@@ -56,11 +56,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/maxgherman/TypeIOC.git"
+    "url": "https://github.com/typeioc/TypeIOC.git"
   },
   "bugs": {
     "email": "german.maxim@gmail.com",
-    "url": "https://github.com/maxgherman/TypeIOC/issues"
+    "url": "https://github.com/typeioc/TypeIOC/issues"
   },
   "license": "MIT",
   "readmeFilename": "README.md"
