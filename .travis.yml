@@ -1,4 +1,12 @@
 language: node_js
+
+# branches to build
+branches:
+  # whitelist
+  only:
+    - master
+    - /version*/
+
 node_js:
   - "10.0.0"
   - "11.1.0"
