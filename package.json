@@ -28,12 +28,12 @@
   "dependencies": {
     "hashes": "0.1.4",
     "reflect-metadata": "0.1.13",
-    "tslib": "1.9.3"
+    "tslib": "1.10.0"
   },
   "devDependencies": {
-    "@microsoft/api-documenter": "7.2.1",
-    "@microsoft/api-extractor": "7.1.6",
-    "@types/node": "12.0.4",
+    "@microsoft/api-documenter": "7.3.2",
+    "@microsoft/api-extractor": "7.2.0",
+    "@types/node": "12.0.8",
     "@types/sinon": "7.0.12",
     "gitbook-plugin-anchorjs": "2.0.1",
     "gitbook-plugin-github": "2.0.0",
@@ -41,7 +41,7 @@
     "gitbook-plugin-sectionx": "3.1.0",
     "rimraf": "2.6.3",
     "sinon": "7.3.2",
-    "tap": "14.2.0",
+    "tap": "14.2.2",
     "tsconfig-paths": "3.8.0",
     "tslint": "5.17.0",
     "tslint-config-airbnb": "5.11.1",
@@ -51,7 +51,7 @@
     "node": ">=10.0.0"
   },
   "description": "Dependency injection container for node typescript / javascript",
-  "homepage": "https://github.com/maxgherman/TypeIOC",
+  "homepage": "https://github.com/typeioc/TypeIOC",
   "keywords": [
     "typescript",
     "dependency",
@@ -67,11 +67,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/maxgherman/TypeIOC.git"
+    "url": "https://github.com/typeioc/TypeIOC.git"
   },
   "bugs": {
     "email": "german.maxim@gmail.com",
-    "url": "https://github.com/maxgherman/TypeIOC/issues"
+    "url": "https://github.com/typeioc/TypeIOC/issues"
   },
   "license": "MIT",
   "readmeFilename": "README.md"
