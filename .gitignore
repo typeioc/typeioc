@@ -2,6 +2,7 @@
 !api-metadata/
 api-metadata/*
 !api-metadata/etc/
+!api-metadata/index.md
 lib
 node_modules
 coverage
