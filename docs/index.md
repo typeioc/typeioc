@@ -2,7 +2,9 @@
 
 ### [Main](./typeioc.md)
 
-### [Documentation](https://maxgherman.github.io/TypeIOC-docs/)
+### [Wiki](https://github.com/typeioc/typeioc/wiki)
 
-### [Examples](https://github.com/maxgherman/TypeIOC-examples)
+### [Examples TypeScript](https://github.com/typeioc/examples-ts)
+
+### [Examples JavaScript](https://github.com/typeioc/examples-js)
 
