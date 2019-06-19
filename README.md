@@ -1,16 +1,23 @@
-# TypeIOC
+<h1 align="center">TypeIOC</h1>
+<h5 align="center">
+Dependency injection container for typescript / javascript
+</h5>
 
-Dependency injection container for typescript / javascript.
+<p>
 
-<br/>
+...X | Windows | Coverage
+---- | --------|---------
+[![Build Status](https://travis-ci.org/typeioc/typeioc.svg?branch=master)](https://travis-ci.org/typeioc/typeioc)|[![Build status](https://ci.appveyor.com/api/projects/status/syvw7sg5p9qlg2pd/branch/master?svg=true)](https://ci.appveyor.com/project/maxgherman/typeioc/branch/master)|[![Coverage Status](https://img.shields.io/coveralls/maxgherman/TypeIOC.svg)](https://coveralls.io/r/maxgherman/TypeIOC?branch=master)
 
-...X | Windows
----- | -------
-[![Build Status](https://travis-ci.org/typeioc/typeioc.svg?branch=master)](https://travis-ci.org/typeioc/typeioc)|[![Build status](https://ci.appveyor.com/api/projects/status/syvw7sg5p9qlg2pd/branch/master?svg=true)](https://ci.appveyor.com/project/maxgherman/typeioc/branch/master)
 
- [![Coverage Status](https://img.shields.io/coveralls/maxgherman/TypeIOC.svg)](https://coveralls.io/r/maxgherman/TypeIOC?branch=master)
+</p>
 
-## [Documentation](https://maxgherman.github.io/TypeIOC-docs/)
+## Install
+
+```sh
+npm install typeioc
+```
+## [Documentation](https://github.com/typeioc/typeioc/docs/summary.md)
 
 ### [Examples](https://github.com/maxgherman/TypeIOC-examples)
 
@@ -36,3 +43,8 @@ Dependency injection container for typescript / javascript.
 - [ ] - Group registration.
 - [ ] - Decorative style interceptors.
 - [ ] - Usage with 3d part libraries.
+
+
+## License
+
+This project is [MIT](https://github.com/typeioc/typeioc/blob/master/LICENSE) licensed.

@@ -3,7 +3,6 @@ _book
 !api-metadata/
 api-metadata/*
 !api-metadata/etc/
-!api-metadata/docs/
 lib
 node_modules
 coverage
