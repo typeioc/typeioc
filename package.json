@@ -14,7 +14,8 @@
     "test:100": "npm run test -- --100",
     "extract-api": "api-extractor run --local --verbose",
     "docs:api:update": "npm run build && npm run extract-api && npm run docs:api && git checkout ./docs/index.md",
-    "docs:api": "api-documenter markdown -i ./api-metadata/temp -o ./docs"
+    "docs:api": "api-documenter markdown -i ./api-metadata/temp -o ./docs",
+    "docs:publish": "cd docs && git init && git config user.email \"german.maxim@gmail.com\" && git config user.name \"Max Gherman\" && git remote add origin https://github.com/maxgherman/TypeIOC-docs.git && git add . && git commit -am 'Update docs' && git push origin master --force"
   },
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
