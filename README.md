@@ -17,9 +17,12 @@ Dependency injection container for typescript / javascript
 ```sh
 npm install typeioc
 ```
-## [Documentation](https://github.com/typeioc/typeioc/docs/summary.md)
 
-### [Examples](https://github.com/maxgherman/TypeIOC-examples)
+## [Documentation](https://github.com/typeioc/typeioc/wiki)
+
+### [Examples TypeScript](https://github.com/typeioc/examples-ts)
+
+### [Examples JavaScript](https://github.com/typeioc/examples-js)
 
 ### Features
 

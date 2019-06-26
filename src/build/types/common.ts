@@ -15,7 +15,7 @@ export interface IContainer {
      * Represents a dictionary of cached components/resolved registrations {@link ICache}
      *
      * @remarks
-     * If a service is registered with cache option, its resolution is available
+     * If a service is registered with a cache option, its resolution is available
      * through the `cache` property.
      */
     cache: ICache

@@ -14,5 +14,5 @@ cache: ICache;
 
 ## Remarks
 
-If a service is registered with cache option, its resolution is available through the `cache` property.
+If a service is registered with a cache option, its resolution is available through the `cache` property.
 
