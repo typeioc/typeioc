@@ -4,7 +4,7 @@
 
 ### [Wiki](https://github.com/typeioc/typeioc/wiki)
 
-### [Examples TypeScript](https://github.com/typeioc/examples-ts)
-
-### [Examples JavaScript](https://github.com/typeioc/examples-js)
+### Examples
+- [TypeScript](https://github.com/typeioc/examples-ts)
+- [JavaScript](https://github.com/typeioc/examples-js)
 
