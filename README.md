@@ -21,8 +21,8 @@ npm install typeioc
 ## [Documentation](https://github.com/typeioc/typeioc/wiki)
 
 ## Examples
-    * [TypeScript](https://github.com/typeioc/examples-ts)
-    * [JavaScript](https://github.com/typeioc/examples-js)
+#### * [TypeScript](https://github.com/typeioc/examples-ts)
+#### * [JavaScript](https://github.com/typeioc/examples-js)
 
 ### Features
 
