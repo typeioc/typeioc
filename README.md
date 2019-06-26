@@ -12,15 +12,15 @@ Dependency injection container for typescript / javascript
 
 </p>
 
-## Install
+### Install
 
 ```sh
 npm install typeioc
 ```
 
-## [Documentation](https://github.com/typeioc/typeioc/wiki)
+### [Documentation](https://github.com/typeioc/typeioc/wiki)
 
-## Examples
+### Examples
 #### * [TypeScript](https://github.com/typeioc/examples-ts)
 #### * [JavaScript](https://github.com/typeioc/examples-js)
 
@@ -48,6 +48,6 @@ npm install typeioc
 - [ ] - Usage with 3d part libraries.
 
 
-## License
+### License
 
 This project is [MIT](https://github.com/typeioc/typeioc/blob/master/LICENSE) licensed.
