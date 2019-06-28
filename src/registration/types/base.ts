@@ -7,7 +7,7 @@ import {
 } from './common'
 
 import { IContainer } from '../../build'
-import { OwnerType, Scope } from '../../common'
+import { OwnerType, ScopeType } from '../../common'
 
 export interface IRegistrationBase {
     id: string
@@ -16,7 +16,7 @@ export interface IRegistrationBase {
     factoryType?: {}
     factoryValue?: {}
     name?: string
-    scope?: Scope
+    scope?: ScopeType
     owner?: OwnerType
     initializer?: IInitializer<{}>
     disposer?: IDisposer<{}>

@@ -1,6 +1,6 @@
 import { IRegistrationBase, IDynamicDependency } from '../registration'
 import { ResolutionError, CircularDependencyError } from '../exceptions'
-import { owner, Scope } from '../common'
+import { owner, scope } from '../common'
 import {
     IRegistrationStorageService,
     IDisposableStorageService,
@@ -26,7 +26,7 @@ export class InternalContainer implements IInternalContainer {
     private _disposableStorage: IDisposableStorage
     private _collection: IRegistrationStorage
     private _invoker: IInvoker
-    private _dependencyScope = Scope.None
+    private _dependencyScope = scope.none
     private _dependencyOwner = owner.externals
     private _cache: ICache
     private _resolutionCache: IResolutionCache
@@ -238,13 +238,13 @@ export class InternalContainer implements IInternalContainer {
                          throwIfNotFound: boolean): {} {
 
         switch (registration.scope) {
-            case Scope.None:
+            case scope.none:
                 return this.createTrackable(registration, throwIfNotFound)
 
-            case Scope.Container:
+            case scope.container:
                 return this.resolveContainerScope(registration, throwIfNotFound)
 
-            case Scope.Hierarchy:
+            case scope.hierarchy:
                 return this.resolveHierarchyScope(registration, throwIfNotFound)
 
             default:

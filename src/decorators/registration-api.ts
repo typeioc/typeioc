@@ -9,13 +9,13 @@ import {
     WithDecoratorRegisterScope
 } from './types/registration'
 import { IInitializer, IDisposer } from '../registration'
-import { owner, OwnerType, Scope } from '../common'
+import { owner, OwnerType, scope, ScopeType } from '../common'
 
 export class RegistrationApi<T> implements IDecoratorRegistrationApi<T> {
 
     private _service?: {}
     private _name?: string
-    private _scope?: Scope
+    private _scope?: ScopeType
     private _owner?: OwnerType
     private _initializedBy?: IInitializer<T>
     private _disposedBy?: IDisposer<T>
@@ -29,7 +29,7 @@ export class RegistrationApi<T> implements IDecoratorRegistrationApi<T> {
         return this._name
     }
 
-    public get scope(): Scope | undefined {
+    public get scope(): ScopeType | undefined {
         return this._scope
     }
 
@@ -170,7 +170,7 @@ export class RegistrationApi<T> implements IDecoratorRegistrationApi<T> {
         }
     }
 
-    private within(scope: Scope): WithDecoratorRegisterScope<T> {
+    private within(scope: ScopeType): WithDecoratorRegisterScope<T> {
 
         checkNullArgument(scope, 'scope')
 
@@ -185,15 +185,15 @@ export class RegistrationApi<T> implements IDecoratorRegistrationApi<T> {
     }
 
     private transient(): WithDecoratorRegisterScope<T> {
-        return this.within(Scope.None)
+        return this.within(scope.none)
     }
 
     private singleton(): WithDecoratorRegisterScope<T> {
-        return this.within(Scope.Hierarchy)
+        return this.within(scope.hierarchy)
     }
 
     private instancePerContainer(): WithDecoratorRegisterScope<T> {
-        return this.within(Scope.Container)
+        return this.within(scope.container)
     }
 
     private ownedBy(owner: OwnerType): WithDecoratorRegister<T> {

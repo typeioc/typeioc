@@ -1,5 +1,5 @@
 import { IContainer } from '../../build'
-import { Scope, OwnerType } from '../../common'
+import { ScopeType, OwnerType } from '../../common'
 import { Omit } from '../../utils'
 
 export const enum RegistrationType {
@@ -124,7 +124,7 @@ export interface IRegisterWithAs<T> {
      * @param scope - the value of the scope {@link Scope}
      * @returns - an instance of {@link RegisterWithScope} interface
      */
-    within(scope: Scope): RegisterWithScope<T>
+    within(scope: ScopeType): RegisterWithScope<T>
 
     /**
      * Specifies transient scope resolution. Every resolution of service returns new instance

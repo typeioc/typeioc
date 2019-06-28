@@ -1,6 +1,6 @@
 import { Tap } from '@common/tap'
 const tap = require('tap') as Tap
-import typeioc, { IContainerBuilder, Scope, scope } from '@lib'
+import typeioc, { IContainerBuilder, scope } from '@lib'
 import { Test1Base, Test1, Test4 } from '@data/base'
 
 type Context = { builder: IContainerBuilder }
@@ -15,9 +15,9 @@ tap.test('scope is exported', (test) => {
     test.equal(scope.container, 2)
     test.equal(scope.hierarchy, 3)
 
-    test.equal(Scope.None, 1)
-    test.equal(Scope.Container, 2)
-    test.equal(Scope.Hierarchy, 3)
+    test.equal(scope.none, 1)
+    test.equal(scope.container, 2)
+    test.equal(scope.hierarchy, 3)
 
     test.done()
 })
@@ -47,7 +47,7 @@ tap.test<Context>('scope none behaves as no instance reuse', (test) => {
 
     builder.register<Test1Base>(Test1Base)
         .as(() => new Test4('test 4'))
-        .within(Scope.None)
+        .within(scope.none)
 
     const container = builder.build()
     const test1 = container.resolve<Test4>(Test1Base)
@@ -147,7 +147,7 @@ tap.test<Context>('scope hierarchy reuses instances across containers', (test) =
 
     builder.register(Test1Base)
         .as(() => new Test4('test 4'))
-        .within(Scope.Hierarchy)
+        .within(scope.hierarchy)
 
     const container = builder.build()
     const test1 = container.resolve<Test1>(Test1Base)
@@ -197,7 +197,7 @@ tap.test<Context>('resolution with arguments returns new instances for scope hie
 
     builder.register(Test1Base)
         .as((_c, data: string) => new Test4(data))
-        .within(Scope.Hierarchy)
+        .within(scope.hierarchy)
 
     const container = builder.build()
     const child = container.createChild()
@@ -223,7 +223,7 @@ tap.test<Context>('resolution with arguments returns new instance for container'
 
     builder.register(Test1Base)
         .as((_c, data: string) => new Test4(data))
-        .within(Scope.Container)
+        .within(scope.container)
 
     const container = builder.build()
     const test1 = container.resolve<Test1Base>(Test1Base, 'A')

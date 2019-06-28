@@ -8,7 +8,7 @@ import {
     IRegistrationBase,
     IRegistration
 } from './types'
-import { scope, owner, Scope, OwnerType } from '../common'
+import { scope, owner, ScopeType, OwnerType } from '../common'
 import { checkNullArgument } from '../utils'
 
 export class Registration<T> implements IRegistration<T> {
@@ -105,7 +105,7 @@ export class Registration<T> implements IRegistration<T> {
         }
     }
 
-    private within(scope: Scope): RegisterWithScope<T> {
+    private within(scope: ScopeType): RegisterWithScope<T> {
         checkNullArgument(scope, 'scope')
 
         this._base.scope = scope

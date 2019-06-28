@@ -39,7 +39,7 @@ export {
 export { IInterceptor, ISubstituteInfo, ICallInfo, IWithSubstituteResult } from './interceptors'
 export {
     OwnerType, owner,
-    Scope, ScopeType, scope,
+    ScopeType, scope,
     CallInfo, CallInfoType, callInfo
 } from './common'
 export { ICache } from './types'

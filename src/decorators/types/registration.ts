@@ -1,4 +1,4 @@
-import { OwnerType, Scope } from '../../common'
+import { OwnerType, ScopeType } from '../../common'
 import { IDisposer, IInitializer } from '../../registration'
 import { Omit } from '../../utils'
 
@@ -44,7 +44,7 @@ export interface IDecoratorRegistration<T> {
      * @param scope - the value of the scope {@link Scope}
      * @returns - an instance of {@link WithDecoratorRegisterScope} interface
      */
-    within(scope: Scope): WithDecoratorRegisterScope<T>
+    within(scope: ScopeType): WithDecoratorRegisterScope<T>
 
     /**
      * Specifies transient scope resolution. Every resolution of service returns new instance

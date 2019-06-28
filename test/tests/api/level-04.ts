@@ -1,6 +1,6 @@
 import { Tap } from '@common/tap'
 const tap = require('tap') as Tap
-import typeioc, { IContainerBuilder, scope, ResolutionError } from '@lib'
+import typeioc, { IContainerBuilder, scope, ResolutionError, ScopeType } from '@lib'
 import { Test1Base, Test1, Test4 } from '@data/base'
 
 type Context = { builder: IContainerBuilder }
@@ -136,7 +136,7 @@ tap.test<Context>('unknown scope error', (test) => {
 
     builder.register<Test1Base>(Test1Base)
         .as(() => new Test4('test 4'))
-        .within(5)
+        .within(5 as unknown as ScopeType)
 
     const container = builder.build()
     const child = container.createChild()

@@ -1,4 +1,4 @@
-import typeioc, { Scope } from '@lib'
+import typeioc, { scope } from '@lib'
 
 export const decorator = typeioc.createDecorator()
 
@@ -7,7 +7,7 @@ export class TestBase {
 }
 
 @decorator.provide<TestBase>(TestBase)
-    .within(Scope.None)
+    .within(scope.none)
     .register()
 export class Test extends TestBase {
 
@@ -36,7 +36,7 @@ export class TestBase2 {
 }
 
 @decorator.provide<TestBase2>(TestBase2)
-    .within(Scope.Container)
+    .within(scope.container)
     .register()
 export class Test2 extends TestBase2 {
     public text : string = ' test Container'
@@ -62,7 +62,7 @@ export class TestBase3 {
 }
 
 @decorator.provide<TestBase3>(TestBase3)
-    .within(Scope.Hierarchy)
+    .within(scope.hierarchy)
     .register()
 export class Test3 extends TestBase3 {
     public text: string = ' test Hierarchy'
