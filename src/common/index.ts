@@ -1,9 +1,9 @@
-import { owner, Owner } from './owner'
+import { owner, OwnerType } from './owner'
 import { scope, Scope } from './scope'
 
 export interface IDefaults {
     scope : Scope,
-    owner : Owner
+    owner : OwnerType
 }
 
 export const defaults: IDefaults = {
@@ -11,11 +11,11 @@ export const defaults: IDefaults = {
         return scope.none
     },
 
-    get owner(): Owner {
+    get owner(): OwnerType {
         return owner.container
     }
 }
 
-export { owner, Owner, OwnerType } from './owner'
+export { owner, OwnerType } from './owner'
 export { scope, Scope, ScopeType } from './scope'
 export { callInfo, CallInfo, CallInfoType  } from './call-info-type'

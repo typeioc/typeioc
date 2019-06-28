@@ -1,7 +1,7 @@
 import { Tap } from '@common/tap'
 const tap = require('tap') as Tap
 import typeioc,
-    { IContainer, IContainerBuilder, scope, owner, Owner, ResolutionError } from '@lib'
+    { IContainer, IContainerBuilder, scope, owner, ResolutionError } from '@lib'
 import {
     Test1Base,
     Test1,
@@ -22,8 +22,8 @@ tap.test('owner is exported', (test) => {
     test.equal(owner.container, 1)
     test.equal(owner.externals, 2)
 
-    test.equal(Owner.Container, 1)
-    test.equal(Owner.Externals, 2)
+    test.equal(owner.container, 1)
+    test.equal(owner.externals, 2)
 
     test.done()
 })
@@ -113,7 +113,7 @@ tap.test<Context>('container owned and container reused instances are disposed',
         .as(() => new Test5())
         .dispose((item)  => { (item as Test5).dispose() })
         .within(scope.container)
-        .ownedBy(Owner.Container)
+        .ownedBy(owner.container)
 
     const container = builder.build()
     const test1 = container.resolve<Test5>(Test1Base)
@@ -132,7 +132,7 @@ tap.test<Context>('container owned and hierarchy reused instances are disposed',
         .as(() => new Test5())
         .dispose((item)  => { (item as Test5).dispose() })
         .within(scope.hierarchy)
-        .ownedBy(Owner.Container)
+        .ownedBy(owner.container)
 
     const container = builder.build()
     const test1 = container.resolve<Test5>(Test1Base)
@@ -152,7 +152,7 @@ tap.test<Context>('child container instance with parent registration is not disp
         .as(() => new Test5())
         .dispose((item)  => { (item as Test5).dispose() })
         .within(scope.hierarchy)
-        .ownedBy(Owner.Container)
+        .ownedBy(owner.container)
 
     const container = builder.build()
     const child = container.createChild()
@@ -172,7 +172,7 @@ tap.test<Context>('disposing parent container disposes child container instances
         .as(() => new Test5())
         .dispose((item)  => { (item as Test5).dispose() })
         .within(scope.none)
-        .ownedBy(Owner.Container)
+        .ownedBy(owner.container)
 
     const container = builder.build()
     const child = container.createChild()
@@ -192,7 +192,7 @@ tap.test<Context>('disposing container does not dispose external owned instances
 
     builder.register<Test1Base>(Test1Base).as(() => new Test5()).
         within(scope.hierarchy).
-        ownedBy(Owner.Externals)
+        ownedBy(owner.externals)
 
     const container = builder.build()
     const child = container.createChild()
@@ -349,13 +349,13 @@ tap.test<Context>('instances from different containers are disposed independentl
         .as(() => new Test5())
         .dispose((item)  => (item as Test5).dispose())
         .within(scope.none)
-        .ownedBy(Owner.Container)
+        .ownedBy(owner.container)
 
     secondBuilder.register<Test1Base>(Test1Base)
         .as(() => new Test5())
         .dispose((item)  => { (item as Test5).dispose() })
         .within(scope.none)
-        .ownedBy(Owner.Container)
+        .ownedBy(owner.container)
 
     const container = builder.build()
     const secondContainer = secondBuilder.build()

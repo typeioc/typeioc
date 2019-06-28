@@ -8,7 +8,7 @@ import {
 } from './types'
 
 import { IContainer } from '../build'
-import { Owner, Scope } from '../common'
+import { OwnerType, Scope } from '../common'
 import { ApplicationError } from '../exceptions'
 import { uuid, factoryValueKey, isArray } from '../utils'
 
@@ -19,7 +19,7 @@ export class RegistrationBase implements IRegistrationBase {
     private _factoryValue?: {}
     private _name?: string
     private _scope?: Scope
-    private _owner?: Owner
+    private _owner?: OwnerType
     private _initializer?: IInitializer<{}>
     private _disposer?: IDisposer<{}>
     private _args: {}[] = []
@@ -50,11 +50,11 @@ export class RegistrationBase implements IRegistrationBase {
         this._scope = value
     }
 
-    public get owner(): Owner | undefined {
+    public get owner(): OwnerType | undefined {
         return this._owner
     }
 
-    public set owner(value: Owner | undefined) {
+    public set owner(value: OwnerType | undefined) {
         this._owner = value
     }
 

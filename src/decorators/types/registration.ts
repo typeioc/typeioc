@@ -1,4 +1,4 @@
-import { Owner, Scope } from '../../common'
+import { OwnerType, Scope } from '../../common'
 import { IDisposer, IInitializer } from '../../registration'
 import { Omit } from '../../utils'
 
@@ -73,7 +73,7 @@ export interface IDecoratorRegistration<T> {
      * @param owner - the value of the owner {@link Owner}
      * @returns - an instance of {@link WithDecoratorRegister} interface
      */
-    ownedBy(owner: Owner): WithDecoratorRegister<T>
+    ownedBy(owner: OwnerType): WithDecoratorRegister<T>
 
     /**
      * Specifies ownership model maintained by container (default behavior)

@@ -9,14 +9,14 @@ import {
     WithDecoratorRegisterScope
 } from './types/registration'
 import { IInitializer, IDisposer } from '../registration'
-import { Owner, Scope } from '../common'
+import { owner, OwnerType, Scope } from '../common'
 
 export class RegistrationApi<T> implements IDecoratorRegistrationApi<T> {
 
     private _service?: {}
     private _name?: string
     private _scope?: Scope
-    private _owner?: Owner
+    private _owner?: OwnerType
     private _initializedBy?: IInitializer<T>
     private _disposedBy?: IDisposer<T>
     private _isLazy: boolean
@@ -33,7 +33,7 @@ export class RegistrationApi<T> implements IDecoratorRegistrationApi<T> {
         return this._scope
     }
 
-    public get owner(): Owner  | undefined {
+    public get owner(): OwnerType  | undefined {
         return this._owner
     }
 
@@ -196,7 +196,7 @@ export class RegistrationApi<T> implements IDecoratorRegistrationApi<T> {
         return this.within(Scope.Container)
     }
 
-    private ownedBy(owner: Owner): WithDecoratorRegister<T> {
+    private ownedBy(owner: OwnerType): WithDecoratorRegister<T> {
 
         checkNullArgument(owner, 'owner')
 
@@ -208,11 +208,11 @@ export class RegistrationApi<T> implements IDecoratorRegistrationApi<T> {
     }
 
     private ownedInternally(): WithDecoratorRegister<T> {
-        return this.ownedBy(Owner.Container)
+        return this.ownedBy(owner.container)
     }
 
     private ownedExternally(): WithDecoratorRegister<T> {
-        return this.ownedBy(Owner.Externals)
+        return this.ownedBy(owner.externals)
     }
 
     private register(): ClassDecorator {

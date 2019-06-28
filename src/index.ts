@@ -38,7 +38,7 @@ export {
     RegisterWithScope } from './registration'
 export { IInterceptor, ISubstituteInfo, ICallInfo, IWithSubstituteResult } from './interceptors'
 export {
-    Owner, OwnerType, owner,
+    OwnerType, owner,
     Scope, ScopeType, scope,
     CallInfo, CallInfoType, callInfo
 } from './common'

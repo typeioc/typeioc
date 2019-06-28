@@ -1,6 +1,6 @@
 import { IRegistrationBase, IDynamicDependency } from '../registration'
 import { ResolutionError, CircularDependencyError } from '../exceptions'
-import { Owner, Scope } from '../common'
+import { owner, Scope } from '../common'
 import {
     IRegistrationStorageService,
     IDisposableStorageService,
@@ -27,7 +27,7 @@ export class InternalContainer implements IInternalContainer {
     private _collection: IRegistrationStorage
     private _invoker: IInvoker
     private _dependencyScope = Scope.None
-    private _dependencyOwner = Owner.Externals
+    private _dependencyOwner = owner.externals
     private _cache: ICache
     private _resolutionCache: IResolutionCache
 
@@ -297,7 +297,7 @@ export class InternalContainer implements IInternalContainer {
                 instance = registration.initializer(this, instance)
             }
 
-            if (registration.owner === Owner.Container &&
+            if (registration.owner === owner.container &&
                 !registration.isLazy &&
                 registration.disposer) {
                 this._disposableStorage.add(instance, registration.disposer)

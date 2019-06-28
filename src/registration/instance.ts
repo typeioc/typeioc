@@ -8,7 +8,7 @@ import {
     IRegistrationBase,
     IRegistration
 } from './types'
-import { scope, owner, Scope, Owner } from '../common'
+import { scope, owner, Scope, OwnerType } from '../common'
 import { checkNullArgument } from '../utils'
 
 export class Registration<T> implements IRegistration<T> {
@@ -129,7 +129,7 @@ export class Registration<T> implements IRegistration<T> {
         return this.within(scope.container)
     }
 
-    private ownedBy(owner: Owner): void {
+    private ownedBy(owner: OwnerType): void {
         checkNullArgument(owner, 'owner')
 
         this._base.owner = owner

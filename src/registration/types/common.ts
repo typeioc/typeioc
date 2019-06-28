@@ -1,5 +1,5 @@
 import { IContainer } from '../../build'
-import { Scope, Owner } from '../../common'
+import { Scope, OwnerType } from '../../common'
 import { Omit } from '../../utils'
 
 export const enum RegistrationType {
@@ -152,7 +152,7 @@ export interface IRegisterWithAs<T> {
      * Specifies resolution disposal behavior
      * @param owner - the value of the owner {@link Owner}
      */
-    ownedBy(owner: Owner): void
+    ownedBy(owner: OwnerType): void
 
     /**
      * Specifies ownership model maintained by container (default behavior)

@@ -2,7 +2,7 @@ import { IContainer, IContainerBuilder, IApiCache } from '../../build'
 import { Index } from '../../types'
 import { IInternalStorage } from '../../storage'
 import { IInitializer, IDisposer, IRegistration } from '../../registration'
-import { Owner, Scope } from '../../common'
+import { OwnerType, Scope } from '../../common'
 import { IDecoratorRegistration } from './registration'
 import { IDecoratorResolution } from './resolution'
 
@@ -34,7 +34,7 @@ export interface IDecoratorRegistrationApi<T> {
     disposedBy?: IDisposer<T>
     name?: string
     scope?: Scope
-    owner?: Owner
+    owner?: OwnerType
     provide(service: {}): IDecoratorRegistration<T>
     provideUndefined() : IDecoratorRegistration<T>
 }
