@@ -2,11 +2,13 @@ import { IContainer } from '../../build'
 import { ScopeType, OwnerType } from '../../common'
 import { Omit } from '../../utils'
 
-export const enum RegistrationType {
-    Factory = 1,
-    FactoryType = 2,
-    FactoryValue = 3
-}
+export type RegistrationType = 1 | 2 | 3
+
+export const registrationType = Object.freeze({
+    factory: 1 as RegistrationType,
+    factoryType: 2 as RegistrationType,
+    factoryValue: 3 as RegistrationType
+})
 
 /**
  * Represents factory method registration interface.

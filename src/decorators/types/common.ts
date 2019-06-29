@@ -6,11 +6,13 @@ import { OwnerType, ScopeType } from '../../common'
 import { IDecoratorRegistration } from './registration'
 import { IDecoratorResolution } from './resolution'
 
-export const enum DecoratorResolutionParameterType {
-    Service = 1,
-    Value = 2,
-    FunctionValue = 3
-}
+export type DecoratorResolutionParameterType = 1 | 2 | 3
+
+export const decoratorResolutionParameter = Object.freeze({
+    service: 1,
+    value: 2,
+    functionValue: 3
+})
 
 export interface IDecoratorResolutionCollection extends Index<IDecoratorResolutionParams> {}
 

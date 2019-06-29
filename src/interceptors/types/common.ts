@@ -105,13 +105,15 @@ export interface IList<T> {
     tail: T | null
 }
 
-export const enum PropertyType {
-    Method = 1,                 // method
-    Getter = 2,                 // get
-    Setter = 3,                 // set
-    FullProperty = 4,           // get and set
-    Field = 5                   // field
-}
+export type PropertyType = 1 | 2 | 3 | 4 | 5
+
+export const propertyType = Object.freeze({
+    method: 1 as PropertyType,                 // method
+    getter: 2 as PropertyType,                 // get
+    setter: 3 as PropertyType,                 // set
+    fullProperty: 4 as PropertyType,           // get and set
+    field: 5 as PropertyType                   // field
+})
 
 export interface IStrategyInfo {
     type: PropertyType

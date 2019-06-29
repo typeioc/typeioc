@@ -1,5 +1,5 @@
 import { FactoryTypeStore, FactoryValueStore, FactoryStore } from  './types'
-import { RegistrationType } from '../registration'
+import { registrationType } from '../registration'
 
 export const empty = {
 
@@ -9,7 +9,7 @@ export const empty = {
                 noName: undefined,
                 names: {}
             },
-            type: RegistrationType.FactoryType
+            type: registrationType.factoryType
         }
     },
 
@@ -19,7 +19,7 @@ export const empty = {
                 noName: undefined,
                 names: {}
             },
-            type: RegistrationType.FactoryValue
+            type: registrationType.factoryValue
         }
     },
 
@@ -29,7 +29,7 @@ export const empty = {
                 noName: {},
                 names: {}
             },
-            type: RegistrationType.Factory
+            type: registrationType.factory
         }
     }
 }

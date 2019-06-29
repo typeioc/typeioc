@@ -2,7 +2,7 @@ import sinon from 'sinon'
 import { Tap } from '@common/tap'
 const tap = require('tap') as Tap
 import { createResolve, Context } from '@common/interceptor'
-import typeioc, { callInfo, ISubstituteInfo } from '@lib'
+import typeioc, { callInfo, ICallInfo, ISubstituteInfo } from '@lib'
 
 tap.beforeEach<Context>((done, setUp) => {
     setUp!.context.resolve = createResolve({
@@ -86,10 +86,10 @@ tap.test<Context>('decorate prototype setter for full property', (test) => {
     const substitute: ISubstituteInfo = {
         method: 'foo',
         type: callInfo.setter,
-        wrapper: (callInfo) => {
+        wrapper: (info: ICallInfo) => {
             wrapperStub()
-            const arg = 2 * callInfo.args[0]
-            return callInfo.invoke(arg)
+            const arg = 2 * info.args[0]
+            return info.invoke(arg)
         }
     }
 
@@ -124,10 +124,10 @@ tap.test<Context>('decorate prototype setter', (test) => {
     const substitute: ISubstituteInfo = {
         method: 'foo',
         type: callInfo.setter,
-        wrapper: (callInfo) => {
+        wrapper: (info: ICallInfo) => {
             wrapperStub()
-            const arg = 2 * callInfo.args[0]
-            return callInfo.invoke(arg)
+            const arg = 2 * info.args[0]
+            return info.invoke(arg)
         }
     }
 
@@ -156,22 +156,22 @@ tap.test<Context>('decorate with copy of args', (test) => {
     const substitute1: ISubstituteInfo = {
         method: 'foo',
         type: callInfo.method,
-        wrapper: (callInfo) => {
+        wrapper: (info: ICallInfo) => {
 
             wrapperStub()
-            const args = callInfo.args
+            const args = info.args
             args[0] = -1
 
-            const result = callInfo.invoke(args)
-            return 1 + callInfo.next!(result)
+            const result = info.invoke(args)
+            return 1 + info.next!(result)
         }
     }
 
     const substitute2: ISubstituteInfo  = {
         method: 'foo',
-        wrapper: (callInfo) => {
+        wrapper: (info: ICallInfo) => {
             wrapperStub()
-            return 1 + callInfo.result + callInfo.invoke(callInfo.args)
+            return 1 + info.result + info.invoke(info.args)
         }
     }
 
@@ -212,7 +212,7 @@ tap.test<Context>('decorate prototype full property', (test) => {
     const substitute: ISubstituteInfo = {
         method: 'foo',
         type: callInfo.getterSetter,
-        wrapper: (info) => {
+        wrapper: (info: ICallInfo) => {
             wrapperStub()
 
             if (info.type === callInfo.getter) {
@@ -277,7 +277,7 @@ tap.test<Context>('decorate inherited prototype full property', (test) => {
     const substitute: ISubstituteInfo = {
         method: 'foo',
         type: callInfo.getterSetter,
-        wrapper: (info) => {
+        wrapper: (info: ICallInfo) => {
             wrapperStub()
 
             if (info.type === callInfo.getter) {
@@ -345,18 +345,18 @@ tap.test<Context>('decorate_cross method', (test) => {
     const substitute1: ISubstituteInfo = {
         method: 'foo',
         type: callInfo.method,
-        wrapper: (callInfo) => {
+        wrapper: (info: ICallInfo) => {
             fooWrapperStub()
-            return 1 + callInfo.invoke(callInfo.args)
+            return 1 + info.invoke(info.args)
         }
     }
 
     const substitute2: ISubstituteInfo = {
         method: 'bar',
         type: callInfo.method,
-        wrapper: (callInfo) => {
+        wrapper: (info: ICallInfo) => {
             barWrapperStub()
-            return 2 + callInfo.invoke(callInfo.args)
+            return 2 + info.invoke(info.args)
         }
     }
 
@@ -403,18 +403,18 @@ tap.test<Context>('decorate cross method property', (test) => {
     const substitute1: ISubstituteInfo = {
         method: 'bar',
         type: callInfo.method,
-        wrapper: (callInfo) => {
+        wrapper: (info: ICallInfo) => {
             barWrapperStub()
-            return 1 + callInfo.invoke(callInfo.args)
+            return 1 + info.invoke(info.args)
         }
     }
 
     const substitute2: ISubstituteInfo = {
         method: 'foo',
         type: callInfo.getter,
-        wrapper: (callInfo) => {
+        wrapper: (info: ICallInfo) => {
             fooWrapperStub()
-            return 2 + callInfo.invoke()
+            return 2 + info.invoke()
         }
     }
 
@@ -456,7 +456,7 @@ tap.test<Context>('decorate static full property', (test) => {
     const substitute: ISubstituteInfo = {
         method: 'foo',
         type: callInfo.getterSetter,
-        wrapper: (info) => {
+        wrapper: (info: ICallInfo) => {
             wrapperStub()
             if (info.type === callInfo.getter) {
                 getterWrapperStub()
@@ -526,7 +526,7 @@ tap.test<Context>('decorate cross static full property', (test) => {
     const substitute1: ISubstituteInfo = {
         method: 'foo',
         type: callInfo.getterSetter,
-        wrapper: (info) => {
+        wrapper: (info: ICallInfo) => {
             if (info.type === callInfo.getter) {
                 getterWrapperFooStub()
                 return 3 + info.invoke()
@@ -542,7 +542,7 @@ tap.test<Context>('decorate cross static full property', (test) => {
     const substitute2: ISubstituteInfo = {
         method: 'bar',
         type: callInfo.getterSetter,
-        wrapper: (info) => {
+        wrapper: (info: ICallInfo) => {
             if (info.type === callInfo.getter) {
                 getterWrapperBarStub()
                 return 1 + info.invoke()

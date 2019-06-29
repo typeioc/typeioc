@@ -2,7 +2,7 @@ import { ImmutableArray, isArray } from '../utils'
 import { callInfo } from '../common'
 import {
     IDecorator, IStrategy, IStrategyInfo,
-    PropertyType, ICallInfo, ISubstitute,
+    propertyType, ICallInfo, ISubstitute,
     ICallChainParams
 } from './types'
 
@@ -22,7 +22,7 @@ export class Decorator implements IDecorator {
     private defineNonWrapStrategies(): IStrategy {
         const result = <IStrategy>{}
 
-        result[PropertyType.Method] = (strategyInfo: IStrategyInfo) => {
+        result[propertyType.method] = (strategyInfo: IStrategyInfo) => {
 
             const value = strategyInfo.source[strategyInfo.name] as Function
 
@@ -32,7 +32,7 @@ export class Decorator implements IDecorator {
             }
         }
 
-        result[PropertyType.Getter] = (strategyInfo : IStrategyInfo) => {
+        result[propertyType.getter] = (strategyInfo : IStrategyInfo) => {
 
             const { configurable, enumerable } = strategyInfo.descriptor ?
                 strategyInfo.descriptor : { configurable: true, enumerable: true }
@@ -44,7 +44,7 @@ export class Decorator implements IDecorator {
             })
         }
 
-        result[PropertyType.Setter] = (strategyInfo : IStrategyInfo) => {
+        result[propertyType.setter] = (strategyInfo : IStrategyInfo) => {
 
             const { configurable, enumerable } = strategyInfo.descriptor ?
                 strategyInfo.descriptor : { configurable: true, enumerable: true }
@@ -56,7 +56,7 @@ export class Decorator implements IDecorator {
             })
         }
 
-        result[PropertyType.FullProperty] = (strategyInfo : IStrategyInfo) => {
+        result[propertyType.fullProperty] = (strategyInfo : IStrategyInfo) => {
 
             const { configurable, enumerable } = strategyInfo.descriptor ?
                 strategyInfo.descriptor : { configurable: true, enumerable: true }
@@ -69,7 +69,7 @@ export class Decorator implements IDecorator {
             })
         }
 
-        result[PropertyType.Field] = result[PropertyType.FullProperty]
+        result[propertyType.field] = result[propertyType.fullProperty]
 
         return result
     }
@@ -82,7 +82,7 @@ export class Decorator implements IDecorator {
         const defineGetter = this.defineGetter.bind(this)
         const defineSetter = this.defineSetter.bind(this)
 
-        result[PropertyType.Method] = (strategyInfo: IStrategyInfo) => {
+        result[propertyType.method] = (strategyInfo: IStrategyInfo) => {
 
             const value = strategyInfo.source[strategyInfo.name] as Function
 
@@ -107,7 +107,7 @@ export class Decorator implements IDecorator {
             }
         }
 
-        result[PropertyType.Getter] = (strategyInfo: IStrategyInfo) => {
+        result[propertyType.getter] = (strategyInfo: IStrategyInfo) => {
 
             Object.defineProperty(strategyInfo.destination, strategyInfo.name, {
                 get: defineWrapGetter(strategyInfo),
@@ -116,7 +116,7 @@ export class Decorator implements IDecorator {
             })
         }
 
-        result[PropertyType.Setter] = (strategyInfo: IStrategyInfo) => {
+        result[propertyType.setter] = (strategyInfo: IStrategyInfo) => {
 
             Object.defineProperty(strategyInfo.destination, strategyInfo.name, {
                 set: defineWrapSetter(strategyInfo),
@@ -125,7 +125,7 @@ export class Decorator implements IDecorator {
             })
         }
 
-        result[PropertyType.FullProperty] = (strategyInfo: IStrategyInfo) => {
+        result[propertyType.fullProperty] = (strategyInfo: IStrategyInfo) => {
 
             const getter = strategyInfo.substitute!.type === callInfo.any ||
                         strategyInfo.substitute!.type === callInfo.getterSetter ||
@@ -147,7 +147,7 @@ export class Decorator implements IDecorator {
             })
         }
 
-        result[PropertyType.Field] = result[PropertyType.FullProperty]
+        result[propertyType.field] = result[propertyType.fullProperty]
 
         return result
     }

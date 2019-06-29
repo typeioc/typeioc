@@ -1,4 +1,5 @@
 import {
+    registrationType,
     RegistrationType,
     IDynamicDependency,
     IFactory,
@@ -131,7 +132,7 @@ export class RegistrationBase implements IRegistrationBase {
 
     public set factory(value: IFactory<{}> | undefined) {
         this._factory = value
-        this._registrationType = RegistrationType.Factory
+        this._registrationType = registrationType.factory
     }
 
     public get factoryType(): {} | undefined {
@@ -140,7 +141,7 @@ export class RegistrationBase implements IRegistrationBase {
 
     public set factoryType(value: {} | undefined) {
         this._factoryType = value
-        this._registrationType = RegistrationType.FactoryType
+        this._registrationType = registrationType.factoryType
     }
 
     public get factoryValue(): {} | undefined {
@@ -149,7 +150,7 @@ export class RegistrationBase implements IRegistrationBase {
 
     public set factoryValue(value) {
         this._factoryValue = value
-        this._registrationType = RegistrationType.FactoryValue
+        this._registrationType = registrationType.factoryValue
     }
 
     public get id(): string {

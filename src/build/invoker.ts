@@ -1,8 +1,8 @@
 import { IContainer, IInvoker } from './types'
-import { RegistrationType, IRegistrationBase } from '../registration'
+import { registrationType, IRegistrationBase } from '../registration'
 import {
     IDecoratorResolutionParamsData,
-    DecoratorResolutionParameterType
+    decoratorResolutionParameter
 } from '../decorators'
 import { ResolutionError } from '../exceptions'
 import { construct, getMetadata, Invocable } from '../utils'
@@ -29,15 +29,15 @@ export class Invoker implements IInvoker {
         args?: {}[]): R {
 
         switch (registration.registrationType) {
-            case RegistrationType.FactoryType:
+            case registrationType.factoryType:
                 return this.instantiate(
                     registration.factoryType!, registration, throwIfNotFound, args
                 ) as R
 
-            case RegistrationType.FactoryValue:
+            case registrationType.factoryValue:
                 return registration.factoryValue! as R
 
-            case RegistrationType.Factory:
+            case registrationType.factory:
             default:
                 return this.createByFactory(registration, args)
         }
@@ -117,11 +117,11 @@ export class Invoker implements IInvoker {
                 return this._container.resolve(dependency)
             }
 
-            if (depParamsValue.type === DecoratorResolutionParameterType.Value) {
+            if (depParamsValue.type === decoratorResolutionParameter.value) {
                 return depParamsValue.value
             }
 
-            if (depParamsValue.type === DecoratorResolutionParameterType.FunctionValue) {
+            if (depParamsValue.type === decoratorResolutionParameter.functionValue) {
                 return (depParamsValue.value! as Function)()
             }
 

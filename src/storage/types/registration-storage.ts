@@ -7,7 +7,7 @@ export interface FactoryTypeStore {
         names: IndexedCollection<IRegistrationBase>
     },
 
-    type: RegistrationType.FactoryType
+    type: RegistrationType
 }
 
 export interface FactoryValueStore {
@@ -16,7 +16,7 @@ export interface FactoryValueStore {
         names: IndexedCollection<IRegistrationBase>
     },
 
-    type: RegistrationType.FactoryValue
+    type: RegistrationType
 }
 
 export interface FactoryStore {
@@ -25,7 +25,7 @@ export interface FactoryStore {
         names: IndexedCollection<Index<IRegistrationBase>>
     },
 
-    type: RegistrationType.Factory
+    type: RegistrationType
 }
 
 export type Store = FactoryStore | FactoryValueStore | FactoryTypeStore

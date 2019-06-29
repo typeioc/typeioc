@@ -4,7 +4,7 @@ import {
     IDecoratorResolutionCollection,
     IDecoratorResolutionApi,
     IDecoratorResolutionParams,
-    DecoratorResolutionParameterType,
+    decoratorResolutionParameter,
     IDecoratorRegistrationApi
 } from './types'
 import { IInternalStorage } from '../storage'
@@ -76,7 +76,7 @@ export class Decorator implements IDecorator {
                         attempt: api.attempt,
                         name: api.name,
                         cache: api.cache,
-                        type: DecoratorResolutionParameterType.Service
+                        type: decoratorResolutionParameter.service
                     }
                 }
 
@@ -94,8 +94,8 @@ export class Decorator implements IDecorator {
                 () => <IDecoratorResolutionCollection>{})
 
             const type = isFunction(value) ?
-                DecoratorResolutionParameterType.FunctionValue :
-                DecoratorResolutionParameterType.Value
+                decoratorResolutionParameter.functionValue :
+                decoratorResolutionParameter.value
 
             bucket[index] = <IDecoratorResolutionParams> {
                 value,

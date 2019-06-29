@@ -1,4 +1,4 @@
-import { RegistrationType, IFactory, IRegistrationBase } from '../registration'
+import { registrationType, IFactory, IRegistrationBase } from '../registration'
 import {
     Store,
     FactoryStore,
@@ -21,15 +21,15 @@ export class RegistrationStorage implements IRegistrationStorage {
     constructor(storageService: IInlineInternalStorageService) {
         this._internalStorage = storageService.create<{}, Store>()
 
-        this._addStrategy[RegistrationType.FactoryType] = this.addForFactoryType.bind(this)
-        this._addStrategy[RegistrationType.Factory] = this.addForFactory.bind(this)
-        this._addStrategy[RegistrationType.FactoryValue] = this.addForFactoryValue.bind(this)
+        this._addStrategy[registrationType.factoryType] = this.addForFactoryType.bind(this)
+        this._addStrategy[registrationType.factory] = this.addForFactory.bind(this)
+        this._addStrategy[registrationType.factoryValue] = this.addForFactoryValue.bind(this)
 
-        this._getStrategy[RegistrationType.FactoryType] =
+        this._getStrategy[registrationType.factoryType] =
             this.getForFactoryType.bind(this) as GetStrategy
-        this._getStrategy[RegistrationType.Factory] =
+        this._getStrategy[registrationType.factory] =
             this.getForFactory.bind(this) as GetStrategy
-        this._getStrategy[RegistrationType.FactoryValue] =
+        this._getStrategy[registrationType.factoryValue] =
             this.getForFactoryValue.bind(this) as GetStrategy
     }
 
@@ -86,7 +86,7 @@ export class RegistrationStorage implements IRegistrationStorage {
         const storage = this._internalStorage.register(
             registration.service, empty.valueFactoryBucket
         )
-        storage.type = RegistrationType.FactoryValue
+        storage.type = registrationType.factoryValue
 
         if (!registration.name) {
             storage.factory.noName = registration

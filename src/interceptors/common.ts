@@ -1,4 +1,4 @@
-import { PropertyType, IStorage } from './types'
+import { propertyType, PropertyType, IStorage } from './types'
 import { isFunction, construct, Invocable } from '../utils'
 
 const blackListProperties = [
@@ -19,20 +19,20 @@ export const isBlackListProperty = (property: string) => {
 export const getPropertyType = (descriptor?: PropertyDescriptor): PropertyType => {
 
     if (!descriptor) {
-        return PropertyType.Field
+        return propertyType.field
     }
 
     if (descriptor.value && isFunction(descriptor.value)) {
-        return PropertyType.Method
+        return propertyType.method
     }
 
-    if (descriptor.get && !descriptor.set) return PropertyType.Getter
+    if (descriptor.get && !descriptor.set) return propertyType.getter
 
-    if (!descriptor.get && descriptor.set) return PropertyType.Setter
+    if (!descriptor.get && descriptor.set) return propertyType.setter
 
-    if (descriptor.get && descriptor.set) return PropertyType.FullProperty
+    if (descriptor.get && descriptor.set) return propertyType.fullProperty
 
-    return PropertyType.Field
+    return propertyType.field
 }
 
 export const createProxy = (self:any, parent: {}, storage?: IStorage) => {
