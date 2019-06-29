@@ -1,5 +1,5 @@
 import { IndexedCollection } from '../types'
-import { CallInfo } from '../common'
+import { callInfo, CallInfoType } from '../common'
 import { ISubstitute, IList, IStorage } from './types'
 import { ProxyError } from '../exceptions'
 
@@ -20,7 +20,7 @@ export class SubstituteStorage implements IStorage {
         }
     }
 
-    getSubstitutes(name: string, types: CallInfo[]): ISubstitute | null {
+    getSubstitutes(name: string, types: CallInfoType[]): ISubstitute | null {
 
         const unknown = this._unknown.head ?
             this.copyList(
@@ -60,7 +60,7 @@ export class SubstituteStorage implements IStorage {
         this.addToList(value, this._unknown)
     }
 
-    private createIncompatibleTypeError(type: CallInfo, types: CallInfo[]) {
+    private createIncompatibleTypeError(type: CallInfoType, types: CallInfoType[]) {
 
         const typeMessage = types.map(item => this.callTypeToString(item)).join(', ')
 
@@ -110,14 +110,15 @@ export class SubstituteStorage implements IStorage {
         return result
     }
 
-    private callTypeToString(type: CallInfo): string {
+    private callTypeToString(type: CallInfoType): string {
         switch (type) {
-            case CallInfo.Any: return 'Any'
-            case CallInfo.Field: return 'Field'
-            case CallInfo.Getter: return 'Getter'
-            case CallInfo.Setter: return 'Setter'
-            case CallInfo.GetterSetter: return 'GetterSetter'
-            case CallInfo.Method: return 'Method'
+            case callInfo.field: return 'Field'
+            case callInfo.getter: return 'Getter'
+            case callInfo.setter: return 'Setter'
+            case callInfo.getterSetter: return 'GetterSetter'
+            case callInfo.method: return 'Method'
+            default:
+                return 'Any'
         }
     }
 }

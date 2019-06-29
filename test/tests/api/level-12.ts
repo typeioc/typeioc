@@ -1,7 +1,7 @@
 import { Tap } from '@common/tap'
 const tap = require('tap') as Tap
 import { createResolve, Context } from '@common/interceptor'
-import typeioc, { ISubstituteInfo, CallInfo } from '@lib'
+import typeioc, { ISubstituteInfo, ICallInfo, callInfo } from '@lib'
 
 tap.beforeEach<Context>((done, setUp) => {
     setUp!.context.resolve = createResolve({
@@ -57,8 +57,8 @@ tap.test<Context>('proxy recursive method by override', (test) => {
 
     const substitute: ISubstituteInfo = {
         method: 'rec',
-        wrapper: (callInfo) => {
-            return callInfo.args[0] + 1
+        wrapper: (info: ICallInfo) => {
+            return info.args[0] + 1
         }
     }
 
@@ -90,9 +90,9 @@ tap.test<Context>('proxy recursive method', (test) => {
 
     const substitute: ISubstituteInfo = {
         method: 'rec',
-        wrapper: (callInfo) => {
-            callInfo.args[0] -= 1
-            return callInfo.invoke(callInfo.args)
+        wrapper: (info: ICallInfo) => {
+            info.args[0] -= 1
+            return info.invoke(info.args)
         }
     }
 
@@ -162,12 +162,12 @@ tap.test<Context>('decorate recursive property by override', (test) => {
 
     const substitute: ISubstituteInfo = {
         method: 'foo',
-        wrapper(callInfo) {
-            if (callInfo.type === CallInfo.Getter) {
+        wrapper(info: ICallInfo) {
+            if (info.type === callInfo.getter) {
                 return 3
             }
 
-            if (callInfo.type === CallInfo.Setter) {
+            if (info.type === callInfo.setter) {
                 // @ts-ignore
                 this.start = 11
             }
@@ -212,8 +212,8 @@ tap.test<Context>('decorate recursive property', (test) => {
 
     const substitute: ISubstituteInfo = {
         method: 'foo',
-        wrapper(callInfo) {
-            if (callInfo.type === CallInfo.Getter) {
+        wrapper(info: ICallInfo) {
+            if (info.type === callInfo.getter) {
 
                 // @ts-ignore
                 if (this.start === 3) {
@@ -227,8 +227,8 @@ tap.test<Context>('decorate recursive property', (test) => {
                 return this.foo
             }
 
-            if (callInfo.type === CallInfo.Setter) {
-                callInfo.invoke([3])
+            if (info.type === callInfo.setter) {
+                info.invoke([3])
             }
         }
     }
@@ -263,13 +263,13 @@ tap.test<Context>('use get set for callInfo invoke', (test) => {
 
     const substitute: ISubstituteInfo = {
         method: 'foo',
-        wrapper(callInfo) {
-            if (callInfo.type === CallInfo.Getter) {
-                return callInfo.get!() + 1
+        wrapper(info: ICallInfo) {
+            if (info.type === callInfo.getter) {
+                return info.get!() + 1
             }
 
-            if (callInfo.type === CallInfo.Setter) {
-                callInfo.set!(callInfo.args[0] + 1)
+            if (info.type === callInfo.setter) {
+                info.set!(info.args[0] + 1)
             }
         }
     }
@@ -299,9 +299,9 @@ tap.test<Context>('set \"get\" and \"set\" to null when method', (test) => {
 
     const substitute: ISubstituteInfo = {
         method: 'foo',
-        wrapper(callInfo) {
-            test.notOk(callInfo.get)
-            test.notOk(callInfo.set)
+        wrapper(info: ICallInfo) {
+            test.notOk(info.get)
+            test.notOk(info.set)
         }
     }
 
@@ -325,8 +325,8 @@ tap.test<Context>('call invoke with non array parameter', (test) => {
 
     const substitute: ISubstituteInfo = {
         method: 'foo',
-        wrapper(callInfo) {
-            return callInfo.invoke(callInfo.args[0]) + callInfo.invoke(callInfo.args)
+        wrapper(info: ICallInfo) {
+            return info.invoke(info.args[0]) + info.invoke(info.args)
         }
     }
 
@@ -356,9 +356,9 @@ tap.test<Context>('call set with exact value', (test) => {
 
     const substitute: ISubstituteInfo = {
         method: 'foo',
-        type: CallInfo.Setter,
-        wrapper(callInfo) {
-            callInfo.set!(callInfo.args)
+        type: callInfo.setter,
+        wrapper(info: ICallInfo) {
+            info.set!(info.args)
         }
     }
 
@@ -383,8 +383,8 @@ tap.test<Context>('resolve by prototype method with args value', (test) => {
 
     const substitute: ISubstituteInfo = {
         method: 'foo',
-        wrapper(callInfo) {
-            return callInfo.invoke(callInfo.args[0]) + callInfo.invoke(callInfo.args)
+        wrapper(info: ICallInfo) {
+            return info.invoke(info.args[0]) + info.invoke(info.args)
         }
     }
 
@@ -410,24 +410,24 @@ tap.test<Context>('decorate triple proxy', (test) => {
 
     const substitute: ISubstituteInfo = {
         method: 'foo',
-        wrapper: (callInfo) => {
-            const result = callInfo.invoke(callInfo.args)
-            return callInfo.next!(result)
+        wrapper: (info: ICallInfo) => {
+            const result = info.invoke(info.args)
+            return info.next!(result)
         }
     }
 
     const substitute1: ISubstituteInfo = {
         method: 'foo',
-        wrapper(callInfo) {
-            const result = callInfo.invoke(callInfo.args)
-            return callInfo.next!(callInfo.result + result)
+        wrapper(info: ICallInfo) {
+            const result = info.invoke(info.args)
+            return info.next!(info.result + result)
         }
     }
 
     const substitute2: ISubstituteInfo = {
         method: 'foo',
-        wrapper(callInfo) {
-            return callInfo.invoke(callInfo.args) + callInfo.result + 1.5
+        wrapper(info: ICallInfo) {
+            return info.invoke(info.args) + info.result + 1.5
         }
     }
 
@@ -464,10 +464,10 @@ tap.test<Context>('decorate 100 method proxies', (test) => {
     while (substitutes.length < limit) {
         substitutes.push({
             method: 'foo',
-            wrapper(callInfo) {
+            wrapper(info: ICallInfo) {
                 index += 1
                 acc.add(index)
-                return callInfo.invoke(index) + (index === limit ? 0 : callInfo.next!())
+                return info.invoke(index) + (index === limit ? 0 : info.next!())
             }
         })
     }
@@ -541,15 +541,15 @@ tap.test('intercept prototype', (test) => {
 
     const proto = interceptor.interceptPrototype(Parent, [{
         method: 'start',
-        type: CallInfo.Getter,
-        wrapper(callInfo) {
-            return callInfo.get!() + 1
+        type: callInfo.getter,
+        wrapper(info: ICallInfo) {
+            return info.get!() + 1
         }
     }, {
         method: 'getStart',
-        type: CallInfo.Method,
-        wrapper(callInfo) {
-            return callInfo.invoke() + 1
+        type: callInfo.method,
+        wrapper(info: ICallInfo) {
+            return info.invoke() + 1
         }
     }])
 
@@ -579,15 +579,15 @@ tap.test('intercept instance', (test) => {
 
     const instance = interceptor.interceptInstance(new Parent(10), [{
         method: 'start',
-        type: CallInfo.Getter,
-        wrapper(callInfo) {
-            return callInfo.get!() + 1
+        type: callInfo.getter,
+        wrapper(info: ICallInfo) {
+            return info.get!() + 1
         }
     }, {
         method: 'getStart',
-        type: CallInfo.Method,
-        wrapper(callInfo) {
-            return callInfo.invoke() + 1
+        type: callInfo.method,
+        wrapper(info: ICallInfo) {
+            return info.invoke() + 1
         }
     }])
 
@@ -602,9 +602,9 @@ tap.test('intercept built in instance', (test) => {
 
     const math = interceptor.interceptInstance(Math, [{
         method: 'abs',
-        type: CallInfo.Method,
-        wrapper(callInfo) {
-            return callInfo.args[0] * callInfo.args[0]
+        type: callInfo.method,
+        wrapper(info: ICallInfo) {
+            return info.args[0] * info.args[0]
         }
     }])
 

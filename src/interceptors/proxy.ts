@@ -1,4 +1,4 @@
-import { CallInfo } from '../common'
+import { callInfo } from '../common'
 import { createProxy, getPropertyType, isBlackListProperty } from './common'
 import { IDecorator, PropertyType, IStrategyInfo, IStorage } from './types'
 import { getAllPropertyNames, getPropertyDescriptor } from '../utils'
@@ -14,21 +14,21 @@ export class Proxy implements IProxy {
     private restrictedProperties = getAllPropertyNames(Function)
 
     private propTypeToDescriptor = {
-        [PropertyType.Method]: [CallInfo.Any, CallInfo.Method],
-        [PropertyType.Getter]: [CallInfo.Any, CallInfo.Getter],
-        [PropertyType.Setter]: [CallInfo.Any, CallInfo.Setter],
+        [PropertyType.Method]: [callInfo.any, callInfo.method],
+        [PropertyType.Getter]: [callInfo.any, callInfo.getter],
+        [PropertyType.Setter]: [callInfo.any, callInfo.setter],
         [PropertyType.FullProperty]: [
-            CallInfo.Any,
-            CallInfo.Getter,
-            CallInfo.Setter,
-            CallInfo.GetterSetter
+            callInfo.any,
+            callInfo.getter,
+            callInfo.setter,
+            callInfo.getterSetter
         ],
         [PropertyType.Field]: [
-            CallInfo.Any,
-            CallInfo.Getter,
-            CallInfo.Setter,
-            CallInfo.GetterSetter,
-            CallInfo.Field
+            callInfo.any,
+            callInfo.getter,
+            callInfo.setter,
+            callInfo.getterSetter,
+            callInfo.field
         ]
     }
 

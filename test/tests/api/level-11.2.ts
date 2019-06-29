@@ -2,7 +2,7 @@ import sinon from 'sinon'
 import { Tap } from '@common/tap'
 const tap = require('tap') as Tap
 import { createResolve, Context } from '@common/interceptor'
-import typeioc, { CallInfo, ISubstituteInfo } from '@lib'
+import typeioc, { callInfo, ISubstituteInfo } from '@lib'
 
 tap.beforeEach<Context>((done, setUp) => {
     setUp!.context.resolve = createResolve({
@@ -218,7 +218,7 @@ tap.test<Context>('decorate prototype field', (test) => {
 
     const substitute: ISubstituteInfo = {
         method : 'foo',
-        type: CallInfo.Field,
+        type: callInfo.field,
         wrapper: (callInfo) => {
             const args = callInfo.args
             fieldStub(args)
@@ -254,7 +254,7 @@ tap.test<Context>('decorate prototype method by name', (test) => {
 
     const substitute: ISubstituteInfo = {
         method: 'foo',
-        type: CallInfo.Method,
+        type: callInfo.method,
         wrapper: (callInfo) => {
             return 2 * callInfo.invoke()
         }
@@ -292,7 +292,7 @@ tap.test<Context>('decorate inherited prototype method', (test) => {
 
     const substitute: ISubstituteInfo = {
         method: 'foo',
-        type: CallInfo.Method,
+        type: callInfo.method,
         wrapper: (callInfo) => {
             wrapperStub()
             return 3 * callInfo.invoke()
@@ -325,7 +325,7 @@ tap.test<Context>('decorate static method', (test) => {
 
     const substitute: ISubstituteInfo = {
         method: 'foo',
-        type: CallInfo.Method,
+        type: callInfo.method,
         wrapper: (callInfo) => {
             wrapperStub()
             return 3 * callInfo.invoke()
@@ -358,7 +358,7 @@ tap.test<Context>('decorate prototype method by chain', (test) => {
 
     const substitute1: ISubstituteInfo = {
         method: 'foo',
-        type: CallInfo.Method,
+        type: callInfo.method,
         wrapper: (callInfo) => {
             wrapperStub()
             const result = callInfo.invoke(callInfo.args)
@@ -401,7 +401,7 @@ tap.test<Context>('decorate prototype method by chain multi invoke', (test) => {
 
     const substitute1: ISubstituteInfo = {
         method: 'foo',
-        type: CallInfo.Method,
+        type: callInfo.method,
         wrapper: (callInfo) => {
             wrapperStub()
             const result = callInfo.invoke(callInfo.args)
@@ -451,7 +451,7 @@ tap.test<Context>('decorate inherited prototype method by chain', (test) => {
 
     const substitute1: ISubstituteInfo = {
         method: 'foo',
-        type: CallInfo.Method,
+        type: callInfo.method,
         wrapper: (callInfo) => {
 
             wrapperStub()
@@ -492,7 +492,7 @@ tap.test<Context>('decorate static method by chain', (test) => {
 
     const substitute1: ISubstituteInfo = {
         method: 'foo',
-        type: CallInfo.Method,
+        type: callInfo.method,
         wrapper: (callInfo) => {
             wrapperStub()
             const result = callInfo.invoke(callInfo.args)

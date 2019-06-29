@@ -1,4 +1,4 @@
-import { CallInfo } from '../../common'
+import { CallInfoType } from '../../common'
 import { IndexedCollection } from '../../types'
 
 /**
@@ -31,7 +31,7 @@ export interface ICallInfo {
     /**
      * Original subject member type {@link CallInfo}
      */
-    type: CallInfo
+    type: CallInfoType
 
     /**
      * Invokes original subject getter. If original subject member is not a getter nor a field,
@@ -78,7 +78,7 @@ export interface ISubstituteInfo {
      * Original subject member type. Used to specify partial substitution of
      * getters and setters. If omitted, original subject member type is used {@link CallInfo}
      */
-    type?: CallInfo
+    type?: CallInfoType
 
     /**
      * Specifies substitute action/behavior (lambda expression executed during substitution call)
@@ -96,7 +96,7 @@ export interface ISubstituteInfo {
 
 export interface ISubstitute extends ISubstituteInfo {
     method?: string
-    type: CallInfo
+    type: CallInfoType
     next?: ISubstitute
 }
 
@@ -125,5 +125,5 @@ export interface IStrategyInfo {
 
 export interface IStorage {
     add(value: ISubstitute): void
-    getSubstitutes(name: string, types: CallInfo[]): ISubstitute | null
+    getSubstitutes(name: string, types: CallInfoType[]): ISubstitute | null
 }

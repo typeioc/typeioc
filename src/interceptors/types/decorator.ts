@@ -1,5 +1,5 @@
 import { IImmutableArray } from '../../utils'
-import { CallInfo } from '../../common'
+import { CallInfoType } from '../../common'
 import { Index } from '../../types'
 import { IStrategyInfo } from './common'
 
@@ -11,7 +11,7 @@ export interface ICallChainParams {
     args: IImmutableArray<any>
     delegate: (args?: any[]) => void
     wrapperContext: {}
-    callType?: CallInfo
+    callType?: CallInfoType
     strategyInfo: IStrategyInfo
 }
 

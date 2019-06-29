@@ -1,6 +1,6 @@
 import { Tap } from '@common/tap'
 const tap = require('tap') as Tap
-import typeioc, { IInterceptor, CallInfo, ProxyError } from '@lib'
+import typeioc, { IInterceptor, callInfo, ProxyError } from '@lib'
 
 type Context = {
     interceptor: IInterceptor
@@ -44,7 +44,7 @@ tap.test<Context>('instance field receives original object', (test) => {
 
     const math = interceptor.intercept(mathClass, [{
         method: 'PI',
-        type: CallInfo.Field,
+        type: callInfo.field,
         wrapper(callInfo) {
             if (callInfo.get) {
                 return callInfo.next!((callInfo.source as Math).PI + PI)
@@ -56,7 +56,7 @@ tap.test<Context>('instance field receives original object', (test) => {
         }
     }, {
         method: 'PI',
-        type: CallInfo.Field,
+        type: callInfo.field,
         wrapper(callInfo) {
             if (callInfo.get) {
                 return callInfo.result + (callInfo.source as Math).PI + PI
@@ -258,7 +258,7 @@ tap.test<Context>('intercept mixed chain', (test) => {
 
     const math = interceptor.intercept(mathTest, [{
         method: 'pow',
-        type: CallInfo.Method,
+        type: callInfo.method,
         wrapper: (callInfo) => {
             return callInfo.next!(callInfo.args[0] + callInfo.args[1])
         }
@@ -269,7 +269,7 @@ tap.test<Context>('intercept mixed chain', (test) => {
         }
     }, {
         method: 'pow',
-        type: CallInfo.Method,
+        type: callInfo.method,
         wrapper: (callInfo) => {
             return callInfo.next!(`${callInfo.result} 2`)
         }

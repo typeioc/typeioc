@@ -1,5 +1,5 @@
 import { ImmutableArray, isArray } from '../utils'
-import { CallInfo } from '../common'
+import { callInfo } from '../common'
 import {
     IDecorator, IStrategy, IStrategyInfo,
     PropertyType, ICallInfo, ISubstitute,
@@ -127,16 +127,16 @@ export class Decorator implements IDecorator {
 
         result[PropertyType.FullProperty] = (strategyInfo: IStrategyInfo) => {
 
-            const getter = strategyInfo.substitute!.type === CallInfo.Any ||
-                        strategyInfo.substitute!.type === CallInfo.GetterSetter ||
-                        strategyInfo.substitute!.type === CallInfo.Getter  ||
-                        strategyInfo.substitute!.type === CallInfo.Field ?
+            const getter = strategyInfo.substitute!.type === callInfo.any ||
+                        strategyInfo.substitute!.type === callInfo.getterSetter ||
+                        strategyInfo.substitute!.type === callInfo.getter  ||
+                        strategyInfo.substitute!.type === callInfo.field ?
                         defineWrapGetter(strategyInfo) : defineGetter(strategyInfo)
 
-            const setter = strategyInfo.substitute!.type === CallInfo.Any ||
-                        strategyInfo.substitute!.type === CallInfo.GetterSetter ||
-                        strategyInfo.substitute!.type === CallInfo.Setter ||
-                        strategyInfo.substitute!.type === CallInfo.Field ?
+            const setter = strategyInfo.substitute!.type === callInfo.any ||
+                        strategyInfo.substitute!.type === callInfo.getterSetter ||
+                        strategyInfo.substitute!.type === callInfo.setter ||
+                        strategyInfo.substitute!.type === callInfo.field ?
                         defineWrapSetter(strategyInfo) : defineSetter(strategyInfo)
 
             Object.defineProperty(strategyInfo.destination, strategyInfo.name, {
@@ -166,7 +166,7 @@ export class Decorator implements IDecorator {
                 strategyInfo,
                 args: ImmutableArray.createImmutable([value]),
                 wrapperContext: this,
-                callType: CallInfo.Setter,
+                callType: callInfo.setter,
             })
         }
     }
@@ -185,7 +185,7 @@ export class Decorator implements IDecorator {
                 strategyInfo,
                 args: ImmutableArray.createImmutable([]),
                 wrapperContext: this,
-                callType : CallInfo.Getter,
+                callType : callInfo.getter,
             })
         }
     }
@@ -243,8 +243,8 @@ export class Decorator implements IDecorator {
             args : info.args.value,
             type : info.callType || info.strategyInfo.substitute!.type,
             invoke: info.delegate,
-            get: info.callType === CallInfo.Getter ?  getter : undefined,
-            set: info.callType === CallInfo.Setter ?  setter : undefined
+            get: info.callType === callInfo.getter ?  getter : undefined,
+            set: info.callType === callInfo.setter ?  setter : undefined
         }
     }
 

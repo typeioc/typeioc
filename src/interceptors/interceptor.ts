@@ -1,4 +1,4 @@
-import { CallInfo } from '../common'
+import { callInfo } from '../common'
 import {
     ISubstituteInfo, ISubstitute, IWithSubstituteResult, IInterceptor, IStorage
 } from './types'
@@ -135,7 +135,7 @@ export class Interceptor implements IInterceptor {
 
         return {
             method : value.method,
-            type: value.type || CallInfo.Any,
+            type: value.type || callInfo.any,
             wrapper : value.wrapper,
             next: undefined
         }

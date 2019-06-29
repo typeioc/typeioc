@@ -40,7 +40,7 @@ export { IInterceptor, ISubstituteInfo, ICallInfo, IWithSubstituteResult } from 
 export {
     OwnerType, owner,
     ScopeType, scope,
-    CallInfo, CallInfoType, callInfo
+    CallInfoType, callInfo
 } from './common'
 export { ICache } from './types'
 export {
