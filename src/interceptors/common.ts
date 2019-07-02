@@ -1,5 +1,5 @@
-import { propertyType, PropertyType, IStorage } from './types'
-import { isFunction, construct, Invocable } from '../utils'
+import { propertyType, PropertyType, IStorage } from './types/index.js'
+import { isFunction, construct, Invocable } from '../utils/index.js'
 
 const blackListProperties = [
     '__lookupGetter__',

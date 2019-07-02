@@ -1,3 +1,3 @@
 export * from './base'
 export * from './instance'
-export * from './types'
+export * from './types/index.js'

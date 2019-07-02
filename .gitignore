@@ -6,4 +6,5 @@ api-metadata/*
 lib
 node_modules
 coverage
+pkg
 tsdoc-metadata.json

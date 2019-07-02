@@ -1,5 +1,5 @@
-import { ApplicationError } from './application-error'
-import { setPrototypeOf } from '../utils'
+import { ApplicationError } from './application-error.js'
+import { setPrototypeOf } from './common.js'
 
 /**
  * Represents argument error. It is thrown when the argument value does not

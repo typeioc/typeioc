@@ -1,5 +1,5 @@
-import { owner, OwnerType } from './owner'
-import { scope, ScopeType } from './scope'
+import { owner, OwnerType } from './owner.js'
+import { scope, ScopeType } from './scope.js'
 
 export interface IDefaults {
     scope : ScopeType,

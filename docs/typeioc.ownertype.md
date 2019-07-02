@@ -4,13 +4,10 @@
 
 ## OwnerType type
 
-Represents resolution instance ownership type metadata
+Represents ownerships type values
 
 <b>Signature:</b>
 
 ```typescript
-export declare type OwnerType = {
-    readonly container: number;
-    readonly externals: number;
-};
+export declare type OwnerType = 1 | 2;
 ```

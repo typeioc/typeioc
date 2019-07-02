@@ -24,5 +24,5 @@ export interface ICallInfo
 |  [result](./typeioc.icallinfo.result.md) | <code>any</code> | Represents a result of a previous substitution in a chain, if it exist |
 |  [set](./typeioc.icallinfo.set.md) | <code>({}: {}) =&gt; void</code> | Invokes original subject setter. If original subject member is not a setter nor a field, this member is undefined |
 |  [source](./typeioc.icallinfo.source.md) | <code>{}</code> | Original subject |
-|  [type](./typeioc.icallinfo.type.md) | <code>CallInfo</code> | Original subject member type [CallInfo](./typeioc.callinfo.md) |
+|  [type](./typeioc.icallinfo.type.md) | <code>CallInfoType</code> | Original subject member type [CallInfoType](./typeioc.callinfotype.md) |
 

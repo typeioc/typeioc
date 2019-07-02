@@ -1,4 +1,4 @@
-import { checkNullArgument } from '../utils'
+import { checkNullArgument } from '../utils/index.js'
 import { IDecoratorRegistrationApi } from './types'
 import {
     IDecoratorRegistration,
@@ -9,7 +9,7 @@ import {
     WithDecoratorRegisterScope
 } from './types/registration'
 import { IInitializer, IDisposer } from '../registration'
-import { owner, OwnerType, scope, ScopeType } from '../common'
+import { owner, OwnerType, scope, ScopeType } from '../common/index.js'
 
 export class RegistrationApi<T> implements IDecoratorRegistrationApi<T> {
 

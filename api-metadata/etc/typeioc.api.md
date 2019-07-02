@@ -29,27 +29,17 @@ export class ArgumentError extends ApplicationError {
 }
 
 // @public
-export const enum CallInfo {
-    Any = 5,
-    Field = 6,
-    Getter = 2,
-    GetterSetter = 4,
-    Method = 1,
-    Setter = 3
-}
+export const callInfo: Readonly<{
+    method: CallInfoType;
+    getter: CallInfoType;
+    setter: CallInfoType;
+    getterSetter: CallInfoType;
+    any: CallInfoType;
+    field: CallInfoType;
+}>;
 
 // @public
-export const callInfo: CallInfoType;
-
-// @public
-export type CallInfoType = {
-    readonly method: number;
-    readonly getter: number;
-    readonly setter: number;
-    readonly getterSetter: number;
-    readonly any: number;
-    readonly field: number;
-};
+export type CallInfoType = 1 | 2 | 3 | 4 | 5 | 6;
 
 // @public
 export class CircularDependencyError extends ApplicationError {
@@ -90,7 +80,7 @@ export interface ICallInfo {
     result?: any;
     set?: ({}: {}) => void;
     source: {};
-    type: CallInfo;
+    type: CallInfoType;
 }
 
 // @public
@@ -137,13 +127,13 @@ export interface IDecoratorRegistration<T> {
     instancePerContainer(): WithDecoratorRegisterScope<T>;
     lazy(): WithDecoratorRegisterLazy<T>;
     named(name: string): WithDecoratorRegisterName<T>;
-    ownedBy(owner: Owner): WithDecoratorRegister<T>;
+    ownedBy(owner: OwnerType): WithDecoratorRegister<T>;
     ownedExternally(): WithDecoratorRegister<T>;
     ownedInternally(): WithDecoratorRegister<T>;
     register(): ClassDecorator;
     singleton(): WithDecoratorRegisterScope<T>;
     transient(): WithDecoratorRegisterScope<T>;
-    within(scope: Scope): WithDecoratorRegisterScope<T>;
+    within(scope: ScopeType): WithDecoratorRegisterScope<T>;
 }
 
 // @public
@@ -212,12 +202,12 @@ export interface IRegisterWithAs<T> {
     instancePerContainer(): RegisterWithScope<T>;
     lazy(): RegisterWithLazy<T>;
     named(name: string): RegisterWithName<T>;
-    ownedBy(owner: Owner): void;
+    ownedBy(owner: OwnerType): void;
     ownedExternally(): void;
     ownedInternally(): void;
     singleton(): RegisterWithScope<T>;
     transient(): RegisterWithScope<T>;
-    within(scope: Scope): RegisterWithScope<T>;
+    within(scope: ScopeType): RegisterWithScope<T>;
 }
 
 // @public
@@ -242,7 +232,7 @@ export interface IResolveWith<T> {
 // @public
 export interface ISubstituteInfo {
     method?: string;
-    type?: CallInfo;
+    type?: CallInfoType;
     wrapper: (callInfo: ICallInfo) => any | void;
 }
 
@@ -255,19 +245,13 @@ export interface IWithSubstituteResult {
 }
 
 // @public
-export const enum Owner {
-    Container = 1,
-    Externals = 2
-}
+export const owner: Readonly<{
+    container: OwnerType;
+    externals: OwnerType;
+}>;
 
 // @public
-export const owner: OwnerType;
-
-// @public
-export type OwnerType = {
-    readonly container: number;
-    readonly externals: number;
-};
+export type OwnerType = 1 | 2;
 
 // @public
 export class ProxyError extends ApplicationError {
@@ -316,21 +300,14 @@ export type ResolveWithCache<T> = Pick<IResolveWith<T>, 'exec' | 'execAsync'>;
 export type ResolveWithName<T> = Omit<ResolveWithAttempt<T>, 'name'>;
 
 // @public
-export const enum Scope {
-    Container = 2,
-    Hierarchy = 3,
-    None = 1
-}
+export const scope: Readonly<{
+    none: ScopeType;
+    container: ScopeType;
+    hierarchy: ScopeType;
+}>;
 
 // @public
-export const scope: ScopeType;
-
-// @public
-export type ScopeType = {
-    readonly none: number;
-    readonly container: number;
-    readonly hierarchy: number;
-};
+export type ScopeType = 1 | 2 | 3;
 
 // @public
 export type WithDecoratorRegister<T> = Pick<IDecoratorRegistration<T>, 'register'>;

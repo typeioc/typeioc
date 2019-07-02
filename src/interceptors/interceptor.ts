@@ -1,11 +1,11 @@
-import { callInfo } from '../common'
+import { callInfo } from '../common/index.js'
 import {
     ISubstituteInfo, ISubstitute, IWithSubstituteResult, IInterceptor, IStorage
 } from './types'
 import { IProxy } from './proxy'
-import { SubstituteStorage } from './substitute-storage'
-import { checkNullArgument, isPrototype, isObject, isArray } from '../utils'
-import { ArgumentError } from '../exceptions'
+import { SubstituteStorage } from './substitute-storage.js'
+import { checkNullArgument, isPrototype, isObject, isArray } from '../utils/index.js'
+import { ArgumentError } from '../exceptions/index.js'
 
 export class Interceptor implements IInterceptor {
 

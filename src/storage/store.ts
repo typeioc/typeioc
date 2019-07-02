@@ -1,5 +1,5 @@
 import { FactoryTypeStore, FactoryValueStore, FactoryStore } from  './types'
-import { registrationType } from '../registration'
+import { registrationType } from '../registration/index.js'
 
 export const empty = {
 

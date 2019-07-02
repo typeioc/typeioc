@@ -123,21 +123,21 @@ export interface IRegisterWithAs<T> {
     /**
      * Specifies resolution instance scope. Scope determines how resolved service
      * instances behave in between resolutions
-     * @param scope - the value of the scope {@link Scope}
+     * @param scope - the value of the scope {@link ScopeType}
      * @returns - an instance of {@link RegisterWithScope} interface
      */
     within(scope: ScopeType): RegisterWithScope<T>
 
     /**
      * Specifies transient scope resolution. Every resolution of service returns new instance
-     * Is similar to Scope.None, scope.none {@link Scope} (default behavior)
+     * Is similar to scope.none {@link ScopeType} (default behavior)
      * @returns - an instance of {@link RegisterWithScope} interface
      */
     transient(): RegisterWithScope<T>
 
     /**
      * Specifies singleton scope resolution. Every resolution of service returns same instance
-     * Is similar to Scope.Hierarchy, scope.hierarchy {@link Scope}
+     * Is similar to scope.hierarchy {@link scope}
      * @returns - an instance on {@link RegisterWithScope} interface
      */
     singleton(): RegisterWithScope<T>
@@ -145,14 +145,14 @@ export interface IRegisterWithAs<T> {
     /**
      * Specifies instance per container scope resolution.
      * Every resolution of a service returns the same instance per instance of a container
-     * Is similar to Scope.Container, scope.container {@link Scope}
+     * Is similar to scope.container {@link scope}
      * @returns - an instance of {@link RegisterWithScope} interface
      */
     instancePerContainer(): RegisterWithScope<T>
 
     /**
      * Specifies resolution disposal behavior
-     * @param owner - the value of the owner {@link Owner}
+     * @param owner - the value of the owner {@link OwnerType}
      */
     ownedBy(owner: OwnerType): void
 

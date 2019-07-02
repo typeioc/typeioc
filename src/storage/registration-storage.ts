@@ -1,4 +1,4 @@
-import { registrationType, IFactory, IRegistrationBase } from '../registration'
+import { registrationType, IFactory, IRegistrationBase } from '../registration/index.js'
 import {
     Store,
     FactoryStore,
@@ -8,7 +8,7 @@ import {
     GetStrategy,
     IRegistrationStorage
 } from './types'
-import { empty } from './store'
+import { empty } from './store.js'
 import { IInternalStorage } from '../storage'
 import { IInlineInternalStorageService } from '../build'
 

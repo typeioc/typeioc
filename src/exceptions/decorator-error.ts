@@ -1,5 +1,5 @@
-import { ApplicationError } from './application-error'
-import { setPrototypeOf } from '../utils'
+import { ApplicationError } from './application-error.js'
+import { setPrototypeOf } from './common.js'
 
 /**
  * Represents decorator error. It is thrown when an exception happens

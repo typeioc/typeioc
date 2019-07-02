@@ -7,8 +7,8 @@ import {
     IContainer,
     IContainerBuilder
 } from './types'
-import { defaults } from '../common'
-import { checkNullArgument }  from '../utils'
+import { defaults } from '../common/index.js'
+import { checkNullArgument }  from '../utils/index.js'
 
 export class ContainerBuilder implements IContainerBuilder {
     private _registrations: IRegistrationBase[]

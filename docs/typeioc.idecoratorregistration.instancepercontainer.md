@@ -4,7 +4,7 @@
 
 ## IDecoratorRegistration.instancePerContainer() method
 
-Specifies instance per container scope resolution. Every resolution of a service returns the same instance per instance of a container Is similar to Scope.Container, scope.container [Scope](./typeioc.scope.md)
+Specifies instance per container scope resolution. Every resolution of a service returns the same instance per instance of a container Is similar to scope.container [scope](./typeioc.scope.md)
 
 <b>Signature:</b>
 

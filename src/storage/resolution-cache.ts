@@ -1,5 +1,5 @@
-import { InternalStorage } from './internal-storage'
-import { ResolutionError } from '../exceptions'
+import { InternalStorage } from './internal-storage.js'
+import { ResolutionError } from '../exceptions/index.js'
 import { IResolutionCache }from './types'
 
 export class ResolutionCache implements IResolutionCache {

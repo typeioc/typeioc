@@ -1,9 +1,9 @@
 import {
     InternalStorage, RegistrationStorage, DisposableStorage, ResolutionCache
-} from '../storage'
+} from '../storage/index.js'
 import {
     RegistrationBase, IRegistrationBase, Registration, IRegistration
-} from '../registration'
+} from '../registration/index.js'
 import {
     Container, IContainer,
     ImportApi, Api as ContainerApi,
@@ -22,7 +22,7 @@ import {
     IContainerApiService,
     IInvokerService,
     IResolutionCacheService
- } from '../build'
+ } from '../build/index.js'
 import {
     Decorator,
     RegistrationApi as DecoratorRegistrationApi,
@@ -32,13 +32,13 @@ import {
     IDecoratorRegistrationApi,
     IDecoratorResolutionApi,
     IDecoratorResolutionParamsData
- } from '../decorators'
+ } from '../decorators/index.js'
 import {
     IInterceptor,
     Decorator as InterceptorDecorator,
     Interceptor,
     Proxy
-} from '../interceptors'
+} from '../interceptors/index.js'
 import { IEntryPoint } from './types'
 
 export * from './types'

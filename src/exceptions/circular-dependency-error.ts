@@ -1,5 +1,5 @@
-import { ApplicationError } from './application-error'
-import { setPrototypeOf } from '../utils'
+import { ApplicationError } from './application-error.js'
+import { setPrototypeOf } from './common.js'
 
 /**
  * Represents circular dependency error. It is thrown when two or more service

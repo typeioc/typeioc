@@ -1,6 +1,3 @@
-import { } from 'reflect-metadata'
-import { SetPrototypeOf } from '../types'
-
 export function getMetadata(type: {}) {
     return Reflect.getMetadata('design:paramtypes', type) || []
 }
@@ -49,10 +46,4 @@ export function getAllPropertyNames(obj: {}) {
     } while (obj = Object.getPrototypeOf(obj))
 
     return props
-}
-
-export function setPrototypeOf(instance: {}, prototype: {}) {
-    if ((Object as SetPrototypeOf).setPrototypeOf) {
-        (Object as SetPrototypeOf).setPrototypeOf(instance, prototype)
-    }
 }

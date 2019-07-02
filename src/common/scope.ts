@@ -1,3 +1,7 @@
+/**
+ * Represents resolution life-cycle type values
+ * @public
+ */
 export type ScopeType = 1 | 2 | 3
 
 /**

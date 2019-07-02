@@ -1,6 +1,6 @@
 import { IRegistrationBase, IDynamicDependency } from '../registration'
-import { ResolutionError, CircularDependencyError } from '../exceptions'
-import { owner, scope } from '../common'
+import { ResolutionError, CircularDependencyError } from '../exceptions/index.js'
+import { owner, scope } from '../common/index.js'
 import {
     IRegistrationStorageService,
     IDisposableStorageService,

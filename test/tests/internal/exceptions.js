@@ -1,5 +1,18 @@
 const tap = require('tap')
 const { ArgumentError, CircularDependencyError, ResolutionError } = require('@lib')
+const { setPrototypeOf } = require('@lib/exceptions/common')
+
+tap.test('setPrototypeOf coverage else check', (test) => {
+
+    const method = Object.setPrototypeOf
+    Object.setPrototypeOf = undefined
+
+    setPrototypeOf({}, Error.prototype)
+
+    Object.setPrototypeOf = method
+
+    test.done()
+})
 
 tap.test('ArgumentError returns argument name', (test) => {
     const argumentName = 'argument name'

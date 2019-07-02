@@ -1,5 +1,6 @@
-import { isArray, checkNullArgument } from './index'
-import { ArgumentError } from '../exceptions'
+import { checkNullArgument } from './common.js'
+import { isArray } from './reflection.js'
+import { ArgumentError } from '../exceptions/index.js'
 
 export interface IImmutableArray<T> {
     value: T[]

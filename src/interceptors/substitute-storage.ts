@@ -1,7 +1,7 @@
 import { IndexedCollection } from '../types'
-import { callInfo, CallInfoType } from '../common'
+import { callInfo, CallInfoType } from '../common/index.js'
 import { ISubstitute, IList, IStorage } from './types'
-import { ProxyError } from '../exceptions'
+import { ProxyError } from '../exceptions/index.js'
 
 export class SubstituteStorage implements IStorage {
     private _known: IndexedCollection<IList<ISubstitute>>

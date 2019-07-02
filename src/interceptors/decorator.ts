@@ -1,10 +1,10 @@
-import { ImmutableArray, isArray } from '../utils'
-import { callInfo } from '../common'
+import { ImmutableArray, isArray } from '../utils/index.js'
+import { callInfo } from '../common/index.js'
 import {
     IDecorator, IStrategy, IStrategyInfo,
     propertyType, ICallInfo, ISubstitute,
     ICallChainParams
-} from './types'
+} from './types/index.js'
 
 export class Decorator implements IDecorator {
 

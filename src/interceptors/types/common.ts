@@ -29,7 +29,7 @@ export interface ICallInfo {
     invoke: (args?: any | any[]) => any | void
 
     /**
-     * Original subject member type {@link CallInfo}
+     * Original subject member type {@link CallInfoType}
      */
     type: CallInfoType
 
@@ -76,7 +76,7 @@ export interface ISubstituteInfo {
 
     /**
      * Original subject member type. Used to specify partial substitution of
-     * getters and setters. If omitted, original subject member type is used {@link CallInfo}
+     * getters and setters. If omitted, original subject member type is used {@link CallInfoType}
      */
     type?: CallInfoType
 

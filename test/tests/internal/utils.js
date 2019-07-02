@@ -1,18 +1,6 @@
 const tap = require('tap')
 const { ArgumentError } = require('@lib')
-const { setPrototypeOf, ImmutableArray } = require('@lib/utils')
-
-tap.test('setPrototypeOf coverage else check', (test) => {
-
-    const method = Object.setPrototypeOf
-    Object.setPrototypeOf = undefined
-
-    setPrototypeOf({}, Error.prototype)
-
-    Object.setPrototypeOf = method
-
-    test.done()
-})
+const { ImmutableArray } = require('@lib/utils')
 
 tap.test('ImmutableArray throws for non array', (test) => {
 

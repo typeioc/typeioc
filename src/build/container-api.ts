@@ -5,8 +5,8 @@ import {
     IContainerApi, ImportApi
 } from './types'
 import { IDynamicDependency } from '../registration'
-import { checkDependency, checkNullArgument, isArray } from '../utils'
-import { ApplicationError } from '../exceptions'
+import { checkDependency, checkNullArgument, isArray } from '../utils/index.js'
+import { ApplicationError } from '../exceptions/index.js'
 
 export class Api<T> implements IContainerApi<T> {
     private _service: {} | undefined = undefined

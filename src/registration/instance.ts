@@ -8,8 +8,8 @@ import {
     IRegistrationBase,
     IRegistration
 } from './types'
-import { scope, owner, ScopeType, OwnerType } from '../common'
-import { checkNullArgument } from '../utils'
+import { scope, owner, ScopeType, OwnerType } from '../common/index.js'
+import { checkNullArgument } from '../utils/index.js'
 
 export class Registration<T> implements IRegistration<T> {
 

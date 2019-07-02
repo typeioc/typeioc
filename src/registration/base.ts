@@ -6,12 +6,12 @@ import {
     IInitializer,
     IDisposer,
     IRegistrationBase
-} from './types'
+} from './types/index.js'
 
 import { IContainer } from '../build'
 import { OwnerType, ScopeType } from '../common'
-import { ApplicationError } from '../exceptions'
-import { uuid, factoryValueKey, isArray } from '../utils'
+import { ApplicationError } from '../exceptions/index.js'
+import { uuid, factoryValueKey, isArray } from '../utils/index.js'
 
 export class RegistrationBase implements IRegistrationBase {
     private _id: string

@@ -1,11 +1,11 @@
 import { IContainer, IInvoker } from './types'
-import { registrationType, IRegistrationBase } from '../registration'
+import { registrationType, IRegistrationBase } from '../registration/index.js'
 import {
     IDecoratorResolutionParamsData,
     decoratorResolutionParameter
-} from '../decorators'
-import { ResolutionError } from '../exceptions'
-import { construct, getMetadata, Invocable } from '../utils'
+} from '../decorators/index.js'
+import { ResolutionError } from '../exceptions/index.js'
+import { construct, getMetadata, Invocable } from '../utils/index.js'
 
 export class Invoker implements IInvoker {
 

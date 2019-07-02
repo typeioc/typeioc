@@ -1,5 +1,5 @@
-import { ApplicationError } from './application-error'
-import { setPrototypeOf } from '../utils'
+import { ApplicationError } from './application-error.js'
+import { setPrototypeOf } from './common.js'
 
 /**
  * Represents resolution error. It is thrown when an error happens

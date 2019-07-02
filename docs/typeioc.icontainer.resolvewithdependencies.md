@@ -27,7 +27,7 @@ resolveWithDependencies<R>(service: {}, dependencies: IDynamicDependency[]): R |
 
 ## Remarks
 
-A service gets resolved with all the dependencies provided without affecting original registration. All the services resolved with dynamic dependencies get transient (no scope, [Scope](./typeioc.scope.md)<!-- -->, [scope](./typeioc.scope.md)<!-- -->) life cycle assigned regardless of initial life cycle specified
+A service gets resolved with all the dependencies provided without affecting original registration. All the services resolved with dynamic dependencies get transient (no scope, [scope](./typeioc.scope.md)<!-- -->) life cycle assigned regardless of initial life cycle specified
 
 Throws [ResolutionError](./typeioc.resolutionerror.md) if not registration found
 

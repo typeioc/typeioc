@@ -114,7 +114,7 @@ export interface IContainer {
      * @remarks
      * A service gets resolved with all the dependencies provided without affecting original
      * registration. All the services resolved with dynamic dependencies get transient
-     * (no scope, {@link Scope}, {@link scope}) life cycle assigned regardless of initial
+     * (no scope, {@link scope}) life cycle assigned regardless of initial
      * life cycle specified
      *
      * Throws {@link ResolutionError} if not registration found
@@ -131,7 +131,7 @@ export interface IContainer {
      * @remarks
      * A service gets resolved with all the dependencies provided without affecting original
      * registration. All the services resolved with dynamic dependencies get transient
-     * (no scope, {@link Scope}, {@link scope}) life cycle assigned regardless of initial
+     * (no scope, {@link scope}) life cycle assigned regardless of initial
      * life cycle specified
      *
      * @param service - service value registered prior resolution

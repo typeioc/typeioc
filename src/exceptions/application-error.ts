@@ -1,4 +1,4 @@
-import { setPrototypeOf } from '../utils'
+import { setPrototypeOf } from './common.js'
 
 /**
  * Represents general purpose application error

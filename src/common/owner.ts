@@ -1,6 +1,14 @@
 
+/**
+ * Represents ownerships type values
+ * @public
+ */
 export type OwnerType = 1 | 2
 
+/**
+ * Represents ownerships type
+ * @public
+ */
 export const owner = Object.freeze({
     /**
      * Container ownership

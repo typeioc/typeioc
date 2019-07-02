@@ -1,4 +1,4 @@
-import { DecoratorError } from '../exceptions'
+import { DecoratorError } from '../exceptions/index.js'
 import {
     IDecorator,
     IDecoratorResolutionCollection,
@@ -6,7 +6,7 @@ import {
     IDecoratorResolutionParams,
     decoratorResolutionParameter,
     IDecoratorRegistrationApi
-} from './types'
+} from './types/index.js'
 import { IInternalStorage } from '../storage'
 import {
     IContainerBuilderService,
@@ -19,8 +19,8 @@ import {
 import { IRegistration } from '../registration'
 import { IDecoratorRegistration } from './types/registration'
 import { IDecoratorResolution } from './types/resolution'
-import { defaults } from '../common'
-import { getMetadata, isPrototype, isFunction } from '../utils'
+import { defaults } from '../common/index.js'
+import { getMetadata, isPrototype, isFunction } from '../utils/index.js'
 
 export class Decorator implements IDecorator {
 

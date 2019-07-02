@@ -9,14 +9,14 @@ Specifies resolution disposal behavior
 <b>Signature:</b>
 
 ```typescript
-ownedBy(owner: Owner): WithDecoratorRegister<T>;
+ownedBy(owner: OwnerType): WithDecoratorRegister<T>;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  owner | <code>Owner</code> | the value of the owner [Owner](./typeioc.owner.md) |
+|  owner | <code>OwnerType</code> | the value of the owner [OwnerType](./typeioc.ownertype.md) |
 
 <b>Returns:</b>
 

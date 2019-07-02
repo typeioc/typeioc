@@ -1,7 +1,7 @@
-import { callInfo } from '../common'
-import { createProxy, getPropertyType, isBlackListProperty } from './common'
-import { IDecorator, propertyType, IStrategyInfo, IStorage } from './types'
-import { getAllPropertyNames, getPropertyDescriptor } from '../utils'
+import { callInfo } from '../common/index.js'
+import { createProxy, getPropertyType, isBlackListProperty } from './common.js'
+import { IDecorator, propertyType, IStrategyInfo, IStorage } from './types/index.js'
+import { getAllPropertyNames, getPropertyDescriptor } from '../utils/index.js'
 import { IndexedCollection } from '../types'
 
 export interface IProxy {

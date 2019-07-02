@@ -4,10 +4,14 @@
 
 ## scope variable
 
-Represent runtime / JavaScript resolution instance scope
+Represents resolution life-cycle type definition
 
 <b>Signature:</b>
 
 ```typescript
-scope: ScopeType
+scope: Readonly<{
+    none: ScopeType;
+    container: ScopeType;
+    hierarchy: ScopeType;
+}>
 ```

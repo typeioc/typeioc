@@ -4,10 +4,10 @@
 
 ## ISubstituteInfo.type property
 
-Original subject member type. Used to specify partial substitution of getters and setters. If omitted, original subject member type is used [CallInfo](./typeioc.callinfo.md)
+Original subject member type. Used to specify partial substitution of getters and setters. If omitted, original subject member type is used [CallInfoType](./typeioc.callinfotype.md)
 
 <b>Signature:</b>
 
 ```typescript
-type?: CallInfo;
+type?: CallInfoType;
 ```

@@ -4,8 +4,8 @@
  * @packageDocumentation
  */
 
-require('reflect-metadata')
-import { IEntryPoint, Scaffold } from './scaffold'
+import 'reflect-metadata'
+import { IEntryPoint, Scaffold } from './scaffold/index.js'
 
 const scaffold = new Scaffold()
 
@@ -41,7 +41,7 @@ export {
     OwnerType, owner,
     ScopeType, scope,
     CallInfoType, callInfo
-} from './common'
+} from './common/index.js'
 export { ICache } from './types'
 export {
     IDecorator, IDecoratorRegistration, IDecoratorResolution,
@@ -58,4 +58,4 @@ export {
     DecoratorError,
     ProxyError,
     ResolutionError
-} from './exceptions'
+} from './exceptions/index.js'

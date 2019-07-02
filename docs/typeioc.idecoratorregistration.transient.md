@@ -4,7 +4,7 @@
 
 ## IDecoratorRegistration.transient() method
 
-Specifies transient scope resolution. Every resolution of service returns new instance Is similar to Scope.None, scope.none [Scope](./typeioc.scope.md) (default behavior)
+Specifies transient scope resolution. Every resolution of service returns new instance Is similar to scope.none, scope.none [scope](./typeioc.scope.md) (default behavior)
 
 <b>Signature:</b>
 
