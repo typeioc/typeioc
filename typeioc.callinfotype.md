@@ -4,17 +4,10 @@
 
 ## CallInfoType type
 
-Represent original substituted subject member type metadata
+Represents member substitution type values
 
 <b>Signature:</b>
 
 ```typescript
-export declare type CallInfoType = {
-    readonly method: number;
-    readonly getter: number;
-    readonly setter: number;
-    readonly getterSetter: number;
-    readonly any: number;
-    readonly field: number;
-};
+export declare type CallInfoType = 1 | 2 | 3 | 4 | 5 | 6;
 ```

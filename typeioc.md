@@ -17,14 +17,6 @@ Dependency injection container for TypeScript / JavaScript
 |  [ProxyError](./typeioc.proxyerror.md) | Represents proxy error. It is thrown when an exception happens during proxy - interceptor construction |
 |  [ResolutionError](./typeioc.resolutionerror.md) | Represents resolution error. It is thrown when an error happens during service resolution / instantiation |
 
-## Enumerations
-
-|  Enumeration | Description |
-|  --- | --- |
-|  [CallInfo](./typeioc.callinfo.md) | Represent original substituted subject member type |
-|  [Owner](./typeioc.owner.md) | Represents resolution instance ownership type |
-|  [Scope](./typeioc.scope.md) | Represents resolution life-cycle type definition |
-
 ## Interfaces
 
 |  Interface | Description |
@@ -54,16 +46,16 @@ Dependency injection container for TypeScript / JavaScript
 |  Variable | Description |
 |  --- | --- |
 |  [\_default](./typeioc._default.md) |  |
-|  [callInfo](./typeioc.callinfo.md) | Represent runtime / JavaScript original substituted subject member type |
-|  [owner](./typeioc.owner.md) | Represent runtime / JavaScript resolution instance ownership type |
-|  [scope](./typeioc.scope.md) | Represent runtime / JavaScript resolution instance scope |
+|  [callInfo](./typeioc.callinfo.md) | Represents original substituted subject member type |
+|  [owner](./typeioc.owner.md) | Represents ownerships type |
+|  [scope](./typeioc.scope.md) | Represents resolution life-cycle type definition |
 
 ## Type Aliases
 
 |  Type Alias | Description |
 |  --- | --- |
-|  [CallInfoType](./typeioc.callinfotype.md) | Represent original substituted subject member type metadata |
-|  [OwnerType](./typeioc.ownertype.md) | Represents resolution instance ownership type metadata |
+|  [CallInfoType](./typeioc.callinfotype.md) | Represents member substitution type values |
+|  [OwnerType](./typeioc.ownertype.md) | Represents ownerships type values |
 |  [RegisterWithInitializeBy](./typeioc.registerwithinitializeby.md) | Represents a step within fluent cascading API registration sequence where <code>initializeBy</code> method was omitted |
 |  [RegisterWithLazy](./typeioc.registerwithlazy.md) | Represents a step within fluent cascading API registration sequence where <code>lazy</code> and <code>dispose</code> methods were omitted |
 |  [RegisterWithName](./typeioc.registerwithname.md) | Represents a step within fluent cascading API registration sequence where <code>named</code> method was omitted |
@@ -72,7 +64,7 @@ Dependency injection container for TypeScript / JavaScript
 |  [ResolveWithAttempt](./typeioc.resolvewithattempt.md) | Represents a step within fluent cascading API resolution sequence where <code>attempt</code> method was omitted |
 |  [ResolveWithCache](./typeioc.resolvewithcache.md) | \* Represents final step within fluent cascading API resolution sequence |
 |  [ResolveWithName](./typeioc.resolvewithname.md) | Represents a step within fluent cascading API resolution sequence where <code>name</code> method was omitted |
-|  [ScopeType](./typeioc.scopetype.md) | Represents resolution life-cycle type definition metadata |
+|  [ScopeType](./typeioc.scopetype.md) | Represents resolution life-cycle type values |
 |  [WithDecoratorRegister](./typeioc.withdecoratorregister.md) | Represents a step within fluent cascading API registration sequence where registration is finalized |
 |  [WithDecoratorRegisterInitializeBy](./typeioc.withdecoratorregisterinitializeby.md) | Represents a step within fluent cascading API registration sequence where <code>initializeBy</code> method was omitted |
 |  [WithDecoratorRegisterLazy](./typeioc.withdecoratorregisterlazy.md) | Represents a step within fluent cascading API registration sequence where <code>lazy</code> and <code>dispose</code> methods were omitted |

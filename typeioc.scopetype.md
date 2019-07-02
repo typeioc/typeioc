@@ -4,14 +4,10 @@
 
 ## ScopeType type
 
-Represents resolution life-cycle type definition metadata
+Represents resolution life-cycle type values
 
 <b>Signature:</b>
 
 ```typescript
-export declare type ScopeType = {
-    readonly none: number;
-    readonly container: number;
-    readonly hierarchy: number;
-};
+export declare type ScopeType = 1 | 2 | 3;
 ```

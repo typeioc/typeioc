@@ -4,10 +4,10 @@
 
 ## ICallInfo.type property
 
-Original subject member type [CallInfo](./typeioc.callinfo.md)
+Original subject member type [CallInfoType](./typeioc.callinfotype.md)
 
 <b>Signature:</b>
 
 ```typescript
-type: CallInfo;
+type: CallInfoType;
 ```

@@ -4,10 +4,13 @@
 
 ## owner variable
 
-Represent runtime / JavaScript resolution instance ownership type
+Represents ownerships type
 
 <b>Signature:</b>
 
 ```typescript
-owner: OwnerType
+owner: Readonly<{
+    container: OwnerType;
+    externals: OwnerType;
+}>
 ```

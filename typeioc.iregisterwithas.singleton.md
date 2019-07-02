@@ -4,7 +4,7 @@
 
 ## IRegisterWithAs.singleton() method
 
-Specifies singleton scope resolution. Every resolution of service returns same instance Is similar to Scope.Hierarchy, scope.hierarchy [Scope](./typeioc.scope.md)
+Specifies singleton scope resolution. Every resolution of service returns same instance Is similar to scope.hierarchy [scope](./typeioc.scope.md)
 
 <b>Signature:</b>
 

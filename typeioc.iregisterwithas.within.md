@@ -9,14 +9,14 @@ Specifies resolution instance scope. Scope determines how resolved service insta
 <b>Signature:</b>
 
 ```typescript
-within(scope: Scope): RegisterWithScope<T>;
+within(scope: ScopeType): RegisterWithScope<T>;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  scope | <code>Scope</code> | the value of the scope [Scope](./typeioc.scope.md) |
+|  scope | <code>ScopeType</code> | the value of the scope [ScopeType](./typeioc.scopetype.md) |
 
 <b>Returns:</b>
 

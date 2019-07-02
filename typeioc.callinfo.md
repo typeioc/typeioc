@@ -4,10 +4,17 @@
 
 ## callInfo variable
 
-Represent runtime / JavaScript original substituted subject member type
+Represents original substituted subject member type
 
 <b>Signature:</b>
 
 ```typescript
-callInfo: CallInfoType
+callInfo: Readonly<{
+    method: CallInfoType;
+    getter: CallInfoType;
+    setter: CallInfoType;
+    getterSetter: CallInfoType;
+    any: CallInfoType;
+    field: CallInfoType;
+}>
 ```
