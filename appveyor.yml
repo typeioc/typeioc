@@ -37,4 +37,6 @@ test_script:
   - npm --version
   - cmd: npm run build
   - cmd: npm run extract-api
+  - cmd: npm run pack
+  - cmd: npm run test:pkg
   - cmd: npm run test:100

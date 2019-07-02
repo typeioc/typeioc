@@ -16,5 +16,7 @@ install:
 before_script:
   - npm run build
   - npm run extract-api
+  - npm run pack
 script:
+  - npm run test:pkg
   - npm run test:100

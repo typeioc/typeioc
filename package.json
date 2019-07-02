@@ -12,10 +12,11 @@
     "test:watch": "npm run test -- --watch --changed",
     "test:report": "npm run test -- --coverage-report=\"html\"",
     "test:100": "npm run test -- --100",
+    "test:pkg": "cross-env TS_NODE_FILES=true TS_NODE_PROJECT=\"./test/tsconfig-pkg.json\" tap --node-arg=\"-r\" --node-arg=\"tsconfig-paths/register\" test/tests/api/**",
     "extract-api": "api-extractor run --local --verbose",
     "docs:api": "api-documenter markdown -i ./api-metadata/temp -o ./docs && node ./scripts/copy-docs.js",
     "docs:publish": "git subtree push --prefix docs origin gh-pages",
-    "p": "pack build"
+    "pack": "pack build"
   },
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
