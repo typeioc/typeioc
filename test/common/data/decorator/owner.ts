@@ -1,4 +1,4 @@
-import typeioc, { owner } from '@lib'
+import typeioc from '@lib'
 
 export const decorator = typeioc.createDecorator()
 
@@ -9,7 +9,6 @@ export class TestBase1 {
 
 @decorator.provide<TestBase1>(TestBase1)
     .dispose((item) => { item.dispose() })
-    .ownedBy(owner.container)
     .register()
 export class Test extends TestBase1 {
     public text: string = 'test'
@@ -30,7 +29,6 @@ export class TestBase2 {
 
 @decorator.provide<TestBase2>(TestBase2)
     .dispose((item: TestBase2) => { item.dispose() })
-    .ownedBy(owner.externals)
     .register()
 export class Test2 extends TestBase2 {
     public text: string = 'test'
@@ -53,7 +51,6 @@ export class TestBase1Api {
 
 @decorator.provide<TestBase1Api>(TestBase1Api)
     .dispose((item) => { item.dispose() })
-    .ownedInternally()
     .register()
 export class TestApi extends TestBase1Api {
     public text: string = 'test'
@@ -74,7 +71,6 @@ export class TestBase2Api {
 
 @decorator.provide<TestBase2Api>(TestBase2Api)
     .dispose((item) => { item.dispose() })
-    .ownedExternally()
     .register()
 export class Test2Api extends TestBase2Api {
     public text : string = 'test'

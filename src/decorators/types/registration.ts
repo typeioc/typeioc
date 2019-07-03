@@ -1,4 +1,4 @@
-import { OwnerType, ScopeType } from '../../common'
+import { ScopeType } from '../../common'
 import { IDisposer, IInitializer } from '../../registration'
 import { Omit } from '../../utils'
 
@@ -42,50 +42,31 @@ export interface IDecoratorRegistration<T> {
      * Specifies resolution instance scope. Scope determines how resolved service
      * instances behave in between resolutions
      * @param scope - the value of the scope {@link ScopeType}
-     * @returns - an instance of {@link WithDecoratorRegisterScope} interface
+     * @returns - an instance of {@link WithDecoratorRegister} interface
      */
-    within(scope: ScopeType): WithDecoratorRegisterScope<T>
+    within(scope: ScopeType): WithDecoratorRegister<T>
 
     /**
      * Specifies transient scope resolution. Every resolution of service returns new instance
      * Is similar to scope.none, scope.none {@link scope} (default behavior)
-     * @returns - an instance of {@link WithDecoratorRegisterScope} interface
+     * @returns - an instance of {@link WithDecoratorRegister} interface
      */
-    transient(): WithDecoratorRegisterScope<T>
+    transient(): WithDecoratorRegister<T>
 
     /**
      * Specifies singleton scope resolution. Every resolution of service returns same instance
      * Is similar to scope.hierarchy {@link scope}
-     * @returns - an instance on {@link WithDecoratorRegisterScope} interface
+     * @returns - an instance on {@link WithDecoratorRegister} interface
      */
-    singleton(): WithDecoratorRegisterScope<T>
+    singleton(): WithDecoratorRegister<T>
 
     /**
      * Specifies instance per container scope resolution.
      * Every resolution of a service returns the same instance per instance of a container
      * Is similar to scope.container {@link scope}
-     * @returns - an instance of {@link WithDecoratorRegisterScope} interface
-     */
-    instancePerContainer(): WithDecoratorRegisterScope<T>
-
-    /**
-     * Specifies resolution disposal behavior
-     * @param owner - the value of the owner {@link OwnerType}
      * @returns - an instance of {@link WithDecoratorRegister} interface
      */
-    ownedBy(owner: OwnerType): WithDecoratorRegister<T>
-
-    /**
-     * Specifies ownership model maintained by container (default behavior)
-     * @returns - an instance of {@link WithDecoratorRegister} interface
-     */
-    ownedInternally(): WithDecoratorRegister<T>
-
-    /**
-     * Specifies ownership model maintained externally
-     * @returns - an instance of {@link WithDecoratorRegister} interface
-     */
-    ownedExternally(): WithDecoratorRegister<T>
+    instancePerContainer(): WithDecoratorRegister<T>
 
     /**
      * Finalizes service registration
@@ -121,11 +102,3 @@ export type WithDecoratorRegisterLazy<T> =
  * @public
  */
 export type WithDecoratorRegisterName<T> = Omit<WithDecoratorRegisterLazy<T>, 'named'>
-
-/**
- * Represents a step within fluent cascading API registration sequence where
- * `within`, `transient`, `singleton`, `instancePerContainer` methods where omitted
- * @public
- */
-export type WithDecoratorRegisterScope<T> = Omit<WithDecoratorRegisterName<T>,
-    'within' | 'transient' | 'singleton' | 'instancePerContainer'>

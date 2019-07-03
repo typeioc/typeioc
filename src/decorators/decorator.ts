@@ -148,9 +148,6 @@ function createRegister<R>(builder: IContainerBuilder, isSelf = false) {
         const scope = api.scope || defaults.scope
         registration.within(scope)
 
-        const owner = api.owner || defaults.owner
-        registration.ownedBy(owner)
-
         return target
     }
 }

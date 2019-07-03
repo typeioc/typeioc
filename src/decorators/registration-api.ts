@@ -5,18 +5,16 @@ import {
     WithDecoratorRegister,
     WithDecoratorRegisterInitializeBy,
     WithDecoratorRegisterLazy,
-    WithDecoratorRegisterName,
-    WithDecoratorRegisterScope
+    WithDecoratorRegisterName
 } from './types/registration'
 import { IInitializer, IDisposer } from '../registration'
-import { owner, OwnerType, scope, ScopeType } from '../common/index.js'
+import { scope, ScopeType } from '../common/index.js'
 
 export class RegistrationApi<T> implements IDecoratorRegistrationApi<T> {
 
     private _service?: {}
     private _name?: string
     private _scope?: ScopeType
-    private _owner?: OwnerType
     private _initializedBy?: IInitializer<T>
     private _disposedBy?: IDisposer<T>
     private _isLazy: boolean
@@ -31,10 +29,6 @@ export class RegistrationApi<T> implements IDecoratorRegistrationApi<T> {
 
     public get scope(): ScopeType | undefined {
         return this._scope
-    }
-
-    public get owner(): OwnerType  | undefined {
-        return this._owner
     }
 
     public get initializedBy(): IInitializer<T> | undefined {
@@ -58,9 +52,6 @@ export class RegistrationApi<T> implements IDecoratorRegistrationApi<T> {
         this.transient = this.transient.bind(this)
         this.singleton = this.singleton.bind(this)
         this.instancePerContainer = this.instancePerContainer.bind(this)
-        this.ownedBy = this.ownedBy.bind(this)
-        this.ownedInternally = this.ownedInternally.bind(this)
-        this.ownedExternally = this.ownedExternally.bind(this)
         this.register = this.register.bind(this)
 
         this._isLazy = false
@@ -89,9 +80,6 @@ export class RegistrationApi<T> implements IDecoratorRegistrationApi<T> {
             transient: this.transient,
             singleton: this.singleton,
             instancePerContainer: this.instancePerContainer,
-            ownedBy: this.ownedBy,
-            ownedInternally: this.ownedInternally,
-            ownedExternally: this.ownedExternally,
             register: this.register
         }
     }
@@ -110,9 +98,6 @@ export class RegistrationApi<T> implements IDecoratorRegistrationApi<T> {
             transient: this.transient,
             singleton: this.singleton,
             instancePerContainer: this.instancePerContainer,
-            ownedBy: this.ownedBy,
-            ownedInternally: this.ownedInternally,
-            ownedExternally: this.ownedExternally,
             register: this.register
         }
     }
@@ -126,9 +111,6 @@ export class RegistrationApi<T> implements IDecoratorRegistrationApi<T> {
             transient: this.transient,
             singleton: this.singleton,
             instancePerContainer: this.instancePerContainer,
-            ownedBy: this.ownedBy,
-            ownedInternally: this.ownedInternally,
-            ownedExternally: this.ownedExternally,
             register: this.register
         }
     }
@@ -145,9 +127,6 @@ export class RegistrationApi<T> implements IDecoratorRegistrationApi<T> {
             transient: this.transient,
             singleton: this.singleton,
             instancePerContainer: this.instancePerContainer,
-            ownedBy: this.ownedBy,
-            ownedInternally: this.ownedInternally,
-            ownedExternally: this.ownedExternally,
             register: this.register
         }
     }
@@ -163,56 +142,31 @@ export class RegistrationApi<T> implements IDecoratorRegistrationApi<T> {
             transient: this.transient,
             singleton: this.singleton,
             instancePerContainer: this.instancePerContainer,
-            ownedBy: this.ownedBy,
-            ownedInternally: this.ownedInternally,
-            ownedExternally: this.ownedExternally,
             register: this.register
         }
     }
 
-    private within(scope: ScopeType): WithDecoratorRegisterScope<T> {
+    private within(scope: ScopeType): WithDecoratorRegister<T> {
 
         checkNullArgument(scope, 'scope')
 
         this._scope = scope
 
         return {
-            ownedBy: this.ownedBy,
-            ownedInternally: this.ownedInternally,
-            ownedExternally: this.ownedExternally,
             register: this.register
         }
     }
 
-    private transient(): WithDecoratorRegisterScope<T> {
+    private transient(): WithDecoratorRegister<T> {
         return this.within(scope.none)
     }
 
-    private singleton(): WithDecoratorRegisterScope<T> {
+    private singleton(): WithDecoratorRegister<T> {
         return this.within(scope.hierarchy)
     }
 
-    private instancePerContainer(): WithDecoratorRegisterScope<T> {
+    private instancePerContainer(): WithDecoratorRegister<T> {
         return this.within(scope.container)
-    }
-
-    private ownedBy(owner: OwnerType): WithDecoratorRegister<T> {
-
-        checkNullArgument(owner, 'owner')
-
-        this._owner = owner
-
-        return {
-            register: this.register
-        }
-    }
-
-    private ownedInternally(): WithDecoratorRegister<T> {
-        return this.ownedBy(owner.container)
-    }
-
-    private ownedExternally(): WithDecoratorRegister<T> {
-        return this.ownedBy(owner.externals)
     }
 
     private register(): ClassDecorator {

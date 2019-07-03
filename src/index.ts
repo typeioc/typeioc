@@ -35,10 +35,9 @@ export {
 export {
     IRegistration, IDynamicDependency, IFactory, IInitializer, IDisposer, IName,
     IRegisterWithAs, RegisterWithInitializeBy, RegisterWithLazy, RegisterWithName,
-    RegisterWithScope } from './registration'
+} from './registration'
 export { IInterceptor, ISubstituteInfo, ICallInfo, IWithSubstituteResult } from './interceptors'
 export {
-    OwnerType, owner,
     ScopeType, scope,
     CallInfoType, callInfo
 } from './common/index.js'
@@ -47,8 +46,7 @@ export {
     IDecorator, IDecoratorRegistration, IDecoratorResolution,
     WithDecoratorRegister, WithDecoratorRegisterInitializeBy,
     WithDecoratorRegisterLazy, WithDecoratorRegisterName,
-    WithDecoratorRegisterScope, WithDecoratorResolver,
-    WithDecoratorResolverArgs, WithDecoratorResolverAttempt,
+    WithDecoratorResolver, WithDecoratorResolverArgs, WithDecoratorResolverAttempt,
     WithDecoratorResolverName
 } from './decorators'
 export {

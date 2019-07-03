@@ -155,23 +155,6 @@ tap.test<Context>('container owned instances are disposed', (test) => {
     test.done()
 })
 
-tap.test<Context>('external owned instances are not disposed', (test) => {
-    const { owner } = test.context
-
-    const child = owner.createChild()
-    const actual1 = child.resolve<Owing.TestBase2>(Owing.TestBase2)
-    const actual2 = child.resolve<Owing.TestBase2Api>(Owing.TestBase2Api)
-
-    child.dispose()
-    const result1 = actual1.foo()
-    const result2 = actual2.foo()
-
-    test.equal(result1, 'Test : foo test')
-    test.equal(result2, 'Test : foo test')
-
-    test.done()
-})
-
 tap.test<Context>('named instances resolved', (test) => {
     const { name } = test.context
 

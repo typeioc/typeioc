@@ -1,6 +1,6 @@
 import { Tap } from '@common/tap'
 const tap = require('tap') as Tap
-import typeioc, { IContainerBuilder, ResolutionError, scope, owner } from '@lib'
+import typeioc, { IContainerBuilder, ResolutionError, scope } from '@lib'
 import { Test1Base, Test2Base, Test2, Test3, Test4, Test5 } from '@data/base'
 
 type Context = {
@@ -218,7 +218,6 @@ tap.test<Context>('container owned instances are disposed async', async(test) =>
         .as(() => new Test5())
         .dispose((item)  => { (item as Test5).dispose() })
         .within(scope.none)
-        .ownedBy(owner.container)
 
     const container = builder.build()
     const test1 = container.resolve<Test5>(Test1Base)

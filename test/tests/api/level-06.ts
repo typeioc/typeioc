@@ -1,7 +1,7 @@
 import { Tap } from '@common/tap'
 const tap = require('tap') as Tap
 import typeioc,
-    { IContainerBuilder, scope, owner, ApplicationError } from '@lib'
+    { IContainerBuilder, scope, ApplicationError } from '@lib'
 import {
     Test1Base,
     Test5,
@@ -24,7 +24,6 @@ tap.test<Context>('fluent api initialize by disposed named within owned by', (te
         .dispose((item) => (item as Test5).dispose())
         .named('Some Name')
         .within(scope.hierarchy)
-        .ownedBy(owner.container)
 
     test.done()
 })
@@ -40,7 +39,6 @@ tap.test<Context>('fluent api as', (test) => {
     test.ok(registration.initializeBy)
     test.ok(registration.dispose)
     test.ok(registration.named)
-    test.ok(registration.ownedBy)
     test.ok(registration.within)
 
     test.done()
@@ -58,7 +56,6 @@ tap.test<Context>('fluent api initialize by', (test) => {
     test.notOk((registration as any).initializeBy)
     test.ok(registration.dispose)
     test.ok(registration.named)
-    test.ok(registration.ownedBy)
     test.ok(registration.within)
 
     test.done()
@@ -76,7 +73,6 @@ tap.test<Context>('fluent api dispose', (test) => {
     test.notOk((registration as any).initializeBy)
     test.notOk((registration as any).dispose)
     test.ok(registration.named)
-    test.ok(registration.ownedBy)
     test.ok(registration.within)
 
     test.done()
@@ -94,7 +90,6 @@ tap.test<Context>('fluent api named', (test) => {
     test.notOk((registration as any).initializeBy)
     test.notOk((registration as any).dispose)
     test.notOk((registration as any).named)
-    test.ok(registration.ownedBy)
     test.ok(registration.within)
 
     test.done()
@@ -108,12 +103,7 @@ tap.test<Context>('fluent api within', (test) => {
         .as(() => new Test5())
         .within(scope.hierarchy)
 
-    test.notOk((registration as any).as)
-    test.notOk((registration as any).initializeBy)
-    test.notOk((registration as any).dispose)
-    test.notOk((registration as any).named)
-    test.notOk((registration as any).within)
-    test.ok(registration.ownedBy)
+    test.notOk(registration)
 
     test.done()
 })

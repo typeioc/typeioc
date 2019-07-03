@@ -4,7 +4,6 @@ import {
     IInitializer,
     IDisposer,
     IRegisterWithAs, RegisterWithInitializeBy, RegisterWithLazy, RegisterWithName,
-    RegisterWithScope,
     IRegistrationBase,
     IRegistration
 } from './types'
@@ -20,8 +19,6 @@ export class Registration<T> implements IRegistration<T> {
         this.name = this.name.bind(this)
         this.within = this.within.bind(this)
         this.ownedBy = this.ownedBy.bind(this)
-        this.ownedInternally = this.ownedInternally.bind(this)
-        this.ownedExternally = this.ownedExternally.bind(this)
         this.transient = this.transient.bind(this)
         this.singleton = this.singleton.bind(this)
         this.instancePerContainer = this.instancePerContainer.bind(this)
@@ -39,9 +36,6 @@ export class Registration<T> implements IRegistration<T> {
             dispose: this.dispose,
             named: this.named,
             within: this.within,
-            ownedBy: this.ownedBy,
-            ownedInternally: this.ownedInternally,
-            ownedExternally: this.ownedExternally,
             transient: this.transient,
             singleton: this.singleton,
             instancePerContainer: this.instancePerContainer
@@ -60,9 +54,6 @@ export class Registration<T> implements IRegistration<T> {
             dispose: this.dispose,
             named: this.named,
             within: this.within,
-            ownedBy: this.ownedBy,
-            ownedInternally: this.ownedInternally,
-            ownedExternally: this.ownedExternally,
             transient: this.transient,
             singleton: this.singleton,
             instancePerContainer: this.instancePerContainer
@@ -96,36 +87,27 @@ export class Registration<T> implements IRegistration<T> {
 
         return {
             within: this.within,
-            ownedBy: this.ownedBy,
-            ownedInternally: this.ownedInternally,
-            ownedExternally: this.ownedExternally,
             transient: this.transient,
             singleton: this.singleton,
             instancePerContainer: this.instancePerContainer
         }
     }
 
-    private within(scope: ScopeType): RegisterWithScope<T> {
+    private within(scope: ScopeType): void {
         checkNullArgument(scope, 'scope')
 
         this._base.scope = scope
-
-        return {
-            ownedBy: this.ownedBy,
-            ownedInternally: this.ownedInternally,
-            ownedExternally: this.ownedExternally
-        }
     }
 
-    private transient(): RegisterWithScope<T> {
+    private transient(): void {
         return this.within(scope.none)
     }
 
-    private singleton(): RegisterWithScope<T> {
+    private singleton(): void {
         return this.within(scope.hierarchy)
     }
 
-    private instancePerContainer(): RegisterWithScope<T> {
+    private instancePerContainer(): void {
         return this.within(scope.container)
     }
 
@@ -133,14 +115,6 @@ export class Registration<T> implements IRegistration<T> {
         checkNullArgument(owner, 'owner')
 
         this._base.owner = owner
-    }
-
-    private ownedInternally(): void {
-        this.ownedBy(owner.container)
-    }
-
-    private ownedExternally(): void {
-        this.ownedBy(owner.externals)
     }
 
     private initializeBy(action: IInitializer<T>): RegisterWithInitializeBy<T> {
@@ -153,9 +127,6 @@ export class Registration<T> implements IRegistration<T> {
             dispose: this.dispose,
             named: this.named,
             within: this.within,
-            ownedBy: this.ownedBy,
-            ownedInternally: this.ownedInternally,
-            ownedExternally: this.ownedExternally,
             transient: this.transient,
             singleton: this.singleton,
             instancePerContainer: this.instancePerContainer
@@ -166,14 +137,11 @@ export class Registration<T> implements IRegistration<T> {
         checkNullArgument(action, 'action');
 
         (this._base.disposer as IDisposer<T> | undefined) = action
-        this.ownedInternally()
+        this.ownedBy(owner.container)
 
         return {
             named: this.named,
             within: this.within,
-            ownedBy: this.ownedBy,
-            ownedInternally: this.ownedInternally,
-            ownedExternally: this.ownedExternally,
             transient: this.transient,
             singleton: this.singleton,
             instancePerContainer: this.instancePerContainer
@@ -186,9 +154,6 @@ export class Registration<T> implements IRegistration<T> {
         return {
             named: this.named,
             within: this.within,
-            ownedBy: this.ownedBy,
-            ownedInternally: this.ownedInternally,
-            ownedExternally: this.ownedExternally,
             transient: this.transient,
             singleton: this.singleton,
             instancePerContainer: this.instancePerContainer

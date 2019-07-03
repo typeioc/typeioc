@@ -17,7 +17,7 @@ export interface IRegistrationBase {
     factoryValue?: {}
     name?: string
     scope?: ScopeType
-    owner?: OwnerType
+    owner: OwnerType
     initializer?: IInitializer<{}>
     disposer?: IDisposer<{}>
     args: {}[]

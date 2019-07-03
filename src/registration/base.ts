@@ -9,7 +9,7 @@ import {
 } from './types/index.js'
 
 import { IContainer } from '../build'
-import { OwnerType, ScopeType } from '../common'
+import { OwnerType, owner, ScopeType } from '../common/index.js'
 import { ApplicationError } from '../exceptions/index.js'
 import { uuid, factoryValueKey, isArray } from '../utils/index.js'
 
@@ -20,7 +20,7 @@ export class RegistrationBase implements IRegistrationBase {
     private _factoryValue?: {}
     private _name?: string
     private _scope?: ScopeType
-    private _owner?: OwnerType
+    private _owner: OwnerType = owner.externals
     private _initializer?: IInitializer<{}>
     private _disposer?: IDisposer<{}>
     private _args: {}[] = []
@@ -51,11 +51,11 @@ export class RegistrationBase implements IRegistrationBase {
         this._scope = value
     }
 
-    public get owner(): OwnerType | undefined {
+    public get owner(): OwnerType {
         return this._owner
     }
 
-    public set owner(value: OwnerType | undefined) {
+    public set owner(value: OwnerType) {
         this._owner = value
     }
 

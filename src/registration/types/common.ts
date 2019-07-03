@@ -1,5 +1,5 @@
 import { IContainer } from '../../build'
-import { ScopeType, OwnerType } from '../../common'
+import { ScopeType } from '../../common'
 import { Omit } from '../../utils'
 
 export type RegistrationType = 1 | 2 | 3
@@ -124,47 +124,31 @@ export interface IRegisterWithAs<T> {
      * Specifies resolution instance scope. Scope determines how resolved service
      * instances behave in between resolutions
      * @param scope - the value of the scope {@link ScopeType}
-     * @returns - an instance of {@link RegisterWithScope} interface
+     * @returns - void
      */
-    within(scope: ScopeType): RegisterWithScope<T>
+    within(scope: ScopeType): void
 
     /**
      * Specifies transient scope resolution. Every resolution of service returns new instance
      * Is similar to scope.none {@link ScopeType} (default behavior)
-     * @returns - an instance of {@link RegisterWithScope} interface
+     * @returns - void
      */
-    transient(): RegisterWithScope<T>
+    transient(): void
 
     /**
      * Specifies singleton scope resolution. Every resolution of service returns same instance
      * Is similar to scope.hierarchy {@link scope}
-     * @returns - an instance on {@link RegisterWithScope} interface
+     * @returns - void
      */
-    singleton(): RegisterWithScope<T>
+    singleton(): void
 
     /**
      * Specifies instance per container scope resolution.
      * Every resolution of a service returns the same instance per instance of a container
      * Is similar to scope.container {@link scope}
-     * @returns - an instance of {@link RegisterWithScope} interface
+     * @returns - void
      */
-    instancePerContainer(): RegisterWithScope<T>
-
-    /**
-     * Specifies resolution disposal behavior
-     * @param owner - the value of the owner {@link OwnerType}
-     */
-    ownedBy(owner: OwnerType): void
-
-    /**
-     * Specifies ownership model maintained by container (default behavior)
-     */
-    ownedInternally(): void
-
-    /**
-     * Specifies ownership model maintained externally
-     */
-    ownedExternally(): void
+    instancePerContainer(): void
 }
 
 /**
@@ -197,14 +181,6 @@ export type RegisterWithLazy<T> = Omit<RegisterWithInitializeBy<T>, 'lazy' | 'di
  * @public
  */
 export type RegisterWithName<T> = Omit<RegisterWithLazy<T>, 'named'>
-
-/**
- * Represents a step within fluent cascading API registration sequence where instance
- * ownership is specified
- * @public
- */
-export type RegisterWithScope<T> = Pick<IRegisterWithAs<T>,
-    'ownedBy' | 'ownedInternally' | 'ownedExternally'>
 
 /**
  * Represents an entry into service registration fluent cascading API interface
