@@ -9,11 +9,11 @@ Specifies instance per container scope resolution. Every resolution of a service
 <b>Signature:</b>
 
 ```typescript
-instancePerContainer(): WithDecoratorRegisterScope<T>;
+instancePerContainer(): WithDecoratorRegister<T>;
 ```
 <b>Returns:</b>
 
-`WithDecoratorRegisterScope<T>`
+`WithDecoratorRegister<T>`
 
-- an instance of [WithDecoratorRegisterScope](./typeioc.withdecoratorregisterscope.md) interface
+- an instance of [WithDecoratorRegister](./typeioc.withdecoratorregister.md) interface
 

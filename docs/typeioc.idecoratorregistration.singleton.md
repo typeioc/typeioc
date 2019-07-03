@@ -9,11 +9,11 @@ Specifies singleton scope resolution. Every resolution of service returns same i
 <b>Signature:</b>
 
 ```typescript
-singleton(): WithDecoratorRegisterScope<T>;
+singleton(): WithDecoratorRegister<T>;
 ```
 <b>Returns:</b>
 
-`WithDecoratorRegisterScope<T>`
+`WithDecoratorRegister<T>`
 
-- an instance on [WithDecoratorRegisterScope](./typeioc.withdecoratorregisterscope.md) interface
+- an instance on [WithDecoratorRegister](./typeioc.withdecoratorregister.md) interface
 

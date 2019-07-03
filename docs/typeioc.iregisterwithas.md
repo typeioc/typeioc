@@ -21,9 +21,6 @@ export interface IRegisterWithAs<T>
 |  [instancePerContainer()](./typeioc.iregisterwithas.instancepercontainer.md) | Specifies instance per container scope resolution. Every resolution of a service returns the same instance per instance of a container Is similar to scope.container [scope](./typeioc.scope.md) |
 |  [lazy()](./typeioc.iregisterwithas.lazy.md) | Specifies lazy registration. Resolution of services is differed until results are needed by other services/computations |
 |  [named(name)](./typeioc.iregisterwithas.named.md) | Specifies named registration. Registration can be resolved only using the name provided |
-|  [ownedBy(owner)](./typeioc.iregisterwithas.ownedby.md) | Specifies resolution disposal behavior |
-|  [ownedExternally()](./typeioc.iregisterwithas.ownedexternally.md) | Specifies ownership model maintained externally |
-|  [ownedInternally()](./typeioc.iregisterwithas.ownedinternally.md) | Specifies ownership model maintained by container (default behavior) |
 |  [singleton()](./typeioc.iregisterwithas.singleton.md) | Specifies singleton scope resolution. Every resolution of service returns same instance Is similar to scope.hierarchy [scope](./typeioc.scope.md) |
 |  [transient()](./typeioc.iregisterwithas.transient.md) | Specifies transient scope resolution. Every resolution of service returns new instance Is similar to scope.none [ScopeType](./typeioc.scopetype.md) (default behavior) |
 |  [within(scope)](./typeioc.iregisterwithas.within.md) | Specifies resolution instance scope. Scope determines how resolved service instances behave in between resolutions |

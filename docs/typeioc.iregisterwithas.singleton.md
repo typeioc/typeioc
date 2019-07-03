@@ -9,11 +9,11 @@ Specifies singleton scope resolution. Every resolution of service returns same i
 <b>Signature:</b>
 
 ```typescript
-singleton(): RegisterWithScope<T>;
+singleton(): void;
 ```
 <b>Returns:</b>
 
-`RegisterWithScope<T>`
+`void`
 
-- an instance on [RegisterWithScope](./typeioc.registerwithscope.md) interface
+- void
 

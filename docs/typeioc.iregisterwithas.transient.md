@@ -9,11 +9,11 @@ Specifies transient scope resolution. Every resolution of service returns new in
 <b>Signature:</b>
 
 ```typescript
-transient(): RegisterWithScope<T>;
+transient(): void;
 ```
 <b>Returns:</b>
 
-`RegisterWithScope<T>`
+`void`
 
-- an instance of [RegisterWithScope](./typeioc.registerwithscope.md) interface
+- void
 

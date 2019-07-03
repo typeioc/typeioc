@@ -124,16 +124,13 @@ export interface IDecorator {
 export interface IDecoratorRegistration<T> {
     dispose(action: IDisposer<T>): WithDecoratorRegisterLazy<T>;
     initializeBy(action: IInitializer<T>): WithDecoratorRegisterInitializeBy<T>;
-    instancePerContainer(): WithDecoratorRegisterScope<T>;
+    instancePerContainer(): WithDecoratorRegister<T>;
     lazy(): WithDecoratorRegisterLazy<T>;
     named(name: string): WithDecoratorRegisterName<T>;
-    ownedBy(owner: OwnerType): WithDecoratorRegister<T>;
-    ownedExternally(): WithDecoratorRegister<T>;
-    ownedInternally(): WithDecoratorRegister<T>;
     register(): ClassDecorator;
-    singleton(): WithDecoratorRegisterScope<T>;
-    transient(): WithDecoratorRegisterScope<T>;
-    within(scope: ScopeType): WithDecoratorRegisterScope<T>;
+    singleton(): WithDecoratorRegister<T>;
+    transient(): WithDecoratorRegister<T>;
+    within(scope: ScopeType): WithDecoratorRegister<T>;
 }
 
 // @public
@@ -199,15 +196,12 @@ export interface IName {
 export interface IRegisterWithAs<T> {
     dispose(action: IDisposer<T>): RegisterWithLazy<T>;
     initializeBy(action: IInitializer<T>): RegisterWithInitializeBy<T>;
-    instancePerContainer(): RegisterWithScope<T>;
+    instancePerContainer(): void;
     lazy(): RegisterWithLazy<T>;
     named(name: string): RegisterWithName<T>;
-    ownedBy(owner: OwnerType): void;
-    ownedExternally(): void;
-    ownedInternally(): void;
-    singleton(): RegisterWithScope<T>;
-    transient(): RegisterWithScope<T>;
-    within(scope: ScopeType): RegisterWithScope<T>;
+    singleton(): void;
+    transient(): void;
+    within(scope: ScopeType): void;
 }
 
 // @public
@@ -245,15 +239,6 @@ export interface IWithSubstituteResult {
 }
 
 // @public
-export const owner: Readonly<{
-    container: OwnerType;
-    externals: OwnerType;
-}>;
-
-// @public
-export type OwnerType = 1 | 2;
-
-// @public
 export class ProxyError extends ApplicationError {
     constructor(params?: {
         message?: string;
@@ -271,9 +256,6 @@ export type RegisterWithLazy<T> = Omit<RegisterWithInitializeBy<T>, 'lazy' | 'di
 
 // @public
 export type RegisterWithName<T> = Omit<RegisterWithLazy<T>, 'named'>;
-
-// @public
-export type RegisterWithScope<T> = Pick<IRegisterWithAs<T>, 'ownedBy' | 'ownedInternally' | 'ownedExternally'>;
 
 // @public
 export class ResolutionError extends ApplicationError {
@@ -320,9 +302,6 @@ export type WithDecoratorRegisterLazy<T> = Omit<WithDecoratorRegisterInitializeB
 
 // @public
 export type WithDecoratorRegisterName<T> = Omit<WithDecoratorRegisterLazy<T>, 'named'>;
-
-// @public
-export type WithDecoratorRegisterScope<T> = Omit<WithDecoratorRegisterName<T>, 'within' | 'transient' | 'singleton' | 'instancePerContainer'>;
 
 // @public
 export type WithDecoratorResolver = Pick<IDecoratorResolution, 'resolve'>;

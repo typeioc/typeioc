@@ -9,11 +9,11 @@ Specifies transient scope resolution. Every resolution of service returns new in
 <b>Signature:</b>
 
 ```typescript
-transient(): WithDecoratorRegisterScope<T>;
+transient(): WithDecoratorRegister<T>;
 ```
 <b>Returns:</b>
 
-`WithDecoratorRegisterScope<T>`
+`WithDecoratorRegister<T>`
 
-- an instance of [WithDecoratorRegisterScope](./typeioc.withdecoratorregisterscope.md) interface
+- an instance of [WithDecoratorRegister](./typeioc.withdecoratorregister.md) interface
 
