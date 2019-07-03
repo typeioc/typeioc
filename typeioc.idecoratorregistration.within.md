@@ -9,7 +9,7 @@ Specifies resolution instance scope. Scope determines how resolved service insta
 <b>Signature:</b>
 
 ```typescript
-within(scope: ScopeType): WithDecoratorRegisterScope<T>;
+within(scope: ScopeType): WithDecoratorRegister<T>;
 ```
 
 ## Parameters
@@ -20,7 +20,7 @@ within(scope: ScopeType): WithDecoratorRegisterScope<T>;
 
 <b>Returns:</b>
 
-`WithDecoratorRegisterScope<T>`
+`WithDecoratorRegister<T>`
 
-- an instance of [WithDecoratorRegisterScope](./typeioc.withdecoratorregisterscope.md) interface
+- an instance of [WithDecoratorRegister](./typeioc.withdecoratorregister.md) interface
 

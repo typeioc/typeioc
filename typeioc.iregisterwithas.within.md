@@ -9,7 +9,7 @@ Specifies resolution instance scope. Scope determines how resolved service insta
 <b>Signature:</b>
 
 ```typescript
-within(scope: ScopeType): RegisterWithScope<T>;
+within(scope: ScopeType): void;
 ```
 
 ## Parameters
@@ -20,7 +20,7 @@ within(scope: ScopeType): RegisterWithScope<T>;
 
 <b>Returns:</b>
 
-`RegisterWithScope<T>`
+`void`
 
-- an instance of [RegisterWithScope](./typeioc.registerwithscope.md) interface
+- void
 

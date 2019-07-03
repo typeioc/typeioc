@@ -47,7 +47,6 @@ Dependency injection container for TypeScript / JavaScript
 |  --- | --- |
 |  [\_default](./typeioc._default.md) |  |
 |  [callInfo](./typeioc.callinfo.md) | Represents original substituted subject member type |
-|  [owner](./typeioc.owner.md) | Represents ownerships type |
 |  [scope](./typeioc.scope.md) | Represents resolution life-cycle type definition |
 
 ## Type Aliases
@@ -55,11 +54,9 @@ Dependency injection container for TypeScript / JavaScript
 |  Type Alias | Description |
 |  --- | --- |
 |  [CallInfoType](./typeioc.callinfotype.md) | Represents member substitution type values |
-|  [OwnerType](./typeioc.ownertype.md) | Represents ownerships type values |
 |  [RegisterWithInitializeBy](./typeioc.registerwithinitializeby.md) | Represents a step within fluent cascading API registration sequence where <code>initializeBy</code> method was omitted |
 |  [RegisterWithLazy](./typeioc.registerwithlazy.md) | Represents a step within fluent cascading API registration sequence where <code>lazy</code> and <code>dispose</code> methods were omitted |
 |  [RegisterWithName](./typeioc.registerwithname.md) | Represents a step within fluent cascading API registration sequence where <code>named</code> method was omitted |
-|  [RegisterWithScope](./typeioc.registerwithscope.md) | Represents a step within fluent cascading API registration sequence where instance ownership is specified |
 |  [ResolveWithArgs](./typeioc.resolvewithargs.md) | Represents a step within fluent cascading API resolution sequence where <code>args</code> method was omitted |
 |  [ResolveWithAttempt](./typeioc.resolvewithattempt.md) | Represents a step within fluent cascading API resolution sequence where <code>attempt</code> method was omitted |
 |  [ResolveWithCache](./typeioc.resolvewithcache.md) | \* Represents final step within fluent cascading API resolution sequence |
@@ -69,7 +66,6 @@ Dependency injection container for TypeScript / JavaScript
 |  [WithDecoratorRegisterInitializeBy](./typeioc.withdecoratorregisterinitializeby.md) | Represents a step within fluent cascading API registration sequence where <code>initializeBy</code> method was omitted |
 |  [WithDecoratorRegisterLazy](./typeioc.withdecoratorregisterlazy.md) | Represents a step within fluent cascading API registration sequence where <code>lazy</code> and <code>dispose</code> methods were omitted |
 |  [WithDecoratorRegisterName](./typeioc.withdecoratorregistername.md) | Represents a step within fluent cascading API registration sequence where <code>named</code> method was omitted |
-|  [WithDecoratorRegisterScope](./typeioc.withdecoratorregisterscope.md) | Represents a step within fluent cascading API registration sequence where <code>within</code>, <code>transient</code>, <code>singleton</code>, <code>instancePerContainer</code> methods where omitted |
 |  [WithDecoratorResolver](./typeioc.withdecoratorresolver.md) | Represents service resolution fluent API step |
 |  [WithDecoratorResolverArgs](./typeioc.withdecoratorresolverargs.md) | Represents service resolution fluent API step where <code>args</code> method was omitted |
 |  [WithDecoratorResolverAttempt](./typeioc.withdecoratorresolverattempt.md) | Represents service resolution fluent API step where <code>attempt</code> method was omitted |

@@ -9,11 +9,11 @@ Specifies instance per container scope resolution. Every resolution of a service
 <b>Signature:</b>
 
 ```typescript
-instancePerContainer(): RegisterWithScope<T>;
+instancePerContainer(): void;
 ```
 <b>Returns:</b>
 
-`RegisterWithScope<T>`
+`void`
 
-- an instance of [RegisterWithScope](./typeioc.registerwithscope.md) interface
+- void
 
