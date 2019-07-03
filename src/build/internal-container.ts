@@ -197,7 +197,7 @@ export class InternalContainer implements IInternalContainer {
         }
 
         if (this._pendingResolutions[entry.id]) {
-            throw new CircularDependencyError(`Circular dependency for service: ${entry.service}`)
+            throw new CircularDependencyError(`${entry.service}`)
         }
 
         try {

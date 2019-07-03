@@ -1,13 +1,15 @@
 import { Tap } from '@common/tap'
 const tap = require('tap') as Tap
-import typeioc, { IDecorator, CircularDependencyError } from '@lib'
+import typeioc, { IDecorator, IContainerBuilder, CircularDependencyError } from '@lib'
 
 type Context = {
     decorator: IDecorator
+    builder: IContainerBuilder
 }
 
 tap.beforeEach<Context>((done, setUp) => {
     setUp!.context.decorator = typeioc.createDecorator()
+    setUp!.context.builder = typeioc.createBuilder()
     done()
 })
 
@@ -51,7 +53,7 @@ tap.test<Context>('resolve throws when two services', (test) => {
     test.done()
 })
 
-tap.test<Context>('resolve throws when multiple services', (test) => {
+tap.test<Context>('resolve throws when decorator circular dependencies', (test) => {
     const { decorator } = test.context
 
     abstract class ABase {}
@@ -93,6 +95,42 @@ tap.test<Context>('resolve throws when multiple services', (test) => {
     test.throws(() => {
         container.resolve(CBase)
     }, new CircularDependencyError('class CBase'))
+
+    test.done()
+})
+
+tap.test<Context>('resolve throws when circular dependencies', (test) => {
+    const { builder } = test.context
+
+    class A {
+        constructor(private b: B) {
+            console.log(this.b)
+        }
+    }
+
+    class B {
+        constructor(private a: A) {
+            console.log(this.a)
+        }
+    }
+
+    builder.register('Service A')
+    .as((c) => {
+        const b = c.resolve<B>('Service B')
+        return new A(b)
+    })
+
+    builder.register('Service B')
+    .as((c) => {
+        const a = c.resolve<A>('Service A')
+        return new B(a)
+    })
+
+    const container = builder.build()
+
+    test.throws(() => {
+        container.resolve('Service A')
+    }, 'Circular dependency for service: Service A')
 
     test.done()
 })

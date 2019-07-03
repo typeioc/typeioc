@@ -2,7 +2,7 @@
 type Action<TContext> = (test: Test<TContext>) => void
 
 type Test<TContext> = {
-    throws(action: Function, error?: Error): void
+    throws(action: Function, error?: Error | string): void
     ok(value: any): void
     notOk(value: any): void
     equal(actual: any, expected: any): void
