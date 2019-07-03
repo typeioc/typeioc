@@ -16,7 +16,8 @@
     "extract-api": "api-extractor run --local --verbose",
     "docs:api": "api-documenter markdown -i ./api-metadata/temp -o ./docs && node ./scripts/copy-docs.js",
     "docs:publish": "git subtree push --prefix docs origin gh-pages",
-    "pack": "pack build"
+    "pack": "pack build",
+    "publish": "publish"
   },
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
