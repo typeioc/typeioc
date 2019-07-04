@@ -1,6 +1,6 @@
 import { Tap } from '@common/tap'
 const tap = require('tap') as Tap
-import typeioc, { IContainerBuilder, ResolutionError } from '@lib'
+import { builder, IContainerBuilder, ResolutionError } from '@lib'
 import * as Integration from '@data/decorator/integration'
 import * as ValueResolution from '@data/decorator/resolution/by-value'
 
@@ -9,7 +9,7 @@ type Context = {
 }
 
 tap.beforeEach<Context>((done, setUp) => {
-    setUp!.context.builder = typeioc.createBuilder()
+    setUp!.context.builder = builder()
     done()
 })
 

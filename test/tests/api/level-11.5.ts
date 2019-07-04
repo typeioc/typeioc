@@ -2,12 +2,12 @@ import sinon from 'sinon'
 import { Tap } from '@common/tap'
 const tap = require('tap') as Tap
 import { createResolve, Context } from '@common/interceptor'
-import typeioc, { ISubstituteInfo, callInfo, ICallInfo } from '@lib'
+import { builder, interceptor, ISubstituteInfo, callInfo, ICallInfo } from '@lib'
 
 tap.beforeEach<Context>((done, setUp) => {
     setUp!.context.resolve = createResolve({
-        builder: typeioc.createBuilder(),
-        interceptor: typeioc.createInterceptor()
+        builder: builder(),
+        interceptor: interceptor()
     })
 
     done()
@@ -622,9 +622,9 @@ tap.test<Context>('decorate cross method property', (test) => {
 
 tap.test('decorate Math', (test) => {
 
-    const interceptor = typeioc.createInterceptor()
+    const mathWrapper = interceptor()
 
-    const math = interceptor.intercept(Math, [{
+    const math = mathWrapper.intercept(Math, [{
         wrapper: (info: ICallInfo) => info.next!(`${info.result} 2`)
     }, {
         method: 'pow',

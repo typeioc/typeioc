@@ -1,6 +1,6 @@
 import { Tap } from '@common/tap'
 const tap = require('tap') as Tap
-import typeioc, { IContainer, DecoratorError } from '@lib'
+import { decorator, IContainer, DecoratorError } from '@lib'
 import * as ValueResolution from '@data/decorator/resolution/by-value'
 import * as ServiceResolution from '@data/decorator/resolution/by-service'
 import * as MultiServiceResolution from '@data/decorator/resolution/by-multiple-services'
@@ -163,7 +163,7 @@ tap.test<Context>('resolve by cache', (test) => {
 
 tap.test('decorator target error', (test) => {
     const delegate = function () {
-        const classDecorator = typeioc.createDecorator().provide('Test').register()
+        const classDecorator = decorator().provide('Test').register()
         classDecorator('Test' as unknown as Function)
     }
 

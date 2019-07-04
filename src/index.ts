@@ -5,29 +5,19 @@
  */
 
 import 'reflect-metadata'
-import { IEntryPoint, Scaffold } from './scaffold/index.js'
+import { Scaffold } from './scaffold/index.js'
+import { IContainerBuilder } from './build'
+import { IDecorator } from './decorators'
+import { IInterceptor } from './interceptors'
 
 const scaffold = new Scaffold()
 
-/**
- * Library main entry point, exposed as default
- * @public
- */
-export default <IEntryPoint>{
-    createBuilder() {
-        return scaffold.createBuilder()
-    },
+export const builder: () => IContainerBuilder = () => scaffold.createBuilder()
 
-    createDecorator() {
-        return scaffold.createDecorator()
-    },
+export const decorator: () => IDecorator = () => scaffold.createDecorator()
 
-    createInterceptor() {
-        return scaffold.createInterceptor()
-    }
-}
+export const interceptor: () => IInterceptor = () => scaffold.createInterceptor()
 
-export { IEntryPoint } from './scaffold'
 export {
     IContainerBuilder, IContainer,
     IResolveWith, ResolveWithArgs, ResolveWithAttempt, ResolveWithCache, ResolveWithName

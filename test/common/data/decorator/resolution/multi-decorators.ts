@@ -1,7 +1,7 @@
-import typeioc from '@lib'
+import * as typeioc from '@lib'
 
-export const decorator = typeioc.createDecorator()
-export const decorator2 = typeioc.createDecorator()
+export const decorator = typeioc.decorator()
+export const decorator2 = typeioc.decorator()
 
 export class TestBase {
     public foo() {}

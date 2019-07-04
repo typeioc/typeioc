@@ -1,6 +1,6 @@
 import { Tap } from '@common/tap'
 const tap = require('tap') as Tap
-import typeioc, { IDecorator, IContainerBuilder } from '@lib'
+import { builder, decorator, IDecorator, IContainerBuilder } from '@lib'
 
 type Lazy = {
     value: number,
@@ -15,8 +15,8 @@ type Context = {
 tap.beforeEach<Context>((done, setUp) => {
 
     setUp!.context = {
-        decorator: typeioc.createDecorator(),
-        builder: typeioc.createBuilder()
+        decorator: decorator(),
+        builder: builder()
     }
 
     done()

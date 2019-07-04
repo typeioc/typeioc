@@ -39,11 +39,8 @@ import {
     Interceptor,
     Proxy
 } from '../interceptors/index.js'
-import { IEntryPoint } from './types'
 
-export * from './types'
-
-export class Scaffold implements IEntryPoint {
+export class Scaffold {
 
     public createBuilder(): IContainerBuilder {
 

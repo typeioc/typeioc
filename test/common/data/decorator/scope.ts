@@ -1,6 +1,6 @@
-import typeioc, { scope } from '@lib'
+import { decorator as createDecorator, scope } from '@lib'
 
-export const decorator = typeioc.createDecorator()
+export const decorator = createDecorator()
 
 export class TestBase {
     public foo() { }

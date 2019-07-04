@@ -1,13 +1,13 @@
 import { Tap } from '@common/tap'
 const tap = require('tap') as Tap
-import typeioc, { IInterceptor, callInfo, ProxyError } from '@lib'
+import { interceptor, IInterceptor, callInfo, ProxyError } from '@lib'
 
 type Context = {
     interceptor: IInterceptor
 }
 
 tap.beforeEach<Context>((done, setUp) => {
-    setUp!.context.interceptor = typeioc.createInterceptor()
+    setUp!.context.interceptor = interceptor()
     done()
 })
 

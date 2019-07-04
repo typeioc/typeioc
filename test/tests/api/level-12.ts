@@ -1,12 +1,14 @@
 import { Tap } from '@common/tap'
 const tap = require('tap') as Tap
 import { createResolve, Context } from '@common/interceptor'
-import typeioc, { ISubstituteInfo, ICallInfo, callInfo } from '@lib'
+import {
+    builder, interceptor as createInterceptor, ISubstituteInfo, ICallInfo, callInfo
+} from '@lib'
 
 tap.beforeEach<Context>((done, setUp) => {
     setUp!.context.resolve = createResolve({
-        builder: typeioc.createBuilder(),
-        interceptor: typeioc.createInterceptor()
+        builder: builder(),
+        interceptor: createInterceptor()
     })
 
     done()
@@ -482,7 +484,7 @@ tap.test<Context>('decorate 100 method proxies', (test) => {
 })
 
 tap.test('decorate multiple method interceptions', (test) => {
-    const interceptor = typeioc.createInterceptor()
+    const interceptor = createInterceptor()
 
     class Parent {
         constructor(public start: string) {}
@@ -523,7 +525,7 @@ tap.test('decorate multiple method interceptions', (test) => {
 })
 
 tap.test('intercept prototype', (test) => {
-    const interceptor = typeioc.createInterceptor()
+    const interceptor = createInterceptor()
 
     class Parent {
 
@@ -561,7 +563,7 @@ tap.test('intercept prototype', (test) => {
 })
 
 tap.test('intercept instance', (test) => {
-    const interceptor = typeioc.createInterceptor()
+    const interceptor = createInterceptor()
 
     class Parent {
 
@@ -598,7 +600,7 @@ tap.test('intercept instance', (test) => {
 
 tap.test('intercept built in instance', (test) => {
 
-    const interceptor = typeioc.createInterceptor()
+    const interceptor = createInterceptor()
 
     const math = interceptor.interceptInstance(Math, [{
         method: 'abs',
@@ -614,7 +616,7 @@ tap.test('intercept built in instance', (test) => {
 })
 
 tap.test('intercept returns instance when no substitutes', (test) => {
-    const interceptor = typeioc.createInterceptor()
+    const interceptor = createInterceptor()
 
     const math = interceptor.intercept(Math)
 

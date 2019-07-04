@@ -1,13 +1,13 @@
 import { Tap } from '@common/tap'
 import sinon from 'sinon'
 const tap = require('tap') as Tap
-import typeioc from '@lib'
+import * as typeioc from '@lib'
 import { createResolve, Context } from '@common/interceptor'
 
 tap.beforeEach<Context>((done, setUp) => {
     setUp!.context.resolve = createResolve({
-        builder: typeioc.createBuilder(),
-        interceptor: typeioc.createInterceptor()
+        builder: typeioc.builder(),
+        interceptor: typeioc.interceptor()
     })
 
     done()

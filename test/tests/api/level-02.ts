@@ -1,12 +1,12 @@
 import { Tap } from '@common/tap'
 const tap = require('tap') as Tap
-import typeioc, { IContainerBuilder, ResolutionError, ArgumentError } from '@lib'
+import { builder, IContainerBuilder, ResolutionError, ArgumentError } from '@lib'
 import { Test1Base, Test1, Test2, Test4 } from '@data/base'
 
 type Context = { builder: IContainerBuilder }
 
 tap.beforeEach<Context>((done, setUp) => {
-    setUp!.context.builder = typeioc.createBuilder()
+    setUp!.context.builder = builder()
     done()
 })
 

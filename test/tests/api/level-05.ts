@@ -1,7 +1,8 @@
 import { Tap } from '@common/tap'
 const tap = require('tap') as Tap
-import typeioc,
-    { IContainer, IContainerBuilder, scope, ResolutionError } from '@lib'
+import {
+    builder as containerBuilder, IContainer, IContainerBuilder, scope, ResolutionError
+} from '@lib'
 import {
     Test1Base,
     Test1,
@@ -14,7 +15,7 @@ import {
 type Context = { builder: IContainerBuilder }
 
 tap.beforeEach<Context>((done, setUp) => {
-    setUp!.context.builder = typeioc.createBuilder()
+    setUp!.context.builder = containerBuilder()
     done()
 })
 
@@ -288,7 +289,7 @@ tap.test<Context>('instances from different containers are disposed independentl
 
     const { builder } = test.context
 
-    const secondBuilder = typeioc.createBuilder()
+    const secondBuilder = containerBuilder()
 
     builder.register<Test1Base>(Test1Base)
         .as(() => new Test5())

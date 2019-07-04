@@ -1,6 +1,6 @@
 import { Tap } from '@common/tap'
 const tap = require('tap') as Tap
-import typeioc, { IDecorator, IContainerBuilder, CircularDependencyError } from '@lib'
+import { decorator, builder, IDecorator, IContainerBuilder, CircularDependencyError } from '@lib'
 
 type Context = {
     decorator: IDecorator
@@ -8,8 +8,8 @@ type Context = {
 }
 
 tap.beforeEach<Context>((done, setUp) => {
-    setUp!.context.decorator = typeioc.createDecorator()
-    setUp!.context.builder = typeioc.createBuilder()
+    setUp!.context.decorator = decorator()
+    setUp!.context.builder = builder()
     done()
 })
 
