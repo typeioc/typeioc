@@ -30,7 +30,6 @@ Dependency injection container for TypeScript / JavaScript
 |  [IDecoratorResolution](./typeioc.idecoratorresolution.md) | Represents fluent cascading interface for services resolution |
 |  [IDisposer](./typeioc.idisposer.md) | Specifies an instance of disposer to be used during resolution disposal Receives an instance of the resolution |
 |  [IDynamicDependency](./typeioc.idynamicdependency.md) | Represents dynamic dependency interface |
-|  [IEntryPoint](./typeioc.ientrypoint.md) | Represents functionality exposed be the library |
 |  [IFactory](./typeioc.ifactory.md) | Represents factory method registration interface. Receives an instance of a container [IContainer](./typeioc.icontainer.md) and an array of optional parameters provided during resolution |
 |  [IInitializer](./typeioc.iinitializer.md) | Specifies an instance of initializer to be used during resolution initialization. Receives an instance of a container [IContainer](./typeioc.icontainer.md) and an instance of the resolved service |
 |  [IInterceptor](./typeioc.iinterceptor.md) | Represents interceptor specification interface |
@@ -45,8 +44,10 @@ Dependency injection container for TypeScript / JavaScript
 
 |  Variable | Description |
 |  --- | --- |
-|  [\_default](./typeioc._default.md) |  |
+|  [builder](./typeioc.builder.md) | Creates an instance on [IContainerBuilder](./typeioc.icontainerbuilder.md) interface |
 |  [callInfo](./typeioc.callinfo.md) | Represents original substituted subject member type |
+|  [decorator](./typeioc.decorator.md) | Creates an instance on [IDecorator](./typeioc.idecorator.md) interface |
+|  [interceptor](./typeioc.interceptor.md) | Creates an instance on [IInterceptor](./typeioc.iinterceptor.md) interface |
 |  [scope](./typeioc.scope.md) | Represents resolution life-cycle type definition |
 
 ## Type Aliases
