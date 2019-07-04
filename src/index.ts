@@ -12,10 +12,25 @@ import { IInterceptor } from './interceptors'
 
 const scaffold = new Scaffold()
 
+/**
+ * Creates an instance on {@link IContainerBuilder} interface
+ * @public
+ * @returns - an instance on {@link IContainerBuilder} interface
+ */
 export const builder: () => IContainerBuilder = () => scaffold.createBuilder()
 
+/**
+ * Creates an instance on {@link IDecorator} interface
+ * @public
+ * @returns - an instance on {@link IDecorator} interface
+ */
 export const decorator: () => IDecorator = () => scaffold.createDecorator()
 
+/**
+ * Creates an instance on {@link IInterceptor} interface
+ * @public
+ * @returns - an instance on {@link IInterceptor} interface
+ */
 export const interceptor: () => IInterceptor = () => scaffold.createInterceptor()
 
 export {

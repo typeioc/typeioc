@@ -29,6 +29,9 @@ export class ArgumentError extends ApplicationError {
 }
 
 // @public
+export const builder: () => IContainerBuilder;
+
+// @public
 export const callInfo: Readonly<{
     method: CallInfoType;
     getter: CallInfoType;
@@ -50,17 +53,15 @@ export class CircularDependencyError extends ApplicationError {
 }
 
 // @public
+export const decorator: () => IDecorator;
+
+// @public
 export class DecoratorError extends ApplicationError {
     constructor(params?: {
         message?: string;
         data?: {};
     });
 }
-
-// @public (undocumented)
-const _default: IEntryPoint;
-
-export default _default;
 
 // @public
 export interface ICache {
@@ -160,13 +161,6 @@ export interface IDynamicDependency {
 }
 
 // @public
-export interface IEntryPoint {
-    createBuilder(): IContainerBuilder;
-    createDecorator(): IDecorator;
-    createInterceptor(): IInterceptor;
-}
-
-// @public
 export interface IFactory<T> {
     // (undocumented)
     (c: IContainer, ...args: any[]): T;
@@ -191,6 +185,9 @@ export interface IName {
     // (undocumented)
     named(name: string): void;
 }
+
+// @public
+export const interceptor: () => IInterceptor;
 
 // @public
 export interface IRegisterWithAs<T> {
