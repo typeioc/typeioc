@@ -17,7 +17,7 @@
     "docs:api": "api-documenter markdown -i ./api-metadata/temp -o ./docs && node ./scripts/copy-docs.js",
     "docs:publish": "git subtree push --prefix docs origin gh-pages",
     "pack": "pack build",
-    "publish": "publish"
+    "publish": "pack publish"
   },
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
