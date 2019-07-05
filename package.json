@@ -1,6 +1,6 @@
 {
   "name": "typeioc",
-  "version": "2.1.8",
+  "version": "3.0.0",
   "scripts": {
     "prebuild": "npm run clean && npm run lint",
     "build": "tsc -b src test",
