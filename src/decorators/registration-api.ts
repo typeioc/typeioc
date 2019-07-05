@@ -15,7 +15,7 @@ export class RegistrationApi<T> implements IDecoratorRegistrationApi<T> {
     private _service?: {}
     private _name?: string
     private _scope?: ScopeType
-    private _initializedBy?: IInitializer<T>
+    private _initializedBy?: IInitializer<unknown>
     private _disposedBy?: IDisposer<T>
     private _isLazy: boolean
 
@@ -32,7 +32,7 @@ export class RegistrationApi<T> implements IDecoratorRegistrationApi<T> {
     }
 
     public get initializedBy(): IInitializer<T> | undefined {
-        return this._initializedBy
+        return this._initializedBy as IInitializer<T>
     }
 
     public get isLazy(): boolean {
@@ -84,11 +84,12 @@ export class RegistrationApi<T> implements IDecoratorRegistrationApi<T> {
         }
     }
 
-    private initializeBy(action: IInitializer<T>): WithDecoratorRegisterInitializeBy<T> {
+    private initializeBy<K extends T>(action: IInitializer<K>):
+    WithDecoratorRegisterInitializeBy<K> {
 
         checkNullArgument(action, 'action')
 
-        this._initializedBy = action
+        this._initializedBy = action as IInitializer<unknown>
 
         return {
             lazy : this.lazy,

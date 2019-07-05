@@ -117,10 +117,10 @@ export class Registration<T> implements IRegistration<T> {
         this._base.owner = owner
     }
 
-    private initializeBy(action: IInitializer<T>): RegisterWithInitializeBy<T> {
+    private initializeBy<K extends T>(action: IInitializer<K>): RegisterWithInitializeBy<K> {
         checkNullArgument(action, 'action');
 
-        (this._base.initializer as IInitializer<T> | undefined) = action
+        (this._base.initializer as IInitializer<K> | undefined) = action
 
         return {
             lazy: this.lazy,

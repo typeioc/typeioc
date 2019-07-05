@@ -12,7 +12,7 @@ export interface IDecoratorRegistration<T> {
      * @param action - an instance of {@link IInitializer} interface
      * @returns - an instance of {@link WithDecoratorRegisterInitializeBy} interface
      */
-    initializeBy(action: IInitializer<T>): WithDecoratorRegisterInitializeBy<T>
+    initializeBy<K extends T>(action: IInitializer<K>): WithDecoratorRegisterInitializeBy<K>
 
     /**
      * Specifies lazy registration. Resolution of services is differed until results

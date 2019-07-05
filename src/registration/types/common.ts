@@ -95,7 +95,7 @@ export interface IRegisterWithAs<T> {
      * @param action - an instance of {@link IInitializer} interface
      * @returns - an instance of {@link RegisterWithInitializeBy} interface
      */
-    initializeBy(action: IInitializer<T>): RegisterWithInitializeBy<T>
+    initializeBy<K extends T>(action: IInitializer<K>): RegisterWithInitializeBy<K>
 
     /**
      * Specifies lazy registration. Resolution of services is differed until results

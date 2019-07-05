@@ -14,8 +14,8 @@ export class TestBase1 {
 }
 
 @decorator.provide(TestBase)
-    .initializeBy((_c, item) => {
-        (item as Test2).text = 'foo 2'
+    .initializeBy<Test2>((_c, item) => {
+        item.text = 'foo 2'
         return item
     })
     .register()
