@@ -17,7 +17,8 @@
     "docs:api": "api-documenter markdown -i ./api-metadata/temp -o ./docs && node ./scripts/copy-docs.js",
     "docs:publish": "git subtree push --prefix docs origin gh-pages",
     "pack": "pack build",
-    "publish": "pack publish"
+    "publish": "pack publish",
+    "version": "npm run build"
   },
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
@@ -38,10 +39,11 @@
       [
         "@pika/plugin-build-web"
       ],
-      [ "@pika/plugin-bundle-types",
+      [
+        "@pika/plugin-bundle-types",
         {
-            "tsconfig": "./src/tsconfig-pkg.json"
-          }
+          "tsconfig": "./src/tsconfig-pkg.json"
+        }
       ]
     ]
   },
