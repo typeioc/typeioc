@@ -24,7 +24,7 @@ tap.test<Context>('registrations with dispose setting are disposed', (test) => {
 
     builder.register<Test1Base>(Test1Base)
         .as(() => new Test5())
-        .dispose((item)  => { (item as Test5).dispose() })
+        .dispose<Test5>((item) => { item.dispose() })
         .within(scope.none)
 
     const container = builder.build()
@@ -43,7 +43,7 @@ tap.test<Context>('internally owned instances are disposed', (test) => {
 
     builder.register<Test1Base>(Test1Base)
         .as(() => new Test5())
-        .dispose((item) => { (item as Test5).dispose() })
+        .dispose<Test5>((item) => { item.dispose() })
         .within(scope.none)
 
     const container = builder.build()
@@ -63,7 +63,7 @@ tap.test<Context>('container owned and container reused instances are disposed',
 
     builder.register<Test1Base>(Test1Base)
         .as(() => new Test5())
-        .dispose((item)  => { (item as Test5).dispose() })
+        .dispose<Test5>((item)  => { item.dispose() })
         .within(scope.container)
 
     const container = builder.build()
@@ -81,7 +81,7 @@ tap.test<Context>('container owned and hierarchy reused instances are disposed',
 
     builder.register<Test1Base>(Test1Base)
         .as(() => new Test5())
-        .dispose((item)  => { (item as Test5).dispose() })
+        .dispose<Test5>((item)  => { item.dispose() })
         .within(scope.hierarchy)
 
     const container = builder.build()
@@ -100,7 +100,7 @@ tap.test<Context>('child container instance with parent registration is not disp
 
     builder.register<Test1Base>(Test1Base)
         .as(() => new Test5())
-        .dispose((item)  => { (item as Test5).dispose() })
+        .dispose<Test5>((item) => { item.dispose() })
         .within(scope.hierarchy)
 
     const container = builder.build()
@@ -119,7 +119,7 @@ tap.test<Context>('disposing parent container disposes child container instances
 
     builder.register<Test1Base>(Test1Base)
         .as(() => new Test5())
-        .dispose((item)  => { (item as Test5).dispose() })
+        .dispose<Test5>((item) => { item.dispose() })
         .within(scope.none)
 
     const container = builder.build()
@@ -180,7 +180,7 @@ tap.test<Context>('disposing container removes all registrations', (test) => {
 
     builder.register(Test1Base)
     .as(() => new Test5())
-    .dispose((item) => { (item as Test5).dispose() })
+    .dispose<Test5>((item) => { item.dispose() })
     .within(scope.hierarchy)
 
     const container = builder.build()
@@ -219,7 +219,7 @@ tap.test<Context>('disposing container removes all child registrations', (test) 
 
     builder.register<Test1Base>(Test1Base)
         .as(() => new Test5())
-        .dispose((item) => { (item as Test5).dispose() })
+        .dispose<Test5>((item) => { item.dispose() })
         .within(scope.container)
 
     const container = builder.build()
@@ -293,12 +293,12 @@ tap.test<Context>('instances from different containers are disposed independentl
 
     builder.register<Test1Base>(Test1Base)
         .as(() => new Test5())
-        .dispose((item)  => (item as Test5).dispose())
+        .dispose<Test5>((item) => { item.dispose() })
         .within(scope.none)
 
     secondBuilder.register<Test1Base>(Test1Base)
         .as(() => new Test5())
-        .dispose((item)  => { (item as Test5).dispose() })
+        .dispose<Test5>((item) => { item.dispose() })
         .within(scope.none)
 
     const container = builder.build()

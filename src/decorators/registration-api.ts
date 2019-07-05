@@ -115,11 +115,11 @@ export class RegistrationApi<T> implements IDecoratorRegistrationApi<T> {
         }
     }
 
-    private dispose(action: IDisposer<T>): WithDecoratorRegisterLazy<T> {
+    private dispose<K extends T>(action: IDisposer<K>): WithDecoratorRegisterLazy<K> {
 
         checkNullArgument(action, 'action')
 
-        this._disposedBy = action
+        this._disposedBy = action as IDisposer<T>
 
         return {
             named: this.named,

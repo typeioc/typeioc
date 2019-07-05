@@ -20,8 +20,8 @@ import { IResolveWith } from './types/resolution'
 
 export class InternalContainer implements IInternalContainer {
 
-    private parent: InternalContainer | undefined
-    private children: InternalContainer [] = []
+    private _parent: InternalContainer | undefined
+    private _children: InternalContainer [] = []
     private _pendingResolutions: IndexedCollection<boolean>
     private _disposableStorage: IDisposableStorage
     private _collection: IRegistrationStorage
@@ -68,16 +68,16 @@ export class InternalContainer implements IInternalContainer {
             this._resolutionCacheService,
             this._resolutionDetails)
 
-        child.parent = this
-        this.children.push(child)
+        child._parent = this
+        this._children.push(child)
         return child
     }
 
     public dispose(): void {
         this._disposableStorage.disposeItems()
 
-        while (this.children.length > 0) {
-            const item = this.children.pop()!
+        while (this._children.length > 0) {
+            const item = this._children.pop()!
             item.dispose()
         }
 
@@ -220,8 +220,8 @@ export class InternalContainer implements IInternalContainer {
 
         const serviceEntry = this._collection.getEntry(registration)
 
-        if (!serviceEntry && this.parent) {
-            return this.parent.resolveImpl(registration, throwIfNotFound)
+        if (!serviceEntry && this._parent) {
+            return this._parent.resolveImpl(registration, throwIfNotFound)
         }
 
         if (!serviceEntry  && throwIfNotFound) {

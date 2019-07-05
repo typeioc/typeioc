@@ -133,10 +133,10 @@ export class Registration<T> implements IRegistration<T> {
         }
     }
 
-    private dispose(action: IDisposer<T>): RegisterWithLazy<T> {
+    private dispose<K extends T>(action: IDisposer<K>): RegisterWithLazy<K> {
         checkNullArgument(action, 'action');
 
-        (this._base.disposer as IDisposer<T> | undefined) = action
+        (this._base.disposer as IDisposer<K> | undefined) = action
         this.ownedBy(owner.container)
 
         return {

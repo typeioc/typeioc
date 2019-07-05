@@ -27,7 +27,7 @@ export interface IDecoratorRegistration<T> {
      * disposal process ({@link IDisposer})
      * @returns - an instance of {@link WithDecoratorRegisterLazy} interface
      */
-    dispose(action: IDisposer<T>): WithDecoratorRegisterLazy<T>
+    dispose<K extends T>(action: IDisposer<K>): WithDecoratorRegisterLazy<K>
 
     /**
      * Specifies named registration. Registration can be resolved only using the name

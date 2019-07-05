@@ -20,7 +20,7 @@ tap.test<Context>('fluent api initialize by disposed named within owned by', (te
     builder.register<Test1Base>(Test1Base)
         .as(() => new Test5())
         .initializeBy((_c, item) => item)
-        .dispose((item) => (item as Test5).dispose())
+        .dispose<Test5>((item) => { item.dispose() })
         .named('Some Name')
         .within(scope.hierarchy)
 
@@ -66,7 +66,7 @@ tap.test<Context>('fluent api dispose', (test) => {
 
     const registration = builder.register<Test1Base>(Test1Base)
         .as(() => new Test5())
-        .dispose((item) => (item as Test5).dispose())
+        .dispose<Test5>((item) => { item.dispose() })
 
     test.notOk((registration as any).as)
     test.notOk((registration as any).initializeBy)

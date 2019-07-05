@@ -216,7 +216,7 @@ tap.test<Context>('container owned instances are disposed async', async(test) =>
 
     builder.register<Test1Base>(Test1Base)
         .as(() => new Test5())
-        .dispose((item)  => { (item as Test5).dispose() })
+        .dispose<Test5>((item) => { item.dispose() })
         .within(scope.none)
 
     const container = builder.build()

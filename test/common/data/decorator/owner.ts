@@ -28,7 +28,7 @@ export class TestBase2 {
 }
 
 @decorator.provide<TestBase2>(TestBase2)
-    .dispose((item: TestBase2) => { item.dispose() })
+    .dispose((item) => { item.dispose() })
     .register()
 export class Test2 extends TestBase2 {
     public text: string = 'test'
@@ -69,8 +69,13 @@ export class TestBase2Api {
     public dispose() {}
 }
 
+class TestBase2Api2 {
+    public foo() { }
+    public dispose() {}
+}
+
 @decorator.provide<TestBase2Api>(TestBase2Api)
-    .dispose((item) => { item.dispose() })
+    .dispose<TestBase2Api2>((item) => { item.dispose() })
     .register()
 export class Test2Api extends TestBase2Api {
     public text : string = 'test'

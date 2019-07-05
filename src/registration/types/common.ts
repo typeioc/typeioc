@@ -118,7 +118,7 @@ export interface IRegisterWithAs<T> {
      * disposal process ({@link IDisposer})
      * @returns - an instance of {@link RegisterWithLazy} interface
      */
-    dispose(action: IDisposer<T>): RegisterWithLazy<T>
+    dispose<K extends T>(action: IDisposer<K>): RegisterWithLazy<K>
 
     /**
      * Specifies resolution instance scope. Scope determines how resolved service
