@@ -67,6 +67,9 @@ export class DecoratorError extends ApplicationError {
 export type Disposer<T> = (item: T) => void;
 
 // @public
+export type Factory<T> = (c: IContainer, ...args: any[]) => T;
+
+// @public
 export interface ICache {
     readonly instance: {
         [name: string]: any;
@@ -148,19 +151,13 @@ export interface IDecoratorResolution {
 
 // @public
 export interface IDynamicDependency {
-    factory?: IFactory<{}>;
+    factory?: Factory<{}>;
     factoryType?: {};
     factoryValue?: {};
     initializer?: Initializer<{}>;
     named?: string;
     required?: boolean;
     service: {};
-}
-
-// @public
-export interface IFactory<T> {
-    // (undocumented)
-    (c: IContainer, ...args: any[]): T;
 }
 
 // @public
@@ -197,7 +194,7 @@ export interface IRegisterWithAs<T> {
 
 // @public
 export interface IRegistration<T> {
-    as(factory: IFactory<T>): IRegisterWithAs<T>;
+    as(factory: Factory<T>): IRegisterWithAs<T>;
     asSelf(...params: any[]): IRegisterWithAs<T>;
     asType(type: T, ...params: any[]): IRegisterWithAs<T>;
     asValue(value: {}): IName;

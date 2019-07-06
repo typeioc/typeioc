@@ -1,5 +1,5 @@
 import {
-    IFactory,
+    Factory,
     IName,
     Initializer,
     Disposer,
@@ -25,7 +25,7 @@ export class Registration<T> implements IRegistration<T> {
         this.lazy = this.lazy.bind(this)
     }
 
-    public as(factory: IFactory<T>): IRegisterWithAs<T> {
+    public as(factory: Factory<T>): IRegisterWithAs<T> {
         checkNullArgument(factory, 'factory')
 
         this._base.factory = factory

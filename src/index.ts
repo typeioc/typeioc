@@ -38,7 +38,7 @@ export {
     IResolveWith, ResolveWithArgs, ResolveWithAttempt, ResolveWithCache, ResolveWithName
 } from './build'
 export {
-    IRegistration, IDynamicDependency, IFactory, Initializer, Disposer, IName,
+    IRegistration, IDynamicDependency, Factory, Initializer, Disposer, IName,
     IRegisterWithAs, RegisterWithInitializeBy, RegisterWithLazy, RegisterWithName,
 } from './registration'
 export { IInterceptor, ISubstituteInfo, ICallInfo, IWithSubstituteResult } from './interceptors'

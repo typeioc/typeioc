@@ -16,9 +16,7 @@ export const registrationType = Object.freeze({
  * an array of optional parameters provided during resolution
  * @public
  */
-export interface IFactory<T> {
-    (c: IContainer, ...args: any[]): T
-}
+export type Factory<T> = (c: IContainer, ...args: any[]) => T
 
 /**
  * Represents dynamic dependency interface
@@ -31,10 +29,10 @@ export interface IDynamicDependency {
     service: {}
 
     /**
-     * Specifies factory interface {@link IFactory} to be used as substitution for factory
+     * Specifies factory interface {@link Factory} to be used as substitution for factory
      * registrations
      */
-    factory?: IFactory<{}>
+    factory?: Factory<{}>
 
     /**
      * Specifies factory type to be used as substitution for factory type
@@ -189,10 +187,10 @@ export interface IRegistration<T> {
      * @remarks
      * Registration is provided as a factory method
      *
-     * @param factory - an instance of {@link IFactory} interface
+     * @param factory - an instance of {@link Factory} interface
      * @returns - an instance of {@link IRegisterWithAs} interface
      */
-    as(factory: IFactory<T>): IRegisterWithAs<T>
+    as(factory: Factory<T>): IRegisterWithAs<T>
 
     /**
      * Sets registration to be marked as type registration

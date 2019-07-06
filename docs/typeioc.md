@@ -29,7 +29,6 @@ Dependency injection container for TypeScript / JavaScript
 |  [IDecoratorRegistration](./typeioc.idecoratorregistration.md) | Represents an entry into service registration fluent cascading API interface |
 |  [IDecoratorResolution](./typeioc.idecoratorresolution.md) | Represents fluent cascading interface for services resolution |
 |  [IDynamicDependency](./typeioc.idynamicdependency.md) | Represents dynamic dependency interface |
-|  [IFactory](./typeioc.ifactory.md) | Represents factory method registration interface. Receives an instance of a container [IContainer](./typeioc.icontainer.md) and an array of optional parameters provided during resolution |
 |  [IInterceptor](./typeioc.iinterceptor.md) | Represents interceptor specification interface |
 |  [IName](./typeioc.iname.md) | Specifies named registration interface with no additional steps within fluent cascading API Receives a value to be used named registrations / resolutions |
 |  [IRegisterWithAs](./typeioc.iregisterwithas.md) | Represents an entry step within registration fluent cascading API sequence |
@@ -54,6 +53,7 @@ Dependency injection container for TypeScript / JavaScript
 |  --- | --- |
 |  [CallInfoType](./typeioc.callinfotype.md) | Represents member substitution type values |
 |  [Disposer](./typeioc.disposer.md) | Specifies an instance of the dispose action to be used during resolution disposal Receives an instance of the resolution |
+|  [Factory](./typeioc.factory.md) | Represents factory method registration interface. Receives an instance of a container [IContainer](./typeioc.icontainer.md) and an array of optional parameters provided during resolution |
 |  [Initializer](./typeioc.initializer.md) | Specifies an instance of the initialization action to be used during resolution instantiation. Receives an instance of a container [IContainer](./typeioc.icontainer.md) and an instance of the resolved service |
 |  [RegisterWithInitializeBy](./typeioc.registerwithinitializeby.md) | Represents a step within fluent cascading API registration sequence where <code>initializeBy</code> method was omitted |
 |  [RegisterWithLazy](./typeioc.registerwithlazy.md) | Represents a step within fluent cascading API registration sequence where <code>lazy</code> and <code>dispose</code> methods were omitted |

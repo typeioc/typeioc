@@ -1,4 +1,4 @@
-import { registrationType, IFactory, IRegistrationBase } from '../registration/index.js'
+import { registrationType, Factory, IRegistrationBase } from '../registration/index.js'
 import {
     Store,
     FactoryStore,
@@ -127,7 +127,7 @@ export class RegistrationStorage implements IRegistrationStorage {
             registration.args.length
     }
 
-    private getFactoryArgsCount(factory: IFactory<{}>): number {
+    private getFactoryArgsCount(factory: Factory<{}>): number {
 
         const paramsCount = (<Function>factory).length
         return Math.max(paramsCount - 1, 0)

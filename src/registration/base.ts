@@ -2,7 +2,7 @@ import {
     registrationType,
     RegistrationType,
     IDynamicDependency,
-    IFactory,
+    Factory,
     Initializer,
     Disposer,
     IRegistrationBase
@@ -15,7 +15,7 @@ import { uuid, factoryValueKey, isArray } from '../utils/index.js'
 
 export class RegistrationBase implements IRegistrationBase {
     private _id: string
-    private _factory?: IFactory<{}>
+    private _factory?: Factory<{}>
     private _factoryType?: {}
     private _factoryValue?: {}
     private _name?: string
@@ -126,11 +126,11 @@ export class RegistrationBase implements IRegistrationBase {
         this._dependenciesValue = isArray(value) ? value : []
     }
 
-    public get factory(): IFactory<{}> | undefined {
+    public get factory(): Factory<{}> | undefined {
         return this._factory
     }
 
-    public set factory(value: IFactory<{}> | undefined) {
+    public set factory(value: Factory<{}> | undefined) {
         this._factory = value
         this._registrationType = registrationType.factory
     }

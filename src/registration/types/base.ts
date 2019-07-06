@@ -1,7 +1,7 @@
 import {
     RegistrationType,
     IDynamicDependency,
-    IFactory,
+    Factory,
     Initializer,
     Disposer
 } from './common'
@@ -12,7 +12,7 @@ import { OwnerType, ScopeType } from '../../common'
 export interface IRegistrationBase {
     id: string
     service: {}
-    factory?: IFactory<{}>
+    factory?: Factory<{}>
     factoryType?: {}
     factoryValue?: {}
     name?: string
