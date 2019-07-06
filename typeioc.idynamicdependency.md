@@ -16,7 +16,7 @@ export interface IDynamicDependency
 
 |  Property | Type | Description |
 |  --- | --- | --- |
-|  [factory](./typeioc.idynamicdependency.factory.md) | <code>IFactory&lt;{}&gt;</code> | Specifies factory interface [IFactory](./typeioc.ifactory.md) to be used as substitution for factory registrations |
+|  [factory](./typeioc.idynamicdependency.factory.md) | <code>Factory&lt;{}&gt;</code> | Specifies factory interface [Factory](./typeioc.factory.md) to be used as substitution for factory registrations |
 |  [factoryType](./typeioc.idynamicdependency.factorytype.md) | <code>{}</code> | Specifies factory type to be used as substitution for factory type registrations |
 |  [factoryValue](./typeioc.idynamicdependency.factoryvalue.md) | <code>{}</code> | Specifies factory value to be used as substitution for factory value registrations |
 |  [initializer](./typeioc.idynamicdependency.initializer.md) | <code>Initializer&lt;{}&gt;</code> | Specifies an instance of initializer [Initializer](./typeioc.initializer.md) to be used during substitution initialization |

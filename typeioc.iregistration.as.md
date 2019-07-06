@@ -9,14 +9,14 @@ Sets registration to be marked as factory registration
 <b>Signature:</b>
 
 ```typescript
-as(factory: IFactory<T>): IRegisterWithAs<T>;
+as(factory: Factory<T>): IRegisterWithAs<T>;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  factory | <code>IFactory&lt;T&gt;</code> | an instance of [IFactory](./typeioc.ifactory.md) interface |
+|  factory | <code>Factory&lt;T&gt;</code> | an instance of [Factory](./typeioc.factory.md) interface |
 
 <b>Returns:</b>
 
