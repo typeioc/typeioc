@@ -2,8 +2,8 @@ import {
     RegistrationType,
     IDynamicDependency,
     IFactory,
-    IInitializer,
-    IDisposer
+    Initializer,
+    Disposer
 } from './common'
 
 import { IContainer } from '../../build'
@@ -18,8 +18,8 @@ export interface IRegistrationBase {
     name?: string
     scope?: ScopeType
     owner: OwnerType
-    initializer?: IInitializer<{}>
-    disposer?: IDisposer<{}>
+    initializer?: Initializer<{}>
+    disposer?: Disposer<{}>
     args: {}[]
     params: {}[]
     container?: IContainer

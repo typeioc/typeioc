@@ -19,7 +19,7 @@ export interface IDynamicDependency
 |  [factory](./typeioc.idynamicdependency.factory.md) | <code>IFactory&lt;{}&gt;</code> | Specifies factory interface [IFactory](./typeioc.ifactory.md) to be used as substitution for factory registrations |
 |  [factoryType](./typeioc.idynamicdependency.factorytype.md) | <code>{}</code> | Specifies factory type to be used as substitution for factory type registrations |
 |  [factoryValue](./typeioc.idynamicdependency.factoryvalue.md) | <code>{}</code> | Specifies factory value to be used as substitution for factory value registrations |
-|  [initializer](./typeioc.idynamicdependency.initializer.md) | <code>IInitializer&lt;{}&gt;</code> | Specifies an instance of initializer [IInitializer](./typeioc.iinitializer.md) to be used during substitution initialization |
+|  [initializer](./typeioc.idynamicdependency.initializer.md) | <code>Initializer&lt;{}&gt;</code> | Specifies an instance of initializer [Initializer](./typeioc.initializer.md) to be used during substitution initialization |
 |  [named](./typeioc.idynamicdependency.named.md) | <code>string</code> | Specifies a name to be used as substitution for named registrations |
 |  [required](./typeioc.idynamicdependency.required.md) | <code>boolean</code> | Specifies the necessity of the registration presence prior substitution. If required is true and no registration found, throws [ResolutionError](./typeioc.resolutionerror.md) during resolution |
 |  [service](./typeioc.idynamicdependency.service.md) | <code>{}</code> | Specifies service value, registration to be substituted for |

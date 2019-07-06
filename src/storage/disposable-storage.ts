@@ -1,10 +1,10 @@
-import { IDisposer } from '../registration'
+import { Disposer } from '../registration'
 import { IDisposableStorage, DisposableItem } from './types'
 
 export class DisposableStorage implements IDisposableStorage {
     private _disposables: DisposableItem[] = []
 
-    public add(obj: {}, disposer: IDisposer<{}>) {
+    public add(obj: {}, disposer: Disposer<{}>) {
 
         const item = this.createDisposableItem(obj, disposer)
 
@@ -21,7 +21,7 @@ export class DisposableStorage implements IDisposableStorage {
         }
     }
 
-    createDisposableItem(obj: {}, disposer: IDisposer<{}>): DisposableItem {
+    createDisposableItem(obj: {}, disposer: Disposer<{}>): DisposableItem {
         return {
             weakReference: obj,    // TODO: change this for ES6 weak-map
             disposer

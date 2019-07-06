@@ -4,7 +4,7 @@
 
 ## IContainer.dispose() method
 
-Disposes all resolved, internally owned instances registered using [IDisposer](./typeioc.idisposer.md) interface
+Disposes all resolved, internally owned instances registered using [Disposer](./typeioc.disposer.md) interface
 
 <b>Signature:</b>
 

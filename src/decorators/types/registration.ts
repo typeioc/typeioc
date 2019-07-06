@@ -1,5 +1,5 @@
 import { ScopeType } from '../../common'
-import { IDisposer, IInitializer } from '../../registration'
+import { Disposer, Initializer } from '../../registration'
 import { Omit } from '../../utils'
 
 /**
@@ -9,10 +9,10 @@ import { Omit } from '../../utils'
 export interface IDecoratorRegistration<T> {
     /**
      * Specifies initialization action during service instantiation
-     * @param action - an instance of {@link IInitializer} interface
+     * @param action - an instance of {@link Initializer} interface
      * @returns - an instance of {@link WithDecoratorRegisterInitializeBy} interface
      */
-    initializeBy<K extends T>(action: IInitializer<K>): WithDecoratorRegisterInitializeBy<K>
+    initializeBy<K extends T>(action: Initializer<K>): WithDecoratorRegisterInitializeBy<K>
 
     /**
      * Specifies lazy registration. Resolution of services is differed until results
@@ -24,10 +24,10 @@ export interface IDecoratorRegistration<T> {
     /**
      * Specifies disposer action during resolution disposal.
      * @param action - disposer action to be called during resolution
-     * disposal process ({@link IDisposer})
+     * disposal process ({@link Disposer})
      * @returns - an instance of {@link WithDecoratorRegisterLazy} interface
      */
-    dispose<K extends T>(action: IDisposer<K>): WithDecoratorRegisterLazy<K>
+    dispose<K extends T>(action: Disposer<K>): WithDecoratorRegisterLazy<K>
 
     /**
      * Specifies named registration. Registration can be resolved only using the name

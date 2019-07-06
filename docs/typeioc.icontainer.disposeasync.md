@@ -4,7 +4,7 @@
 
 ## IContainer.disposeAsync() method
 
-Asynchronously disposes all resolved, internally owned instances registered using [IDisposer](./typeioc.idisposer.md) interface
+Asynchronously disposes all resolved, internally owned instances registered using [Disposer](./typeioc.disposer.md) interface
 
 <b>Signature:</b>
 

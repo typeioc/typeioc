@@ -64,6 +64,9 @@ export class DecoratorError extends ApplicationError {
 }
 
 // @public
+export type Disposer<T> = (item: T) => void;
+
+// @public
 export interface ICache {
     readonly instance: {
         [name: string]: any;
@@ -123,8 +126,8 @@ export interface IDecorator {
 
 // @public
 export interface IDecoratorRegistration<T> {
-    dispose<K extends T>(action: IDisposer<K>): WithDecoratorRegisterLazy<K>;
-    initializeBy<K extends T>(action: IInitializer<K>): WithDecoratorRegisterInitializeBy<K>;
+    dispose<K extends T>(action: Disposer<K>): WithDecoratorRegisterLazy<K>;
+    initializeBy<K extends T>(action: Initializer<K>): WithDecoratorRegisterInitializeBy<K>;
     instancePerContainer(): WithDecoratorRegister<T>;
     lazy(): WithDecoratorRegisterLazy<T>;
     named(name: string): WithDecoratorRegisterName<T>;
@@ -144,17 +147,11 @@ export interface IDecoratorResolution {
 }
 
 // @public
-export interface IDisposer<T> {
-    // (undocumented)
-    (item: T): void;
-}
-
-// @public
 export interface IDynamicDependency {
     factory?: IFactory<{}>;
     factoryType?: {};
     factoryValue?: {};
-    initializer?: IInitializer<{}>;
+    initializer?: Initializer<{}>;
     named?: string;
     required?: boolean;
     service: {};
@@ -164,12 +161,6 @@ export interface IDynamicDependency {
 export interface IFactory<T> {
     // (undocumented)
     (c: IContainer, ...args: any[]): T;
-}
-
-// @public
-export interface IInitializer<T> {
-    // (undocumented)
-    (c: IContainer, item: T): T;
 }
 
 // @public
@@ -187,12 +178,15 @@ export interface IName {
 }
 
 // @public
+export type Initializer<T> = (c: IContainer, item: T) => T;
+
+// @public
 export const interceptor: () => IInterceptor;
 
 // @public
 export interface IRegisterWithAs<T> {
-    dispose<K extends T>(action: IDisposer<K>): RegisterWithLazy<K>;
-    initializeBy<K extends T>(action: IInitializer<K>): RegisterWithInitializeBy<K>;
+    dispose<K extends T>(action: Disposer<K>): RegisterWithLazy<K>;
+    initializeBy<K extends T>(action: Initializer<K>): RegisterWithInitializeBy<K>;
     instancePerContainer(): void;
     lazy(): RegisterWithLazy<T>;
     named(name: string): RegisterWithName<T>;

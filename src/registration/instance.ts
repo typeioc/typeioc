@@ -1,8 +1,8 @@
 import {
     IFactory,
     IName,
-    IInitializer,
-    IDisposer,
+    Initializer,
+    Disposer,
     IRegisterWithAs, RegisterWithInitializeBy, RegisterWithLazy, RegisterWithName,
     IRegistrationBase,
     IRegistration
@@ -117,10 +117,10 @@ export class Registration<T> implements IRegistration<T> {
         this._base.owner = owner
     }
 
-    private initializeBy<K extends T>(action: IInitializer<K>): RegisterWithInitializeBy<K> {
+    private initializeBy<K extends T>(action: Initializer<K>): RegisterWithInitializeBy<K> {
         checkNullArgument(action, 'action');
 
-        (this._base.initializer as IInitializer<K> | undefined) = action
+        (this._base.initializer as Initializer<K> | undefined) = action
 
         return {
             lazy: this.lazy,
@@ -133,10 +133,10 @@ export class Registration<T> implements IRegistration<T> {
         }
     }
 
-    private dispose<K extends T>(action: IDisposer<K>): RegisterWithLazy<K> {
+    private dispose<K extends T>(action: Disposer<K>): RegisterWithLazy<K> {
         checkNullArgument(action, 'action');
 
-        (this._base.disposer as IDisposer<K> | undefined) = action
+        (this._base.disposer as Disposer<K> | undefined) = action
         this.ownedBy(owner.container)
 
         return {

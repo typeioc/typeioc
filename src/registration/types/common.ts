@@ -54,10 +54,10 @@ export interface IDynamicDependency {
     named?: string
 
     /**
-     * Specifies an instance of initializer {@link IInitializer} to be used
+     * Specifies an instance of initializer {@link Initializer} to be used
      * during substitution initialization
      */
-    initializer?: IInitializer<{}>
+    initializer?: Initializer<{}>
 
     /**
      * Specifies the necessity of the registration presence prior substitution.
@@ -69,23 +69,17 @@ export interface IDynamicDependency {
 
 /**
  * Specifies an instance of the initialization action to be used during resolution instantiation.
- * Receives an instance of a container {@link IContainer} and an instance of the resolved service:
- * (c: IContainer, item: T) =\> T
+ * Receives an instance of a container {@link IContainer} and an instance of the resolved service
  * @public
  */
-export interface IInitializer<T> {
-    (c: IContainer, item: T): T
-}
+export type Initializer<T> = (c: IContainer, item: T) => T
 
 /**
  * Specifies an instance of the dispose action to be used during resolution disposal
- * Receives an instance of the resolution:
- * (item: T) =\> void
+ * Receives an instance of the resolution
  * @public
  */
-export interface IDisposer<T> {
-    (item: T): void
-}
+export type Disposer<T> = (item: T) => void
 
 /**
  * Represents an entry step within registration fluent cascading API sequence
@@ -94,10 +88,10 @@ export interface IDisposer<T> {
 export interface IRegisterWithAs<T> {
     /**
      * Specifies initialization action during service instantiation
-     * @param action - an instance of {@link IInitializer} interface
+     * @param action - an instance of {@link Initializer} interface
      * @returns - an instance of {@link RegisterWithInitializeBy} interface
      */
-    initializeBy<K extends T>(action: IInitializer<K>): RegisterWithInitializeBy<K>
+    initializeBy<K extends T>(action: Initializer<K>): RegisterWithInitializeBy<K>
 
     /**
      * Specifies lazy registration. Resolution of services is differed until results
@@ -117,10 +111,10 @@ export interface IRegisterWithAs<T> {
     /**
      * Specifies disposer action during resolution disposal.
      * @param action - disposer action to be called during resolution
-     * disposal process ({@link IDisposer})
+     * disposal process ({@link Disposer})
      * @returns - an instance of {@link RegisterWithLazy} interface
      */
-    dispose<K extends T>(action: IDisposer<K>): RegisterWithLazy<K>
+    dispose<K extends T>(action: Disposer<K>): RegisterWithLazy<K>
 
     /**
      * Specifies resolution instance scope. Scope determines how resolved service

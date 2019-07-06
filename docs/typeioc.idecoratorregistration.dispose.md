@@ -9,14 +9,14 @@ Specifies disposer action during resolution disposal.
 <b>Signature:</b>
 
 ```typescript
-dispose<K extends T>(action: IDisposer<K>): WithDecoratorRegisterLazy<K>;
+dispose<K extends T>(action: Disposer<K>): WithDecoratorRegisterLazy<K>;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  action | <code>IDisposer&lt;K&gt;</code> | disposer action to be called during resolution disposal process ([IDisposer](./typeioc.idisposer.md)<!-- -->) |
+|  action | <code>Disposer&lt;K&gt;</code> | disposer action to be called during resolution disposal process ([Disposer](./typeioc.disposer.md)<!-- -->) |
 
 <b>Returns:</b>
 

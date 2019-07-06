@@ -1,11 +1,11 @@
-import { IDisposer } from '../../registration'
+import { Disposer } from '../../registration'
 
 export type DisposableItem = {
     weakReference: {}
-    disposer: IDisposer<{}>
+    disposer: Disposer<{}>
 }
 
 export interface IDisposableStorage {
-    add(obj: {}, disposer: IDisposer<{}>): void
+    add(obj: {}, disposer: Disposer<{}>): void
     disposeItems(): void
 }

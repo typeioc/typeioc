@@ -159,13 +159,13 @@ export interface IContainer {
 
     /**
      * Disposes all resolved, internally owned instances registered
-     * using {@link IDisposer} interface
+     * using {@link Disposer} interface
      */
     dispose(): void
 
     /**
      * Asynchronously disposes all resolved, internally owned instances registered
-     * using {@link IDisposer} interface
+     * using {@link Disposer} interface
      * @returns - promise
      */
     disposeAsync(): Promise<void>

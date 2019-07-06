@@ -1,7 +1,7 @@
 import { IContainer, IContainerBuilder, IApiCache } from '../../build'
 import { Index } from '../../types'
 import { IInternalStorage } from '../../storage'
-import { IInitializer, IDisposer, IRegistration } from '../../registration'
+import { Initializer, Disposer, IRegistration } from '../../registration'
 import { ScopeType } from '../../common'
 import { IDecoratorRegistration } from './registration'
 import { IDecoratorResolution } from './resolution'
@@ -31,9 +31,9 @@ export interface IDecoratorResolutionParamsData
 
 export interface IDecoratorRegistrationApi<T> {
     service?: {}
-    initializedBy?: IInitializer<T>
+    initializedBy?: Initializer<T>
     isLazy: boolean
-    disposedBy?: IDisposer<T>
+    disposedBy?: Disposer<T>
     name?: string
     scope?: ScopeType
     provide(service: {}): IDecoratorRegistration<T>

@@ -23,8 +23,8 @@ export interface IContainer
 |  Method | Description |
 |  --- | --- |
 |  [createChild()](./typeioc.icontainer.createchild.md) | Creates nested life cycle scoped container |
-|  [dispose()](./typeioc.icontainer.dispose.md) | Disposes all resolved, internally owned instances registered using [IDisposer](./typeioc.idisposer.md) interface |
-|  [disposeAsync()](./typeioc.icontainer.disposeasync.md) | Asynchronously disposes all resolved, internally owned instances registered using [IDisposer](./typeioc.idisposer.md) interface |
+|  [dispose()](./typeioc.icontainer.dispose.md) | Disposes all resolved, internally owned instances registered using [Disposer](./typeioc.disposer.md) interface |
+|  [disposeAsync()](./typeioc.icontainer.disposeasync.md) | Asynchronously disposes all resolved, internally owned instances registered using [Disposer](./typeioc.disposer.md) interface |
 |  [resolve(service, args)](./typeioc.icontainer.resolve.md) | Resolves a service with optional parameters Throws [ResolutionError](./typeioc.resolutionerror.md) if not registration found |
 |  [resolveAsync(service, args)](./typeioc.icontainer.resolveasync.md) | Asynchronously resolves a service with optional parameters |
 |  [resolveNamed(service, name, args)](./typeioc.icontainer.resolvenamed.md) | Resolves a service with specific name and optional parameters Throws [ResolutionError](./typeioc.resolutionerror.md) if not registration found |

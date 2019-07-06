@@ -4,10 +4,10 @@
 
 ## IDynamicDependency.initializer property
 
-Specifies an instance of initializer [IInitializer](./typeioc.iinitializer.md) to be used during substitution initialization
+Specifies an instance of initializer [Initializer](./typeioc.initializer.md) to be used during substitution initialization
 
 <b>Signature:</b>
 
 ```typescript
-initializer?: IInitializer<{}>;
+initializer?: Initializer<{}>;
 ```

@@ -7,7 +7,7 @@ import {
     WithDecoratorRegisterLazy,
     WithDecoratorRegisterName
 } from './types/registration'
-import { IInitializer, IDisposer } from '../registration'
+import { Initializer, Disposer } from '../registration'
 import { scope, ScopeType } from '../common/index.js'
 
 export class RegistrationApi<T> implements IDecoratorRegistrationApi<T> {
@@ -15,8 +15,8 @@ export class RegistrationApi<T> implements IDecoratorRegistrationApi<T> {
     private _service?: {}
     private _name?: string
     private _scope?: ScopeType
-    private _initializedBy?: IInitializer<unknown>
-    private _disposedBy?: IDisposer<T>
+    private _initializedBy?: Initializer<unknown>
+    private _disposedBy?: Disposer<T>
     private _isLazy: boolean
 
     public get service(): {} | undefined {
@@ -31,15 +31,15 @@ export class RegistrationApi<T> implements IDecoratorRegistrationApi<T> {
         return this._scope
     }
 
-    public get initializedBy(): IInitializer<T> | undefined {
-        return this._initializedBy as IInitializer<T>
+    public get initializedBy(): Initializer<T> | undefined {
+        return this._initializedBy as Initializer<T>
     }
 
     public get isLazy(): boolean {
         return this._isLazy
     }
 
-    public get disposedBy(): IDisposer<T> | undefined {
+    public get disposedBy(): Disposer<T> | undefined {
         return this._disposedBy
     }
 
@@ -84,12 +84,12 @@ export class RegistrationApi<T> implements IDecoratorRegistrationApi<T> {
         }
     }
 
-    private initializeBy<K extends T>(action: IInitializer<K>):
+    private initializeBy<K extends T>(action: Initializer<K>):
     WithDecoratorRegisterInitializeBy<K> {
 
         checkNullArgument(action, 'action')
 
-        this._initializedBy = action as IInitializer<unknown>
+        this._initializedBy = action as Initializer<unknown>
 
         return {
             lazy : this.lazy,
@@ -116,11 +116,11 @@ export class RegistrationApi<T> implements IDecoratorRegistrationApi<T> {
         }
     }
 
-    private dispose<K extends T>(action: IDisposer<K>): WithDecoratorRegisterLazy<K> {
+    private dispose<K extends T>(action: Disposer<K>): WithDecoratorRegisterLazy<K> {
 
         checkNullArgument(action, 'action')
 
-        this._disposedBy = action as IDisposer<T>
+        this._disposedBy = action as Disposer<T>
 
         return {
             named: this.named,

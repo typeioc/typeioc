@@ -3,8 +3,8 @@ import {
     RegistrationType,
     IDynamicDependency,
     IFactory,
-    IInitializer,
-    IDisposer,
+    Initializer,
+    Disposer,
     IRegistrationBase
 } from './types/index.js'
 
@@ -21,8 +21,8 @@ export class RegistrationBase implements IRegistrationBase {
     private _name?: string
     private _scope?: ScopeType
     private _owner: OwnerType = owner.externals
-    private _initializer?: IInitializer<{}>
-    private _disposer?: IDisposer<{}>
+    private _initializer?: Initializer<{}>
+    private _disposer?: Disposer<{}>
     private _args: {}[] = []
     private _params: {}[] = []
     private _container?: IContainer
@@ -59,19 +59,19 @@ export class RegistrationBase implements IRegistrationBase {
         this._owner = value
     }
 
-    public get initializer(): IInitializer<{}> | undefined {
+    public get initializer(): Initializer<{}> | undefined {
         return this._initializer
     }
 
-    public set initializer(value: IInitializer<{}> | undefined) {
+    public set initializer(value: Initializer<{}> | undefined) {
         this._initializer = value
     }
 
-    public get disposer(): IDisposer<{}> | undefined {
+    public get disposer(): Disposer<{}> | undefined {
         return this._disposer
     }
 
-    public set disposer(value: IDisposer<{}> | undefined) {
+    public set disposer(value: Disposer<{}> | undefined) {
         this._disposer = value
     }
 
