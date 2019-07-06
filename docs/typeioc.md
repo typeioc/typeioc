@@ -28,10 +28,10 @@ Dependency injection container for TypeScript / JavaScript
 |  [IDecorator](./typeioc.idecorator.md) | Represents a decorator style fluent cascading API services registration / resolution interface |
 |  [IDecoratorRegistration](./typeioc.idecoratorregistration.md) | Represents an entry into service registration fluent cascading API interface |
 |  [IDecoratorResolution](./typeioc.idecoratorresolution.md) | Represents fluent cascading interface for services resolution |
-|  [IDisposer](./typeioc.idisposer.md) | Specifies an instance of disposer to be used during resolution disposal Receives an instance of the resolution |
+|  [IDisposer](./typeioc.idisposer.md) | Specifies an instance of the dispose action to be used during resolution disposal Receives an instance of the resolution: (item: T) =<!-- -->&gt; void |
 |  [IDynamicDependency](./typeioc.idynamicdependency.md) | Represents dynamic dependency interface |
 |  [IFactory](./typeioc.ifactory.md) | Represents factory method registration interface. Receives an instance of a container [IContainer](./typeioc.icontainer.md) and an array of optional parameters provided during resolution |
-|  [IInitializer](./typeioc.iinitializer.md) | Specifies an instance of initializer to be used during resolution initialization. Receives an instance of a container [IContainer](./typeioc.icontainer.md) and an instance of the resolved service |
+|  [IInitializer](./typeioc.iinitializer.md) | Specifies an instance of the initialization action to be used during resolution instantiation. Receives an instance of a container [IContainer](./typeioc.icontainer.md) and an instance of the resolved service: (c: IContainer, item: T) =<!-- -->&gt; T |
 |  [IInterceptor](./typeioc.iinterceptor.md) | Represents interceptor specification interface |
 |  [IName](./typeioc.iname.md) | Specifies named registration interface with no additional steps within fluent cascading API Receives a value to be used named registrations / resolutions |
 |  [IRegisterWithAs](./typeioc.iregisterwithas.md) | Represents an entry step within registration fluent cascading API sequence |

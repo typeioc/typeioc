@@ -123,8 +123,8 @@ export interface IDecorator {
 
 // @public
 export interface IDecoratorRegistration<T> {
-    dispose(action: IDisposer<T>): WithDecoratorRegisterLazy<T>;
-    initializeBy(action: IInitializer<T>): WithDecoratorRegisterInitializeBy<T>;
+    dispose<K extends T>(action: IDisposer<K>): WithDecoratorRegisterLazy<K>;
+    initializeBy<K extends T>(action: IInitializer<K>): WithDecoratorRegisterInitializeBy<K>;
     instancePerContainer(): WithDecoratorRegister<T>;
     lazy(): WithDecoratorRegisterLazy<T>;
     named(name: string): WithDecoratorRegisterName<T>;
@@ -191,8 +191,8 @@ export const interceptor: () => IInterceptor;
 
 // @public
 export interface IRegisterWithAs<T> {
-    dispose(action: IDisposer<T>): RegisterWithLazy<T>;
-    initializeBy(action: IInitializer<T>): RegisterWithInitializeBy<T>;
+    dispose<K extends T>(action: IDisposer<K>): RegisterWithLazy<K>;
+    initializeBy<K extends T>(action: IInitializer<K>): RegisterWithInitializeBy<K>;
     instancePerContainer(): void;
     lazy(): RegisterWithLazy<T>;
     named(name: string): RegisterWithName<T>;

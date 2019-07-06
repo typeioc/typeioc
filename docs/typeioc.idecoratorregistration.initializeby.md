@@ -9,18 +9,18 @@ Specifies initialization action during service instantiation
 <b>Signature:</b>
 
 ```typescript
-initializeBy(action: IInitializer<T>): WithDecoratorRegisterInitializeBy<T>;
+initializeBy<K extends T>(action: IInitializer<K>): WithDecoratorRegisterInitializeBy<K>;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  action | <code>IInitializer&lt;T&gt;</code> | an instance of [IInitializer](./typeioc.iinitializer.md) interface |
+|  action | <code>IInitializer&lt;K&gt;</code> | an instance of [IInitializer](./typeioc.iinitializer.md) interface |
 
 <b>Returns:</b>
 
-`WithDecoratorRegisterInitializeBy<T>`
+`WithDecoratorRegisterInitializeBy<K>`
 
 - an instance of [WithDecoratorRegisterInitializeBy](./typeioc.withdecoratorregisterinitializeby.md) interface
 

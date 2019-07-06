@@ -4,7 +4,7 @@
 
 ## IInitializer interface
 
-Specifies an instance of initializer to be used during resolution initialization. Receives an instance of a container [IContainer](./typeioc.icontainer.md) and an instance of the resolved service
+Specifies an instance of the initialization action to be used during resolution instantiation. Receives an instance of a container [IContainer](./typeioc.icontainer.md) and an instance of the resolved service: (c: IContainer, item: T) =<!-- -->&gt; T
 
 <b>Signature:</b>
 

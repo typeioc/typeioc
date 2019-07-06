@@ -68,8 +68,9 @@ export interface IDynamicDependency {
 }
 
 /**
- * Specifies an instance of initializer to be used during resolution initialization.
- * Receives an instance of a container {@link IContainer} and an instance of the resolved service
+ * Specifies an instance of the initialization action to be used during resolution instantiation.
+ * Receives an instance of a container {@link IContainer} and an instance of the resolved service:
+ * (c: IContainer, item: T) =\> T
  * @public
  */
 export interface IInitializer<T> {
@@ -77,8 +78,9 @@ export interface IInitializer<T> {
 }
 
 /**
- * Specifies an instance of disposer to be used during resolution disposal
- * Receives an instance of the resolution
+ * Specifies an instance of the dispose action to be used during resolution disposal
+ * Receives an instance of the resolution:
+ * (item: T) =\> void
  * @public
  */
 export interface IDisposer<T> {
