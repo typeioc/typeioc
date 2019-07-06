@@ -9,18 +9,18 @@ Specifies initialization action during service instantiation
 <b>Signature:</b>
 
 ```typescript
-initializeBy(action: IInitializer<T>): RegisterWithInitializeBy<T>;
+initializeBy<K extends T>(action: IInitializer<K>): RegisterWithInitializeBy<K>;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  action | <code>IInitializer&lt;T&gt;</code> | an instance of [IInitializer](./typeioc.iinitializer.md) interface |
+|  action | <code>IInitializer&lt;K&gt;</code> | an instance of [IInitializer](./typeioc.iinitializer.md) interface |
 
 <b>Returns:</b>
 
-`RegisterWithInitializeBy<T>`
+`RegisterWithInitializeBy<K>`
 
 - an instance of [RegisterWithInitializeBy](./typeioc.registerwithinitializeby.md) interface
 

@@ -4,7 +4,7 @@
 
 ## IDisposer interface
 
-Specifies an instance of disposer to be used during resolution disposal Receives an instance of the resolution
+Specifies an instance of the dispose action to be used during resolution disposal Receives an instance of the resolution: (item: T) =<!-- -->&gt; void
 
 <b>Signature:</b>
 

@@ -9,18 +9,18 @@ Specifies disposer action during resolution disposal.
 <b>Signature:</b>
 
 ```typescript
-dispose(action: IDisposer<T>): RegisterWithLazy<T>;
+dispose<K extends T>(action: IDisposer<K>): RegisterWithLazy<K>;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  action | <code>IDisposer&lt;T&gt;</code> | disposer action to be called during resolution disposal process ([IDisposer](./typeioc.idisposer.md)<!-- -->) |
+|  action | <code>IDisposer&lt;K&gt;</code> | disposer action to be called during resolution disposal process ([IDisposer](./typeioc.idisposer.md)<!-- -->) |
 
 <b>Returns:</b>
 
-`RegisterWithLazy<T>`
+`RegisterWithLazy<K>`
 
 - an instance of [RegisterWithLazy](./typeioc.registerwithlazy.md) interface
 
