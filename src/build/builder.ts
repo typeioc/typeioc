@@ -43,23 +43,7 @@ export class ContainerBuilder implements IContainerBuilder {
         const container = this._containerService.create(internalContainer)
         internalContainer.add(registrations)
 
-        return {
-            cache: container.cache,
-            resolve: container.resolve.bind(container),
-            resolveAsync: container.resolveAsync.bind(container),
-            tryResolve: container.tryResolve.bind(container),
-            tryResolveAsync: container.tryResolveAsync.bind(container),
-            resolveNamed: container.resolveNamed.bind(container),
-            resolveNamedAsync: container.resolveNamedAsync.bind(container),
-            tryResolveNamed: container.tryResolveNamed.bind(container),
-            tryResolveNamedAsync: container.tryResolveNamedAsync.bind(container),
-            resolveWithDependencies: container.resolveWithDependencies.bind(container),
-            resolveWithDependenciesAsync: container.resolveWithDependenciesAsync.bind(container),
-            resolveWith: container.resolveWith.bind(container),
-            createChild: container.createChild.bind(container),
-            dispose: container.dispose.bind(container),
-            disposeAsync: container.disposeAsync.bind(container)
-        }
+        return container
     }
 
     public copy(builder: IContainerBuilder): void {

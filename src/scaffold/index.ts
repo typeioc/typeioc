@@ -5,10 +5,10 @@ import {
     RegistrationBase, IRegistrationBase, Registration, IRegistration
 } from '../registration/index.js'
 import {
-    Container, IContainer,
+    container, IContainer,
     ImportApi, Api as ContainerApi,
     ContainerBuilder, IContainerBuilder,
-    InternalContainer, IInternalContainer,
+    InternalContainer,
     Invoker, IInvoker,
     IContainerBuilderService,
     IInternalContainerService,
@@ -139,7 +139,7 @@ export class Scaffold {
 
     private containerService(): IContainerService {
         return {
-            create: (container: IInternalContainer) => new Container(container)
+            create: container
         }
     }
 

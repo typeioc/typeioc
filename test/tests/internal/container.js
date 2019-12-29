@@ -1,13 +1,13 @@
 const sinon = require('sinon')
 const tap = require('tap')
 const { ArgumentError } = require('@lib')
-const { Container } = require('@lib/build')
+const { container } = require('@lib/build')
 
 tap.beforeEach((done, setUp) => {
 
     const internalContainer = {}
     setUp.context.internalContainer = internalContainer
-    setUp.context.container = new Container(internalContainer)
+    setUp.context.container = container(internalContainer)
     done()
 })
 
